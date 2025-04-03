@@ -3,6 +3,7 @@ import fs from 'fs';
 import { runModelReview } from './models';
 import { runRepomix } from './repomix';
 import { normalizeUsage } from './types/usage';
+import { COST_RATES } from './utils/constants';
 
 /**
  * Run a triumvirate review across multiple LLMs
@@ -331,26 +332,14 @@ function estimateCost(model: string, inputTokens: number, outputTokens: number):
     let inputRate = 0.0;
     let outputRate = 0.0;
 
-    switch (model) {
-        case 'openai':
-            // GPT-4 rates
-            inputRate = 0.00001; // $0.01 per 1K tokens
-            outputRate = 0.00003; // $0.03 per 1K tokens
-            break;
-        case 'claude':
-            // Claude rates
-            inputRate = 0.000008; // $0.008 per 1K tokens
-            outputRate = 0.000024; // $0.024 per 1K tokens
-            break;
-        case 'gemini':
-            // Gemini rates
-            inputRate = 0.000004; // $0.004 per 1K tokens
-            outputRate = 0.000012; // $0.012 per 1K tokens
-            break;
-        default:
-            // Default rates
-            inputRate = 0.00001;
-            outputRate = 0.00003;
+    // Use rates from constants
+    if (model in COST_RATES) {
+        inputRate = COST_RATES[model as keyof typeof COST_RATES].input;
+        outputRate = COST_RATES[model as keyof typeof COST_RATES].output;
+    } else {
+        // Default to OpenAI rates if model not found
+        inputRate = COST_RATES.openai.input;
+        outputRate = COST_RATES.openai.output;
     }
 
     // Calculate cost

@@ -46,7 +46,7 @@
     "license": "MIT",
     "tsup": {
         "entry": [
-            "src/bin/cli.ts",
+            "src/bin/triumvirate.ts",
             "src/bin/bash-complete.ts"
         ],
         "format": [

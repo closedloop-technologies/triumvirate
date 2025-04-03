@@ -4,13 +4,14 @@ import OpenAI from 'openai';
 import { normalizeUsage } from './types/usage';
 import type { ModelUsage, OpenAIUsage, ClaudeUsage, GeminiUsage } from './types/usage';
 import { handleModelError, exponentialBackoff } from './utils/model-utils';
+import { API_TIMEOUT_MS, MAX_API_RETRIES } from './utils/constants';
 
 dotenv.config();
 
 async function runOpenAIModel(
     prompt: string,
     retryCount = 0,
-    maxRetries = 3
+    maxRetries = MAX_API_RETRIES
 ): Promise<{ text: string; usage: OpenAIUsage }> {
     if (!process.env['OPENAI_API_KEY']) {
         throw new Error('OPENAI_API_KEY is not set');
@@ -20,9 +21,8 @@ async function runOpenAIModel(
         const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] });
 
         // Set a timeout for the API call
-        const timeoutMs = 30000; // 30 seconds timeout
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+        const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
         const response = await openai.responses.create(
             {
@@ -55,18 +55,16 @@ async function runOpenAIModel(
         // Handle timeout errors with retry logic
         if (
             (error.name === 'AbortError' ||
-            error.code === 'ETIMEDOUT' ||
-            error.message?.includes('timeout')) &&
+                error.code === 'ETIMEDOUT' ||
+                error.message?.includes('timeout')) &&
             retryCount < maxRetries
         ) {
-            console.log(
-                `OpenAI API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
-            );
+            console.log(`OpenAI API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`);
             // Use exponential backoff utility
             await exponentialBackoff(retryCount);
             return runOpenAIModel(prompt, retryCount + 1, maxRetries);
         }
-        
+
         // Use the shared error handler for all other errors
         throw handleModelError(error, 'OpenAI', maxRetries);
     }
@@ -75,16 +73,15 @@ async function runOpenAIModel(
 async function runClaudeModel(
     prompt: string,
     retryCount = 0,
-    maxRetries = 3
+    maxRetries = MAX_API_RETRIES
 ): Promise<{ text: string; usage: ClaudeUsage }> {
     if (!process.env['ANTHROPIC_API_KEY']) {
         throw new Error('ANTHROPIC_API_KEY is not set');
     }
 
     // Set up timeout variables outside try block for access in catch block
-    const timeoutMs = 30000; // 30 seconds timeout
     const controller = new AbortController();
-    let timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    let timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
     try {
         // Create Anthropic client with type assertion to handle potential type issues
@@ -123,18 +120,16 @@ async function runClaudeModel(
         // Handle timeout errors with retry logic
         if (
             (error.name === 'AbortError' ||
-            error.code === 'ETIMEDOUT' ||
-            error.message?.includes('timeout')) &&
+                error.code === 'ETIMEDOUT' ||
+                error.message?.includes('timeout')) &&
             retryCount < maxRetries
         ) {
-            console.log(
-                `Claude API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
-            );
+            console.log(`Claude API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`);
             // Use exponential backoff utility
             await exponentialBackoff(retryCount);
             return runClaudeModel(prompt, retryCount + 1, maxRetries);
         }
-        
+
         // Use the shared error handler for all other errors
         throw handleModelError(error, 'Claude', maxRetries);
     }
@@ -143,16 +138,15 @@ async function runClaudeModel(
 async function runGeminiModel(
     prompt: string,
     retryCount = 0,
-    maxRetries = 3
+    maxRetries = MAX_API_RETRIES
 ): Promise<{ text: string; usage: GeminiUsage }> {
     if (!process.env['GOOGLE_API_KEY']) {
         throw new Error('GOOGLE_API_KEY is not set');
     }
 
     // Set up timeout variables outside try block for access in catch block
-    const timeoutMs = 30000; // 30 seconds timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
     try {
         const ai = new GoogleGenAI({ apiKey: process.env['GOOGLE_API_KEY'] });
@@ -193,47 +187,19 @@ async function runGeminiModel(
 
         // Handle timeout errors with retry logic
         if (
-            error.name === 'AbortError' ||
-            error.code === 'ETIMEDOUT' ||
-            error.message?.includes('timeout')
+            (error.name === 'AbortError' ||
+                error.code === 'ETIMEDOUT' ||
+                error.message?.includes('timeout')) &&
+            retryCount < maxRetries
         ) {
-            if (retryCount < maxRetries) {
-                console.log(
-                    `Gemini API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
-                );
-                // Exponential backoff: wait longer between each retry
-                const backoffMs = 1000 * Math.pow(2, retryCount);
-                await new Promise(resolve => setTimeout(resolve, backoffMs));
-                return runGeminiModel(prompt, retryCount + 1, maxRetries);
-            } else {
-                throw new Error(
-                    `Gemini API call failed after ${maxRetries} retries due to timeouts`
-                );
-            }
+            console.log(`Gemini API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`);
+            // Use exponential backoff utility
+            await exponentialBackoff(retryCount);
+            return runGeminiModel(prompt, retryCount + 1, maxRetries);
         }
 
-        // Handle authentication errors (bad API key)
-        if (
-            error.status === 401 ||
-            error.message?.includes('authentication') ||
-            error.message?.includes('API key')
-        ) {
-            throw new Error('Invalid Google API key. Please check your API key and try again.');
-        }
-
-        // Handle input too large errors
-        if (
-            error.status === 400 &&
-            (error.message?.includes('too large') ||
-                error.message?.includes('maximum context length'))
-        ) {
-            throw new Error(
-                'Input is too large for the model. Please reduce the size of your input.'
-            );
-        }
-
-        // Handle other errors
-        throw new Error(`Gemini API error: ${error.message || 'Unknown error'}`);
+        // Use the shared error handler for all other errors
+        throw handleModelError(error, 'Gemini', maxRetries);
     }
 }
 

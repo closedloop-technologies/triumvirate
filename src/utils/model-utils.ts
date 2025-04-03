@@ -22,19 +22,20 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
     }
 
     // Handle authentication errors (bad API key)
-    if (error.status === 401 || error.message?.includes('authentication') || error.message?.includes('API key')) {
+    if (
+        error.status === 401 ||
+        error.message?.includes('authentication') ||
+        error.message?.includes('API key')
+    ) {
         return new Error(`Invalid ${modelName} API key. Please check your API key and try again.`);
     }
 
     // Handle input too large errors
     if (
         error.status === 400 &&
-        (error.message?.includes('too large') ||
-            error.message?.includes('maximum context length'))
+        (error.message?.includes('too large') || error.message?.includes('maximum context length'))
     ) {
-        return new Error(
-            'Input is too large for the model. Please reduce the size of your input.'
-        );
+        return new Error('Input is too large for the model. Please reduce the size of your input.');
     }
 
     // Handle other errors
