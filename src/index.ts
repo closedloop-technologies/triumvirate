@@ -10,7 +10,7 @@ export async function runTriumvirateReview({
     models = ['openai', 'claude', 'gemini'],
     exclude = [],
     diffOnly = false,
-    outputPath,
+    outputPath = '.',
     failOnError = false,
     summaryOnly = false,
     tokenLimit = 100000,
