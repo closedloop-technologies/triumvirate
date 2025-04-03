@@ -1,0 +1,55 @@
+{
+  "name": "triumvirate",
+  "version": "0.1.0",
+  "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
+  "bin": {
+    "triumvirate": "./bin/triumvirate.js"
+  },
+  "main": "src/index.js",
+  "files": [
+    "bin",
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "scripts": {
+    "start": "node src/cli.js",
+    "dev": "node src/cli.js",
+    "build": "npm run lint && npm run format",
+    "prepare": "npm run build",
+    "test:review": "node test/run.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "keywords": [
+    "review",
+    "LLM",
+    "cli",
+    "openai",
+    "claude",
+    "gemini",
+    "PR",
+    "pull request",
+    "github actions"
+  ],
+  "author": "Sean Kruzel <sean@closedloop.tech>",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.8.0",
+    "@google/generative-ai": "^0.3.0",
+    "commander": "^11.0.0",
+    "dotenv": "^16.0.0",
+    "openai": "^4.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "prettier": "^3.1.1"
+  }
+}
