@@ -1,5 +1,5 @@
 import type { LocalContext } from './context';
-import { runTriumvirateReview } from './index.js';
+import { runTriumvirateReview } from './index';
 
 interface ReviewCommandFlags {
   readonly models?: string[];

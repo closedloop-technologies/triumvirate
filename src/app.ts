@@ -1,13 +1,9 @@
 import { buildApplication, buildCommand, buildRouteMap } from '@stricli/core';
 import { buildInstallCommand, buildUninstallCommand } from '@stricli/auto-complete';
 import { name, version, description } from '../package.json';
-import { subdirCommand } from './commands/subdir/command';
-import { nestedRoutes } from './commands/nested/commands';
 
 const routes = buildRouteMap({
   routes: {
-    subdir: subdirCommand,
-    nested: nestedRoutes,
     run: buildCommand({
       loader: async () => import('./impl'),
       parameters: {
