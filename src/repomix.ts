@@ -55,7 +55,7 @@ export async function runRepomix({
   // Build repomix command
   const repomixArgs = [
     'repomix',
-    `-o=${tempFilePath}`,
+    `-o ${tempFilePath}`,
     `--style=${style}`,
     `--top-files-len=${topFilesLen}`,
     `--token-count-encoding=${tokenCountEncoding}`,

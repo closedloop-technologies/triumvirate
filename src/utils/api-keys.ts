@@ -4,14 +4,14 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 interface ApiKeyRequirements {
-    model: string;
-    envVar: string;
+  model: string;
+  envVar: string;
 }
 
 const MODEL_API_KEYS: ApiKeyRequirements[] = [
-    { model: 'openai', envVar: 'OPENAI_API_KEY' },
-    { model: 'claude', envVar: 'ANTHROPIC_API_KEY' },
-    { model: 'gemini', envVar: 'GOOGLE_API_KEY' }
+  { model: 'openai', envVar: 'OPENAI_API_KEY' },
+  { model: 'claude', envVar: 'ANTHROPIC_API_KEY' },
+  { model: 'gemini', envVar: 'GOOGLE_API_KEY' },
 ];
 
 /**
@@ -20,48 +20,48 @@ const MODEL_API_KEYS: ApiKeyRequirements[] = [
  * @returns An object with validation results
  */
 export function validateApiKeys(requestedModels: string[]): {
-    valid: boolean;
-    missingKeys: string[];
-    message: string;
+  valid: boolean;
+  missingKeys: string[];
+  message: string;
 } {
-    // Default result
-    const result = {
-        valid: true,
-        missingKeys: [] as string[],
-        message: 'All required API keys are set.'
-    };
+  // Default result
+  const result = {
+    valid: true,
+    missingKeys: [] as string[],
+    message: 'All required API keys are set.',
+  };
 
-    console.log('Checking API keys...');
-    console.log(MODEL_API_KEYS, requestedModels);
-    // Check each requested model
-    for (const modelName of requestedModels) {
-        const requirement = MODEL_API_KEYS.find(req => req.model === modelName);
+  console.log('Checking API keys...');
+  console.log(MODEL_API_KEYS, requestedModels);
+  // Check each requested model
+  for (const modelName of requestedModels) {
+    const requirement = MODEL_API_KEYS.find(req => req.model === modelName);
 
-        if (requirement) {
-            const apiKey = process.env[requirement.envVar];
+    if (requirement) {
+      const apiKey = process.env[requirement.envVar];
 
-            if (!apiKey) {
-                result.valid = false;
-                result.missingKeys.push(requirement.envVar);
-            }
-            console.log(apiKey)
-        }
-        console.log(requirement, result)
+      if (!apiKey) {
+        result.valid = false;
+        result.missingKeys.push(requirement.envVar);
+      }
+      console.log(apiKey);
     }
+    console.log(requirement, result);
+  }
 
-    // Set message if keys are missing
-    if (!result.valid) {
-        result.message = `Missing required API keys: ${result.missingKeys.join(', ')}. Please set them in your environment or .env file.`;
-    }
+  // Set message if keys are missing
+  if (!result.valid) {
+    result.message = `Missing required API keys: ${result.missingKeys.join(', ')}. Please set them in your environment or .env file.`;
+  }
 
-    return result;
+  return result;
 }
 
 /**
  * Get instructions for setting up API keys
  */
 export function getApiKeySetupInstructions(): string {
-    return `
+  return `
 To set up API keys:
 
 1. Create a .env file in the project root (or copy from .env.example):

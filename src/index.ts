@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-import { runModelReview } from './models.js';
-import { runRepomix } from './repomix.js';
+import { runModelReview } from './models';
+import { runRepomix } from './repomix';
 
 /**
  * Run a triumvirate review across multiple LLMs
