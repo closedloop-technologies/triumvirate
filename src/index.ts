@@ -3,10 +3,13 @@ import fs from 'fs';
 import { runModelReview } from './models';
 import { runRepomix } from './repomix';
 import { normalizeUsage } from './types/usage';
-import { COST_RATES } from './utils/constants';
+import { COST_RATES, DEFAULT_REVIEW_OPTIONS, ReviewType } from './utils/constants';
 
 /**
  * Run a triumvirate review across multiple LLMs
+ */
+/**
+ * Options for running a triumvirate review
  */
 export interface TriumvirateReviewOptions {
     models?: string[];
@@ -17,18 +20,23 @@ export interface TriumvirateReviewOptions {
     summaryOnly?: boolean;
     tokenLimit?: number;
     reviewType?: string;
-    repomixOptions?: Record<string, any>;
+    repomixOptions?: Record<string, unknown>;
 }
 
+/**
+ * Run a triumvirate review across multiple LLMs
+ * @param options - Options for the review
+ * @returns Array of review results from each model
+ */
 export async function runTriumvirateReview({
-    models = ['openai', 'claude', 'gemini'],
-    exclude = [],
-    diffOnly = false,
-    outputPath = '.',
-    failOnError = false,
-    summaryOnly = false,
-    tokenLimit = 100000,
-    reviewType = 'general',
+    models = DEFAULT_REVIEW_OPTIONS.MODELS,
+    exclude = DEFAULT_REVIEW_OPTIONS.EXCLUDE,
+    diffOnly = DEFAULT_REVIEW_OPTIONS.DIFF_ONLY,
+    outputPath = DEFAULT_REVIEW_OPTIONS.OUTPUT_PATH,
+    failOnError = DEFAULT_REVIEW_OPTIONS.FAIL_ON_ERROR,
+    summaryOnly = DEFAULT_REVIEW_OPTIONS.SUMMARY_ONLY,
+    tokenLimit = DEFAULT_REVIEW_OPTIONS.TOKEN_LIMIT,
+    reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
     repomixOptions = {},
 }: TriumvirateReviewOptions = {}) {
     // Initialize results array

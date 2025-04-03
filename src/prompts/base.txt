@@ -1,0 +1,11 @@
+You are an expert code reviewer. I'm going to share a codebase with you for review.
+
+Directory Structure:
+{{DIRECTORY_STRUCTURE}}
+
+Summary:
+{{SUMMARY}}
+
+Please review the following codebase and provide feedback:
+
+{{CODEBASE}}

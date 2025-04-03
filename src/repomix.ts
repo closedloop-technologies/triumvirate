@@ -2,6 +2,7 @@ import { execSync, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { DEFAULT_REPOMIX_OPTIONS, DEFAULT_REVIEW_OPTIONS } from './utils/constants';
 
 export interface RepomixResult {
     filePath: string;
@@ -12,6 +13,9 @@ export interface RepomixResult {
     stderr: string;
 }
 
+/**
+ * Options for running repomix
+ */
 export interface RepomixOptions {
     exclude?: string[];
     diffOnly?: boolean;
@@ -31,22 +35,24 @@ export interface RepomixOptions {
 
 /**
  * Run repomix with the specified options
+ * @param options - Options for running repomix
+ * @returns Result of running repomix
  */
 export async function runRepomix({
-    exclude = [],
-    diffOnly = false,
-    tokenLimit = 100000,
+    exclude = DEFAULT_REVIEW_OPTIONS.EXCLUDE,
+    diffOnly = DEFAULT_REVIEW_OPTIONS.DIFF_ONLY,
+    tokenLimit = DEFAULT_REVIEW_OPTIONS.TOKEN_LIMIT,
     include,
     ignorePatterns,
-    style = 'xml',
-    compress = true, // Changed default to true to match impl.ts
-    removeComments = false,
-    removeEmptyLines = false,
-    showLineNumbers = false,
+    style = DEFAULT_REPOMIX_OPTIONS.STYLE,
+    compress = DEFAULT_REPOMIX_OPTIONS.COMPRESS,
+    removeComments = DEFAULT_REPOMIX_OPTIONS.REMOVE_COMMENTS,
+    removeEmptyLines = DEFAULT_REPOMIX_OPTIONS.REMOVE_EMPTY_LINES,
+    showLineNumbers = DEFAULT_REPOMIX_OPTIONS.SHOW_LINE_NUMBERS,
     headerText,
     instructionFilePath,
-    topFilesLen = 20,
-    tokenCountEncoding = 'o200k_base',
+    topFilesLen = DEFAULT_REPOMIX_OPTIONS.TOP_FILES_LEN,
+    tokenCountEncoding = DEFAULT_REPOMIX_OPTIONS.TOKEN_COUNT_ENCODING,
 }: RepomixOptions): Promise<RepomixResult> {
     // Create a temporary directory for Repomix output
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'triumvirate-'));

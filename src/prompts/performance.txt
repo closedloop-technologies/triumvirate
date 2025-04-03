@@ -1,0 +1,11 @@
+Conduct a detailed performance review focusing on:
+1. Computational complexity analysis
+2. Memory usage and potential leaks
+3. Asynchronous operations and concurrency
+4. Database queries and data access patterns
+5. Network requests and API usage
+6. Resource-intensive operations
+7. Caching opportunities
+8. Bundle size considerations
+
+For each issue, estimate the performance impact and provide specific recommendations for improvement.

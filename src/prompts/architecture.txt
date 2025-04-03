@@ -1,0 +1,11 @@
+Provide an in-depth architecture review focusing on:
+1. Overall system design and component organization
+2. Separation of concerns and modularity
+3. Design patterns used (and opportunities for better patterns)
+4. Dependency management and coupling
+5. API design and consistency
+6. Error handling strategy
+7. Testability of the codebase
+8. Scalability considerations
+
+Identify architectural strengths and weaknesses, with specific recommendations for improvement.

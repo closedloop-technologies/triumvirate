@@ -30,4 +30,28 @@ export enum ReviewType {
     SECURITY = 'security',
     PERFORMANCE = 'performance',
     ARCHITECTURE = 'architecture',
+    DOCS = 'docs',
 }
+
+// Default values for triumvirate review options
+export const DEFAULT_REVIEW_OPTIONS = {
+    MODELS: ['openai', 'claude', 'gemini'],
+    EXCLUDE: [],
+    DIFF_ONLY: false,
+    OUTPUT_PATH: '.',
+    FAIL_ON_ERROR: false,
+    SUMMARY_ONLY: false,
+    TOKEN_LIMIT: 100000,
+    REVIEW_TYPE: ReviewType.GENERAL,
+};
+
+// Default values for repomix options
+export const DEFAULT_REPOMIX_OPTIONS = {
+    STYLE: 'xml',
+    COMPRESS: true,
+    REMOVE_COMMENTS: false,
+    REMOVE_EMPTY_LINES: false,
+    SHOW_LINE_NUMBERS: false,
+    TOP_FILES_LEN: 20,
+    TOKEN_COUNT_ENCODING: 'o200k_base',
+};

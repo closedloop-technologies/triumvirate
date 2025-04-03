@@ -1,0 +1,8 @@
+Provide a general review focusing on:
+1. Code quality and readability
+2. Potential bugs or issues
+3. Architecture and design
+4. Performance concerns
+5. Security considerations
+
+Format your response with these sections and provide specific examples where possible.

@@ -1,0 +1,11 @@
+Conduct a thorough security review focusing on:
+1. Authentication and authorization vulnerabilities
+2. Input validation and sanitization
+3. Injection vulnerabilities (SQL, XSS, etc.)
+4. Sensitive data exposure
+5. Security misconfiguration
+6. Hard-coded secrets or credentials
+7. Insecure cryptographic storage
+8. Insufficient logging and monitoring
+
+Categorize issues by severity (Critical, High, Medium, Low) and provide specific recommendations for each.

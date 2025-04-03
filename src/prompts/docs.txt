@@ -1,0 +1,9 @@
+Review the codebase documentation focusing on:
+1. Code comments quality and coverage
+2. API documentation completeness
+3. README files and usage instructions
+4. Inline documentation of complex logic
+5. Type definitions and interfaces
+6. Examples and usage patterns
+
+Provide specific recommendations for improving documentation and highlight areas where documentation is particularly strong or lacking.
