@@ -1,7 +1,7 @@
 /**
  * Runs a code review using the specified model
- * @param code The code to review
+ * @param prompt The prompt to send to the model
  * @param modelName The name of the model to use ('openai', 'claude', or 'gemini')
- * @returns A promise that resolves to the review text
+ * @returns A promise that resolves to the model's response
  */
-export function runModelReview(code: string, modelName: string): Promise<string>;
+export function runModelReview(prompt: string, modelName: string): Promise<string>;

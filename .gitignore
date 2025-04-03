@@ -30,3 +30,6 @@ triumvirate.json
 # OS
 .DS_Store
 Thumbs.db
+
+# Repomix
+repomix-output.*
