@@ -1,6 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
+import { normalizeUsage } from './types/usage';
+import type { ModelUsage, OpenAIUsage, ClaudeUsage, GeminiUsage } from './types/usage';
 
 dotenv.config();
 
@@ -8,7 +10,7 @@ async function runOpenAIModel(
     prompt: string,
     retryCount = 0,
     maxRetries = 3
-): Promise<{ text: string; usage: any }> {
+): Promise<{ text: string; usage: OpenAIUsage }> {
     if (!process.env['OPENAI_API_KEY']) {
         throw new Error('OPENAI_API_KEY is not set');
     }
@@ -42,7 +44,7 @@ async function runOpenAIModel(
         //     output_tokens_details: { reasoning_tokens: 0 },
         //     total_tokens: 8551
         //   },
-        return { text: output_text || '', usage };
+        return { text: output_text || '', usage: usage as OpenAIUsage };
     } catch (error: any) {
         // Clear any pending timeout if there was an error
 
@@ -92,7 +94,7 @@ async function runClaudeModel(
     prompt: string,
     retryCount = 0,
     maxRetries = 3
-): Promise<{ text: string; usage: any }> {
+): Promise<{ text: string; usage: ClaudeUsage }> {
     if (!process.env['ANTHROPIC_API_KEY']) {
         throw new Error('ANTHROPIC_API_KEY is not set');
     }
@@ -123,10 +125,12 @@ async function runClaudeModel(
         clearTimeout(timeoutId);
         console.log('claude', msg);
         const { choices } = msg;
-        const usage = {
+        const usage: ClaudeUsage = {
             input_tokens: msg.usage?.prompt_tokens || 0,
             output_tokens: msg.usage?.completion_tokens || 0,
             total_tokens: msg.usage?.total_tokens || 0,
+            prompt_tokens: msg.usage?.prompt_tokens,
+            completion_tokens: msg.usage?.completion_tokens
         };
 
         return { text: choices[0]?.message?.content || '', usage };
@@ -184,7 +188,7 @@ async function runGeminiModel(
     prompt: string,
     retryCount = 0,
     maxRetries = 3
-): Promise<{ text: string; usage: any }> {
+): Promise<{ text: string; usage: GeminiUsage }> {
     if (!process.env['GOOGLE_API_KEY']) {
         throw new Error('GOOGLE_API_KEY is not set');
     }
@@ -210,10 +214,13 @@ async function runGeminiModel(
         console.log('gemini', response);
 
         const { usageMetadata, candidates } = response;
-        const usage = {
+        const usage: GeminiUsage = {
             input_tokens: usageMetadata?.promptTokenCount || 0,
             output_tokens: usageMetadata?.candidatesTokenCount || 0,
             total_tokens: usageMetadata?.totalTokenCount || 0,
+            promptTokenCount: usageMetadata?.promptTokenCount,
+            candidatesTokenCount: usageMetadata?.candidatesTokenCount,
+            totalTokenCount: usageMetadata?.totalTokenCount
         };
         if (!candidates?.[0]?.content) {
             throw new Error('Gemini response is missing content');
@@ -277,7 +284,7 @@ async function runGeminiModel(
 export async function runModelReview(
     code: string,
     modelName: string
-): Promise<{ text: string; usage: any }> {
+): Promise<{ text: string; usage: ModelUsage }> {
     const prompt = `Please review the following codebase for bugs, design flaws, and potential improvements:\n\n${code}`;
 
     if (modelName === 'openai') {

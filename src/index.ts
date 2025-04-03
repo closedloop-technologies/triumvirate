@@ -148,13 +148,25 @@ export async function runTriumvirateReview({
                     {
                         status: results.every(r => !r.metrics.error) ? 'Passed' : 'Failed',
                         completedSuccessfully: results.every(r => !r.metrics.error),
-                        models: results.map(r => ({
-                            model: r.model,
-                            summary: summarizeReview(
-                                typeof r.review === 'string' ? r.review : String(r.review)
-                            ),
-                            metrics: r.metrics,
-                        })),
+                        models: results.map(r => {
+                            // Ensure review is properly converted to string
+                            const reviewText =
+                                typeof r.review === 'string'
+                                    ? r.review
+                                    : (r.review as any)?.text || JSON.stringify(r.review);
+
+                            // Generate summary from the review text
+                            const summary = summarizeReview(reviewText);
+
+                            return {
+                                model: r.model,
+                                summary,
+                                tokenCount: r.metrics.tokenCount || 0,
+                                cost: r.metrics.cost || '$0.00',
+                                latency: r.metrics.latency || '0ms',
+                                error: r.metrics.error || null,
+                            };
+                        }),
                     },
                     null,
                     2
@@ -284,9 +296,8 @@ function summarizeReview(review: string): string {
 /**
  * Estimate the cost of a model run based on input and output tokens
  */
-function estimateCost(model: string, inputTokens: number, outputLength: number): number {
-    // Rough estimate of output tokens
-    const outputTokens = Math.ceil(outputLength / 4);
+function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
+    // Use the provided output tokens directly
 
     // Set rates based on model
     let inputRate = 0.0;
