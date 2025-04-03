@@ -24,6 +24,11 @@ export const COST_RATES = {
 // Maximum number of retries for API calls
 export const MAX_API_RETRIES = 3;
 
+/**
+ * Maximum number of files to exclude during repomix optimization
+ */
+export const MAX_FILES_TO_EXCLUDE = 3;
+
 // Review types
 export enum ReviewType {
     GENERAL = 'general',

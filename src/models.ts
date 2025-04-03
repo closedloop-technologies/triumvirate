@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { normalizeUsage } from './types/usage';
 import type { ModelUsage, OpenAIUsage, ClaudeUsage, GeminiUsage } from './types/usage';
-import { handleModelError, exponentialBackoff } from './utils/model-utils';
+import { handleModelError, exponentialBackoff, withErrorHandlingAndRetry } from './utils/model-utils';
 import { API_TIMEOUT_MS, MAX_API_RETRIES } from './utils/constants';
 
 dotenv.config();
@@ -16,58 +16,40 @@ async function runOpenAIModel(
     if (!process.env['OPENAI_API_KEY']) {
         throw new Error('OPENAI_API_KEY is not set');
     }
-
-    try {
-        const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] });
-
-        // Set a timeout for the API call
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
-
-        const response = await openai.responses.create(
-            {
-                model: 'gpt-4o',
-                input: prompt,
-                temperature: 0.2,
-                store: false,
-            },
-            { signal: controller.signal }
-        );
-
-        clearTimeout(timeoutId);
-        console.log('openai', response);
-        const { output_text, usage } = response;
-        // usage is:
-        //   usage: {
-        //     input_tokens: 7824,
-        //     input_tokens_details: { cached_tokens: 7808 },
-        //     output_tokens: 727,
-        //     output_tokens_details: { reasoning_tokens: 0 },
-        //     total_tokens: 8551
-        //   },
-        if (!usage) {
-            throw new Error('OpenAI response is missing usage');
-        }
-        return { text: output_text || '', usage: usage as OpenAIUsage };
-    } catch (error: any) {
-        // Clear any pending timeout if there was an error
-
-        // Handle timeout errors with retry logic
-        if (
-            (error.name === 'AbortError' ||
-                error.code === 'ETIMEDOUT' ||
-                error.message?.includes('timeout')) &&
-            retryCount < maxRetries
-        ) {
-            console.log(`OpenAI API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`);
-            // Use exponential backoff utility
-            await exponentialBackoff(retryCount);
-            return runOpenAIModel(prompt, retryCount + 1, maxRetries);
-        }
-
-        // Use the shared error handler for all other errors
-        throw handleModelError(error, 'OpenAI', maxRetries);
-    }
+    
+    const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] });
+    
+    return withErrorHandlingAndRetry(
+        async (signal: AbortSignal) => {
+            const response = await openai.responses.create(
+                {
+                    model: 'gpt-4o',
+                    input: prompt,
+                    temperature: 0.2,
+                    store: false,
+                },
+                { signal }
+            );
+            
+            console.log('openai', response);
+            const { output_text, usage } = response;
+            // usage is:
+            //   usage: {
+            //     input_tokens: 7824,
+            //     input_tokens_details: { cached_tokens: 7808 },
+            //     output_tokens: 727,
+            //     output_tokens_details: { reasoning_tokens: 0 },
+            //     total_tokens: 8551
+            //   },
+            if (!usage) {
+                throw new Error('OpenAI response is missing usage');
+            }
+            return { text: output_text || '', usage: usage as OpenAIUsage };
+        },
+        'OpenAI',
+        maxRetries,
+        API_TIMEOUT_MS
+    );
 }
 
 async function runClaudeModel(
@@ -79,60 +61,39 @@ async function runClaudeModel(
         throw new Error('ANTHROPIC_API_KEY is not set');
     }
 
-    // Set up timeout variables outside try block for access in catch block
-    const controller = new AbortController();
-    let timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+    // Create Anthropic client with OpenAI compatibility layer
+    const openai = new OpenAI({
+        apiKey: process.env['ANTHROPIC_API_KEY'],
+        baseURL: 'https://api.anthropic.com/v1/',
+    });
 
-    try {
-        // Create Anthropic client with type assertion to handle potential type issues
-        // const anthropic = new Anthropic() // defaults to process.env["ANTHROPIC_API_KEY"]
+    return withErrorHandlingAndRetry(
+        async (signal: AbortSignal) => {
+            const msg = await openai.chat.completions.create(
+                {
+                    model: 'claude-3-7-sonnet-20250219',
+                    max_tokens: 1024,
+                    messages: [{ role: 'user', content: prompt }],
+                },
+                { signal }
+            );
 
-        const openai = new OpenAI({
-            apiKey: process.env['ANTHROPIC_API_KEY'], // Your Anthropic API key
-            baseURL: 'https://api.anthropic.com/v1/', // Anthropic API endpoint
-        });
+            console.log('claude', msg);
+            const { choices } = msg;
+            const usage: ClaudeUsage = {
+                input_tokens: msg.usage?.prompt_tokens || 0,
+                output_tokens: msg.usage?.completion_tokens || 0,
+                total_tokens: msg.usage?.total_tokens || 0,
+                prompt_tokens: msg.usage?.prompt_tokens,
+                completion_tokens: msg.usage?.completion_tokens,
+            };
 
-        const msg = await openai.chat.completions.create(
-            {
-                model: 'claude-3-7-sonnet-20250219',
-                max_tokens: 1024,
-                messages: [{ role: 'user', content: prompt }],
-            },
-            { signal: controller.signal }
-        );
-
-        clearTimeout(timeoutId);
-        console.log('claude', msg);
-        const { choices } = msg;
-        const usage: ClaudeUsage = {
-            input_tokens: msg.usage?.prompt_tokens || 0,
-            output_tokens: msg.usage?.completion_tokens || 0,
-            total_tokens: msg.usage?.total_tokens || 0,
-            prompt_tokens: msg.usage?.prompt_tokens,
-            completion_tokens: msg.usage?.completion_tokens,
-        };
-
-        return { text: choices[0]?.message?.content || '', usage };
-    } catch (error: any) {
-        // Clear any pending timeout if there was an error
-        clearTimeout(timeoutId);
-
-        // Handle timeout errors with retry logic
-        if (
-            (error.name === 'AbortError' ||
-                error.code === 'ETIMEDOUT' ||
-                error.message?.includes('timeout')) &&
-            retryCount < maxRetries
-        ) {
-            console.log(`Claude API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`);
-            // Use exponential backoff utility
-            await exponentialBackoff(retryCount);
-            return runClaudeModel(prompt, retryCount + 1, maxRetries);
-        }
-
-        // Use the shared error handler for all other errors
-        throw handleModelError(error, 'Claude', maxRetries);
-    }
+            return { text: choices[0]?.message?.content || '', usage };
+        },
+        'Claude',
+        maxRetries,
+        API_TIMEOUT_MS
+    );
 }
 
 async function runGeminiModel(
@@ -144,63 +105,42 @@ async function runGeminiModel(
         throw new Error('GOOGLE_API_KEY is not set');
     }
 
-    // Set up timeout variables outside try block for access in catch block
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+    const ai = new GoogleGenAI({ apiKey: process.env['GOOGLE_API_KEY'] });
 
-    try {
-        const ai = new GoogleGenAI({ apiKey: process.env['GOOGLE_API_KEY'] });
+    return withErrorHandlingAndRetry(
+        async (signal: AbortSignal) => {
+            // Note: Gemini API might not directly support AbortSignal
+            // We're using the signal in our HOF, but the actual API call might not use it
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-pro-exp-03-25',
+                contents: prompt,
+            });
 
-        // Call the Gemini API with the AbortController signal
-        // Note: The exact way to pass the signal may vary depending on the API implementation
-        // This is based on common patterns, but may need adjustment
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-pro-exp-03-25',
-            contents: prompt,
-        });
+            console.log('gemini', response);
 
-        // Clear the timeout since we got a response
-        clearTimeout(timeoutId);
-        console.log('gemini', response);
-
-        const { usageMetadata, candidates } = response;
-        const usage: GeminiUsage = {
-            input_tokens: usageMetadata?.promptTokenCount || 0,
-            output_tokens: usageMetadata?.candidatesTokenCount || 0,
-            total_tokens: usageMetadata?.totalTokenCount || 0,
-            promptTokenCount: usageMetadata?.promptTokenCount,
-            candidatesTokenCount: usageMetadata?.candidatesTokenCount,
-            totalTokenCount: usageMetadata?.totalTokenCount,
-        };
-        if (!candidates?.[0]?.content) {
-            throw new Error('Gemini response is missing content');
-        }
-        const { content } = candidates[0];
-        const text = content?.parts?.length
-            ? content.parts.map(part => part.text || '').join('')
-            : '';
-        console.log('gemini content', text);
-        return { text, usage };
-    } catch (error: any) {
-        // Clear any pending timeout if there was an error
-        clearTimeout(timeoutId);
-
-        // Handle timeout errors with retry logic
-        if (
-            (error.name === 'AbortError' ||
-                error.code === 'ETIMEDOUT' ||
-                error.message?.includes('timeout')) &&
-            retryCount < maxRetries
-        ) {
-            console.log(`Gemini API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`);
-            // Use exponential backoff utility
-            await exponentialBackoff(retryCount);
-            return runGeminiModel(prompt, retryCount + 1, maxRetries);
-        }
-
-        // Use the shared error handler for all other errors
-        throw handleModelError(error, 'Gemini', maxRetries);
-    }
+            const { usageMetadata, candidates } = response;
+            const usage: GeminiUsage = {
+                input_tokens: usageMetadata?.promptTokenCount || 0,
+                output_tokens: usageMetadata?.candidatesTokenCount || 0,
+                total_tokens: usageMetadata?.totalTokenCount || 0,
+                promptTokenCount: usageMetadata?.promptTokenCount,
+                candidatesTokenCount: usageMetadata?.candidatesTokenCount,
+                totalTokenCount: usageMetadata?.totalTokenCount,
+            };
+            if (!candidates?.[0]?.content) {
+                throw new Error('Gemini response is missing content');
+            }
+            const { content } = candidates[0];
+            const text = content?.parts?.length
+                ? content.parts.map(part => part.text || '').join('')
+                : '';
+            console.log('gemini content', text);
+            return { text, usage };
+        },
+        'Gemini',
+        maxRetries,
+        API_TIMEOUT_MS
+    );
 }
 
 export async function runModelReview(

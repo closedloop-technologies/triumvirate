@@ -2,7 +2,7 @@ import { execSync, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { DEFAULT_REPOMIX_OPTIONS, DEFAULT_REVIEW_OPTIONS } from './utils/constants';
+import { DEFAULT_REPOMIX_OPTIONS, DEFAULT_REVIEW_OPTIONS, MAX_FILES_TO_EXCLUDE } from './utils/constants';
 
 export interface RepomixResult {
     filePath: string;
@@ -284,7 +284,7 @@ async function optimizeRepomix({
         // dependencies between files and importance to the codebase
         let filesExcluded = 0;
         for (const file of topFiles) {
-            if (filesExcluded >= 3) break; // Don't exclude too many files at once
+            if (filesExcluded >= MAX_FILES_TO_EXCLUDE) break; // Don't exclude too many files at once
 
             // Skip if file is already excluded
             if (updatedOptions.exclude?.includes(file.path)) continue;

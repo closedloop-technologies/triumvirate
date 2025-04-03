@@ -317,7 +317,8 @@ Suggest specific documentation improvements with examples.`,
 }
 
 /**
- * Extract a short summary from a longer review
+ * Extract a meaningful summary from a longer review
+ * This implementation looks for section headings and key points rather than just the first few sentences
  */
 function summarizeReview(review: string): string {
     // Remove ERROR prefix if present
@@ -325,7 +326,29 @@ function summarizeReview(review: string): string {
         return review;
     }
 
-    // Extract first few sentences for a summary
+    // Look for markdown headings which often indicate important sections
+    const headingMatches = review.match(/#{1,3}\s+([^\n]+)/g);
+    if (headingMatches && headingMatches.length >= 2) {
+        // If we have headings, use them to structure the summary
+        const mainHeadings = headingMatches.slice(0, 5).map(h => h.trim());
+        return `The review covers the following key areas: ${mainHeadings.join(', ').replace(/#/g, '')}.`;
+    }
+
+    // Look for sections with 'Summary', 'Overview', 'Conclusion', etc.
+    const summaryMatch = review.match(/(?:Summary|Overview|Conclusion|Key Points)[:\s]([^\n]+(?:\n[^\n#]+)*)/i);
+    if (summaryMatch && summaryMatch[1]) {
+        return summaryMatch[1].trim().replace(/\n/g, ' ');
+    }
+
+    // If no structured sections found, extract first paragraph that's reasonably long
+    const paragraphs = review.split(/\n\s*\n/);
+    for (const paragraph of paragraphs) {
+        if (paragraph.length > 100 && !paragraph.startsWith('#')) {
+            return paragraph.trim().substring(0, 300) + (paragraph.length > 300 ? '...' : '');
+        }
+    }
+
+    // Fall back to first few sentences if no better option found
     const sentences = review.split(/\.\s+/);
     return sentences.slice(0, 3).join('. ') + '.';
 }
