@@ -132,8 +132,18 @@ export async function runTriumvirateReview({
     // Step 6: Write results to output file if specified
     if (outputPath) {
         try {
+            // Check if outputPath is a directory
+            const fs_stat = fs.statSync(outputPath);
+            let actualOutputPath = outputPath;
+
+            if (fs_stat.isDirectory()) {
+                // If it's a directory, create a file with a default name
+                actualOutputPath = `${outputPath}/tri-review-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+                console.log(`Output path is a directory. Writing to ${actualOutputPath}`);
+            }
+
             fs.writeFileSync(
-                outputPath,
+                actualOutputPath,
                 JSON.stringify(
                     {
                         status: results.every(r => !r.metrics.error) ? 'Passed' : 'Failed',
@@ -150,9 +160,10 @@ export async function runTriumvirateReview({
                     2
                 )
             );
-            console.log(`Results written to ${outputPath}`);
+            console.log(`Results written to ${actualOutputPath}`);
         } catch (error) {
-            console.error('Failed to write results to file:', error);
+            console.error(`Failed to write results to file: ${(error as Error).message}`);
+            console.error('Please ensure the output path is valid and you have write permissions.');
         }
     }
 
