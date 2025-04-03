@@ -1,6 +1,7 @@
-import { runRepomix } from './repomix.js';
-import { runModelReview } from './models.js';
 import fs from 'fs';
+
+import { runModelReview } from './models.js';
+import { runRepomix } from './repomix.js';
 
 export async function runTriumvirateReview({
   models,
@@ -9,7 +10,7 @@ export async function runTriumvirateReview({
   outputPath,
   failOnError,
   summaryOnly,
-  tokenLimit
+  tokenLimit,
 }) {
   console.log('Packaging codebase with repomix...');
 
@@ -17,7 +18,7 @@ export async function runTriumvirateReview({
   const repomixResult = await runRepomix({
     exclude,
     diffOnly,
-    tokenLimit
+    tokenLimit,
   });
 
   console.log(`Codebase packaged with ${repomixResult.tokenCount} tokens`);
@@ -69,8 +70,8 @@ Please provide a thorough review that covers:
         metrics: {
           latency: `${latency}ms`,
           cost: `$${cost.toFixed(4)}`,
-          tokenCount: repomixResult.tokenCount
-        }
+          tokenCount: repomixResult.tokenCount,
+        },
       });
     } catch (error) {
       console.error(`Error with model ${model}:`, error);
@@ -80,8 +81,8 @@ Please provide a thorough review that covers:
         metrics: {
           latency: 'N/A',
           cost: 'N/A',
-          error: error.message
-        }
+          error: error.message,
+        },
       });
 
       if (failOnError) {
@@ -95,14 +96,21 @@ Please provide a thorough review that covers:
 
   // Step 6: Write results to output file if specified
   if (outputPath) {
-    fs.writeFileSync(outputPath, JSON.stringify({
-      results,
-      summary: {
-        totalTime: `${totalTime}ms`,
-        totalModels: models.length,
-        completedSuccessfully: results.every(r => !r.review.startsWith('ERROR'))
-      }
-    }, null, 2));
+    fs.writeFileSync(
+      outputPath,
+      JSON.stringify(
+        {
+          results,
+          summary: {
+            totalTime: `${totalTime}ms`,
+            totalModels: models.length,
+            completedSuccessfully: results.every(r => !r.review.startsWith('ERROR')),
+          },
+        },
+        null,
+        2
+      )
+    );
     console.log(`Results written to ${outputPath}`);
   }
 
