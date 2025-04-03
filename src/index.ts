@@ -2,6 +2,7 @@ import fs from 'fs';
 
 import { runModelReview } from './models';
 import { runRepomix } from './repomix';
+import { normalizeUsage } from './types/usage';
 
 /**
  * Run a triumvirate review across multiple LLMs
@@ -80,7 +81,8 @@ export async function runTriumvirateReview({
             console.log(`Running review with model: ${model}`);
             const modelStartTime = Date.now();
 
-            const review = await runModelReview(prompt, model);
+            const { text: review, usage } = await runModelReview(prompt, model);
+            const normalizedUsage = normalizeUsage(usage);
             const modelEndTime = Date.now();
 
             // Calculate latency
@@ -90,22 +92,20 @@ export async function runTriumvirateReview({
             // Estimate cost (this would need actual implementation based on model and token count)
             const cost = estimateCost(
                 model,
-                repomixResult.tokenCount,
-                // Use type assertion to handle the review length calculation
-                typeof review === 'string'
-                    ? (review as string).length
-                    : (review as any)?.text?.length || String(review).length || 0
+                normalizedUsage.input_tokens,
+                normalizedUsage.output_tokens
             );
 
             results.push({
                 model,
-                review: summaryOnly
-                    ? summarizeReview(typeof review === 'string' ? review : String(review))
-                    : review,
+                summary: summarizeReview(typeof review === 'string' ? review : String(review)),
+                review: review,
                 metrics: {
-                    latency: latencyStr,
-                    tokenCount: repomixResult.tokenCount,
-                    cost: `$${cost.toFixed(4)}`,
+                    latency: latency,
+                    tokenInput: normalizedUsage.input_tokens,
+                    tokenOutput: normalizedUsage.output_tokens,
+                    tokenTotal: normalizedUsage.total_tokens,
+                    cost: `${cost.toFixed(8)}`,
                 },
             });
         } catch (error) {
@@ -114,8 +114,6 @@ export async function runTriumvirateReview({
                 model,
                 review: `ERROR: ${(error as Error).message}`,
                 metrics: {
-                    latency: '0ms',
-                    cost: '$0.00',
                     error: (error as Error).message,
                 },
             });
@@ -135,6 +133,7 @@ export async function runTriumvirateReview({
             // Check if outputPath is a directory
             const fs_stat = fs.statSync(outputPath);
             let actualOutputPath = outputPath;
+            let actualOutputPathMd = outputPath;
 
             if (fs_stat.isDirectory()) {
                 // If it's a directory, create a file with a default name
@@ -142,36 +141,45 @@ export async function runTriumvirateReview({
                 console.log(`Output path is a directory. Writing to ${actualOutputPath}`);
             }
 
-            fs.writeFileSync(
-                actualOutputPath,
-                JSON.stringify(
-                    {
-                        status: results.every(r => !r.metrics.error) ? 'Passed' : 'Failed',
-                        completedSuccessfully: results.every(r => !r.metrics.error),
-                        models: results.map(r => {
-                            // Ensure review is properly converted to string
-                            const reviewText =
-                                typeof r.review === 'string'
-                                    ? r.review
-                                    : (r.review as any)?.text || JSON.stringify(r.review);
+            fs.writeFileSync(actualOutputPath, JSON.stringify(results, null, 2));
 
-                            // Generate summary from the review text
-                            const summary = summarizeReview(reviewText);
+            if (fs_stat.isDirectory()) {
+                // If it's a directory, create a file with a default name
+                actualOutputPathMd = `${outputPath}/tri-review-${new Date().toISOString().replace(/[:.]/g, '-')}.md`;
+                console.log(`Output path is a directory. Writing to ${actualOutputPathMd}`);
+            }
 
-                            return {
-                                model: r.model,
-                                summary,
-                                tokenCount: r.metrics.tokenCount || 0,
-                                cost: r.metrics.cost || '$0.00',
-                                latency: r.metrics.latency || '0ms',
-                                error: r.metrics.error || null,
-                            };
-                        }),
-                    },
-                    null,
-                    2
-                )
-            );
+            let mdResults = '# Triumvirate Code Review\n\n';
+            mdResults += '## Overview\n\n';
+            mdResults += '| Model | Status | Latency | Cost | Total Tokens |\n';
+            mdResults += '|-------|--------|---------|------|-------------|\n';
+
+            results.forEach(result => {
+                const status = result.metrics.error ? '❌ Failed' : '✅ Passed';
+                const latency = result.metrics.latency ? `${result.metrics.latency}ms` : 'N/A';
+                const cost = result.metrics.cost || 'N/A';
+                const tokens = result.metrics.tokenTotal || 'N/A';
+
+                mdResults += `| ${result.model} | ${status} | ${latency} | $${cost} | ${tokens} |\n`;
+            });
+
+            mdResults += '\n';
+
+            mdResults += '## Summaries\n\n';
+            mdResults += results
+                .map(result => {
+                    return `### ${result.model}\n\n${result.summary}`;
+                })
+                .join('\n\n');
+            mdResults += '## Results\n\n';
+
+            mdResults += results
+                .map(result => {
+                    return `### ${result.model}\n\n${result.review}`;
+                })
+                .join('\n\n');
+
+            fs.writeFileSync(actualOutputPathMd, mdResults);
             console.log(`Results written to ${actualOutputPath}`);
         } catch (error) {
             console.error(`Failed to write results to file: ${(error as Error).message}`);

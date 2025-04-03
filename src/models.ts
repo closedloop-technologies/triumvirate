@@ -44,6 +44,9 @@ async function runOpenAIModel(
         //     output_tokens_details: { reasoning_tokens: 0 },
         //     total_tokens: 8551
         //   },
+        if (!usage) {
+            throw new Error('OpenAI response is missing usage');
+        }
         return { text: output_text || '', usage: usage as OpenAIUsage };
     } catch (error: any) {
         // Clear any pending timeout if there was an error
@@ -130,7 +133,7 @@ async function runClaudeModel(
             output_tokens: msg.usage?.completion_tokens || 0,
             total_tokens: msg.usage?.total_tokens || 0,
             prompt_tokens: msg.usage?.prompt_tokens,
-            completion_tokens: msg.usage?.completion_tokens
+            completion_tokens: msg.usage?.completion_tokens,
         };
 
         return { text: choices[0]?.message?.content || '', usage };
@@ -220,7 +223,7 @@ async function runGeminiModel(
             total_tokens: usageMetadata?.totalTokenCount || 0,
             promptTokenCount: usageMetadata?.promptTokenCount,
             candidatesTokenCount: usageMetadata?.candidatesTokenCount,
-            totalTokenCount: usageMetadata?.totalTokenCount
+            totalTokenCount: usageMetadata?.totalTokenCount,
         };
         if (!candidates?.[0]?.content) {
             throw new Error('Gemini response is missing content');
