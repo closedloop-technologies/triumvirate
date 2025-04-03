@@ -2,8 +2,10 @@
   "name": "triumvirate",
   "version": "0.1.0",
   "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
+  "type": "module",
   "bin": {
-    "triumvirate": "./bin/triumvirate.js"
+    "triumvirate": "./src/bin/triumvirate.js",
+    "__triumvirate_bash_complete": "./src/bin/bash-complete.js"
   },
   "main": "src/index.js",
   "files": [
@@ -12,17 +14,22 @@
     "LICENSE",
     "README.md"
   ],
-  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "node src/cli.js",
     "dev": "node src/cli.js",
-    "build": "npm run lint && npm run format",
+    "prebuild": "npm run lint && npm run format && tsc -p src/tsconfig.json",
+    "build": "tsup",
     "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
     "test:review": "node test/run.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "postinstall": "node dist/cli.js install"
   },
   "keywords": [
     "review",
@@ -37,19 +44,37 @@
   ],
   "author": "Sean Kruzel <sean@closedloop.tech>",
   "license": "MIT",
+  "tsup": {
+    "entry": [
+      "src/bin/cli.ts",
+      "src/bin/bash-complete.ts"
+    ],
+    "format": [
+      "esm"
+    ],
+    "tsconfig": "src/tsconfig.json",
+    "clean": true,
+    "splitting": true,
+    "minify": true
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.8.0",
     "@google/generative-ai": "^0.3.0",
+    "@stricli/auto-complete": "^1.1.2",
+    "@stricli/core": "^1.1.2",
     "commander": "^11.0.0",
     "dotenv": "^16.0.0",
     "openai": "^4.0.0"
   },
   "devDependencies": {
+    "@types/node": "18.x",
     "esbuild": "^0.25.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "tsup": "^8.4.0",
+    "typescript": "5.6.x"
   }
 }

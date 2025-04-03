@@ -17,9 +17,19 @@ async function build() {
       sourcemap: process.env.NODE_ENV !== 'production',
       external: [
         // Node.js built-in modules
-        'events', 'fs', 'path', 'child_process', 'util', 'os', 'stream', 'buffer',
+        'events',
+        'fs',
+        'path',
+        'child_process',
+        'util',
+        'os',
+        'stream',
+        'buffer',
         // External dependencies that should not be bundled
-        '@anthropic-ai/sdk', '@google/generative-ai', 'openai', 'dotenv'
+        '@anthropic-ai/sdk',
+        '@google/generative-ai',
+        'openai',
+        'dotenv',
       ],
     });
 
@@ -35,9 +45,19 @@ async function build() {
       sourcemap: process.env.NODE_ENV !== 'production',
       external: [
         // Node.js built-in modules
-        'events', 'fs', 'path', 'child_process', 'util', 'os', 'stream', 'buffer',
+        'events',
+        'fs',
+        'path',
+        'child_process',
+        'util',
+        'os',
+        'stream',
+        'buffer',
         // External dependencies that should not be bundled
-        '@anthropic-ai/sdk', '@google/generative-ai', 'openai', 'dotenv'
+        '@anthropic-ai/sdk',
+        '@google/generative-ai',
+        'openai',
+        'dotenv',
       ],
     });
 
