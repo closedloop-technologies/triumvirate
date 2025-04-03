@@ -28,7 +28,7 @@ export interface ReviewCommandFlags {
   readonly tokenCountEncoding?: string;
 }
 
-export async function review(context: LocalContext, flags: ReviewCommandFlags): Promise<void> {
+export async function review(flags: ReviewCommandFlags): Promise<void> {
   const {
     models = ['openai', 'claude', 'gemini'],
     exclude = [],

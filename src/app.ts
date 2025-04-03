@@ -7,119 +7,118 @@ import type { ReviewCommandFlags } from './impl';
 const REVIEW_TYPES = ['general', 'security', 'performance', 'architecture', 'docs'];
 
 // Create the main command with explicit type parameters
-const runCommand = buildCommand<LocalContext, [ReviewCommandFlags]>({
-  loader: async () => (await import('./impl')).review,
+const runCommand = buildCommand<ReviewCommandFlags, [], LocalContext>({
+  loader: async () => {
+    const { review } = await import('./impl');
+    return review;
+  },
   parameters: {
     flags: {
       models: {
         kind: 'parsed',
         brief: 'Comma-separated list of models',
-        parse: (input: string) => input.split(','),
+        parse: (input: string) => input,
         optional: true,
-        defaultValue: 'openai,claude,gemini',
       },
       exclude: {
         kind: 'parsed',
         brief: 'Patterns to exclude',
-        parse: (input: string) => input.split(','),
+        parse: (input: string) => input,
         optional: true,
       },
       diff: {
         kind: 'boolean',
         brief: 'Only review files changed in git diff',
         optional: true,
-        default: false,
       },
       output: {
-        kind: 'string',
+        kind: 'parsed',
         brief: 'Path to write review output JSON',
+        parse: (input: string) => input,
         optional: true,
       },
       failOnError: {
         kind: 'boolean',
         brief: 'Exit with non-zero code if any model fails',
         optional: true,
-        default: false,
       },
       summaryOnly: {
         kind: 'boolean',
         brief: 'Only include summary in results',
         optional: true,
-        default: false,
       },
       tokenLimit: {
-        kind: 'number',
+        kind: 'parsed',
         brief: 'Maximum tokens to send to the model',
+        parse: (input: string) => parseInt(input, 10),
         optional: true,
-        default: 100000,
       },
       reviewType: {
-        kind: 'string',
+        kind: 'parsed',
         brief: `Type of review: ${REVIEW_TYPES.join(', ')}`,
+        parse: (input: string) => input,
         optional: true,
-        default: 'general',
       },
       include: {
-        kind: 'string',
+        kind: 'parsed',
         brief: 'Patterns to include',
+        parse: (input: string) => input,
         optional: true,
       },
       ignorePatterns: {
-        kind: 'string',
+        kind: 'parsed',
         brief: 'Patterns to ignore',
+        parse: (input: string) => input,
         optional: true,
       },
       style: {
-        kind: 'string',
+        kind: 'parsed',
         brief: 'Output style (xml, markdown, plain)',
+        parse: (input: string) => input,
         optional: true,
-        default: 'xml',
       },
       compress: {
         kind: 'boolean',
         brief: 'Compress code to reduce token count',
         optional: true,
-        default: true,
       },
       removeComments: {
         kind: 'boolean',
         brief: 'Remove comments from source files',
         optional: true,
-        default: false,
       },
       removeEmptyLines: {
         kind: 'boolean',
         brief: 'Remove empty lines from source files',
         optional: true,
-        default: false,
       },
       showLineNumbers: {
         kind: 'boolean',
         brief: 'Add line numbers to output',
         optional: true,
-        default: false,
       },
       headerText: {
-        kind: 'string',
+        kind: 'parsed',
         brief: 'Text to include in file header',
+        parse: (input: string) => input,
         optional: true,
       },
       instructionFilePath: {
-        kind: 'string',
+        kind: 'parsed',
         brief: 'Path to custom instructions file',
+        parse: (input: string) => input,
         optional: true,
       },
       topFilesLen: {
-        kind: 'number',
+        kind: 'counter',
         brief: 'Number of top files in summary',
         optional: true,
-        default: 20,
       },
       tokenCountEncoding: {
-        kind: 'string',
+        kind: 'parsed',
         brief: 'Token counting method',
+        parse: (input: string) => input,
         optional: true,
-        default: 'o200k_base',
       },
     },
   },
