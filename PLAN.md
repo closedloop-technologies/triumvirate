@@ -51,3 +51,5 @@ flowchart TB
     TokenCheck -->|"Too many tokens"| Optimize
     Optimize -->|"Re-run with optimized options"| RepomixProc
 ```
+
+1. `npm run dev` should work or fail with good errors

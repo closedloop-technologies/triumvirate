@@ -4,287 +4,294 @@ import path from 'path';
 import os from 'os';
 
 export interface RepomixResult {
-  filePath: string;
-  tokenCount: number;
-  directoryStructure: string;
-  summary: string;
-  stdout: string;
-  stderr: string;
+    filePath: string;
+    tokenCount: number;
+    directoryStructure: string;
+    summary: string;
+    stdout: string;
+    stderr: string;
 }
 
 export interface RepomixOptions {
-  exclude?: string[];
-  diffOnly?: boolean;
-  tokenLimit?: number;
-  include?: string[];
-  ignorePatterns?: string[];
-  style?: string;
-  compress?: boolean;
-  removeComments?: boolean;
-  removeEmptyLines?: boolean;
-  showLineNumbers?: boolean;
-  headerText?: string;
-  instructionFilePath?: string;
-  topFilesLen?: number;
-  tokenCountEncoding?: string;
+    exclude?: string[];
+    diffOnly?: boolean;
+    tokenLimit?: number;
+    include?: string[];
+    ignorePatterns?: string[];
+    style?: string;
+    compress?: boolean;
+    removeComments?: boolean;
+    removeEmptyLines?: boolean;
+    showLineNumbers?: boolean;
+    headerText?: string;
+    instructionFilePath?: string;
+    topFilesLen?: number;
+    tokenCountEncoding?: string;
 }
 
 /**
  * Run repomix with the specified options
  */
 export async function runRepomix({
-  exclude = [],
-  diffOnly = false,
-  tokenLimit = 100000,
-  include,
-  ignorePatterns,
-  style = 'xml',
-  compress = true, // Changed default to true to match impl.ts
-  removeComments = false,
-  removeEmptyLines = false,
-  showLineNumbers = false,
-  headerText,
-  instructionFilePath,
-  topFilesLen = 20,
-  tokenCountEncoding = 'o200k_base',
+    exclude = [],
+    diffOnly = false,
+    tokenLimit = 100000,
+    include,
+    ignorePatterns,
+    style = 'xml',
+    compress = true, // Changed default to true to match impl.ts
+    removeComments = false,
+    removeEmptyLines = false,
+    showLineNumbers = false,
+    headerText,
+    instructionFilePath,
+    topFilesLen = 20,
+    tokenCountEncoding = 'o200k_base',
 }: RepomixOptions): Promise<RepomixResult> {
-  // Create a temporary directory for Repomix output
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'triumvirate-'));
-  const tempFilePath = path.join(tempDir, `repomix-output.${style}`);
+    // Create a temporary directory for Repomix output
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'triumvirate-'));
+    const tempFilePath = path.join(tempDir, `repomix-output.${style}`);
 
-  // Build repomix command
-  const repomixArgs = [
-    'repomix',
-    `-o ${tempFilePath}`,
-    `--style=${style}`,
-    `--top-files-len=${topFilesLen}`,
-    `--token-count-encoding=${tokenCountEncoding}`,
-  ];
+    // Build repomix command
+    const repomixArgs = [
+        'repomix',
+        `-o ${tempFilePath}`,
+        `--style=${style}`,
+        `--top-files-len=${topFilesLen}`,
+        `--token-count-encoding=${tokenCountEncoding}`,
+    ];
 
-  // Add optional flags
-  if (compress) repomixArgs.push('--compress');
-  if (removeComments) repomixArgs.push('--remove-comments');
-  if (removeEmptyLines) repomixArgs.push('--remove-empty-lines');
-  if (showLineNumbers) repomixArgs.push('--output-show-line-numbers');
-  if (headerText) repomixArgs.push(`--header-text=${headerText}`);
-  if (instructionFilePath) repomixArgs.push(`--instruction-file-path=${instructionFilePath}`);
+    // Add optional flags
+    // sourcery skip: use-braces
+    if (compress) repomixArgs.push('--compress');
+    if (removeComments) repomixArgs.push('--remove-comments');
+    if (removeEmptyLines) repomixArgs.push('--remove-empty-lines');
+    if (showLineNumbers) repomixArgs.push('--output-show-line-numbers');
+    if (headerText) repomixArgs.push(`--header-text=${headerText}`);
+    if (instructionFilePath) repomixArgs.push(`--instruction-file-path=${instructionFilePath}`);
 
-  // Handle include patterns
-  if (include && include.length > 0) {
-    repomixArgs.push(`--include=${include.join(',')}`);
-  }
-
-  // Handle ignore patterns
-  if (exclude && exclude.length > 0) {
-    repomixArgs.push(`-i=${exclude.join(',')}`);
-  }
-
-  if (ignorePatterns && ignorePatterns.length > 0) {
-    repomixArgs.push(`-i=${ignorePatterns.join(',')}`);
-  }
-
-  // Handle diff-only mode
-  if (diffOnly) {
-    try {
-      // Get list of changed files from git
-      const changedFiles = execSync('git diff --name-only HEAD')
-        .toString()
-        .trim()
-        .split('\n')
-        .filter(Boolean);
-
-      if (changedFiles.length > 0) {
-        repomixArgs.push(`--include=${changedFiles.join(',')}`);
-      }
-    } catch (error) {
-      console.warn('Git diff failed, falling back to processing all files');
+    // Handle include patterns
+    if (include && include.length > 0) {
+        repomixArgs.push(`--include=${include.join(',')}`);
     }
-  }
 
-  console.log(`Running Repomix: npx ${repomixArgs.join(' ')}`);
+    // Handle ignore patterns
+    if (exclude && exclude.length > 0) {
+        repomixArgs.push(`-i=${exclude.join(',')}`);
+    }
 
-  // Execute repomix using spawn to capture stdout/stderr
-  const repomixProcess = spawn('npx', repomixArgs, { shell: true });
+    if (ignorePatterns && ignorePatterns.length > 0) {
+        repomixArgs.push(`-i=${ignorePatterns.join(',')}`);
+    }
 
-  let stdout = '';
-  let stderr = '';
+    // Handle diff-only mode
+    if (diffOnly) {
+        try {
+            // Get list of changed files from git
+            const changedFiles = execSync('git diff --name-only HEAD')
+                .toString()
+                .trim()
+                .split('\n')
+                .filter(Boolean);
 
-  repomixProcess.stdout.on('data', data => {
-    stdout += data.toString();
-    process.stdout.write(data); // Forward to parent process stdout
-  });
+            if (changedFiles.length > 0) {
+                repomixArgs.push(`--include=${changedFiles.join(',')}`);
+            }
+        } catch (error) {
+            console.warn('Git diff failed, falling back to processing all files');
+        }
+    }
 
-  repomixProcess.stderr.on('data', data => {
-    stderr += data.toString();
-    process.stderr.write(data); // Forward to parent process stderr
-  });
+    console.log(`Running Repomix: npx ${repomixArgs.join(' ')}`);
 
-  // Wait for process to complete
-  await new Promise<void>((resolve, reject) => {
-    repomixProcess.on('close', code => {
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(new Error(`Repomix process exited with code ${code}`));
-      }
+    // Execute repomix using spawn to capture stdout/stderr
+    const repomixProcess = spawn('npx', repomixArgs, { shell: true });
+
+    let stdout = '';
+    let stderr = '';
+
+    repomixProcess.stdout.on('data', data => {
+        stdout += data.toString();
+        process.stdout.write(data); // Forward to parent process stdout
     });
-  });
 
-  // Parse token count from output
-  const tokenCountMatch = stdout.match(/Total tokens: ([0-9,]+)/);
-  const tokenCount =
-    tokenCountMatch && tokenCountMatch[1] ? parseInt(tokenCountMatch[1].replace(/,/g, ''), 10) : 0;
-
-  // Check if we need to optimize
-  if (tokenCount > tokenLimit) {
-    console.log(`Token count (${tokenCount}) exceeds limit (${tokenLimit}), optimizing...`);
-    return optimizeRepomix({
-      exclude,
-      diffOnly,
-      tokenLimit,
-      currentTokens: tokenCount,
-      tempFilePath,
-      include,
-      ignorePatterns,
-      style,
-      compress,
-      removeComments,
-      removeEmptyLines,
-      showLineNumbers,
-      headerText,
-      instructionFilePath,
-      topFilesLen,
-      tokenCountEncoding,
-      stdout,
-      stderr,
+    repomixProcess.stderr.on('data', data => {
+        stderr += data.toString();
+        process.stderr.write(data); // Forward to parent process stderr
     });
-  }
 
-  // Read the generated file to extract summary and structure
-  const fileContent = fs.readFileSync(tempFilePath, 'utf8');
+    // Wait for process to complete
+    await new Promise<void>((resolve, reject) => {
+        repomixProcess.on('close', code => {
+            if (code === 0) {
+                resolve();
+            } else {
+                reject(new Error(`Repomix process exited with code ${code}`));
+            }
+        });
+    });
 
-  // Extract directory structure
-  const directoryStructureMatch = fileContent.match(
-    /<directory_structure>([\s\S]*?)<\/directory_structure>/
-  );
-  const directoryStructure =
-    directoryStructureMatch && directoryStructureMatch[1] ? directoryStructureMatch[1].trim() : '';
+    // Parse token count from output
+    const tokenCountMatch = stdout.match(/Total tokens: ([0-9,]+)/);
+    const tokenCount =
+        tokenCountMatch && tokenCountMatch[1]
+            ? parseInt(tokenCountMatch[1].replace(/,/g, ''), 10)
+            : 0;
 
-  // Extract file summary
-  const summaryMatch = fileContent.match(/<file_summary>([\s\S]*?)<\/file_summary>/);
-  const summary = summaryMatch && summaryMatch[1] ? summaryMatch[1].trim() : '';
+    // Check if we need to optimize
+    if (tokenCount > tokenLimit) {
+        console.log(`Token count (${tokenCount}) exceeds limit (${tokenLimit}), optimizing...`);
+        return optimizeRepomix({
+            exclude,
+            diffOnly,
+            tokenLimit,
+            currentTokens: tokenCount,
+            tempFilePath,
+            include,
+            ignorePatterns,
+            style,
+            compress,
+            removeComments,
+            removeEmptyLines,
+            showLineNumbers,
+            headerText,
+            instructionFilePath,
+            topFilesLen,
+            tokenCountEncoding,
+            stdout,
+            stderr,
+        });
+    }
 
-  return {
-    filePath: tempFilePath,
-    tokenCount,
-    directoryStructure,
-    summary,
-    stdout,
-    stderr,
-  };
+    // Read the generated file to extract summary and structure
+    const fileContent = fs.readFileSync(tempFilePath, 'utf8');
+
+    // Extract directory structure
+    const directoryStructureMatch = fileContent.match(
+        /<directory_structure>([\s\S]*?)<\/directory_structure>/
+    );
+    const directoryStructure =
+        directoryStructureMatch && directoryStructureMatch[1]
+            ? directoryStructureMatch[1].trim()
+            : '';
+
+    // Extract file summary
+    const summaryMatch = fileContent.match(/<file_summary>([\s\S]*?)<\/file_summary>/);
+    const summary = summaryMatch && summaryMatch[1] ? summaryMatch[1].trim() : '';
+
+    return {
+        filePath: tempFilePath,
+        tokenCount,
+        directoryStructure,
+        summary,
+        stdout,
+        stderr,
+    };
 }
 
 /**
  * Optimize repomix command if token count exceeds limit
  */
 async function optimizeRepomix({
-  exclude,
-  diffOnly,
-  tokenLimit,
-  currentTokens,
-  tempFilePath,
-  include,
-  ignorePatterns,
-  style,
-  compress,
-  removeComments,
-  removeEmptyLines,
-  showLineNumbers,
-  headerText,
-  instructionFilePath,
-  topFilesLen,
-  tokenCountEncoding,
-  stdout,
-  stderr,
-}: RepomixOptions & {
-  currentTokens: number;
-  tempFilePath: string;
-  stdout: string;
-  stderr: string;
-}): Promise<RepomixResult> {
-  // Read the original file to extract summary and structure
-  const fileContent = fs.readFileSync(tempFilePath, 'utf8');
-
-  // Extract directory structure
-  const directoryStructureMatch = fileContent.match(
-    /<directory_structure>([\s\S]*?)<\/directory_structure>/
-  );
-  const directoryStructure =
-    directoryStructureMatch && directoryStructureMatch[1] ? directoryStructureMatch[1].trim() : '';
-
-  // Extract file summary
-  const summaryMatch = fileContent.match(/<file_summary>([\s\S]*?)<\/file_summary>/);
-  const summary = summaryMatch && summaryMatch[1] ? summaryMatch[1].trim() : '';
-
-  // Automatic optimization strategy:
-  // 1. If compress wasn't used, try with compression
-  // 2. Try removing comments
-  // 3. Try removing empty lines
-  // 4. Try excluding large files based on token count
-
-  const updatedOptions: RepomixOptions = {
-    exclude: [...(exclude || [])],
+    exclude,
     diffOnly,
     tokenLimit,
+    currentTokens,
+    tempFilePath,
     include,
     ignorePatterns,
     style,
-    compress: true, // Always enable compression for optimization
-    removeComments: true, // Always remove comments for optimization
-    removeEmptyLines: true, // Always remove empty lines for optimization
+    compress,
+    removeComments,
+    removeEmptyLines,
     showLineNumbers,
     headerText,
     instructionFilePath,
     topFilesLen,
     tokenCountEncoding,
-  };
+    stdout,
+    stderr,
+}: RepomixOptions & {
+    currentTokens: number;
+    tempFilePath: string;
+    stdout: string;
+    stderr: string;
+}): Promise<RepomixResult> {
+    // Read the original file to extract summary and structure
+    const fileContent = fs.readFileSync(tempFilePath, 'utf8');
 
-  // Extract top files info from stdout
-  const topFilesPattern = /(\d+)\.\s+([^\s].*?)\s+(\d+,?\d*)\s+chars/g;
-  const topFiles: { path: string; size: number }[] = [];
+    // Extract directory structure
+    const directoryStructureMatch = fileContent.match(
+        /<directory_structure>([\s\S]*?)<\/directory_structure>/
+    );
+    const directoryStructure =
+        directoryStructureMatch && directoryStructureMatch[1]
+            ? directoryStructureMatch[1].trim()
+            : '';
 
-  let match;
-  while ((match = topFilesPattern.exec(stdout)) !== null) {
-    topFiles.push({
-      path: match && match[2] ? match[2] : '',
-      size: match && match[3] ? parseInt(match[3].replace(/,/g, ''), 10) : 0,
-    });
-  }
+    // Extract file summary
+    const summaryMatch = fileContent.match(/<file_summary>([\s\S]*?)<\/file_summary>/);
+    const summary = summaryMatch && summaryMatch[1] ? summaryMatch[1].trim() : '';
 
-  // Add largest files to exclude list
-  if (topFiles.length > 0) {
-    // Sort by size and take top files that contribute most to token count
-    topFiles.sort((a, b) => b.size - a.size);
+    // Automatic optimization strategy:
+    // 1. If compress wasn't used, try with compression
+    // 2. Try removing comments
+    // 3. Try removing empty lines
+    // 4. Try excluding large files based on token count
 
-    // Exclude the largest files until we get under token limit
-    // This is a simplistic approach - a more sophisticated approach would consider
-    // dependencies between files and importance to the codebase
-    let filesExcluded = 0;
-    for (const file of topFiles) {
-      if (filesExcluded >= 3) break; // Don't exclude too many files at once
+    const updatedOptions: RepomixOptions = {
+        exclude: [...(exclude || [])],
+        diffOnly,
+        tokenLimit,
+        include,
+        ignorePatterns,
+        style,
+        compress: true, // Always enable compression for optimization
+        removeComments: true, // Always remove comments for optimization
+        removeEmptyLines: true, // Always remove empty lines for optimization
+        showLineNumbers,
+        headerText,
+        instructionFilePath,
+        topFilesLen,
+        tokenCountEncoding,
+    };
 
-      // Skip if file is already excluded
-      if (updatedOptions.exclude?.includes(file.path)) continue;
+    // Extract top files info from stdout
+    const topFilesPattern = /(\d+)\.\s+([^\s].*?)\s+(\d+,?\d*)\s+chars/g;
+    const topFiles: { path: string; size: number }[] = [];
 
-      // Add to exclude list
-      updatedOptions.exclude?.push(file.path);
-      filesExcluded++;
-
-      console.log(`Excluding large file: ${file.path} (${file.size} chars)`);
+    let match;
+    while ((match = topFilesPattern.exec(stdout)) !== null) {
+        topFiles.push({
+            path: match && match[2] ? match[2] : '',
+            size: match && match[3] ? parseInt(match[3].replace(/,/g, ''), 10) : 0,
+        });
     }
-  }
 
-  // Re-run repomix with optimized settings
-  console.log('Re-running Repomix with optimized settings...');
-  return runRepomix(updatedOptions);
+    // Add largest files to exclude list
+    if (topFiles.length > 0) {
+        // Sort by size and take top files that contribute most to token count
+        topFiles.sort((a, b) => b.size - a.size);
+
+        // Exclude the largest files until we get under token limit
+        // This is a simplistic approach - a more sophisticated approach would consider
+        // dependencies between files and importance to the codebase
+        let filesExcluded = 0;
+        for (const file of topFiles) {
+            if (filesExcluded >= 3) break; // Don't exclude too many files at once
+
+            // Skip if file is already excluded
+            if (updatedOptions.exclude?.includes(file.path)) continue;
+
+            // Add to exclude list
+            updatedOptions.exclude?.push(file.path);
+            filesExcluded++;
+
+            console.log(`Excluding large file: ${file.path} (${file.size} chars)`);
+        }
+    }
+
+    // Re-run repomix with optimized settings
+    console.log('Re-running Repomix with optimized settings...');
+    return runRepomix(updatedOptions);
 }

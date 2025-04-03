@@ -1,17 +1,17 @@
 {
-  "status": "Passed",
-  "models": [
-    {
-      "model": "openai",
-      "summary": "LGTM."
-    },
-    {
-      "model": "claude",
-      "summary": "No critical issues found."
-    },
-    {
-      "model": "gemini",
-      "summary": "Minor stylistic notes only."
-    }
-  ]
+    "status": "Passed",
+    "models": [
+        {
+            "model": "openai",
+            "summary": "LGTM."
+        },
+        {
+            "model": "claude",
+            "summary": "No critical issues found."
+        },
+        {
+            "model": "gemini",
+            "summary": "Minor stylistic notes only."
+        }
+    ]
 }
