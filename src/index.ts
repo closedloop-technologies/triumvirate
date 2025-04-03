@@ -209,7 +209,7 @@ export async function runTriumvirateReview({
 
     // Clean up temporary file
     try {
-        fs.unlinkSync(repomixResult.filePath);
+        await fs.promises.unlink(repomixResult.filePath);
     } catch (error) {
         console.warn('Could not delete temporary file:', error);
     }

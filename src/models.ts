@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { normalizeUsage } from './types/usage';
 import type { ModelUsage, OpenAIUsage, ClaudeUsage, GeminiUsage } from './types/usage';
+import { handleModelError, exponentialBackoff } from './utils/model-utils';
 
 dotenv.config();
 
@@ -53,43 +54,21 @@ async function runOpenAIModel(
 
         // Handle timeout errors with retry logic
         if (
-            error.name === 'AbortError' ||
+            (error.name === 'AbortError' ||
             error.code === 'ETIMEDOUT' ||
-            error.message?.includes('timeout')
+            error.message?.includes('timeout')) &&
+            retryCount < maxRetries
         ) {
-            if (retryCount < maxRetries) {
-                console.log(
-                    `OpenAI API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
-                );
-                // Exponential backoff: wait longer between each retry
-                const backoffMs = 1000 * Math.pow(2, retryCount);
-                await new Promise(resolve => setTimeout(resolve, backoffMs));
-                return runOpenAIModel(prompt, retryCount + 1, maxRetries);
-            } else {
-                throw new Error(
-                    `OpenAI API call failed after ${maxRetries} retries due to timeouts`
-                );
-            }
-        }
-
-        // Handle authentication errors (bad API key)
-        if (error.status === 401 || error.message?.includes('authentication')) {
-            throw new Error('Invalid OpenAI API key. Please check your API key and try again.');
-        }
-
-        // Handle input too large errors
-        if (
-            error.status === 400 &&
-            (error.message?.includes('too large') ||
-                error.message?.includes('maximum context length'))
-        ) {
-            throw new Error(
-                'Input is too large for the model. Please reduce the size of your input.'
+            console.log(
+                `OpenAI API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
             );
+            // Use exponential backoff utility
+            await exponentialBackoff(retryCount);
+            return runOpenAIModel(prompt, retryCount + 1, maxRetries);
         }
-
-        // Handle other errors
-        throw new Error(`OpenAI API error: ${error.message || 'Unknown error'}`);
+        
+        // Use the shared error handler for all other errors
+        throw handleModelError(error, 'OpenAI', maxRetries);
     }
 }
 
@@ -143,47 +122,21 @@ async function runClaudeModel(
 
         // Handle timeout errors with retry logic
         if (
-            error.name === 'AbortError' ||
+            (error.name === 'AbortError' ||
             error.code === 'ETIMEDOUT' ||
-            error.message?.includes('timeout')
+            error.message?.includes('timeout')) &&
+            retryCount < maxRetries
         ) {
-            if (retryCount < maxRetries) {
-                console.log(
-                    `Claude API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
-                );
-                // Exponential backoff: wait longer between each retry
-                const backoffMs = 1000 * Math.pow(2, retryCount);
-                await new Promise(resolve => setTimeout(resolve, backoffMs));
-                return runClaudeModel(prompt, retryCount + 1, maxRetries);
-            } else {
-                throw new Error(
-                    `Claude API call failed after ${maxRetries} retries due to timeouts`
-                );
-            }
-        }
-
-        // Handle authentication errors (bad API key)
-        if (
-            error.status === 401 ||
-            error.message?.includes('authentication') ||
-            error.message?.includes('API key')
-        ) {
-            throw new Error('Invalid Anthropic API key. Please check your API key and try again.');
-        }
-
-        // Handle input too large errors
-        if (
-            error.status === 400 &&
-            (error.message?.includes('too large') ||
-                error.message?.includes('maximum context length'))
-        ) {
-            throw new Error(
-                'Input is too large for the model. Please reduce the size of your input.'
+            console.log(
+                `Claude API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
             );
+            // Use exponential backoff utility
+            await exponentialBackoff(retryCount);
+            return runClaudeModel(prompt, retryCount + 1, maxRetries);
         }
-
-        // Handle other errors
-        throw new Error(`Claude API error: ${error.message || 'Unknown error'}`);
+        
+        // Use the shared error handler for all other errors
+        throw handleModelError(error, 'Claude', maxRetries);
     }
 }
 

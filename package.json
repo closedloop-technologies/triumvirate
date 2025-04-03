@@ -4,8 +4,8 @@
     "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
     "type": "module",
     "bin": {
-        "triumvirate": "./src/bin/triumvirate.js",
-        "__triumvirate_bash_complete": "./src/bin/bash-complete.js"
+        "triumvirate": "./dist/triumvirate.js",
+        "__triumvirate_bash_complete": "./dist/bash-complete.js"
     },
     "main": "src/index.js",
     "files": [
