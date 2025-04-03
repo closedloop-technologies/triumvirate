@@ -4,7 +4,7 @@ async function build() {
   try {
     // Build CLI entry point
     await esbuild.build({
-      entryPoints: ['src/cli.js'],
+      entryPoints: ['src/bin/cli.ts'],
       bundle: true,
       platform: 'node',
       target: 'node16',
