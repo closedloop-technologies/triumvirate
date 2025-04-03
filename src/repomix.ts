@@ -39,7 +39,7 @@ export async function runRepomix({
   include,
   ignorePatterns,
   style = 'xml',
-  compress = false,
+  compress = true, // Changed default to true to match impl.ts
   removeComments = false,
   removeEmptyLines = false,
   showLineNumbers = false,
