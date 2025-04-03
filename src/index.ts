@@ -73,10 +73,11 @@ export async function runTriumvirateReview({
     console.log('Sending prompt to models...');
     console.log(`Using review type: ${reviewType}`);
 
-    // Step 5: Send to each model and collect responses
+    // Step 5: Send to all models in parallel and collect responses
     const startTime = Date.now();
 
-    for (const model of models) {
+    // Create an async function to process each model
+    const processModel = async (model: string) => {
         try {
             console.log(`Running review with model: ${model}`);
             const modelStartTime = Date.now();
@@ -88,15 +89,16 @@ export async function runTriumvirateReview({
             // Calculate latency
             const latency = modelEndTime - modelStartTime;
             const latencyStr = `${latency}ms`;
+            console.log(`${model} review completed in ${latencyStr}`);
 
-            // Estimate cost (this would need actual implementation based on model and token count)
+            // Estimate cost based on model and token count
             const cost = estimateCost(
                 model,
                 normalizedUsage.input_tokens,
                 normalizedUsage.output_tokens
             );
 
-            results.push({
+            return {
                 model,
                 summary: summarizeReview(typeof review === 'string' ? review : String(review)),
                 review: review,
@@ -107,20 +109,38 @@ export async function runTriumvirateReview({
                     tokenTotal: normalizedUsage.total_tokens,
                     cost: `${cost.toFixed(8)}`,
                 },
-            });
+                error: false,
+            };
         } catch (error) {
             console.error(`Error with model ${model}:`, error);
-            results.push({
+            return {
                 model,
                 review: `ERROR: ${(error as Error).message}`,
                 metrics: {
                     error: (error as Error).message,
                 },
-            });
+                error: true,
+            };
+        }
+    };
 
-            if (failOnError) {
-                break;
-            }
+    // Process all models in parallel
+    const modelPromises = models.map(model => processModel(model));
+    const modelResults = await Promise.all(modelPromises);
+
+    // Check if any model failed and we should fail on error
+    const hasError = modelResults.some(result => result.error);
+    if (hasError && failOnError) {
+        // Filter out successful results if we're failing on error
+        for (const result of modelResults.filter(result => result.error)) {
+            const { error, ...rest } = result;
+            results.push(rest);
+        }
+    } else {
+        // Add all results (removing the temporary error flag)
+        for (const result of modelResults) {
+            const { error, ...rest } = result;
+            results.push(rest);
         }
     }
 
