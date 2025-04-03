@@ -1,5 +1,6 @@
 import type { LocalContext } from './context';
-import { runTriumvirateReview } from './index.js';
+import { runTriumvirateReview } from './index';
+import type { TriumvirateReviewOptions } from './index';
 import { validateApiKeys, getApiKeySetupInstructions } from './utils/api-keys';
 
 export interface ReviewCommandFlags {
@@ -127,9 +128,9 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
     };
 
     // Run the review with our configured options
-    const results = await runTriumvirateReview({
+    const reviewOptions: TriumvirateReviewOptions = {
         models: modelList,
-        exclude: excludeList,
+        exclude: excludeList as string[],
         diffOnly: diff,
         outputPath: output,
         failOnError,
@@ -137,7 +138,8 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
         tokenLimit,
         reviewType,
         repomixOptions,
-    });
+    };
+    const results = await runTriumvirateReview(reviewOptions);
 
     // Output results to console
     for (const result of results) {
@@ -148,10 +150,16 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
             continue;
         }
 
+        // Convert review to string regardless of its type
+        const reviewText =
+            typeof result.review === 'string'
+                ? result.review
+                : (result.review as any).text || JSON.stringify(result.review);
+
         if (summaryOnly) {
-            console.log(result.review);
+            console.log(reviewText);
         } else {
-            console.log(`${result.review.slice(0, 500)}...\n(${result.review.length} chars total)`);
+            console.log(`${reviewText.slice(0, 500)}...\n(${reviewText.length} chars total)`);
         }
 
         console.log(`Metrics: ${result.metrics.latency}, Cost: ${result.metrics.cost}`);

@@ -6,6 +6,18 @@ import { runRepomix } from './repomix';
 /**
  * Run a triumvirate review across multiple LLMs
  */
+export interface TriumvirateReviewOptions {
+    models?: string[];
+    exclude?: string[];
+    diffOnly?: boolean;
+    outputPath?: string;
+    failOnError?: boolean;
+    summaryOnly?: boolean;
+    tokenLimit?: number;
+    reviewType?: string;
+    repomixOptions?: Record<string, any>;
+}
+
 export async function runTriumvirateReview({
     models = ['openai', 'claude', 'gemini'],
     exclude = [],
@@ -16,7 +28,7 @@ export async function runTriumvirateReview({
     tokenLimit = 100000,
     reviewType = 'general',
     repomixOptions = {},
-}) {
+}: TriumvirateReviewOptions = {}) {
     // Initialize results array
     const results = [];
 
@@ -39,11 +51,11 @@ export async function runTriumvirateReview({
         console.error('Error running repomix:', error);
         return models.map(model => ({
             model,
-            review: `ERROR: Failed to package codebase: ${error.message}`,
+            review: `ERROR: Failed to package codebase: ${(error as Error).message}`,
             metrics: {
                 latency: '0ms',
                 cost: '$0.00',
-                error: error.message,
+                error: (error as Error).message,
             },
         }));
     }
@@ -76,11 +88,20 @@ export async function runTriumvirateReview({
             const latencyStr = `${latency}ms`;
 
             // Estimate cost (this would need actual implementation based on model and token count)
-            const cost = estimateCost(model, repomixResult.tokenCount, review.length);
+            const cost = estimateCost(
+                model,
+                repomixResult.tokenCount,
+                // Use type assertion to handle the review length calculation
+                typeof review === 'string'
+                    ? (review as string).length
+                    : (review as any)?.text?.length || String(review).length || 0
+            );
 
             results.push({
                 model,
-                review: summaryOnly ? summarizeReview(review) : review,
+                review: summaryOnly
+                    ? summarizeReview(typeof review === 'string' ? review : String(review))
+                    : review,
                 metrics: {
                     latency: latencyStr,
                     tokenCount: repomixResult.tokenCount,
@@ -91,11 +112,11 @@ export async function runTriumvirateReview({
             console.error(`Error with model ${model}:`, error);
             results.push({
                 model,
-                review: `ERROR: ${error.message}`,
+                review: `ERROR: ${(error as Error).message}`,
                 metrics: {
                     latency: '0ms',
                     cost: '$0.00',
-                    error: error.message,
+                    error: (error as Error).message,
                 },
             });
 
@@ -119,7 +140,9 @@ export async function runTriumvirateReview({
                         completedSuccessfully: results.every(r => !r.metrics.error),
                         models: results.map(r => ({
                             model: r.model,
-                            summary: summarizeReview(r.review),
+                            summary: summarizeReview(
+                                typeof r.review === 'string' ? r.review : String(r.review)
+                            ),
                             metrics: r.metrics,
                         })),
                     },
@@ -146,7 +169,7 @@ export async function runTriumvirateReview({
 /**
  * Generate prompt template based on review type
  */
-function generatePromptTemplate(reviewType, repomixResult) {
+function generatePromptTemplate(reviewType: string, repomixResult: any): string {
     // Base template with structure info
     const baseTemplate = `You are an expert code reviewer. I'm going to share a codebase with you for review.
 
@@ -229,13 +252,14 @@ Review the codebase documentation focusing on:
 Suggest specific documentation improvements with examples.`,
     };
 
-    return templates[reviewType] || templates.general;
+    // Use type assertion to handle the string index access
+    return (templates as Record<string, string>)[reviewType] || templates.general;
 }
 
 /**
  * Extract a short summary from a longer review
  */
-function summarizeReview(review) {
+function summarizeReview(review: string): string {
     // Remove ERROR prefix if present
     if (review.startsWith('ERROR:')) {
         return review;
@@ -249,7 +273,7 @@ function summarizeReview(review) {
 /**
  * Estimate the cost of a model run based on input and output tokens
  */
-function estimateCost(model, inputTokens, outputLength) {
+function estimateCost(model: string, inputTokens: number, outputLength: number): number {
     // Rough estimate of output tokens
     const outputTokens = Math.ceil(outputLength / 4);
 
