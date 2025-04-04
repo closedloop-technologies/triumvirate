@@ -66,12 +66,12 @@ export async function withErrorHandlingAndRetry<T>(
     timeoutMs = 60000
 ): Promise<T> {
     let retryCount = 0;
-    
+
     while (true) {
         // Set up timeout with AbortController
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-        
+
         try {
             // Execute the API call with the abort signal
             return await apiCall(controller.signal);
@@ -79,16 +79,18 @@ export async function withErrorHandlingAndRetry<T>(
             // Handle timeout errors with retry logic
             if (
                 (error.name === 'AbortError' ||
-                error.code === 'ETIMEDOUT' ||
-                error.message?.includes('timeout')) &&
+                    error.code === 'ETIMEDOUT' ||
+                    error.message?.includes('timeout')) &&
                 retryCount < maxRetries
             ) {
-                console.log(`${modelName} API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`);
+                console.log(
+                    `${modelName} API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
+                );
                 await exponentialBackoff(retryCount);
                 retryCount++;
                 continue;
             }
-            
+
             // Use the shared error handler for all other errors
             throw handleModelError(error, modelName, maxRetries);
         } finally {

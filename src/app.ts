@@ -125,6 +125,11 @@ const runCommand = buildCommand<ReviewCommandFlags, [], LocalContext>({
                 brief: 'Skip API key validation check',
                 optional: true,
             },
+            enhancedReport: {
+                kind: 'boolean',
+                brief: 'Generate enhanced report with model agreement analysis',
+                optional: true,
+            },
         },
     },
     docs: {

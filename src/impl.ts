@@ -31,6 +31,8 @@ export interface ReviewCommandFlags {
 
     // Skip API key validation flag (mainly for testing)
     readonly skipApiKeyValidation?: boolean;
+
+    readonly enhancedReport?: boolean;
 }
 
 export async function review(flags: ReviewCommandFlags): Promise<void> {
@@ -44,6 +46,7 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
         tokenLimit = 100000,
         reviewType,
         skipApiKeyValidation = false,
+        enhancedReport = true,
 
         // Repomix flags
         include,
@@ -138,6 +141,7 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
         tokenLimit,
         reviewType,
         repomixOptions,
+        enhancedReport,
     };
     const results = await runTriumvirateReview(reviewOptions);
 

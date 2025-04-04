@@ -3,7 +3,11 @@ import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { normalizeUsage } from './types/usage';
 import type { ModelUsage, OpenAIUsage, ClaudeUsage, GeminiUsage } from './types/usage';
-import { handleModelError, exponentialBackoff, withErrorHandlingAndRetry } from './utils/model-utils';
+import {
+    handleModelError,
+    exponentialBackoff,
+    withErrorHandlingAndRetry,
+} from './utils/model-utils';
 import { API_TIMEOUT_MS, MAX_API_RETRIES } from './utils/constants';
 
 dotenv.config();
@@ -16,9 +20,9 @@ async function runOpenAIModel(
     if (!process.env['OPENAI_API_KEY']) {
         throw new Error('OPENAI_API_KEY is not set');
     }
-    
+
     const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] });
-    
+
     return withErrorHandlingAndRetry(
         async (signal: AbortSignal) => {
             const response = await openai.responses.create(
@@ -30,17 +34,8 @@ async function runOpenAIModel(
                 },
                 { signal }
             );
-            
-            console.log('openai', response);
+
             const { output_text, usage } = response;
-            // usage is:
-            //   usage: {
-            //     input_tokens: 7824,
-            //     input_tokens_details: { cached_tokens: 7808 },
-            //     output_tokens: 727,
-            //     output_tokens_details: { reasoning_tokens: 0 },
-            //     total_tokens: 8551
-            //   },
             if (!usage) {
                 throw new Error('OpenAI response is missing usage');
             }
@@ -78,14 +73,11 @@ async function runClaudeModel(
                 { signal }
             );
 
-            console.log('claude', msg);
             const { choices } = msg;
             const usage: ClaudeUsage = {
                 input_tokens: msg.usage?.prompt_tokens || 0,
                 output_tokens: msg.usage?.completion_tokens || 0,
                 total_tokens: msg.usage?.total_tokens || 0,
-                prompt_tokens: msg.usage?.prompt_tokens,
-                completion_tokens: msg.usage?.completion_tokens,
             };
 
             return { text: choices[0]?.message?.content || '', usage };
@@ -93,6 +85,100 @@ async function runClaudeModel(
         'Claude',
         maxRetries,
         API_TIMEOUT_MS
+    );
+}
+
+/**
+ * Run Claude model with structured output using the Tools API
+ * This approach provides more reliable structured data than json_object response format
+ */
+async function runClaudeModelStructured<T>(
+    prompt: string,
+    schema: Record<string, unknown>,
+    retryCount = 0,
+    maxRetries = MAX_API_RETRIES
+): Promise<{ data: T; usage: ClaudeUsage }> {
+    if (!process.env['ANTHROPIC_API_KEY']) {
+        throw new Error('ANTHROPIC_API_KEY is not set');
+    }
+
+    const apiKey = process.env['ANTHROPIC_API_KEY'];
+    const baseURL = 'https://api.anthropic.com/v1';
+
+    // Define the tool for structured output
+    const toolName = 'generate_structured_data';
+    const tool = {
+        name: toolName,
+        description: 'Generate structured data based on the provided information',
+        input_schema: schema,
+    };
+
+    return withErrorHandlingAndRetry(
+        async (signal: AbortSignal) => {
+            // Create request options
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01',
+                },
+                body: JSON.stringify({
+                    model: 'claude-3-7-sonnet-20250219',
+                    max_tokens: 4096,
+                    messages: [{ role: 'user', content: prompt }],
+                    tools: [tool],
+                    tool_choice: { type: 'tool', name: toolName },
+                }),
+                signal,
+            };
+
+            // Make the API request
+            const response = await fetch(`${baseURL}/messages`, requestOptions);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Claude API error (${response.status}): ${errorText}`);
+            }
+
+            const result = (await response.json()) as { content: any[]; usage: ClaudeUsage };
+
+            console.log('runClaudeModelStructured result', JSON.stringify(result, null, 2));
+
+            // Extract the tool call from the response
+            const toolCallContent = result.content.find(
+                (item: any) => item.type === 'tool_use' && item.name === toolName
+            );
+
+            if (!toolCallContent) {
+                console.error('Claude tool response structure:', String(result));
+                throw new Error('Claude did not return expected tool use response');
+            }
+
+            const usage: ClaudeUsage = {
+                input_tokens: result.usage?.input_tokens || 0,
+                output_tokens: result.usage?.output_tokens || 0,
+                total_tokens:
+                    (result.usage?.input_tokens || 0) + (result.usage?.output_tokens || 0),
+                cache_creation_input_tokens: result.usage?.cache_creation_input_tokens,
+                cache_read_input_tokens: result.usage?.cache_read_input_tokens,
+            };
+
+            // Log the full input for debugging
+            console.log(
+                `Claude tool '${toolName}' response:`,
+                JSON.stringify(toolCallContent.input, null, 2)
+            );
+
+            // Return the properly extracted data and usage
+            return {
+                data: toolCallContent.input as T,
+                usage,
+            };
+        },
+        'Claude Structured',
+        maxRetries,
+        API_TIMEOUT_MS * 2 // Double timeout for structured responses
     );
 }
 
@@ -116,8 +202,6 @@ async function runGeminiModel(
                 contents: prompt,
             });
 
-            console.log('gemini', response);
-
             const { usageMetadata, candidates } = response;
             const usage: GeminiUsage = {
                 input_tokens: usageMetadata?.promptTokenCount || 0,
@@ -134,7 +218,6 @@ async function runGeminiModel(
             const text = content?.parts?.length
                 ? content.parts.map(part => part.text || '').join('')
                 : '';
-            console.log('gemini content', text);
             return { text, usage };
         },
         'Gemini',
@@ -163,3 +246,8 @@ export async function runModelReview(
 
     throw new Error(`Unsupported model: ${modelName}`);
 }
+
+/**
+ * Export the structured Claude model function for use in report generation
+ */
+export { runClaudeModelStructured };

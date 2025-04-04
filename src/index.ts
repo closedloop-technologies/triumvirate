@@ -1,15 +1,17 @@
+// Modify src/index.ts
+
 import fs from 'fs';
 
 import { runModelReview } from './models';
 import { runRepomix } from './repomix';
 import { normalizeUsage } from './types/usage';
 import { COST_RATES, DEFAULT_REVIEW_OPTIONS, ReviewType } from './utils/constants';
+// Import the new report utilities
+import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
+import type { CodeReviewReport } from './types/report';
 
 /**
  * Run a triumvirate review across multiple LLMs
- */
-/**
- * Options for running a triumvirate review
  */
 export interface TriumvirateReviewOptions {
     models?: string[];
@@ -21,6 +23,7 @@ export interface TriumvirateReviewOptions {
     tokenLimit?: number;
     reviewType?: string;
     repomixOptions?: Record<string, unknown>;
+    enhancedReport?: boolean;
 }
 
 /**
@@ -38,6 +41,7 @@ export async function runTriumvirateReview({
     tokenLimit = DEFAULT_REVIEW_OPTIONS.TOKEN_LIMIT,
     reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
     repomixOptions = {},
+    enhancedReport = true, // Enable enhanced reporting by default
 }: TriumvirateReviewOptions = {}) {
     // Initialize results array
     const results = [];
@@ -160,56 +164,82 @@ export async function runTriumvirateReview({
     if (outputPath) {
         try {
             // Check if outputPath is a directory
-            const fs_stat = fs.statSync(outputPath);
-            let actualOutputPath = outputPath;
-            let actualOutputPathMd = outputPath;
-
-            if (fs_stat.isDirectory()) {
-                // If it's a directory, create a file with a default name
-                actualOutputPath = `${outputPath}/tri-review-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
-                console.log(`Output path is a directory. Writing to ${actualOutputPath}`);
+            let isDirectory = false;
+            try {
+                const fs_stat = fs.statSync(outputPath);
+                isDirectory = fs_stat.isDirectory();
+            } catch (e) {
+                // Path doesn't exist yet - not a directory
+                isDirectory = false;
             }
 
-            fs.writeFileSync(actualOutputPath, JSON.stringify(results, null, 2));
+            let jsonOutputPath = outputPath;
+            let mdOutputPath = outputPath.replace(/\.json$/, '.md');
 
-            if (fs_stat.isDirectory()) {
-                // If it's a directory, create a file with a default name
-                actualOutputPathMd = `${outputPath}/tri-review-${new Date().toISOString().replace(/[:.]/g, '-')}.md`;
-                console.log(`Output path is a directory. Writing to ${actualOutputPathMd}`);
+            if (isDirectory) {
+                // If it's a directory, create files with default names
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                jsonOutputPath = `${outputPath}/tri-review-${timestamp}.json`;
+                mdOutputPath = `${outputPath}/tri-review-${timestamp}.md`;
+                console.log(
+                    `Output path is a directory. Writing to ${jsonOutputPath} and ${mdOutputPath}`
+                );
             }
 
-            let mdResults = '# Triumvirate Code Review\n\n';
-            mdResults += '## Overview\n\n';
-            mdResults += '| Model | Status | Latency | Cost | Total Tokens |\n';
-            mdResults += '|-------|--------|---------|------|-------------|\n';
+            // Generate regular JSON output (backward compatible)
+            fs.writeFileSync(jsonOutputPath, JSON.stringify(results, null, 2));
 
-            results.forEach(result => {
-                const status = result.metrics.error ? '❌ Failed' : '✅ Passed';
-                const latency = result.metrics.latency ? `${result.metrics.latency}ms` : 'N/A';
-                const cost = result.metrics.cost || 'N/A';
-                const tokens = result.metrics.tokenTotal || 'N/A';
+            // Generate enhanced report if enabled
+            if (enhancedReport) {
+                // Generate structured report
+                const report: CodeReviewReport = await generateCodeReviewReport(results);
 
-                mdResults += `| ${result.model} | ${status} | ${latency} | $${cost} | ${tokens} |\n`;
-            });
+                // Save as JSON
+                fs.writeFileSync(
+                    jsonOutputPath.replace(/\.json$/, '-enhanced.json'),
+                    JSON.stringify(report, null, 2)
+                );
 
-            mdResults += '\n';
+                // Format as Markdown and save
+                const markdown = formatReportAsMarkdown(report);
+                fs.writeFileSync(mdOutputPath, markdown);
+                console.log(`Enhanced report written to ${mdOutputPath}`);
+            } else {
+                // Generate simple Markdown (backward compatible)
+                let mdResults = '# Triumvirate Code Review\n\n';
+                mdResults += '## Overview\n\n';
+                mdResults += '| Model | Status | Latency | Cost | Total Tokens |\n';
+                mdResults += '|-------|--------|---------|------|-------------|\n';
 
-            mdResults += '## Summaries\n\n';
-            mdResults += results
-                .map(result => {
-                    return `### ${result.model}\n\n${result.summary}`;
-                })
-                .join('\n\n');
-            mdResults += '## Results\n\n';
+                results.forEach(result => {
+                    const status = result.metrics.error ? '❌ Failed' : '✅ Passed';
+                    const latency = result.metrics.latency ? `${result.metrics.latency}ms` : 'N/A';
+                    const cost = result.metrics.cost || 'N/A';
+                    const tokens = result.metrics.tokenTotal || 'N/A';
 
-            mdResults += results
-                .map(result => {
-                    return `### ${result.model}\n\n${result.review}`;
-                })
-                .join('\n\n');
+                    mdResults += `| ${result.model} | ${status} | ${latency} | $${cost} | ${tokens} |\n`;
+                });
 
-            fs.writeFileSync(actualOutputPathMd, mdResults);
-            console.log(`Results written to ${actualOutputPath}`);
+                mdResults += '\n';
+
+                mdResults += '## Summaries\n\n';
+                mdResults += results
+                    .map(result => {
+                        return `### ${result.model}\n\n${result.summary}`;
+                    })
+                    .join('\n\n');
+                mdResults += '## Results\n\n';
+
+                mdResults += results
+                    .map(result => {
+                        return `### ${result.model}\n\n${result.review}`;
+                    })
+                    .join('\n\n');
+
+                fs.writeFileSync(mdOutputPath, mdResults);
+            }
+
+            console.log(`Results written to ${jsonOutputPath}`);
         } catch (error) {
             console.error(`Failed to write results to file: ${(error as Error).message}`);
             console.error('Please ensure the output path is valid and you have write permissions.');
@@ -225,6 +255,9 @@ export async function runTriumvirateReview({
 
     return results;
 }
+
+// Rest of the file remains unchanged
+// ...
 
 /**
  * Generate prompt template based on review type
@@ -335,7 +368,9 @@ function summarizeReview(review: string): string {
     }
 
     // Look for sections with 'Summary', 'Overview', 'Conclusion', etc.
-    const summaryMatch = review.match(/(?:Summary|Overview|Conclusion|Key Points)[:\s]([^\n]+(?:\n[^\n#]+)*)/i);
+    const summaryMatch = review.match(
+        /(?:Summary|Overview|Conclusion|Key Points)[:\s]([^\n]+(?:\n[^\n#]+)*)/i
+    );
     if (summaryMatch && summaryMatch[1]) {
         return summaryMatch[1].trim().replace(/\n/g, ' ');
     }
@@ -374,8 +409,8 @@ function estimateCost(model: string, inputTokens: number, outputTokens: number):
     }
 
     // Calculate cost
-    const inputCost = (inputTokens / 1000) * inputRate;
-    const outputCost = (outputTokens / 1000) * outputRate;
+    const inputCost = inputTokens * inputRate;
+    const outputCost = outputTokens * outputRate;
 
     return inputCost + outputCost;
 }

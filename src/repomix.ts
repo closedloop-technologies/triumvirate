@@ -2,7 +2,11 @@ import { execSync, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { DEFAULT_REPOMIX_OPTIONS, DEFAULT_REVIEW_OPTIONS, MAX_FILES_TO_EXCLUDE } from './utils/constants';
+import {
+    DEFAULT_REPOMIX_OPTIONS,
+    DEFAULT_REVIEW_OPTIONS,
+    MAX_FILES_TO_EXCLUDE,
+} from './utils/constants';
 
 export interface RepomixResult {
     filePath: string;
@@ -138,11 +142,14 @@ export async function runRepomix({
     });
 
     // Parse token count from output
-    const tokenCountMatch = stdout.match(/Total tokens: ([0-9,]+)/);
+    // Match both 'Total tokens:' and 'Total Tokens:' formats, followed by numbers and optional 'tokens' word
+    const tokenCountMatch = stdout.match(/Total [Tt]okens: ([0-9,]+)(?:\s+tokens)?/);
     const tokenCount =
         tokenCountMatch && tokenCountMatch[1]
             ? parseInt(tokenCountMatch[1].replace(/,/g, ''), 10)
             : 0;
+
+    console.log(`Codebase packaged with ${tokenCount} tokens`);
 
     // Check if we need to optimize
     if (tokenCount > tokenLimit) {

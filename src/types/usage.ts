@@ -21,8 +21,8 @@ export interface OpenAIUsage extends BaseUsage {
 
 // Claude specific usage data
 export interface ClaudeUsage extends BaseUsage {
-    prompt_tokens?: number; // Alias for input_tokens
-    completion_tokens?: number; // Alias for output_tokens
+    cache_creation_input_tokens?: number;
+    cache_read_input_tokens?: number;
 }
 
 // Gemini specific usage data
@@ -45,7 +45,7 @@ export function isOpenAIUsage(usage: ModelUsage | Record<string, unknown>): usag
     if (!('input_tokens' in usage && 'output_tokens' in usage && 'total_tokens' in usage)) {
         return false;
     }
-    
+
     return (
         'input_tokens_details' in usage ||
         ('input_tokens' in usage && !('promptTokenCount' in usage) && !('prompt_tokens' in usage))
@@ -62,7 +62,7 @@ export function isClaudeUsage(usage: ModelUsage | Record<string, unknown>): usag
     if (!('input_tokens' in usage && 'output_tokens' in usage && 'total_tokens' in usage)) {
         return false;
     }
-    
+
     return 'prompt_tokens' in usage || 'completion_tokens' in usage;
 }
 
@@ -76,7 +76,7 @@ export function isGeminiUsage(usage: ModelUsage | Record<string, unknown>): usag
     if (!('input_tokens' in usage && 'output_tokens' in usage && 'total_tokens' in usage)) {
         return false;
     }
-    
+
     return (
         'promptTokenCount' in usage || 'candidatesTokenCount' in usage || 'totalTokenCount' in usage
     );
@@ -104,13 +104,14 @@ export function normalizeUsage(usage: ModelUsage | Record<string, unknown>): Bas
     }
 
     if (isClaudeUsage(usage)) {
+        // Currently ignoring cache creation and read tokens
         return {
-            input_tokens: usage.input_tokens || usage.prompt_tokens || 0,
-            output_tokens: usage.output_tokens || usage.completion_tokens || 0,
+            input_tokens: usage.input_tokens,
+            output_tokens: usage.output_tokens || 0,
             total_tokens:
                 usage.total_tokens ||
-                (usage.prompt_tokens && usage.completion_tokens
-                    ? usage.prompt_tokens + usage.completion_tokens
+                (usage.input_tokens && usage.output_tokens
+                    ? usage.input_tokens + usage.output_tokens
                     : 0),
         };
     }
@@ -124,26 +125,26 @@ export function normalizeUsage(usage: ModelUsage | Record<string, unknown>): Bas
     }
 
     // Handle unknown usage format by extracting any token counts we can find
-    const inputTokens = 
-        (typeof data['input_tokens'] === 'number' ? data['input_tokens'] : 0) || 
-        (typeof data['prompt_tokens'] === 'number' ? data['prompt_tokens'] : 0) || 
-        (typeof data['promptTokenCount'] === 'number' ? data['promptTokenCount'] : 0) || 
+    const inputTokens =
+        (typeof data['input_tokens'] === 'number' ? data['input_tokens'] : 0) ||
+        (typeof data['prompt_tokens'] === 'number' ? data['prompt_tokens'] : 0) ||
+        (typeof data['promptTokenCount'] === 'number' ? data['promptTokenCount'] : 0) ||
         0;
-        
-    const outputTokens = 
-        (typeof data['output_tokens'] === 'number' ? data['output_tokens'] : 0) || 
-        (typeof data['completion_tokens'] === 'number' ? data['completion_tokens'] : 0) || 
-        (typeof data['candidatesTokenCount'] === 'number' ? data['candidatesTokenCount'] : 0) || 
+
+    const outputTokens =
+        (typeof data['output_tokens'] === 'number' ? data['output_tokens'] : 0) ||
+        (typeof data['completion_tokens'] === 'number' ? data['completion_tokens'] : 0) ||
+        (typeof data['candidatesTokenCount'] === 'number' ? data['candidatesTokenCount'] : 0) ||
         0;
-        
-    const totalTokens = 
-        (typeof data['total_tokens'] === 'number' ? data['total_tokens'] : 0) || 
-        (typeof data['totalTokenCount'] === 'number' ? data['totalTokenCount'] : 0) || 
-        (inputTokens + outputTokens);
-        
+
+    const totalTokens =
+        (typeof data['total_tokens'] === 'number' ? data['total_tokens'] : 0) ||
+        (typeof data['totalTokenCount'] === 'number' ? data['totalTokenCount'] : 0) ||
+        inputTokens + outputTokens;
+
     return {
         input_tokens: inputTokens,
         output_tokens: outputTokens,
-        total_tokens: totalTokens
+        total_tokens: totalTokens,
     };
 }

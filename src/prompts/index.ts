@@ -27,7 +27,7 @@ export function loadPromptTemplate(
 ): string {
     const baseTemplatePath = path.join(__dirname, 'base.txt');
     let specificTemplatePath: string;
-    
+
     // Determine which specific template to use based on review type
     switch (reviewType.toLowerCase()) {
         case ReviewType.SECURITY:
@@ -47,17 +47,17 @@ export function loadPromptTemplate(
             specificTemplatePath = path.join(__dirname, 'general.txt');
             break;
     }
-    
+
     try {
         // Read the base template and specific template
         let baseTemplate = fs.readFileSync(baseTemplatePath, 'utf8');
         const specificTemplate = fs.readFileSync(specificTemplatePath, 'utf8');
-        
+
         // Replace placeholders in the base template
         baseTemplate = baseTemplate
             .replace('{{DIRECTORY_STRUCTURE}}', directoryStructure)
             .replace('{{SUMMARY}}', summary);
-        
+
         // Combine the templates
         return `${baseTemplate}\n\n${specificTemplate}`;
     } catch (error) {
