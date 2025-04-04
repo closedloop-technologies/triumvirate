@@ -6,8 +6,9 @@ import { runModelReview } from './models';
 import { runRepomix } from './repomix';
 import { normalizeUsage } from './types/usage';
 import { COST_RATES, DEFAULT_REVIEW_OPTIONS, ReviewType } from './utils/constants';
-// Import the new report utilities
+// Import the report utilities
 import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
+import { enhancedFormatReportAsMarkdown } from './utils/enhanced-report-formatter';
 import type { CodeReviewReport } from './types/report';
 
 /**
@@ -201,7 +202,7 @@ export async function runTriumvirateReview({
                 );
 
                 // Format as Markdown and save
-                const markdown = formatReportAsMarkdown(report);
+                const markdown = enhancedFormatReportAsMarkdown(report);
                 fs.writeFileSync(mdOutputPath, markdown);
                 console.log(`Enhanced report written to ${mdOutputPath}`);
             } else {

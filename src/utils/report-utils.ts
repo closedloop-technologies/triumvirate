@@ -11,6 +11,7 @@ import {
     type CodeReviewReport,
 } from '../types/report';
 import { runClaudeModelStructured } from '../models';
+import { enhancedFormatReportAsMarkdown } from './enhanced-report-formatter';
 
 /**
  * Extract categories from model reviews using Claude's structured tools API
@@ -131,12 +132,12 @@ export function extractCategoriesWithRegex(reviewText: string): ReviewCategory[]
         potentialCategories.length > 0
             ? potentialCategories
             : [
-                'Code Quality and Readability',
-                'Potential Bugs or Issues',
-                'Architecture and Design',
-                'Performance Concerns',
-                'Security Considerations',
-            ];
+                  'Code Quality and Readability',
+                  'Potential Bugs or Issues',
+                  'Architecture and Design',
+                  'Performance Concerns',
+                  'Security Considerations',
+              ];
 
     // Create category objects
     return categories.map((name, index) => {
@@ -1264,16 +1265,22 @@ async function generatePrioritizedRecommendations(
             });
         }
 
-        // Create a prompt for prioritizing recommendations
+        // Create a more detailed prompt for prioritizing recommendations
         const prompt = `
 I need you to prioritize these recommendations from a code review:
 
 ${recommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n')}
 
 Group them into High, Medium, and Low priority categories based on:
-- Impact on code quality, maintainability, and reliability
-- Potential for introducing bugs or security issues
-- Implementation effort and feasibility
+- Impact: How much would fixing this improve the codebase quality (high/medium/low)
+- Urgency: Does this need immediate attention (critical/important/nice-to-have)
+- Effort: How much work would it take to implement (small/medium/large)
+
+High priority: High impact items, especially those with small effort
+Medium priority: Medium impact items and high impact with large effort
+Low priority: Low impact items and nice-to-have improvements
+
+Provide at least 1-2 recommendations for each priority level.
 `;
 
         // Define the schema for prioritized recommendations
@@ -1490,7 +1497,7 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                                         const modelId = model.id || '';
                                         const modelAgreements =
                                             strength.modelAgreement &&
-                                                strength.modelAgreement.modelAgreements
+                                            strength.modelAgreement.modelAgreements
                                                 ? strength.modelAgreement.modelAgreements
                                                 : {};
                                         const agreed = modelAgreements[modelId] ? '✓' : '';
@@ -1526,7 +1533,7 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                                         const modelId = model.id || '';
                                         const modelAgreements =
                                             issue.modelAgreement &&
-                                                issue.modelAgreement.modelAgreements
+                                            issue.modelAgreement.modelAgreements
                                                 ? issue.modelAgreement.modelAgreements
                                                 : {};
                                         const agreed = modelAgreements[modelId] ? '✓' : '';
@@ -1599,15 +1606,30 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
             report.agreementAnalysis.forEach(analysis => {
                 try {
                     const highAgreement = Array.isArray(analysis.highAgreement)
-                        ? analysis.highAgreement.join(', ')
+                        ? analysis.highAgreement
+                              .map(
+                                  item =>
+                                      `- ${item.length > 50 ? item.substring(0, 47) + '...' : item}`
+                              )
+                              .join('\n')
                         : '';
                     const partialAgreement = Array.isArray(analysis.partialAgreement)
-                        ? analysis.partialAgreement.join(', ')
+                        ? analysis.partialAgreement
+                              .map(
+                                  item =>
+                                      `- ${item.length > 50 ? item.substring(0, 47) + '...' : item}`
+                              )
+                              .join('\n')
                         : '';
                     const disagreement = Array.isArray(analysis.disagreement)
-                        ? analysis.disagreement.join(', ')
+                        ? analysis.disagreement
+                              .map(
+                                  item =>
+                                      `- ${item.length > 50 ? item.substring(0, 47) + '...' : item}`
+                              )
+                              .join('\n')
                         : '';
-                    markdown += `| **${analysis.area || 'Unknown'}** | ${highAgreement} | ${partialAgreement} | ${disagreement} |\n`;
+                    markdown += `| **${analysis.area || 'Unknown'}** | ${highAgreement ? highAgreement : 'None identified'} | ${partialAgreement ? partialAgreement : 'None identified'} | ${disagreement ? disagreement : 'None identified'} |\n`;
                 } catch (analysisError) {
                     console.error('Error processing agreement analysis:', analysisError);
                     markdown += `| Error processing analysis | - | - | - |\n`;

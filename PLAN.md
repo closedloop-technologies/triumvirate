@@ -68,3 +68,76 @@ flowchart TB
 - add better testing and logging
 - make sure the report focus is stearable
 - make sure that custom repomix calls and flags are supported
+- Add acceptance criteria for the report generation - we can have --pass strict|lenient where lenient will pass if no errors are shared by all three models.  strict will fail if two models agree on any error.
+- make the feedback more general. remove the dependency on the code analysis.  This could be used to analyze an obsidian knowledge graph or any collection of files.
+
+Support for a wider range of models:
+
+# Models with >100,000 Token Context Windows
+
+Here are the most sophisticated models that support more than 100,000 tokens, organized by provider:
+
+## OpenAI
+
+- **GPT-4o**: 128,000 tokens
+  - Access: <https://platform.openai.com/>
+
+- **GPT-4.5-preview**: 128,000 tokens
+  - Access: <https://platform.openai.com/>
+
+- **o1-pro**: 200,000 tokens
+  - Access: <https://platform.openai.com/>
+
+## Anthropic
+
+- **Claude 3.7 Sonnet**: 200,000 tokens
+  - Access: <https://claude.ai/> or <https://www.anthropic.com/api>
+
+## Google/Vertex AI
+
+- **Gemini 1.5 Pro**: 2,097,152 tokens
+  - Access: <https://ai.google.dev/> or <https://console.cloud.google.com/vertex-ai>
+- **Gemini 2.5 Pro**: 2,097,152 token
+  - Access: <https://ai.google.dev/> or <https://console.cloud.google.com/vertex-ai>
+
+## Meta/Llama Models
+
+- **Llama 3.1-405B**: 128,000 tokens
+  - Access via providers:
+    - AWS Bedrock: <https://aws.amazon.com/bedrock/>
+    - Snowflake: <https://www.snowflake.com/>
+
+## Amazon Bedrock
+
+- **Amazon Nova Pro**: 300,000 tokens
+  - Access: <https://aws.amazon.com/bedrock/>
+
+## AI21
+
+- **Jamba 1.5 Large**: 256,000 tokens
+  - Access: <https://www.ai21.com/> or <https://aws.amazon.com/bedrock/>
+
+## Snowflake
+
+- **Jamba Large**: 256,000 tokens
+  - Access: <https://www.snowflake.com/>
+
+## Fireworks AI
+
+- **Mixtral-8x22B-Instruct**: 65,536 tokens (included as a noteworthy model with large context)
+  - Access: <https://fireworks.ai/>
+
+## Perplexity
+
+- **Sonar Pro**: 200,000 tokens
+  - Access: <https://www.perplexity.ai/>
+
+# Also
+
+- Store configuration settings and api keys in ~/.triumvirate/config.json
+- Implement the badging system
+- Test the context window shortening agentic calls
+- Swap out the report generation agent to use openai or claude or a different model
+- Enable richer prompt engineering on the feedback side - Generate task prompts
+- Add formatting for the md to ensure linting is good.
+- Implement this as a github action to run on PRs and pushes to main
