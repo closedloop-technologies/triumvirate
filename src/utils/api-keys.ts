@@ -12,23 +12,23 @@ interface ApiKeyRequirements {
 }
 
 export const MODEL_API_KEYS: ApiKeyRequirements[] = [
-    { 
-        model: 'openai', 
+    {
+        model: 'openai',
         envVar: 'OPENAI_API_KEY',
         format: /^sk-[A-Za-z0-9]{32,}$/,
-        minLength: 35
+        minLength: 35,
     },
-    { 
-        model: 'claude', 
+    {
+        model: 'claude',
         envVar: 'ANTHROPIC_API_KEY',
         format: /^sk-ant-[A-Za-z0-9]{32,}$/,
-        minLength: 40
+        minLength: 40,
     },
-    { 
-        model: 'gemini', 
+    {
+        model: 'gemini',
         envVar: 'GOOGLE_API_KEY',
         format: /^[A-Za-z0-9_-]{39}$/,
-        minLength: 39
+        minLength: 39,
     },
 ];
 
@@ -63,7 +63,7 @@ export function validateApiKeys(requestedModels: string[]): ApiKeyValidationResu
         }
 
         console.log('Checking API keys for models:', requestedModels.join(', '));
-        
+
         // Check each requested model
         for (const modelName of requestedModels) {
             const requirement = MODEL_API_KEYS.find(req => req.model === modelName);
@@ -84,17 +84,17 @@ export function validateApiKeys(requestedModels: string[]): ApiKeyValidationResu
 
             // Check key format if format validation is provided
             let isValidFormat = true;
-            
+
             // Check minimum length
             if (requirement.minLength && apiKey.length < requirement.minLength) {
                 isValidFormat = false;
             }
-            
+
             // Check regex pattern
             if (isValidFormat && requirement.format && !requirement.format.test(apiKey)) {
                 isValidFormat = false;
             }
-            
+
             if (!isValidFormat) {
                 result.valid = false;
                 result.invalidKeys.push(requirement.envVar);
@@ -103,15 +103,18 @@ export function validateApiKeys(requestedModels: string[]): ApiKeyValidationResu
 
         // Set message based on validation results
         if (result.missingKeys.length > 0 && result.invalidKeys.length > 0) {
-            result.message = `Missing API keys: ${result.missingKeys.join(', ')}. ` +
-                           `Invalid format for keys: ${result.invalidKeys.join(', ')}. ` +
-                           `Please check the API key setup instructions.`;
+            result.message =
+                `Missing API keys: ${result.missingKeys.join(', ')}. ` +
+                `Invalid format for keys: ${result.invalidKeys.join(', ')}. ` +
+                `Please check the API key setup instructions.`;
         } else if (result.missingKeys.length > 0) {
-            result.message = `Missing required API keys: ${result.missingKeys.join(', ')}. ` +
-                           `Please set them in your environment or .env file.`;
+            result.message =
+                `Missing required API keys: ${result.missingKeys.join(', ')}. ` +
+                `Please set them in your environment or .env file.`;
         } else if (result.invalidKeys.length > 0) {
-            result.message = `Invalid format for API keys: ${result.invalidKeys.join(', ')}. ` +
-                           `Please check that they match the expected format.`;
+            result.message =
+                `Invalid format for API keys: ${result.invalidKeys.join(', ')}. ` +
+                `Please check that they match the expected format.`;
         }
 
         return result;
@@ -119,12 +122,12 @@ export function validateApiKeys(requestedModels: string[]): ApiKeyValidationResu
         // Handle unexpected errors
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.error(`Error validating API keys: ${errorMessage}`);
-        
+
         return {
             valid: false,
             missingKeys: [],
             invalidKeys: [],
-            message: `Error validating API keys: ${errorMessage}`
+            message: `Error validating API keys: ${errorMessage}`,
         };
     }
 }

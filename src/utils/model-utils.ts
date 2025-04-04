@@ -12,7 +12,7 @@ export enum ErrorCategory {
     INPUT_SIZE = 'input_size',
     NETWORK = 'network',
     INVALID_RESPONSE = 'invalid_response',
-    UNKNOWN = 'unknown'
+    UNKNOWN = 'unknown',
 }
 
 /**
@@ -201,7 +201,9 @@ export async function withErrorHandlingAndRetry<T>(
         try {
             // Log attempt
             if (retryCount > 0) {
-                console.log(`Attempt ${retryCount + 1}/${maxRetries + 1} for ${modelName} API call`);
+                console.log(
+                    `Attempt ${retryCount + 1}/${maxRetries + 1} for ${modelName} API call`
+                );
             }
 
             // Execute the API call with the abort signal
@@ -226,7 +228,7 @@ export async function withErrorHandlingAndRetry<T>(
             if (shouldRetry) {
                 console.log(
                     `${modelName} API call failed with error: ${modelError.message}. ` +
-                    `Retrying (${retryCount + 1}/${maxRetries})...`
+                        `Retrying (${retryCount + 1}/${maxRetries})...`
                 );
                 await exponentialBackoff(retryCount);
                 retryCount++;

@@ -9,7 +9,7 @@ import {
     withErrorHandlingAndRetry,
     ErrorCategory,
     createModelError,
-    type ModelError
+    type ModelError,
 } from './utils/model-utils';
 import { API_TIMEOUT_MS, MAX_API_RETRIES } from './utils/constants';
 
@@ -71,16 +71,16 @@ async function runOpenAIModel(
                 }
 
                 const { output_text, usage } = response;
-                
+
                 // Validate usage data
                 if (!usage) {
                     throw new Error('OpenAI response is missing usage data');
                 }
-                
+
                 // Validate output text
-                return { 
-                    text: output_text ?? '', 
-                    usage: usage as OpenAIUsage 
+                return {
+                    text: output_text ?? '',
+                    usage: usage as OpenAIUsage,
                 };
             } catch (error) {
                 // Convert to a ModelError with appropriate category
@@ -151,15 +151,15 @@ async function runClaudeModel(
                 }
 
                 const { choices } = msg;
-                
+
                 // Check if choices array is empty or first choice is missing
                 if (!choices.length || !choices[0]) {
                     throw new Error('Claude response is missing choices');
                 }
-                
+
                 // Safely extract message content with nullish coalescing
                 const messageContent = choices[0]?.message?.content ?? '';
-                
+
                 // Create usage object with safe defaults
                 const usage: ClaudeUsage = {
                     input_tokens: msg.usage?.prompt_tokens ?? 0,
@@ -325,7 +325,7 @@ async function runGeminiModel(
                 }
 
                 const { usageMetadata, candidates } = response;
-                
+
                 // Create usage object with safe defaults using nullish coalescing
                 const usage: GeminiUsage = {
                     input_tokens: usageMetadata?.promptTokenCount ?? 0,
@@ -335,27 +335,27 @@ async function runGeminiModel(
                     candidatesTokenCount: usageMetadata?.candidatesTokenCount,
                     totalTokenCount: usageMetadata?.totalTokenCount,
                 };
-                
+
                 // Validate candidates array
                 if (!candidates || !Array.isArray(candidates) || candidates.length === 0) {
                     throw new Error('Gemini response is missing candidates');
                 }
-                
+
                 // Validate first candidate's content
                 if (!candidates[0]?.content) {
                     throw new Error('Gemini response is missing content in first candidate');
                 }
-                
+
                 const { content } = candidates[0];
-                
+
                 // Extract text from parts with proper null checking
                 let text = '';
                 if (content?.parts && Array.isArray(content.parts) && content.parts.length > 0) {
                     text = content.parts
-                        .map(part => (part && typeof part.text === 'string') ? part.text : '')
+                        .map(part => (part && typeof part.text === 'string' ? part.text : ''))
                         .join('');
                 }
-                
+
                 return { text, usage };
             } catch (error) {
                 // Convert to a ModelError with appropriate category

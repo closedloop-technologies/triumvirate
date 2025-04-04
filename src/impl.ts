@@ -84,14 +84,14 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
             if (!keyValidation.valid) {
                 // Display detailed error message based on validation results
                 console.error(`\n⚠️ ${keyValidation.message}\n`);
-                
+
                 // If there are invalid keys, provide more specific guidance
                 if (keyValidation.invalidKeys.length > 0) {
                     console.error(
                         `⚠️ The following API keys have invalid formats: ${keyValidation.invalidKeys.join(', ')}\n`
                     );
                 }
-                
+
                 console.log(getApiKeySetupInstructions());
 
                 // If failOnError is true, exit immediately
@@ -103,10 +103,12 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
                 const availableModels = modelList.filter(model => {
                     const requirement = MODEL_API_KEYS.find(req => req.model === model);
                     if (!requirement) return true; // Unknown model, assume it's available
-                    
+
                     const envVar = requirement.envVar;
-                    return !keyValidation.missingKeys.includes(envVar) && 
-                           !keyValidation.invalidKeys.includes(envVar);
+                    return (
+                        !keyValidation.missingKeys.includes(envVar) &&
+                        !keyValidation.invalidKeys.includes(envVar)
+                    );
                 });
 
                 if (availableModels.length === 0) {
@@ -121,10 +123,13 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
                 });
 
                 const confirm = await new Promise<boolean>(resolve => {
-                    readline.question(`Continue with available models (${availableModels.join(', ')})? (y/N): `, (answer: string) => {
-                        readline.close();
-                        resolve(answer.toLowerCase() === 'y');
-                    });
+                    readline.question(
+                        `Continue with available models (${availableModels.join(', ')})? (y/N): `,
+                        (answer: string) => {
+                            readline.close();
+                            resolve(answer.toLowerCase() === 'y');
+                        }
+                    );
                 });
 
                 if (!confirm) {
@@ -133,7 +138,7 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
                 }
 
                 console.log(`Continuing with available models: ${availableModels.join(', ')}...`);
-                
+
                 // Update modelList to only include available models
                 modelList.length = 0;
                 modelList.push(...availableModels);
@@ -144,11 +149,11 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
             // Handle unexpected errors in the validation process
             const errorMessage = error instanceof Error ? error.message : String(error);
             console.error(`\n❌ Error during API key validation: ${errorMessage}\n`);
-            
+
             if (failOnError) {
                 process.exit(1);
             }
-            
+
             console.log('Continuing despite API key validation error...');
         }
     }
