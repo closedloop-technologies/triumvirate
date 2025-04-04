@@ -32,7 +32,11 @@ flowchart TB
     RepomixInt -->|"Extract metrics\n(token count)"| TempFile
     TempFile -->|"Pass codebase"| PromptGen
     PromptGen -->|"Send prompts"| LLMs
-    LLMs -->|"Collect responses"| Output
+    LLMs -->|"Collect responses"| Analysis["Analysis
+(Claude categorization)"]
+    Analysis -->|"Extract categories"| Scoring["Scoring
+(Claude agreement analysis)"]
+    Scoring -->|"Generate report"| Output
     
     subgraph "CLI Options"
         TriOptions["Triumvirate Options\n- models\n- review-type\n- output\n- fail-on-error"]
