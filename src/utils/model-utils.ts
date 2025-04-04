@@ -3,21 +3,77 @@
  */
 
 /**
+ * Error categories for better error handling and reporting
+ */
+export enum ErrorCategory {
+    TIMEOUT = 'timeout',
+    AUTHENTICATION = 'authentication',
+    RATE_LIMIT = 'rate_limit',
+    INPUT_SIZE = 'input_size',
+    NETWORK = 'network',
+    INVALID_RESPONSE = 'invalid_response',
+    UNKNOWN = 'unknown'
+}
+
+/**
+ * Standardized error object with additional context
+ */
+export interface ModelError extends Error {
+    category: ErrorCategory;
+    modelName: string;
+    retryable: boolean;
+    originalError?: any;
+}
+
+/**
+ * Create a standardized model error with additional context
+ * @param message Error message
+ * @param category Error category
+ * @param modelName The name of the model (openai, claude, gemini)
+ * @param retryable Whether this error can be retried
+ * @param originalError The original error object
+ * @returns A standardized ModelError
+ */
+export function createModelError(
+    message: string,
+    category: ErrorCategory,
+    modelName: string,
+    retryable: boolean,
+    originalError?: any
+): ModelError {
+    const error = new Error(message) as ModelError;
+    error.category = category;
+    error.modelName = modelName;
+    error.retryable = retryable;
+    error.originalError = originalError;
+    error.name = 'ModelError';
+    return error;
+}
+
+/**
  * Handles common model API errors and provides consistent error messages
  * @param error The error object from the API call
  * @param modelName The name of the model (openai, claude, gemini)
  * @param maxRetries The maximum number of retries attempted
  * @returns A standardized error message
  */
-export function handleModelError(error: any, modelName: string, maxRetries: number): Error {
+export function handleModelError(error: any, modelName: string, maxRetries: number): ModelError {
+    // Log the original error for debugging
+    console.debug(`Original ${modelName} error:`, error);
+
     // Handle timeout errors
     if (
         error.name === 'AbortError' ||
         error.code === 'ETIMEDOUT' ||
-        error.message?.includes('timeout')
+        error.message?.includes('timeout') ||
+        error.message?.includes('timed out')
     ) {
-        return new Error(
-            `${modelName} API call failed after ${maxRetries} retries due to timeouts`
+        return createModelError(
+            `${modelName} API call failed after ${maxRetries} retries due to timeouts`,
+            ErrorCategory.TIMEOUT,
+            modelName,
+            true,
+            error
         );
     }
 
@@ -25,21 +81,89 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
     if (
         error.status === 401 ||
         error.message?.includes('authentication') ||
-        error.message?.includes('API key')
+        error.message?.includes('API key') ||
+        error.message?.includes('auth')
     ) {
-        return new Error(`Invalid ${modelName} API key. Please check your API key and try again.`);
+        return createModelError(
+            `Invalid ${modelName} API key. Please check your API key and try again.`,
+            ErrorCategory.AUTHENTICATION,
+            modelName,
+            false,
+            error
+        );
+    }
+
+    // Handle rate limit errors
+    if (
+        error.status === 429 ||
+        error.message?.includes('rate limit') ||
+        error.message?.includes('too many requests')
+    ) {
+        return createModelError(
+            `${modelName} API rate limit exceeded. Please try again later.`,
+            ErrorCategory.RATE_LIMIT,
+            modelName,
+            true,
+            error
+        );
     }
 
     // Handle input too large errors
     if (
         error.status === 400 &&
-        (error.message?.includes('too large') || error.message?.includes('maximum context length'))
+        (error.message?.includes('too large') ||
+            error.message?.includes('maximum context length') ||
+            error.message?.includes('token limit'))
     ) {
-        return new Error('Input is too large for the model. Please reduce the size of your input.');
+        return createModelError(
+            'Input is too large for the model. Please reduce the size of your input.',
+            ErrorCategory.INPUT_SIZE,
+            modelName,
+            false,
+            error
+        );
+    }
+
+    // Handle network errors
+    if (
+        error.code === 'ENOTFOUND' ||
+        error.code === 'ECONNREFUSED' ||
+        error.code === 'ECONNRESET' ||
+        error.message?.includes('network') ||
+        error.message?.includes('connection')
+    ) {
+        return createModelError(
+            `Network error when calling ${modelName} API. Please check your internet connection.`,
+            ErrorCategory.NETWORK,
+            modelName,
+            true,
+            error
+        );
+    }
+
+    // Handle invalid response errors
+    if (
+        error.message?.includes('invalid response') ||
+        error.message?.includes('unexpected response') ||
+        error.message?.includes('parsing')
+    ) {
+        return createModelError(
+            `Received invalid response from ${modelName} API.`,
+            ErrorCategory.INVALID_RESPONSE,
+            modelName,
+            true,
+            error
+        );
     }
 
     // Handle other errors
-    return new Error(`${modelName} API error: ${error.message || 'Unknown error'}`);
+    return createModelError(
+        `${modelName} API error: ${error.message || 'Unknown error'}`,
+        ErrorCategory.UNKNOWN,
+        modelName,
+        false,
+        error
+    );
 }
 
 /**
@@ -49,6 +173,7 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
  */
 export async function exponentialBackoff(retryCount: number): Promise<void> {
     const backoffMs = 1000 * Math.pow(2, retryCount);
+    console.log(`Backing off for ${backoffMs}ms before retry`);
     return new Promise(resolve => setTimeout(resolve, backoffMs));
 }
 
@@ -57,6 +182,7 @@ export async function exponentialBackoff(retryCount: number): Promise<void> {
  * @param apiCall The API call function to execute
  * @param modelName The name of the model (openai, claude, gemini)
  * @param maxRetries The maximum number of retries to attempt
+ * @param timeoutMs Timeout in milliseconds for the API call
  * @returns A function that executes the API call with error handling and retries
  */
 export async function withErrorHandlingAndRetry<T>(
@@ -73,29 +199,61 @@ export async function withErrorHandlingAndRetry<T>(
         const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
         try {
+            // Log attempt
+            if (retryCount > 0) {
+                console.log(`Attempt ${retryCount + 1}/${maxRetries + 1} for ${modelName} API call`);
+            }
+
             // Execute the API call with the abort signal
-            return await apiCall(controller.signal);
+            const result = await apiCall(controller.signal);
+
+            // Log success
+            if (retryCount > 0) {
+                console.log(`${modelName} API call succeeded after ${retryCount} retries`);
+            }
+
+            return result;
         } catch (error: any) {
-            // Handle timeout errors with retry logic
-            if (
-                (error.name === 'AbortError' ||
-                    error.code === 'ETIMEDOUT' ||
-                    error.message?.includes('timeout')) &&
-                retryCount < maxRetries
-            ) {
+            // Clear the timeout to prevent resource leaks
+            clearTimeout(timeoutId);
+
+            // Handle retryable errors
+            const modelError = handleModelError(error, modelName, maxRetries);
+
+            // Check if we should retry
+            const shouldRetry = modelError.retryable && retryCount < maxRetries;
+
+            if (shouldRetry) {
                 console.log(
-                    `${modelName} API call timed out. Retrying (${retryCount + 1}/${maxRetries})...`
+                    `${modelName} API call failed with error: ${modelError.message}. ` +
+                    `Retrying (${retryCount + 1}/${maxRetries})...`
                 );
                 await exponentialBackoff(retryCount);
                 retryCount++;
                 continue;
             }
 
-            // Use the shared error handler for all other errors
-            throw handleModelError(error, modelName, maxRetries);
+            // If we shouldn't retry or have exhausted retries, throw the error
+            console.error(`${modelName} API call failed: ${modelError.message}`);
+            throw modelError;
         } finally {
             // Always clear the timeout to prevent resource leaks
             clearTimeout(timeoutId);
         }
+    }
+}
+
+/**
+ * Safely executes a function that might throw an error
+ * @param fn The function to execute
+ * @param defaultValue The default value to return if the function throws
+ * @returns The result of the function or the default value
+ */
+export function safeExecute<T, D>(fn: () => T, defaultValue: D): T | D {
+    try {
+        return fn();
+    } catch (error) {
+        console.error('Error in safeExecute:', error);
+        return defaultValue;
     }
 }

@@ -1,7 +1,7 @@
 import type { LocalContext } from './context';
 import { runTriumvirateReview } from './index';
 import type { TriumvirateReviewOptions } from './index';
-import { validateApiKeys, getApiKeySetupInstructions } from './utils/api-keys';
+import { validateApiKeys, getApiKeySetupInstructions, MODEL_API_KEYS } from './utils/api-keys';
 
 export interface ReviewCommandFlags {
     // Triumvirate's original flags
@@ -78,37 +78,78 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
 
     // Check API keys if validation is not skipped
     if (!skipApiKeyValidation) {
-        const keyValidation = validateApiKeys(modelList);
+        try {
+            const keyValidation = validateApiKeys(modelList);
 
-        if (!keyValidation.valid) {
-            console.error(`\n⚠️ ${keyValidation.message}\n`);
-            console.log(getApiKeySetupInstructions());
+            if (!keyValidation.valid) {
+                // Display detailed error message based on validation results
+                console.error(`\n⚠️ ${keyValidation.message}\n`);
+                
+                // If there are invalid keys, provide more specific guidance
+                if (keyValidation.invalidKeys.length > 0) {
+                    console.error(
+                        `⚠️ The following API keys have invalid formats: ${keyValidation.invalidKeys.join(', ')}\n`
+                    );
+                }
+                
+                console.log(getApiKeySetupInstructions());
 
+                // If failOnError is true, exit immediately
+                if (failOnError) {
+                    process.exit(1);
+                }
+
+                // Filter out models with missing or invalid keys
+                const availableModels = modelList.filter(model => {
+                    const requirement = MODEL_API_KEYS.find(req => req.model === model);
+                    if (!requirement) return true; // Unknown model, assume it's available
+                    
+                    const envVar = requirement.envVar;
+                    return !keyValidation.missingKeys.includes(envVar) && 
+                           !keyValidation.invalidKeys.includes(envVar);
+                });
+
+                if (availableModels.length === 0) {
+                    console.error('\n❌ No models available with valid API keys.\n');
+                    process.exit(1);
+                }
+
+                // Ask for confirmation before proceeding with available models
+                const readline = require('readline').createInterface({
+                    input: process.stdin,
+                    output: process.stdout,
+                });
+
+                const confirm = await new Promise<boolean>(resolve => {
+                    readline.question(`Continue with available models (${availableModels.join(', ')})? (y/N): `, (answer: string) => {
+                        readline.close();
+                        resolve(answer.toLowerCase() === 'y');
+                    });
+                });
+
+                if (!confirm) {
+                    console.log('Exiting...');
+                    process.exit(0);
+                }
+
+                console.log(`Continuing with available models: ${availableModels.join(', ')}...`);
+                
+                // Update modelList to only include available models
+                modelList.length = 0;
+                modelList.push(...availableModels);
+            } else {
+                console.log('✅ API key validation passed.');
+            }
+        } catch (error) {
+            // Handle unexpected errors in the validation process
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(`\n❌ Error during API key validation: ${errorMessage}\n`);
+            
             if (failOnError) {
                 process.exit(1);
             }
-
-            // Ask for confirmation before proceeding
-            const readline = require('readline').createInterface({
-                input: process.stdin,
-                output: process.stdout,
-            });
-
-            const confirm = await new Promise<boolean>(resolve => {
-                readline.question('Do you want to continue anyway? (y/N): ', (answer: string) => {
-                    readline.close();
-                    resolve(answer.toLowerCase() === 'y');
-                });
-            });
-
-            if (!confirm) {
-                console.log('Exiting...');
-                process.exit(0);
-            }
-
-            console.log('Continuing without all API keys...');
-        } else {
-            console.log('✅ API key validation passed.');
+            
+            console.log('Continuing despite API key validation error...');
         }
     }
 
