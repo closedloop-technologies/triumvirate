@@ -1,84 +1,84 @@
 {
-  "name": "@justbuild/triumvirate",
-  "version": "0.1.1",
-  "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
-  "type": "module",
-  "bin": {
-    "triumvirate": "./dist/triumvirate.js",
-    "__triumvirate_bash_complete": "./dist/bash-complete.js"
-  },
-  "main": "src/index.js",
-  "files": [
-    "bin",
-    "src",
-    "LICENSE",
-    "README.md"
-  ],
-  "engines": {
-    "node": ">=22"
-  },
-  "scripts": {
-    "start": "node dist/cli.js",
-    "dev": "tsx src/bin/cli.ts",
-    "prebuild": "npm run lint && npm run format && tsc -p src/tsconfig.json",
-    "build": "tsup",
-    "prepare": "husky && husky install",
-    "prepublishOnly": "npm run build",
-    "test:review": "node test/run.js",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "postinstall": "node dist/cli.js install"
-  },
-  "keywords": [
-    "review",
-    "LLM",
-    "cli",
-    "openai",
-    "claude",
-    "gemini",
-    "PR",
-    "pull request",
-    "github actions"
-  ],
-  "author": "Sean Kruzel <sean@closedloop.tech>",
-  "license": "MIT",
-  "tsup": {
-    "entry": [
-      "src/bin/triumvirate.ts",
-      "src/bin/bash-complete.ts"
+    "name": "@justbuild/triumvirate",
+    "version": "0.1.1",
+    "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
+    "type": "module",
+    "bin": {
+        "triumvirate": "./dist/triumvirate.js",
+        "__triumvirate_bash_complete": "./dist/bash-complete.js"
+    },
+    "main": "src/index.js",
+    "files": [
+        "bin",
+        "src",
+        "LICENSE",
+        "README.md"
     ],
-    "format": [
-      "esm"
+    "engines": {
+        "node": ">=20"
+    },
+    "scripts": {
+        "start": "node dist/triumvirate.js",
+        "dev": "tsx src/bin/cli.ts",
+        "prebuild": "npm run lint && npm run format && tsc -p src/tsconfig.json",
+        "build": "tsup",
+        "prepare": "husky install",
+        "prepublishOnly": "npm run build",
+        "test:review": "node test/run.js",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "postinstall": "npm run build && node dist/triumvirate.js install"
+    },
+    "keywords": [
+        "review",
+        "LLM",
+        "cli",
+        "openai",
+        "claude",
+        "gemini",
+        "PR",
+        "pull request",
+        "github actions"
     ],
-    "tsconfig": "src/tsconfig.json",
-    "clean": true,
-    "splitting": true,
-    "minify": true
-  },
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.8.1",
-    "@google/genai": "^0.7.0",
-    "@stricli/auto-complete": "^1.1.2",
-    "@stricli/core": "^1.1.2",
-    "commander": "^11.0.0",
-    "dotenv": "^16.0.0",
-    "openai": "^4.91.1"
-  },
-  "devDependencies": {
-    "@types/node": "22.x",
-    "esbuild": "^0.25.2",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-node": "^11.1.0",
-    "husky": "^8.0.0",
-    "lint-staged": "^15.5.0",
-    "prettier": "^3.1.1",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.4.0",
-    "tsx": "^4.19.3",
-    "typescript": "5.6.x"
-  }
+    "author": "Sean Kruzel <sean@closedloop.tech>",
+    "license": "MIT",
+    "tsup": {
+        "entry": [
+            "src/bin/triumvirate.ts",
+            "src/bin/bash-complete.ts"
+        ],
+        "format": [
+            "esm"
+        ],
+        "tsconfig": "src/tsconfig.json",
+        "clean": true,
+        "splitting": true,
+        "minify": true
+    },
+    "dependencies": {
+        "@anthropic-ai/sdk": "^0.8.1",
+        "@google/genai": "^0.7.0",
+        "@stricli/auto-complete": "^1.1.2",
+        "@stricli/core": "^1.1.2",
+        "commander": "^11.0.0",
+        "dotenv": "^16.0.0",
+        "openai": "^4.91.1"
+    },
+    "devDependencies": {
+        "@types/node": "20.x",
+        "esbuild": "^0.25.2",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-import": "^2.29.1",
+        "eslint-plugin-node": "^11.1.0",
+        "husky": "^8.0.0",
+        "lint-staged": "^15.5.0",
+        "prettier": "^3.1.1",
+        "ts-node": "^10.9.2",
+        "tsup": "^8.4.0",
+        "tsx": "^4.19.3",
+        "typescript": "5.6.x"
+    }
 }
