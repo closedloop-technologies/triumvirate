@@ -1,0 +1,2 @@
+# Run build script before committing
+npm run build
