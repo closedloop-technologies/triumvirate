@@ -2,6 +2,7 @@ import type { LocalContext } from './context';
 import { runTriumvirateReview } from './index';
 import type { TriumvirateReviewOptions } from './index';
 import { validateApiKeys, getApiKeySetupInstructions, MODEL_API_KEYS } from './utils/api-keys';
+import * as readline from 'readline';
 
 export interface ReviewCommandFlags {
     // Triumvirate's original flags
@@ -117,16 +118,16 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
                 }
 
                 // Ask for confirmation before proceeding with available models
-                const readline = require('readline').createInterface({
+                const rl = readline.createInterface({
                     input: process.stdin,
                     output: process.stdout,
                 });
 
                 const confirm = await new Promise<boolean>(resolve => {
-                    readline.question(
+                    rl.question(
                         `Continue with available models (${availableModels.join(', ')})? (y/N): `,
                         (answer: string) => {
-                            readline.close();
+                            rl.close();
                             resolve(answer.toLowerCase() === 'y');
                         }
                     );
