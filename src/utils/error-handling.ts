@@ -1,6 +1,7 @@
 /**
  * Error handling utilities for Triumvirate
  */
+import type { HttpError, NetworkError, ErrorContext } from '../types/error-types';
 
 /**
  * Error categories for better error handling and reporting
@@ -97,7 +98,7 @@ export function handleExternalApiError(error: unknown, apiName: string): Triumvi
 
     // HTTP status code based categorization
     if (error instanceof Error && 'status' in error) {
-        const { status } = error as any;
+        const { status } = error as HttpError;
 
         switch (status) {
             case 401:
@@ -135,7 +136,9 @@ export function handleExternalApiError(error: unknown, apiName: string): Triumvi
     if (
         (error instanceof Error &&
             'code' in error &&
-            ['ENOTFOUND', 'ECONNREFUSED', 'ECONNRESET'].includes((error as any).code)) ||
+            ['ENOTFOUND', 'ECONNREFUSED', 'ECONNRESET'].includes(
+                (error as NetworkError).code || ''
+            )) ||
         errorMessage.toLowerCase().includes('network') ||
         errorMessage.toLowerCase().includes('connection')
     ) {
@@ -283,7 +286,9 @@ function categorizeModelError(
     // Check for timeout errors
     if (
         (error instanceof Error && error.name === 'AbortError') ||
-        (error instanceof Error && 'code' in error && (error as any).code === 'ETIMEDOUT') ||
+        (error instanceof Error &&
+            'code' in error &&
+            (error as NetworkError).code === 'ETIMEDOUT') ||
         errorMessage.includes('timeout') ||
         errorMessage.includes('timed out')
     ) {

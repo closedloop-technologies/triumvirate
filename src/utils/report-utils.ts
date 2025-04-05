@@ -13,6 +13,7 @@ import {
 } from '../types/report';
 import { runClaudeModelStructured } from '../models';
 import { enhancedFormatReportAsMarkdown } from './enhanced-report-formatter';
+import type { ModelResult, StructuredReview } from '../types/model-responses';
 
 /**
  * Extract categories from model reviews using Claude's structured tools API
@@ -105,11 +106,22 @@ function createCategorySchema(): Record<string, unknown> {
 /**
  * Validates if the Claude response has the expected structure
  */
-function isValidCategoryResponse(response: any): boolean {
+/**
+ * Validates if the Claude response has the expected structure
+ */
+function isValidCategoryResponse(response: unknown): boolean {
+    if (!response) {
+        return false;
+    }
+
+    // Type guard to check if response has the expected structure
     return (
-        response &&
-        response.data &&
-        response.data.categories &&
+        response !== null &&
+        typeof response === 'object' &&
+        'data' in response &&
+        response.data !== null &&
+        typeof response.data === 'object' &&
+        'categories' in response.data &&
         Array.isArray(response.data.categories)
     );
 }
@@ -241,22 +253,23 @@ export const extractCategories = extractCategoriesWithRegex;
 /**
  * Create a standardized structure for the model metrics
  */
-export function createModelMetrics(modelResults: any[]): ModelMetrics[] {
+export function createModelMetrics(modelResults: ModelResult[]): ModelMetrics[] {
     return modelResults.map(result => {
         const modelInfo: ModelInfo = {
             id: result.model.toLowerCase(),
             name: result.model,
         };
 
+        const tokenTotal = result.metrics.tokenTotal || 0;
+        const costValue = parseFloat(result.metrics.cost || '0');
+
         return {
             model: modelInfo,
             status: result.metrics.error ? '❌ Failed' : '✅ Completed',
             latencyMs: result.metrics.latency || 0,
-            cost: parseFloat(result.metrics.cost || '0'),
-            totalTokens: result.metrics.tokenTotal || 0,
-            costPer1kTokens: result.metrics.tokenTotal
-                ? (parseFloat(result.metrics.cost || '0') * 1000) / result.metrics.tokenTotal
-                : 0,
+            cost: costValue,
+            totalTokens: tokenTotal,
+            costPer1kTokens: tokenTotal ? (costValue * 1000) / tokenTotal : 0,
         };
     });
 }
@@ -542,7 +555,9 @@ function processAgreementFindings(
 
     // Then, find partial agreement items (more than one model agrees)
     allFindings.forEach((modelsThatMentioned, finding) => {
-        if (processedFindings.has(finding)) return;
+        if (processedFindings.has(finding)) {
+            return;
+        }
 
         if (modelsThatMentioned.length > 1) {
             partialAgreement.push(finding);
@@ -555,7 +570,9 @@ function processAgreementFindings(
 
     // Finally, add disagreement items (only one model mentions)
     allFindings.forEach((modelsThatMentioned, finding) => {
-        if (processedFindings.has(finding)) return;
+        if (processedFindings.has(finding)) {
+            return;
+        }
 
         disagreement.push(finding);
         processedFindings.add(finding);
@@ -822,7 +839,9 @@ export function calculateAgreementStats(
 /**
  * Generate a comprehensive code review report with structured Claude analysis
  */
-export async function generateCodeReviewReport(modelResults: any[]): Promise<CodeReviewReport> {
+export async function generateCodeReviewReport(
+    modelResults: ModelResult[]
+): Promise<CodeReviewReport> {
     try {
         console.log(`Generating enhanced report from ${modelResults.length} model results`);
 
@@ -931,7 +950,7 @@ export async function generateCodeReviewReport(modelResults: any[]): Promise<Cod
 /**
  * Log model results for debugging
  */
-function logModelResults(modelResults: any[]): void {
+function logModelResults(modelResults: ModelResult[]): void {
     console.log(
         'Model results structure:',
         JSON.stringify(
@@ -949,7 +968,7 @@ function logModelResults(modelResults: any[]): void {
 /**
  * Extract review texts from model results
  */
-function extractReviewTexts(modelResults: any[]): string[] {
+function extractReviewTexts(modelResults: ModelResult[]): string[] {
     return modelResults.map(result => {
         if (typeof result.review === 'string') {
             return result.review;
@@ -1207,9 +1226,23 @@ function createFindingsSchema(models: ModelInfo[]): Record<string, unknown> {
 /**
  * Validates if the Claude response has the expected structure
  */
-function isValidFindingsResponse(response: any): boolean {
+/**
+ * Validates if the findings response has the expected structure
+ */
+function isValidFindingsResponse(response: unknown): boolean {
+    if (!response) {
+        return false;
+    }
+
+    // Type guard to check if response has the expected structure
     return (
-        response && response.data && response.data.findings && Array.isArray(response.data.findings)
+        typeof response === 'object' &&
+        response !== null &&
+        'data' in response &&
+        typeof response.data === 'object' &&
+        response.data !== null &&
+        'findings' in response.data &&
+        Array.isArray(response.data.findings)
     );
 }
 
@@ -1480,7 +1513,7 @@ Provide at least 1-2 recommendations for each priority level.
  * This ensures we always have a valid report even if the enhanced analysis fails
  */
 function createBasicReport(
-    modelResults: any[],
+    modelResults: ModelResult[],
     models?: ModelInfo[],
     modelMetrics?: ModelMetrics[]
 ): CodeReviewReport {
@@ -1531,7 +1564,7 @@ function createBasicReport(
  * Create simple categories and findings for a basic report
  */
 function createSimpleCategoriesAndFindings(
-    modelResults: any[],
+    modelResults: ModelResult[],
     safeModels: ModelInfo[]
 ): {
     simpleCategories: ReviewCategory[];
@@ -1645,7 +1678,9 @@ function createSimpleAgreementStatistics(
 /**
  * Create simple prioritized recommendations for a basic report
  */
-function createSimplePrioritizedRecommendations(modelResults: any[]): Record<Priority, string[]> {
+function createSimplePrioritizedRecommendations(
+    modelResults: ModelResult[]
+): Record<Priority, string[]> {
     return {
         [Priority.HIGH]: modelResults.map(r => r.summary || '').filter(Boolean),
         [Priority.MEDIUM]: [],

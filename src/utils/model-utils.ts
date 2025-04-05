@@ -22,7 +22,7 @@ export interface ModelError extends Error {
     category: ErrorCategory;
     modelName: string;
     retryable: boolean;
-    originalError?: any;
+    originalError?: unknown;
 }
 
 /**
@@ -39,7 +39,7 @@ export function createModelError(
     category: ErrorCategory,
     modelName: string,
     retryable: boolean,
-    originalError?: any
+    originalError?: unknown
 ): ModelError {
     const error = new Error(message) as ModelError;
     error.category = category;
@@ -57,16 +57,33 @@ export function createModelError(
  * @param maxRetries The maximum number of retries attempted
  * @returns A standardized error message
  */
-export function handleModelError(error: any, modelName: string, maxRetries: number): ModelError {
+export function handleModelError(
+    error: unknown,
+    modelName: string,
+    maxRetries: number
+): ModelError {
     // Log the original error for debugging
     console.debug(`Original ${modelName} error:`, error);
 
+    // Extract error message safely
+    const errorMessage = error instanceof Error ? error.message : String(error);
+
+    // Create a type guard for HTTP-like errors
+    const isHttpError = (err: unknown): err is { status?: number; message?: string } => {
+        return typeof err === 'object' && err !== null && ('status' in err || 'message' in err);
+    };
+
+    // Create a type guard for network-like errors
+    const isNetworkError = (err: unknown): err is { code?: string; message?: string } => {
+        return typeof err === 'object' && err !== null && ('code' in err || 'message' in err);
+    };
+
     // Handle timeout errors
     if (
-        error.name === 'AbortError' ||
-        error.code === 'ETIMEDOUT' ||
-        error.message?.includes('timeout') ||
-        error.message?.includes('timed out')
+        (error instanceof Error && error.name === 'AbortError') ||
+        (isNetworkError(error) && error.code === 'ETIMEDOUT') ||
+        (error instanceof Error && error.message.includes('timeout')) ||
+        (error instanceof Error && error.message.includes('timed out'))
     ) {
         return createModelError(
             `${modelName} API call failed after ${maxRetries} retries due to timeouts`,
@@ -79,10 +96,10 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
 
     // Handle authentication errors (bad API key)
     if (
-        error.status === 401 ||
-        error.message?.includes('authentication') ||
-        error.message?.includes('API key') ||
-        error.message?.includes('auth')
+        (isHttpError(error) && error.status === 401) ||
+        (error instanceof Error && error.message.includes('authentication')) ||
+        (error instanceof Error && error.message.includes('API key')) ||
+        (error instanceof Error && error.message.includes('auth'))
     ) {
         return createModelError(
             `Invalid ${modelName} API key. Please check your API key and try again.`,
@@ -95,9 +112,9 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
 
     // Handle rate limit errors
     if (
-        error.status === 429 ||
-        error.message?.includes('rate limit') ||
-        error.message?.includes('too many requests')
+        (isHttpError(error) && error.status === 429) ||
+        (error instanceof Error && error.message.includes('rate limit')) ||
+        (error instanceof Error && error.message.includes('too many requests'))
     ) {
         return createModelError(
             `${modelName} API rate limit exceeded. Please try again later.`,
@@ -110,10 +127,11 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
 
     // Handle input too large errors
     if (
+        isHttpError(error) &&
         error.status === 400 &&
-        (error.message?.includes('too large') ||
-            error.message?.includes('maximum context length') ||
-            error.message?.includes('token limit'))
+        ((error instanceof Error && error.message.includes('too large')) ||
+            (error instanceof Error && error.message.includes('maximum context length')) ||
+            (error instanceof Error && error.message.includes('token limit')))
     ) {
         return createModelError(
             'Input is too large for the model. Please reduce the size of your input.',
@@ -126,11 +144,10 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
 
     // Handle network errors
     if (
-        error.code === 'ENOTFOUND' ||
-        error.code === 'ECONNREFUSED' ||
-        error.code === 'ECONNRESET' ||
-        error.message?.includes('network') ||
-        error.message?.includes('connection')
+        (isNetworkError(error) &&
+            ['ENOTFOUND', 'ECONNREFUSED', 'ECONNRESET'].includes(error.code || '')) ||
+        (error instanceof Error && error.message.includes('network')) ||
+        (error instanceof Error && error.message.includes('connection'))
     ) {
         return createModelError(
             `Network error when calling ${modelName} API. Please check your internet connection.`,
@@ -143,9 +160,10 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
 
     // Handle invalid response errors
     if (
-        error.message?.includes('invalid response') ||
-        error.message?.includes('unexpected response') ||
-        error.message?.includes('parsing')
+        error instanceof Error &&
+        (error.message.includes('invalid response') ||
+            error.message.includes('unexpected response') ||
+            error.message.includes('parsing'))
     ) {
         return createModelError(
             `Received invalid response from ${modelName} API.`,
@@ -158,7 +176,7 @@ export function handleModelError(error: any, modelName: string, maxRetries: numb
 
     // Handle other errors
     return createModelError(
-        `${modelName} API error: ${error.message || 'Unknown error'}`,
+        `${modelName} API error: ${errorMessage}`,
         ErrorCategory.UNKNOWN,
         modelName,
         false,

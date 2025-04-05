@@ -52,7 +52,12 @@ export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string
                     markdown += `| ${modelName} | ${status} | ${latencyMs.toLocaleString()}ms | $${cost.toFixed(8)} | ${totalTokensMetric.toLocaleString()} |\n`;
 
                     // Add to totals
-                    totalLatency = Math.max(totalLatency, latencyMs); // Wall time is the max latency
+                    // Convert latencyMs to a number if it's a string (remove 'ms' suffix if present)
+                    const latencyAsNumber =
+                        typeof latencyMs === 'string'
+                            ? parseFloat(latencyMs.replace(/ms$/, ''))
+                            : latencyMs;
+                    totalLatency = Math.max(totalLatency, latencyAsNumber); // Wall time is the max latency
                     totalCost += cost;
                     totalTokens += totalTokensMetric;
                 } catch (metricError) {

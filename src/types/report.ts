@@ -14,7 +14,7 @@ export interface ModelInfo {
 export interface ModelMetrics {
     model: ModelInfo;
     status: string;
-    latencyMs: number;
+    latencyMs: number | string;
     cost: number;
     totalTokens: number;
     costPer1kTokens: number;

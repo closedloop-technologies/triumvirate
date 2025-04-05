@@ -232,13 +232,20 @@ async function runClaudeModelStructured<T>(
                 throw new Error(`Claude API error (${response.status}): ${errorText}`);
             }
 
-            const result = (await response.json()) as { content: any[]; usage: ClaudeUsage };
+            const result = (await response.json()) as {
+                content: Array<{
+                    type: string;
+                    name?: string;
+                    input?: Record<string, unknown>;
+                }>;
+                usage: ClaudeUsage;
+            };
 
             console.log('runClaudeModelStructured result', JSON.stringify(result, null, 2));
 
             // Extract the tool call from the response
             const toolCallContent = result.content.find(
-                (item: any) => item.type === 'tool_use' && item.name === toolName
+                item => item.type === 'tool_use' && item.name === toolName
             );
 
             if (!toolCallContent) {

@@ -15,7 +15,8 @@ process.on('unhandledRejection', (reason, promise) => {
   
   // Log detailed error information
   if (reason instanceof Error) {
-    const errorCategory = (reason as any).category || ErrorCategory.UNKNOWN;
+    // Check if the error has a category property (like our TriumvirateError)
+    const errorCategory = 'category' in reason ? reason.category as ErrorCategory : ErrorCategory.UNKNOWN;
     console.error(`Error Category: ${errorCategory}`);
     console.error(`Error Message: ${reason.message}`);
     
