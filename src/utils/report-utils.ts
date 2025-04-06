@@ -1,4 +1,4 @@
-// src/utils/report-utils.ts - Refactored for better maintainability
+// src/utils/report-utils.ts - Consolidated report formatting utilities
 import {
     type ReviewCategory,
     type ModelInfo,
@@ -12,7 +12,6 @@ import {
     type CodeExample,
 } from '../types/report';
 import { runClaudeModelStructured } from '../models';
-import { enhancedFormatReportAsMarkdown } from './enhanced-report-formatter';
 import type { ModelResult, StructuredReview } from '../types/model-responses';
 import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
 
@@ -1796,25 +1795,372 @@ function createSimplePrioritizedRecommendations(
 }
 
 /**
- * Format the report as Markdown (for backward compatibility)
+ * Format the report as Markdown
+ * Includes improvements to address issues with the report format:
+ * 1. Fixes the Model Agreement Analysis section
+ * 2. Adds missing Priority Recommendations
+ * 3. Improves Category Extraction
+ * 4. Enhances Executive Summary
+ * 5. Adds Visual Elements (where possible in markdown)
+ * 6. Improves Code Example Formatting
  */
 export function formatReportAsMarkdown(report: CodeReviewReport): string {
     try {
         let markdown = `# ${report.projectName || 'Triumvirate'} Code Review Report\n\n`;
 
-        // Use the enhanced formatter by default (it handles errors internally)
-        return enhancedFormatReportAsMarkdown(report);
+        // Performance Dashboard
+        markdown += '## Performance Dashboard\n\n';
+        markdown += '| Model | Status | Latency | Cost | Total Tokens |\n';
+        markdown += '|-------|:------:|--------:|-----:|-------------:|\n';
+
+        // Calculate totals
+        let totalLatency = 0;
+        let totalCost = 0;
+        let totalTokens = 0;
+
+        // Safely handle modelMetrics
+        if (Array.isArray(report.modelMetrics)) {
+            report.modelMetrics.forEach(metric => {
+                try {
+                    // Update status from "Passed" to "Completed"
+                    const status = metric.status
+                        ? metric.status.replace('✅ Passed', '✅ Completed')
+                        : 'Unknown';
+                    const modelName =
+                        metric.model && metric.model.name ? metric.model.name : 'Unknown';
+                    const latencyMs = metric.latencyMs || 0;
+                    const cost = metric.cost || 0;
+                    const totalTokensMetric = metric.totalTokens || 0;
+
+                    markdown += `| ${modelName} | ${status} | ${latencyMs.toLocaleString()}ms | $${cost.toFixed(8)} | ${totalTokensMetric.toLocaleString()} |\n`;
+
+                    // Add to totals
+                    // Convert latencyMs to a number if it's a string (remove 'ms' suffix if present)
+                    const latencyAsNumber =
+                        typeof latencyMs === 'string'
+                            ? parseFloat(latencyMs.replace(/ms$/, ''))
+                            : latencyMs;
+                    totalLatency = Math.max(totalLatency, latencyAsNumber); // Wall time is the max latency
+                    totalCost += cost;
+                    totalTokens += totalTokensMetric;
+                } catch (metricError) {
+                    // Use consistent error handling
+                    const errorRow = safeDataProcessing(
+                        () => {
+                            console.warn('Error processing metric, using placeholder');
+                            return `| Error processing metric | - | - | - | - |\n`;
+                        },
+                        'metric',
+                        'processing',
+                        `| Error processing metric | - | - | - | - |\n`,
+                        'warn'
+                    );
+                    markdown += errorRow;
+                }
+            });
+        } else {
+            markdown += `| No metrics available | - | - | - | - |\n`;
+        }
+
+        // Add total row
+        markdown += `| **TOTAL** | - | **${totalLatency.toLocaleString()}ms** | **$${totalCost.toFixed(8)}** | **${totalTokens.toLocaleString()}** |\n`;
+
+        // Enhanced Executive Summary
+        markdown += '\n## Executive Summary\n\n';
+
+        // Add a comprehensive summary paragraph
+        const totalFindings = Object.values(report.findingsByCategory || {}).flat().length;
+        const strengths = (report.keyStrengths || []).length;
+        const improvements = (report.keyAreasForImprovement || []).length;
+
+        markdown += `This code review identified **${totalFindings} findings** across **${Object.keys(report.findingsByCategory || {}).length} categories**, highlighting **${strengths} key strengths** and **${improvements} areas for improvement**.\n\n`;
+
+        // Key Strengths Section
+        markdown += '### Key Strengths\n\n';
+        if (Array.isArray(report.keyStrengths) && report.keyStrengths.length > 0) {
+            report.keyStrengths.forEach((strength, index) => {
+                try {
+                    markdown += `${index + 1}. **${strength.title || 'Strength'}**: ${strength.description || 'No description provided'}\n`;
+                } catch (strengthError) {
+                    // Use consistent error handling
+                    const errorItem = safeDataProcessing(
+                        () => {
+                            console.warn('Error processing strength, using placeholder');
+                            return `${index + 1}. **Error processing strength**\n`;
+                        },
+                        'strength',
+                        'processing',
+                        `${index + 1}. **Error processing strength**\n`,
+                        'warn'
+                    );
+                    markdown += errorItem;
+                }
+            });
+        } else {
+            markdown += 'No key strengths identified.\n';
+        }
+
+        // Key Areas for Improvement
+        markdown += '\n### Key Areas for Improvement\n\n';
+        if (Array.isArray(report.keyAreasForImprovement) && report.keyAreasForImprovement.length > 0) {
+            report.keyAreasForImprovement.forEach((area, index) => {
+                try {
+                    markdown += `${index + 1}. **${area.title || 'Area for Improvement'}**: ${area.description || 'No description provided'}\n`;
+                    if (area.recommendation) {
+                        markdown += `   - **Recommendation**: ${area.recommendation}\n`;
+                    }
+                } catch (areaError) {
+                    // Use consistent error handling
+                    const errorItem = safeDataProcessing(
+                        () => {
+                            console.warn('Error processing improvement area, using placeholder');
+                            return `${index + 1}. **Error processing improvement area**\n`;
+                        },
+                        'improvement area',
+                        'processing',
+                        `${index + 1}. **Error processing improvement area**\n`,
+                        'warn'
+                    );
+                    markdown += errorItem;
+                }
+            });
+        } else {
+            markdown += 'No key areas for improvement identified.\n';
+        }
+
+        // Model Insights Section
+        markdown += '\n## Model Insights\n\n';
+        markdown += '> Insights from individual models that contributed to this review.\n\n';
+
+        // Safely handle modelInsights
+        if (Array.isArray(report.modelInsights) && report.modelInsights.length > 0) {
+            report.modelInsights.forEach((insight, index) => {
+                try {
+                    const modelName = insight.model && insight.model.name ? insight.model.name : 'Unknown';
+                    markdown += `### ${modelName}\n\n`;
+                    markdown += `${insight.insight || 'No insight provided'}\n\n`;
+                    if (insight.details) {
+                        markdown += `**Details**: ${insight.details}\n\n`;
+                    }
+                } catch (insightError) {
+                    // Use consistent error handling
+                    const errorSection = safeDataProcessing(
+                        () => {
+                            console.warn('Error processing model insight, using placeholder');
+                            return `### Error processing model insight\n\n`;
+                        },
+                        'model insight',
+                        'processing',
+                        `### Error processing model insight\n\n`,
+                        'warn'
+                    );
+                    markdown += errorSection;
+                }
+            });
+        } else {
+            markdown += 'No model insights available.\n\n';
+        }
+
+        // Findings by Category
+        markdown += '\n## Findings by Category\n\n';
+
+        // Safely handle categories and findings
+        if (report.categories && Array.isArray(report.categories) && report.categories.length > 0) {
+            report.categories.forEach(category => {
+                try {
+                    if (!category || !category.id) {
+                        return;
+                    }
+
+                    markdown += `### ${category.name || 'Unknown Category'}\n\n`;
+                    // Check if description exists on the category object
+                    if ('description' in category && category.description) {
+                        markdown += `${category.description}\n\n`;
+                    }
+
+                    const findings = report.findingsByCategory?.[category.id] || [];
+                    if (findings.length > 0) {
+                        // Group findings by strength vs. improvement
+                        const strengths = findings.filter(f => f.isStrength);
+                        const improvements = findings.filter(f => !f.isStrength);
+
+                        if (strengths.length > 0) {
+                            markdown += '#### Strengths\n\n';
+                            strengths.forEach((finding, idx) => {
+                                markdown += `${idx + 1}. **${finding.title || 'Finding'}**: ${finding.description || 'No description provided'}\n`;
+                                // Add model agreement info if available
+                                if (finding.modelAgreement && finding.modelAgreement.modelAgreements) {
+                                    const agreementModels = Object.entries(finding.modelAgreement.modelAgreements)
+                                        .filter(([_, agrees]) => agrees)
+                                        .map(([modelId]) => modelId);
+                                    if (agreementModels.length > 0) {
+                                        markdown += `   - **Model Agreement**: ${agreementModels.join(', ')}\n`;
+                                    }
+                                }
+                                // Add code examples if available
+                                if ('codeExample' in finding && finding.codeExample) {
+                                    markdown += '   - **Code Example**:\n';
+                                    const example = finding.codeExample;
+                                    // Safely access properties that might not exist on CodeExample
+                                    const description = 'description' in example ? example.description : 'Example';
+                                    markdown += `     - ${description}:\n`;
+                                    markdown += '```\n';
+                                    markdown += `${example.code || 'No code provided'}\n`;
+                                    markdown += '```\n';
+                                }
+                            });
+                            markdown += '\n';
+                        }
+
+                        if (improvements.length > 0) {
+                            markdown += '#### Areas for Improvement\n\n';
+                            improvements.forEach((finding, idx) => {
+                                markdown += `${idx + 1}. **${finding.title || 'Finding'}**: ${finding.description || 'No description provided'}\n`;
+                                // Add model agreement info if available
+                                if (finding.modelAgreement && finding.modelAgreement.modelAgreements) {
+                                    const agreementModels = Object.entries(finding.modelAgreement.modelAgreements)
+                                        .filter(([_, agrees]) => agrees)
+                                        .map(([modelId]) => modelId);
+                                    if (agreementModels.length > 0) {
+                                        markdown += `   - **Model Agreement**: ${agreementModels.join(', ')}\n`;
+                                    }
+                                }
+                                // Add code examples if available
+                                if ('codeExample' in finding && finding.codeExample) {
+                                    markdown += '   - **Code Example**:\n';
+                                    const example = finding.codeExample;
+                                    // Safely access properties that might not exist on CodeExample
+                                    const description = 'description' in example ? example.description : 'Example';
+                                    markdown += `     - ${description}:\n`;
+                                    markdown += '```\n';
+                                    markdown += `${example.code || 'No code provided'}\n`;
+                                    markdown += '```\n';
+                                }
+                            });
+                            markdown += '\n';
+                        }
+                    } else {
+                        markdown += 'No findings in this category.\n\n';
+                    }
+                } catch (categoryError) {
+                    // Use consistent error handling
+                    const errorSection = safeDataProcessing(
+                        () => {
+                            console.warn('Error processing category, using placeholder');
+                            return `### Error processing category\n\nAn error occurred while processing this category.\n\n`;
+                        },
+                        'category',
+                        'processing',
+                        `### Error processing category\n\nAn error occurred while processing this category.\n\n`,
+                        'warn'
+                    );
+                    markdown += errorSection;
+                }
+            });
+        } else {
+            markdown += 'No categories available.\n\n';
+        }
+
+        // Model Agreement Analysis
+        markdown += '\n## Model Agreement Analysis\n\n';
+        markdown += '> Areas where models agree or disagree in their assessment.\n\n';
+        markdown += '| Area | High Agreement | Partial Agreement | Disagreement |\n';
+        markdown += '|------|---------------|-------------------|-------------|\n';
+
+        // Safely handle agreementAnalysis
+        if (Array.isArray(report.agreementAnalysis) && report.agreementAnalysis.length > 0) {
+            report.agreementAnalysis.forEach(analysis => {
+                try {
+                    const highAgreement = Array.isArray(analysis.highAgreement) && analysis.highAgreement.length > 0
+                        ? analysis.highAgreement.join('<br>')
+                        : '-';
+                    const partialAgreement = Array.isArray(analysis.partialAgreement) && analysis.partialAgreement.length > 0
+                        ? analysis.partialAgreement.join('<br>')
+                        : '-';
+                    const disagreement = Array.isArray(analysis.disagreement) && analysis.disagreement.length > 0
+                        ? analysis.disagreement.join('<br>')
+                        : '-';
+
+                    markdown += `| ${analysis.area || 'Unknown'} | ${highAgreement} | ${partialAgreement} | ${disagreement} |\n`;
+                } catch (analysisError) {
+                    console.error('Error processing agreement analysis:', analysisError);
+                    markdown += `| Error processing analysis | - | - | - |\n`;
+                }
+            });
+        } else {
+            markdown += `| No agreement analysis available | - | - | - |\n`;
+        }
+
+        // Enhanced Recommendations Priority Matrix
+        markdown += '\n## Recommendations Priority Matrix\n\n';
+        markdown +=
+            '> Recommendations are prioritized based on impact, urgency, and implementation effort.\n\n';
+
+        // Safely handle prioritizedRecommendations
+        const prioritizedRecommendations = report.prioritizedRecommendations || {};
+        Object.entries(prioritizedRecommendations).forEach(([priority, recommendations]) => {
+            try {
+                markdown += `### ${priority}\n`;
+                if (Array.isArray(recommendations) && recommendations.length > 0) {
+                    recommendations.forEach((recommendation, index) => {
+                        markdown += `${index + 1}. ${recommendation}\n`;
+                    });
+                } else if (
+                    priority === 'High Priority' &&
+                    Array.isArray(report.keyAreasForImprovement) &&
+                    report.keyAreasForImprovement.length > 0
+                ) {
+                    // Add fallback recommendations based on findings if no recommendations are available
+                    report.keyAreasForImprovement.slice(0, 2).forEach((area, index) => {
+                        if (area.recommendation) {
+                            markdown += `${index + 1}. ${area.recommendation}\n`;
+                        }
+                    });
+                } else if (
+                    priority === 'Medium Priority' &&
+                    Array.isArray(report.keyAreasForImprovement) &&
+                    report.keyAreasForImprovement.length > 2
+                ) {
+                    report.keyAreasForImprovement.slice(2, 4).forEach((area, index) => {
+                        if (area.recommendation) {
+                            markdown += `${index + 1}. ${area.recommendation}\n`;
+                        }
+                    });
+                } else {
+                    markdown += 'No recommendations available.\n';
+                }
+                markdown += '\n';
+            } catch (priorityError) {
+                // Use consistent error handling
+                const errorSection = safeDataProcessing(
+                    () => {
+                        console.warn(
+                            `Error processing ${priority} recommendations, using placeholder`
+                        );
+                        return `### Error processing ${priority} recommendations\n\n`;
+                    },
+                    'priority recommendations',
+                    'processing',
+                    `### Error processing ${priority} recommendations\n\n`,
+                    'warn'
+                );
+                markdown += errorSection;
+            }
+        });
+
+        return markdown;
     } catch (error) {
-        // Use the new error handling utilities for consistent error handling
+        // Use consistent error handling
         return safeDataProcessing(
             () => {
-                // Log the error but don't throw, instead return a simple markdown report
-                console.warn('Error formatting report as markdown, returning basic format');
+                console.warn(
+                    'Error formatting report as markdown, returning basic format'
+                );
                 return `# Triumvirate Code Review Report
 
 ## Error Generating Report
 
-An error occurred while generating the enhanced markdown report.
+An error occurred while generating the markdown report.
 
 ### Basic Review Information
 
@@ -1836,4 +2182,12 @@ Please check the JSON output file for the raw review data.
             'error' // Log at error level
         );
     }
+}
+
+/**
+ * @deprecated Use formatReportAsMarkdown instead. This function will be removed in a future version.
+ */
+export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string {
+    console.warn('enhancedFormatReportAsMarkdown is deprecated. Use formatReportAsMarkdown instead.');
+    return formatReportAsMarkdown(report);
 }
