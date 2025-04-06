@@ -106,3 +106,22 @@ See `.github/workflows/triumvirate.yml`.
 ## Badge
 
 Use [Shields.io](https://shields.io) to create a dynamic badge from your review output or CI status.
+
+## Development Workflow
+
+### Git Hooks
+
+This project uses Git hooks to ensure code quality:
+
+- **Pre-commit Hook**: Runs fast checks on changed files only
+  - Linting (ESLint) on changed files only
+  - Format checking (Prettier) on changed files only
+  - Type checking on changed TypeScript files only
+
+- **Pre-push Hook**: Runs the full build process
+  - Complete type checking
+  - Linting all files
+  - Formatting all files
+  - Building the project
+
+This approach optimizes the developer experience by keeping commit times fast while still ensuring code quality before pushing to the repository.

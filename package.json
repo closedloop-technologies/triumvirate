@@ -27,8 +27,11 @@
         "test:review": "node test/run.js",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
+        "lint:changed": "lint-staged",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
+        "type-check": "tsc -p src/tsconfig.json --noEmit",
+        "type-check:changed": "node scripts/check-types-changed.js",
         "postinstall": "npm run build && node dist/triumvirate.js install"
     },
     "keywords": [
@@ -80,5 +83,14 @@
         "tsup": "^8.4.0",
         "tsx": "^4.19.3",
         "typescript": "5.6.x"
+    },
+    "lint-staged": {
+        "*.{ts,tsx,js,jsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{json,md,yml,yaml}": [
+            "prettier --write"
+        ]
     }
 }

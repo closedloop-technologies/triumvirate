@@ -1,2 +1,5 @@
-# Run build script before committing
-npm run build
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Fast pre-commit hook that only checks changed files
+npx lint-staged && node scripts/check-types-changed.js
