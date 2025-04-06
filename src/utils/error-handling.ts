@@ -589,13 +589,15 @@ function categorizeModelError(
  * @param component The component name for context (or model name for model-specific functions)
  * @param defaultValue The default value to return if the function throws
  * @param isModelComponent Optional flag to indicate if this is a model component (for model-specific error handling)
+ * @param logLevel Optional log level for errors (default: 'error')
  * @returns The result of the function or the default value
  */
 export function safeExecute<T, D>(
     fn: () => T,
     component: string,
     defaultValue: D,
-    isModelComponent: boolean = false
+    isModelComponent: boolean = false,
+    logLevel: 'error' | 'warn' | 'info' = 'error'
 ): T | D {
     try {
         return fn();
@@ -607,7 +609,13 @@ export function safeExecute<T, D>(
                 component, // component is the model name in this case
                 3 // default max retries
             );
-            console.error(`Model error in safeExecute: ${modelError.message}`);
+            if (logLevel === 'error') {
+                console.error(`Model error in safeExecute: ${modelError.message}`);
+            } else if (logLevel === 'warn') {
+                console.warn(`Model error in safeExecute: ${modelError.message}`);
+            } else {
+                console.info(`Model error in safeExecute: ${modelError.message}`);
+            }
         } else {
             // Use general error handling
             const triumvirateError = new TriumvirateError(
@@ -622,3 +630,5 @@ export function safeExecute<T, D>(
         return defaultValue;
     }
 }
+// Re-export all error handling extensions
+export * from './error-handling-extensions';

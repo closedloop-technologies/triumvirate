@@ -14,6 +14,7 @@ import {
 import { runClaudeModelStructured } from '../models';
 import { enhancedFormatReportAsMarkdown } from './enhanced-report-formatter';
 import type { ModelResult, StructuredReview } from '../types/model-responses';
+import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
 
 /**
  * Extract categories from model reviews using Claude's structured tools API
@@ -48,9 +49,17 @@ export async function extractCategoriesWithClaude(reviews: string[]): Promise<Re
         // Map the categories to the required format
         return mapCategoriesToRequiredFormat(response.data.categories);
     } catch (error) {
-        console.error('Error extracting categories with Claude:', error);
-        // Fall back to regex method
-        return extractCategoriesWithRegex(reviews.join('\n\n'));
+        // Use the new error handling utilities for consistent error handling
+        return safeReportGenerationAsync(
+            async () => {
+                console.warn('Falling back to regex extraction method due to error');
+                return extractCategoriesWithRegex(reviews.join('\n\n'));
+            },
+            'categories',
+            'extraction',
+            [], // Default empty array as fallback if even the fallback method fails
+            true // Log error stack trace
+        );
     }
 }
 
@@ -940,10 +949,17 @@ export async function generateCodeReviewReport(
             prioritizedRecommendations,
         };
     } catch (error) {
-        console.error('Error generating code review report:', error);
-        console.error('Stack trace:', (error as Error).stack);
-        // Return a minimal valid report to prevent crashes
-        return createBasicReport(modelResults);
+        // Use the new error handling utilities for consistent error handling
+        return safeReportGenerationAsync(
+            async () => {
+                console.warn('Error in main report generation, falling back to basic report');
+                return createBasicReport(modelResults);
+            },
+            'code review',
+            'generation',
+            createBasicReport(modelResults), // Default basic report as fallback
+            true // Log error stack trace
+        );
     }
 }
 
@@ -1109,12 +1125,16 @@ async function extractFindingsWithClaude(
         // Map the findings to the required format
         return mapExtractedFindingsToRequiredFormat(response.data.findings, categories);
     } catch (error) {
-        console.error('Error extracting findings with Claude:', error);
-        console.error('Stack trace:', (error as Error).stack);
-
-        // Return an empty array to avoid breaking the rest of the flow
-        // The calling code should handle this gracefully
-        return [];
+        // Use the new error handling utilities for consistent error handling
+        return safeReportGenerationAsync(
+            async () => {
+                throw error; // Re-throw the error to be handled by safeReportGenerationAsync
+            },
+            'findings',
+            'extraction',
+            [], // Default empty array as fallback
+            true // Log error stack trace
+        );
     }
 }
 
@@ -1379,8 +1399,18 @@ For each model, identify 1-2 unique insights or perspectives that are not emphas
         // Map the insights to the required format
         return mapModelInsightsToRequiredFormat(response.data.modelInsights, models);
     } catch (error) {
-        console.error('Error extracting model insights with Claude:', error);
-        throw new Error('Failed to extract model insights');
+        // Use the new error handling utilities for consistent error handling
+        return safeReportGenerationAsync(
+            async () => {
+                // Log the error but don't throw, instead return an empty array
+                console.warn('Error extracting model insights, returning empty array');
+                return [];
+            },
+            'model insights',
+            'extraction',
+            [], // Default empty array as fallback
+            true // Log error stack trace
+        );
     }
 }
 
@@ -1503,8 +1533,28 @@ Provide at least 1-2 recommendations for each priority level.
             [Priority.LOW]: response.data.lowPriority || [],
         };
     } catch (error) {
-        console.error('Error generating prioritized recommendations with Claude:', error);
-        throw new Error('Failed to generate prioritized recommendations');
+        // Use the new error handling utilities for consistent error handling
+        return safeReportGenerationAsync(
+            async () => {
+                // Log the error but don't throw, instead return an empty priority object
+                console.warn(
+                    'Error generating prioritized recommendations, returning empty priorities'
+                );
+                return {
+                    [Priority.HIGH]: [],
+                    [Priority.MEDIUM]: [],
+                    [Priority.LOW]: [],
+                };
+            },
+            'prioritized recommendations',
+            'generation',
+            {
+                [Priority.HIGH]: [],
+                [Priority.MEDIUM]: [],
+                [Priority.LOW]: [],
+            }, // Default empty priorities as fallback
+            true // Log error stack trace
+        );
     }
 }
 
@@ -1698,17 +1748,35 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
         // Use the enhanced formatter by default (it handles errors internally)
         return enhancedFormatReportAsMarkdown(report);
     } catch (error) {
-        console.error('Error formatting report as markdown:', error);
-        // Return a simple markdown report with error information
-        return `# Triumvirate Code Review Report
+        // Use the new error handling utilities for consistent error handling
+        return safeDataProcessing(
+            () => {
+                // Log the error but don't throw, instead return a simple markdown report
+                console.warn('Error formatting report as markdown, returning basic format');
+                return `# Triumvirate Code Review Report
 
 ## Error Generating Report
 
-An error occurred while generating the enhanced markdown report: ${error}
+An error occurred while generating the enhanced markdown report.
 
 ### Basic Review Information
 
 Please check the JSON output file for the raw review data.
 `;
+            },
+            'markdown report',
+            'formatting',
+            `# Triumvirate Code Review Report
+
+## Error Generating Report
+
+An error occurred while generating the markdown report.
+
+### Basic Review Information
+
+Please check the JSON output file for the raw review data.
+`, // Default simple report as fallback
+            'error' // Log at error level
+        );
     }
 }

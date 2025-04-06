@@ -10,6 +10,7 @@ import {
     Priority,
     type CodeReviewReport,
 } from '../types/report';
+import { safeDataProcessing } from './error-handling-extensions';
 
 /**
  * Enhanced format for the report as Markdown
@@ -61,8 +62,18 @@ export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string
                     totalCost += cost;
                     totalTokens += totalTokensMetric;
                 } catch (metricError) {
-                    console.error('Error processing metric:', metricError);
-                    markdown += `| Error processing metric | - | - | - | - |\n`;
+                    // Use consistent error handling
+                    const errorRow = safeDataProcessing(
+                        () => {
+                            console.warn('Error processing metric, using placeholder');
+                            return `| Error processing metric | - | - | - | - |\n`;
+                        },
+                        'metric',
+                        'processing',
+                        `| Error processing metric | - | - | - | - |\n`,
+                        'warn'
+                    );
+                    markdown += errorRow;
                 }
             });
         } else {
@@ -132,8 +143,18 @@ export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string
                     // Format the strength with model checks
                     markdown += `| **${strength.title}**: ${strength.description} | ${modelChecks['openai'] || '-'} | ${modelChecks['claude'] || '-'} | ${modelChecks['gemini'] || '-'} |\n`;
                 } catch (strengthError) {
-                    console.error('Error processing strength:', strengthError);
-                    markdown += `| Error processing strength | - | - | - |\n`;
+                    // Use consistent error handling
+                    const errorRow = safeDataProcessing(
+                        () => {
+                            console.warn('Error processing strength, using placeholder');
+                            return `| Error processing strength | - | - | - |\n`;
+                        },
+                        'strength',
+                        'processing',
+                        `| Error processing strength | - | - | - |\n`,
+                        'warn'
+                    );
+                    markdown += errorRow;
                 }
             });
         } else {
@@ -170,8 +191,20 @@ export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string
                     // Format the area with model checks
                     markdown += `| **${area.title}**: ${area.description} | ${modelChecks['openai'] || '-'} | ${modelChecks['claude'] || '-'} | ${modelChecks['gemini'] || '-'} |\n`;
                 } catch (areaError) {
-                    console.error('Error processing area for improvement:', areaError);
-                    markdown += `| Error processing area | - | - | - |\n`;
+                    // Use consistent error handling
+                    const errorRow = safeDataProcessing(
+                        () => {
+                            console.warn(
+                                'Error processing area for improvement, using placeholder'
+                            );
+                            return `| Error processing area | - | - | - |\n`;
+                        },
+                        'area for improvement',
+                        'processing',
+                        `| Error processing area | - | - | - |\n`,
+                        'warn'
+                    );
+                    markdown += errorRow;
                 }
             });
         } else {
@@ -439,24 +472,55 @@ export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string
                 }
                 markdown += '\n';
             } catch (priorityError) {
-                console.error('Error processing priority recommendations:', priorityError);
-                markdown += `### Error processing ${priority} recommendations\n\n`;
+                // Use consistent error handling
+                const errorSection = safeDataProcessing(
+                    () => {
+                        console.warn(
+                            `Error processing ${priority} recommendations, using placeholder`
+                        );
+                        return `### Error processing ${priority} recommendations\n\n`;
+                    },
+                    'priority recommendations',
+                    'processing',
+                    `### Error processing ${priority} recommendations\n\n`,
+                    'warn'
+                );
+                markdown += errorSection;
             }
         });
 
         return markdown;
     } catch (error) {
-        console.error('Error formatting report as markdown:', error);
-        // Return a simple markdown report with error information
-        return `# Triumvirate Code Review Report
+        // Use consistent error handling
+        return safeDataProcessing(
+            () => {
+                console.warn(
+                    'Error formatting enhanced report as markdown, returning basic format'
+                );
+                return `# Triumvirate Code Review Report
 
 ## Error Generating Report
 
-An error occurred while generating the enhanced markdown report: ${error}
+An error occurred while generating the enhanced markdown report.
 
 ### Basic Review Information
 
 Please check the JSON output file for the raw review data.
 `;
+            },
+            'enhanced markdown report',
+            'formatting',
+            `# Triumvirate Code Review Report
+
+## Error Generating Report
+
+An error occurred while generating the markdown report.
+
+### Basic Review Information
+
+Please check the JSON output file for the raw review data.
+`, // Default simple report as fallback
+            'error' // Log at error level
+        );
     }
 }

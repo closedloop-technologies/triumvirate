@@ -84,4 +84,3 @@ Store it in a Graph structure
   - Use exact version numbers when possible (`npm install --save-exact <package>`)
   - Always review the changes to `package-lock.json` before committing
   - Document significant dependency changes in commit messages
-
