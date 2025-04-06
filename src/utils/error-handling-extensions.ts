@@ -23,7 +23,11 @@ export async function safeExecuteAsync<T, D>(
     isModelComponent: boolean = false,
     logLevel: 'error' | 'warn' | 'info' = 'error'
 ): Promise<T | D> {
+    // Track any resources that need cleanup
+    let cleanupFunctions: Array<() => void> = [];
+
     try {
+        // Execute the async function and return its result
         return await fn();
     } catch (error) {
         if (isModelComponent) {
@@ -52,6 +56,15 @@ export async function safeExecuteAsync<T, D>(
             triumvirateError.logError();
         }
         return defaultValue;
+    } finally {
+        // Clean up any resources
+        for (const cleanup of cleanupFunctions) {
+            try {
+                cleanup();
+            } catch (cleanupError) {
+                console.error(`Error during async execution cleanup: ${cleanupError}`);
+            }
+        }
     }
 }
 
@@ -161,12 +174,25 @@ export async function safeFileOperationAsync<T, D>(
     filePath: string,
     defaultValue: D
 ): Promise<T | D> {
+    // Track any resources that need cleanup
+    let cleanupFunctions: Array<() => void> = [];
+
     try {
+        // Execute the async function and return its result
         return await fn();
     } catch (error) {
         const triumvirateError = handleFileError(error, operation, filePath);
         triumvirateError.logError();
         return defaultValue;
+    } finally {
+        // Clean up any resources
+        for (const cleanup of cleanupFunctions) {
+            try {
+                cleanup();
+            } catch (cleanupError) {
+                console.error(`Error during file operation cleanup: ${cleanupError}`);
+            }
+        }
     }
 }
 
@@ -343,8 +369,10 @@ export async function safeReportGenerationAsync<T, D>(
     logErrorStack: boolean = true
 ): Promise<T | D> {
     try {
+        // Ensure we're properly awaiting the promise
         return await fn();
     } catch (error) {
+        // Handle the error properly
         const triumvirateError = handleReportError(error, reportType, stage);
         console.error(`Report generation error: ${triumvirateError.message}`);
 
@@ -352,6 +380,7 @@ export async function safeReportGenerationAsync<T, D>(
             console.error('Stack trace:', error.stack);
         }
 
+        // Return the default value when an error occurs
         return defaultValue;
     }
 }

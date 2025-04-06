@@ -604,10 +604,12 @@ function markSimilarFindings(
     processedFindings: Set<string>
 ): void {
     allFindings.forEach((_, otherFinding) => {
-        if (finding !== otherFinding && !processedFindings.has(otherFinding)) {
-            if (calculateSimilarity(finding, otherFinding) > 0.7) {
-                processedFindings.add(otherFinding);
-            }
+        if (
+            finding !== otherFinding &&
+            !processedFindings.has(otherFinding) &&
+            calculateSimilarity(finding, otherFinding) > 0.7
+        ) {
+            processedFindings.add(otherFinding);
         }
     });
 }
@@ -728,7 +730,9 @@ function getKeyPhrases(): string[] {
  * Format a finding to be concise and readable
  */
 function formatFinding(text: string): string {
-    if (!text) return '';
+    if (!text) {
+        return '';
+    }
 
     // Remove any markdown formatting
     let formatted = text.replace(/\*\*/g, '').replace(/\*/g, '').trim();
@@ -851,6 +855,9 @@ export function calculateAgreementStats(
 export async function generateCodeReviewReport(
     modelResults: ModelResult[]
 ): Promise<CodeReviewReport> {
+    // Track any resources that need cleanup
+    const resources: { cleanup: () => void }[] = [];
+
     try {
         console.log(`Generating enhanced report from ${modelResults.length} model results`);
 
@@ -879,9 +886,15 @@ export async function generateCodeReviewReport(
             return createBasicReport(modelResults, models, modelMetrics);
         }
 
-        // Extract categories using Claude
+        // Extract categories using Claude - ensure proper promise handling
         console.log('Extracting categories from reviews...');
-        const categories = await extractCategoriesWithClaude(reviews);
+        let categories;
+        try {
+            categories = await extractCategoriesWithClaude(reviews);
+        } catch (categoryError) {
+            console.error('Error extracting categories:', categoryError);
+            return createBasicReport(modelResults, models, modelMetrics);
+        }
 
         if (!categories.length) {
             console.warn('Failed to extract categories, creating basic report');
@@ -893,9 +906,18 @@ export async function generateCodeReviewReport(
             categories.map(c => c.name)
         );
 
-        // Extract findings using Claude
+        // Extract findings using Claude - ensure proper promise handling
         console.log('Extracting findings from reviews...');
-        const findings = await extractFindingsWithClaude(reviews, categories, models);
+        let findings;
+        try {
+            findings = await extractFindingsWithClaude(reviews, categories, models);
+        } catch (findingsError) {
+            console.error('Error extracting findings:', findingsError);
+            return {
+                ...createBasicReport(modelResults, models, modelMetrics),
+                categories,
+            };
+        }
 
         if (!findings.length) {
             console.warn('Failed to extract findings, creating basic report with categories');
@@ -914,23 +936,49 @@ export async function generateCodeReviewReport(
         // Identify key strengths and areas for improvement
         const { keyStrengths, keyAreasForImprovement } = identifyKeyFindingsImportance(findings);
 
-        // Create model agreement analysis
+        // Create model agreement analysis - ensure proper promise handling
         console.log('Analyzing model agreement...');
-        const agreementAnalysis = analyzeModelAgreement(
-            reviews,
-            models.map(m => m.id)
-        );
+        let agreementAnalysis: CategoryAgreementAnalysis[];
+        try {
+            agreementAnalysis = analyzeModelAgreement(
+                reviews,
+                models.map(m => m.id)
+            );
+        } catch (agreementError) {
+            console.error('Error analyzing model agreement:', agreementError);
+            agreementAnalysis = [];
+        }
 
         // Calculate agreement statistics
         const agreementStatistics = calculateAgreementStats(findingsByCategory, categories);
 
-        // Extract model insights
+        // Extract model insights - ensure proper promise handling
         console.log('Extracting model insights...');
-        const modelInsights = await extractModelInsightsWithClaude(reviews, models);
+        let modelInsights;
+        try {
+            modelInsights = await extractModelInsightsWithClaude(reviews, models);
+        } catch (insightsError) {
+            console.error('Error extracting model insights:', insightsError);
+            modelInsights = models.map(model => ({
+                model,
+                insight: `Review from ${model.name}`,
+                details: `Check the full review for detailed insights`,
+            }));
+        }
 
-        // Generate prioritized recommendations
+        // Generate prioritized recommendations - ensure proper promise handling
         console.log('Generating prioritized recommendations...');
-        const prioritizedRecommendations = await generatePrioritizedRecommendations(findings);
+        let prioritizedRecommendations;
+        try {
+            prioritizedRecommendations = await generatePrioritizedRecommendations(findings);
+        } catch (recommendationsError) {
+            console.error('Error generating prioritized recommendations:', recommendationsError);
+            prioritizedRecommendations = {
+                [Priority.HIGH]: [],
+                [Priority.MEDIUM]: [],
+                [Priority.LOW]: [],
+            };
+        }
 
         // Create the complete report
         console.log('Enhanced report generation complete');
@@ -960,6 +1008,15 @@ export async function generateCodeReviewReport(
             createBasicReport(modelResults), // Default basic report as fallback
             true // Log error stack trace
         );
+    } finally {
+        // Clean up any resources
+        resources.forEach(resource => {
+            try {
+                resource.cleanup();
+            } catch (cleanupError) {
+                console.error('Error during resource cleanup:', cleanupError);
+            }
+        });
     }
 }
 

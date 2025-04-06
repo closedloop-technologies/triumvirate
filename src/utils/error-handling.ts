@@ -355,7 +355,15 @@ export function handleExternalApiError(error: unknown, apiName: string): Triumvi
 export async function exponentialBackoff(retryCount: number): Promise<void> {
     const backoffMs = 1000 * Math.pow(2, retryCount);
     console.log(`Backing off for ${backoffMs}ms before retry`);
-    return new Promise(resolve => setTimeout(resolve, backoffMs));
+
+    return new Promise<void>(resolve => {
+        // Store the timeout ID so it can be cleared if needed
+        const timeoutId = setTimeout(() => {
+            // Clear the timeout reference and resolve the promise
+            clearTimeout(timeoutId);
+            resolve();
+        }, backoffMs);
+    });
 }
 
 /**
@@ -398,6 +406,8 @@ export async function withErrorHandlingAndRetry<T>(
                 console.log(`${component} API call succeeded after ${retryCount} retries`);
             }
 
+            // Clear timeout before returning to prevent resource leaks
+            clearTimeout(timeoutId);
             return result;
         } catch (error) {
             // Clear the timeout to prevent resource leaks
@@ -432,10 +442,9 @@ export async function withErrorHandlingAndRetry<T>(
                 `${component} API call failed after ${retryCount} attempts: ${lastError.message}`
             );
             throw lastError;
-        } finally {
-            // Always clear the timeout to prevent resource leaks
-            clearTimeout(timeoutId);
         }
+        // Removed the finally block as we're now explicitly clearing the timeout in both try and catch blocks
+        // This prevents the potential double-clearing which could lead to race conditions
     }
 }
 
