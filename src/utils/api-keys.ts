@@ -10,25 +10,24 @@ interface ApiKeyRequirements {
     format?: RegExp;
     minLength?: number;
 }
-
 export const MODEL_API_KEYS: ApiKeyRequirements[] = [
     {
         model: 'openai',
         envVar: 'OPENAI_API_KEY',
-        format: /^sk-[A-Za-z0-9_]{32,}$/,
-        minLength: 35,
+        format: /^sk-[A-Za-z0-9_-]{36,}$/,
+        minLength: 39,
     },
     {
         model: 'claude',
         envVar: 'ANTHROPIC_API_KEY',
-        format: /^sk-ant-[A-Za-z0-9_]{32,}$/,
-        minLength: 40,
+        format: /^sk-ant-[A-Za-z0-9_-]{32,}$/,
+        minLength: 39,
     },
     {
         model: 'gemini',
         envVar: 'GOOGLE_API_KEY',
-        format: /^[A-Za-z0-9_-]{39}$/,
-        minLength: 39,
+        format: /^[A-Za-z0-9_-]{33,}$/,
+        minLength: 33,
     },
 ];
 
