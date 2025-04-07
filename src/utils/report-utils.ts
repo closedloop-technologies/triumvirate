@@ -12,7 +12,6 @@ import {
     type AgreementStatistics,
     Priority,
     type CodeReviewReport,
-    // type CodeExample,
 } from '../types/report';
 
 /**
@@ -111,9 +110,6 @@ function createCategorySchema(): Record<string, unknown> {
     };
 }
 
-/**
- * Validates if the Claude response has the expected structure
- */
 /**
  * Validates if the Claude response has the expected structure
  */
@@ -1302,9 +1298,6 @@ function createFindingsSchema(models: ModelInfo[]): Record<string, unknown> {
     };
 }
 
-/**
- * Validates if the Claude response has the expected structure
- */
 /**
  * Validates if the findings response has the expected structure
  */
