@@ -386,8 +386,8 @@ export async function withErrorHandlingAndRetry<T>(
     let retryCount = 0;
     let lastError: TriumvirateError | null = null;
 
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
+    // Use explicit loop condition instead of while(true) to prevent potential infinite loops
+    while (retryCount <= maxRetries) {
         // Set up timeout with AbortController
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -408,13 +408,8 @@ export async function withErrorHandlingAndRetry<T>(
                 console.log(`${component} API call succeeded after ${retryCount} retries`);
             }
 
-            // Clear timeout before returning to prevent resource leaks
-            clearTimeout(timeoutId);
             return result;
         } catch (error) {
-            // Clear the timeout to prevent resource leaks
-            clearTimeout(timeoutId);
-
             // Handle the error with our standardized approach
             lastError = categorizeModelError(error, component, maxRetries);
 
@@ -444,9 +439,23 @@ export async function withErrorHandlingAndRetry<T>(
                 `${component} API call failed after ${retryCount} attempts: ${lastError.message}`
             );
             throw lastError;
+        } finally {
+            // Always clear the timeout to prevent resource leaks, regardless of success or failure
+            clearTimeout(timeoutId);
         }
-        // Removed the finally block as we're now explicitly clearing the timeout in both try and catch blocks
-        // This prevents the potential double-clearing which could lead to race conditions
+    }
+
+    // If we've exhausted all retries and haven't returned or thrown yet, throw the last error
+    // This ensures the function always returns or throws, fixing the TypeScript error
+    if (lastError) {
+        throw lastError;
+    } else {
+        throw new TriumvirateError(
+            'Maximum retries exceeded with no successful result',
+            ErrorCategory.UNKNOWN,
+            component,
+            false
+        );
     }
 }
 
