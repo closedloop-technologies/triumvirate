@@ -1,4 +1,4 @@
-import pc from 'picocolors';
+import { red, yellow, blue, dim, magenta, gray } from 'picocolors';
 
 // Define log levels
 type LogLevel = 'silent' | 'error' | 'warn' | 'info' | 'note' | 'debug' | 'trace';
@@ -36,37 +36,37 @@ class Logger {
 
     error(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.error) {
-            console.error(pc.red(args.join(' ')));
+            console.error(red(args.join(' ')));
         }
     }
 
     warn(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.warn) {
-            console.warn(pc.yellow(args.join(' ')));
+            console.warn(yellow(args.join(' ')));
         }
     }
 
     info(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.info) {
-            console.info(pc.blue(args.join(' ')));
+            console.info(blue(args.join(' ')));
         }
     }
 
     note(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.note) {
-            console.info(pc.dim(args.join(' ')));
+            console.info(dim(args.join(' ')));
         }
     }
 
     debug(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.debug) {
-            console.debug(pc.magenta(args.join(' ')));
+            console.debug(magenta(args.join(' ')));
         }
     }
 
     trace(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.trace) {
-            console.debug(pc.gray(args.join(' ')));
+            console.debug(gray(args.join(' ')));
         }
     }
 }

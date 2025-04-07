@@ -1,6 +1,6 @@
 import cliSpinners from 'cli-spinners';
 import logUpdate from 'log-update';
-import pc from 'picocolors';
+import { cyan, green, red } from 'picocolors';
 
 interface SpinnerOptions {
     quiet?: boolean;
@@ -29,8 +29,8 @@ export class Spinner {
         const framesLength = frames.length;
         this.interval = setInterval(() => {
             this.currentFrame++;
-            const frame = frames[this.currentFrame % framesLength];
-            logUpdate(`${pc.cyan(frame)} ${this.message}`);
+            const frame = frames[this.currentFrame % framesLength] || '';
+            logUpdate(`${cyan(frame)} ${this.message}`);
         }, this.spinner.interval);
     }
 
@@ -60,7 +60,7 @@ export class Spinner {
             return;
         }
 
-        this.stop(`${pc.green('✔')} ${message}`);
+        this.stop(`${green('✔')} ${message}`);
     }
 
     fail(message: string): void {
@@ -68,6 +68,6 @@ export class Spinner {
             return;
         }
 
-        this.stop(`${pc.red('✖')} ${message}`);
+        this.stop(`${red('✖')} ${message}`);
     }
 }

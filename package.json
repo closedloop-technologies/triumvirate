@@ -33,7 +33,7 @@
         "lint:changed": "lint-staged",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "type-check": "tsc -p src/tsconfig.json --noEmit",
+        "type-check": "tsc -p src/tsconfig.json --noEmit --resolveJsonModule --esModuleInterop",
         "type-check:changed": "node scripts/check-types-changed.js",
         "postinstall": "npm run build && node dist/triumvirate-new.js install"
     },

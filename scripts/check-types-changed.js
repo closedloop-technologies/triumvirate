@@ -28,10 +28,13 @@ const main = () => {
 
     try {
         // Run tsc on the staged files only
-        execSync(`npx tsc --noEmit --skipLibCheck ${files.join(' ')}`, {
-            stdio: 'inherit',
-            encoding: 'utf8',
-        });
+        execSync(
+            `npx tsc --noEmit --skipLibCheck --resolveJsonModule --esModuleInterop ${files.join(' ')}`,
+            {
+                stdio: 'inherit',
+                encoding: 'utf8',
+            }
+        );
         console.log('Type checking passed!');
         process.exit(0);
     } catch (error) {
