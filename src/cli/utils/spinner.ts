@@ -1,6 +1,7 @@
 import cliSpinners from 'cli-spinners';
 import logUpdate from 'log-update';
-import { cyan, green, red } from 'picocolors';
+import * as pc from 'picocolors';
+const { cyan, green, red } = pc;
 
 interface SpinnerOptions {
     quiet?: boolean;
