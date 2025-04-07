@@ -2204,13 +2204,3 @@ Please check the JSON output file for the raw review data.
         );
     }
 }
-
-/**
- * @deprecated Use formatReportAsMarkdown instead. This function will be removed in a future version.
- */
-export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string {
-    console.warn(
-        'enhancedFormatReportAsMarkdown is deprecated. Use formatReportAsMarkdown instead.'
-    );
-    return formatReportAsMarkdown(report);
-}
