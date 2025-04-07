@@ -1,6 +1,5 @@
 import * as readline from 'readline';
 
-import type { LocalContext } from './context';
 import { validateApiKeys, getApiKeySetupInstructions, MODEL_API_KEYS } from './utils/api-keys';
 
 import { runTriumvirateReview } from './index';
@@ -224,16 +223,12 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
     }
 }
 
-export async function install(
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ _: LocalContext
-): Promise<void> {
+export async function install(): Promise<void> {
     // Installation code
     console.log('Installing Triumvirate CLI...');
 }
 
-export async function uninstall(
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ _: LocalContext
-): Promise<void> {
+export async function uninstall(): Promise<void> {
     // Uninstallation code
     console.log('Uninstalling Triumvirate CLI...');
 }

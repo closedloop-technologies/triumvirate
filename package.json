@@ -4,7 +4,8 @@
     "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
     "type": "module",
     "bin": {
-        "triumvirate": "./dist/triumvirate.js",
+        "triumvirate": "./dist/triumvirate-new.js",
+        "tri": "./dist/triumvirate-new.js",
         "__triumvirate_bash_complete": "./dist/bash-complete.js"
     },
     "main": "src/index.js",
@@ -18,8 +19,8 @@
         "node": ">=20"
     },
     "scripts": {
-        "start": "node dist/triumvirate.js",
-        "dev": "tsx src/bin/cli.ts",
+        "start": "node dist/triumvirate-new.js",
+        "dev": "tsx src/bin/triumvirate-new.ts",
         "prebuild": "npm run lint && npm run format && tsc -p src/tsconfig.json",
         "build": "tsup",
         "prepare": "husky install",
@@ -34,7 +35,7 @@
         "format:check": "prettier --check .",
         "type-check": "tsc -p src/tsconfig.json --noEmit",
         "type-check:changed": "node scripts/check-types-changed.js",
-        "postinstall": "npm run build && node dist/triumvirate.js install"
+        "postinstall": "npm run build && node dist/triumvirate-new.js install"
     },
     "keywords": [
         "review",
@@ -51,7 +52,7 @@
     "license": "MIT",
     "tsup": {
         "entry": [
-            "src/bin/triumvirate.ts",
+            "src/bin/triumvirate-new.ts",
             "src/bin/bash-complete.ts"
         ],
         "format": [
@@ -65,14 +66,16 @@
     "dependencies": {
         "@anthropic-ai/sdk": "^0.8.1",
         "@google/genai": "^0.7.0",
-        "@stricli/auto-complete": "^1.1.2",
-        "@stricli/core": "^1.1.2",
+        "cli-spinners": "^2.9.2",
         "commander": "^11.0.0",
         "dotenv": "^16.0.0",
+        "log-update": "^6.0.0",
         "openai": "^4.91.1",
+        "picocolors": "^1.0.0",
         "repomix": "^0.3.1"
     },
     "devDependencies": {
+        "@types/log-update": "^3.1.0",
         "@types/node": "20.x",
         "@typescript-eslint/eslint-plugin": "^8.29.0",
         "@typescript-eslint/parser": "^8.29.0",
