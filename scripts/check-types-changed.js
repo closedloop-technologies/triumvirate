@@ -35,7 +35,7 @@ const main = () => {
         console.log('Type checking passed!');
         process.exit(0);
     } catch (error) {
-        console.error('Type checking failed!');
+        console.error(`Type checking failed! ${error}`);
         process.exit(1);
     }
 };

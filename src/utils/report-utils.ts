@@ -1,4 +1,7 @@
 // src/utils/report-utils.ts - Consolidated report formatting utilities
+import { runClaudeModelStructured } from '../models';
+import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
+import type { ModelResult } from '../types/model-responses';
 import {
     type ReviewCategory,
     type ModelInfo,
@@ -9,11 +12,8 @@ import {
     type AgreementStatistics,
     Priority,
     type CodeReviewReport,
-    type CodeExample,
+    // type CodeExample,
 } from '../types/report';
-import { runClaudeModelStructured } from '../models';
-import type { ModelResult, StructuredReview } from '../types/model-responses';
-import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
 
 /**
  * Extract categories from model reviews using Claude's structured tools API
@@ -47,7 +47,7 @@ export async function extractCategoriesWithClaude(reviews: string[]): Promise<Re
 
         // Map the categories to the required format
         return mapCategoriesToRequiredFormat(response.data.categories);
-    } catch (error) {
+    } catch {
         // Use the new error handling utilities for consistent error handling
         return safeReportGenerationAsync(
             async () => {
@@ -179,7 +179,8 @@ export function extractCategoriesWithRegex(reviewText: string): ReviewCategory[]
  */
 function findSectionHeaders(reviewText: string): string[] {
     const headerPattern = /##\s+(.*?)\n/g;
-    const headerMatches = [...reviewText.matchAll(headerPattern)];
+    // Use Array.from instead of spread operator to avoid TypeScript iteration errors
+    const headerMatches = Array.from(reviewText.matchAll(headerPattern));
     return headerMatches.map(match => match[1] || '').filter(Boolean);
 }
 
@@ -624,7 +625,7 @@ function formatAndLimitFindings(findings: string[], limit: number): string[] {
     // Clean up findings and create a list of key points
     const cleanedFindings = findings.map(finding => {
         // Remove any markdown headers, bullet points, or numbering
-        let cleaned = finding
+        const cleaned = finding
             .replace(/^#+\s+/g, '')
             .replace(/^[\d*\-•]+\.?\s*/g, '')
             .trim();
@@ -658,7 +659,7 @@ function formatAndLimitFindings(findings: string[], limit: number): string[] {
  */
 function extractFinding(paragraph: string): string {
     // Clean up the paragraph - remove markdown headers and extra whitespace
-    let cleanParagraph = paragraph.replace(/^#+\s+/gm, '').trim();
+    const cleanParagraph = paragraph.replace(/^#+\s+/gm, '').trim();
 
     // Look for bullet points or numbered lists
     const bulletMatch = cleanParagraph.match(/[•\-*]\s*([^\n.]+)/i);
@@ -798,14 +799,16 @@ function calculateSimilarity(str1: string, str2: string): number {
 
     // Count common words
     let commonWords = 0;
-    for (const word of words1) {
+    // Convert Set to Array before iteration to avoid TypeScript errors
+    Array.from(words1).forEach(word => {
         if (words2.has(word)) {
             commonWords++;
         }
-    }
+    });
 
     // Calculate Jaccard similarity
-    const totalUniqueWords = new Set([...words1, ...words2]).size;
+    // Use Array.from instead of spread operator to avoid TypeScript iteration errors
+    const totalUniqueWords = new Set(Array.from(words1).concat(Array.from(words2))).size;
     return totalUniqueWords > 0 ? commonWords / totalUniqueWords : 0;
 }
 
@@ -995,7 +998,7 @@ export async function generateCodeReviewReport(
             agreementStatistics,
             prioritizedRecommendations,
         };
-    } catch (error) {
+    } catch {
         // Use the new error handling utilities for consistent error handling
         return safeReportGenerationAsync(
             async () => {
@@ -1454,7 +1457,7 @@ For each model, identify 1-2 unique insights or perspectives that are not emphas
 
         // Map the insights to the required format
         return mapModelInsightsToRequiredFormat(response.data.modelInsights, models);
-    } catch (error) {
+    } catch {
         // Use the new error handling utilities for consistent error handling
         return safeReportGenerationAsync(
             async () => {
@@ -1588,7 +1591,7 @@ Provide at least 1-2 recommendations for each priority level.
             [Priority.MEDIUM]: response.data.mediumPriority || [],
             [Priority.LOW]: response.data.lowPriority || [],
         };
-    } catch (error) {
+    } catch {
         // Use the new error handling utilities for consistent error handling
         return safeReportGenerationAsync(
             async () => {
@@ -1843,7 +1846,7 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                     totalLatency = Math.max(totalLatency, latencyAsNumber); // Wall time is the max latency
                     totalCost += cost;
                     totalTokens += totalTokensMetric;
-                } catch (metricError) {
+                } catch {
                     // Use consistent error handling
                     const errorRow = safeDataProcessing(
                         () => {
@@ -1881,7 +1884,7 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
             report.keyStrengths.forEach((strength, index) => {
                 try {
                     markdown += `${index + 1}. **${strength.title || 'Strength'}**: ${strength.description || 'No description provided'}\n`;
-                } catch (strengthError) {
+                } catch {
                     // Use consistent error handling
                     const errorItem = safeDataProcessing(
                         () => {
@@ -1902,14 +1905,17 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
 
         // Key Areas for Improvement
         markdown += '\n### Key Areas for Improvement\n\n';
-        if (Array.isArray(report.keyAreasForImprovement) && report.keyAreasForImprovement.length > 0) {
+        if (
+            Array.isArray(report.keyAreasForImprovement) &&
+            report.keyAreasForImprovement.length > 0
+        ) {
             report.keyAreasForImprovement.forEach((area, index) => {
                 try {
                     markdown += `${index + 1}. **${area.title || 'Area for Improvement'}**: ${area.description || 'No description provided'}\n`;
                     if (area.recommendation) {
                         markdown += `   - **Recommendation**: ${area.recommendation}\n`;
                     }
-                } catch (areaError) {
+                } catch {
                     // Use consistent error handling
                     const errorItem = safeDataProcessing(
                         () => {
@@ -1934,15 +1940,16 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
 
         // Safely handle modelInsights
         if (Array.isArray(report.modelInsights) && report.modelInsights.length > 0) {
-            report.modelInsights.forEach((insight, index) => {
+            report.modelInsights.forEach(insight => {
                 try {
-                    const modelName = insight.model && insight.model.name ? insight.model.name : 'Unknown';
+                    const modelName =
+                        insight.model && insight.model.name ? insight.model.name : 'Unknown';
                     markdown += `### ${modelName}\n\n`;
                     markdown += `${insight.insight || 'No insight provided'}\n\n`;
                     if (insight.details) {
                         markdown += `**Details**: ${insight.details}\n\n`;
                     }
-                } catch (insightError) {
+                } catch {
                     // Use consistent error handling
                     const errorSection = safeDataProcessing(
                         () => {
@@ -1989,8 +1996,13 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                             strengths.forEach((finding, idx) => {
                                 markdown += `${idx + 1}. **${finding.title || 'Finding'}**: ${finding.description || 'No description provided'}\n`;
                                 // Add model agreement info if available
-                                if (finding.modelAgreement && finding.modelAgreement.modelAgreements) {
-                                    const agreementModels = Object.entries(finding.modelAgreement.modelAgreements)
+                                if (
+                                    finding.modelAgreement &&
+                                    finding.modelAgreement.modelAgreements
+                                ) {
+                                    const agreementModels = Object.entries(
+                                        finding.modelAgreement.modelAgreements
+                                    )
                                         .filter(([_, agrees]) => agrees)
                                         .map(([modelId]) => modelId);
                                     if (agreementModels.length > 0) {
@@ -2002,7 +2014,8 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                                     markdown += '   - **Code Example**:\n';
                                     const example = finding.codeExample;
                                     // Safely access properties that might not exist on CodeExample
-                                    const description = 'description' in example ? example.description : 'Example';
+                                    const description =
+                                        'description' in example ? example.description : 'Example';
                                     markdown += `     - ${description}:\n`;
                                     markdown += '```\n';
                                     markdown += `${example.code || 'No code provided'}\n`;
@@ -2017,8 +2030,13 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                             improvements.forEach((finding, idx) => {
                                 markdown += `${idx + 1}. **${finding.title || 'Finding'}**: ${finding.description || 'No description provided'}\n`;
                                 // Add model agreement info if available
-                                if (finding.modelAgreement && finding.modelAgreement.modelAgreements) {
-                                    const agreementModels = Object.entries(finding.modelAgreement.modelAgreements)
+                                if (
+                                    finding.modelAgreement &&
+                                    finding.modelAgreement.modelAgreements
+                                ) {
+                                    const agreementModels = Object.entries(
+                                        finding.modelAgreement.modelAgreements
+                                    )
                                         .filter(([_, agrees]) => agrees)
                                         .map(([modelId]) => modelId);
                                     if (agreementModels.length > 0) {
@@ -2030,7 +2048,8 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                                     markdown += '   - **Code Example**:\n';
                                     const example = finding.codeExample;
                                     // Safely access properties that might not exist on CodeExample
-                                    const description = 'description' in example ? example.description : 'Example';
+                                    const description =
+                                        'description' in example ? example.description : 'Example';
                                     markdown += `     - ${description}:\n`;
                                     markdown += '```\n';
                                     markdown += `${example.code || 'No code provided'}\n`;
@@ -2042,7 +2061,7 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                     } else {
                         markdown += 'No findings in this category.\n\n';
                     }
-                } catch (categoryError) {
+                } catch {
                     // Use consistent error handling
                     const errorSection = safeDataProcessing(
                         () => {
@@ -2071,15 +2090,19 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
         if (Array.isArray(report.agreementAnalysis) && report.agreementAnalysis.length > 0) {
             report.agreementAnalysis.forEach(analysis => {
                 try {
-                    const highAgreement = Array.isArray(analysis.highAgreement) && analysis.highAgreement.length > 0
-                        ? analysis.highAgreement.join('<br>')
-                        : '-';
-                    const partialAgreement = Array.isArray(analysis.partialAgreement) && analysis.partialAgreement.length > 0
-                        ? analysis.partialAgreement.join('<br>')
-                        : '-';
-                    const disagreement = Array.isArray(analysis.disagreement) && analysis.disagreement.length > 0
-                        ? analysis.disagreement.join('<br>')
-                        : '-';
+                    const highAgreement =
+                        Array.isArray(analysis.highAgreement) && analysis.highAgreement.length > 0
+                            ? analysis.highAgreement.join('<br>')
+                            : '-';
+                    const partialAgreement =
+                        Array.isArray(analysis.partialAgreement) &&
+                        analysis.partialAgreement.length > 0
+                            ? analysis.partialAgreement.join('<br>')
+                            : '-';
+                    const disagreement =
+                        Array.isArray(analysis.disagreement) && analysis.disagreement.length > 0
+                            ? analysis.disagreement.join('<br>')
+                            : '-';
 
                     markdown += `| ${analysis.area || 'Unknown'} | ${highAgreement} | ${partialAgreement} | ${disagreement} |\n`;
                 } catch (analysisError) {
@@ -2130,7 +2153,7 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                     markdown += 'No recommendations available.\n';
                 }
                 markdown += '\n';
-            } catch (priorityError) {
+            } catch {
                 // Use consistent error handling
                 const errorSection = safeDataProcessing(
                     () => {
@@ -2149,13 +2172,11 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
         });
 
         return markdown;
-    } catch (error) {
+    } catch {
         // Use consistent error handling
         return safeDataProcessing(
             () => {
-                console.warn(
-                    'Error formatting report as markdown, returning basic format'
-                );
+                console.warn('Error formatting report as markdown, returning basic format');
                 return `# Triumvirate Code Review Report
 
 ## Error Generating Report
@@ -2188,6 +2209,8 @@ Please check the JSON output file for the raw review data.
  * @deprecated Use formatReportAsMarkdown instead. This function will be removed in a future version.
  */
 export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string {
-    console.warn('enhancedFormatReportAsMarkdown is deprecated. Use formatReportAsMarkdown instead.');
+    console.warn(
+        'enhancedFormatReportAsMarkdown is deprecated. Use formatReportAsMarkdown instead.'
+    );
     return formatReportAsMarkdown(report);
 }

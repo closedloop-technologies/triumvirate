@@ -1,18 +1,15 @@
 // Modify src/index.ts
 
-import fs from 'fs';
+import * as fs from 'fs';
 
 import { runModelReview } from './models';
 import { runRepomix } from './repomix';
+import type { CodeReviewReport } from './types/report';
 import { normalizeUsage } from './types/usage';
-import { COST_RATES, DEFAULT_REVIEW_OPTIONS, ReviewType } from './utils/constants';
+import { COST_RATES, DEFAULT_REVIEW_OPTIONS } from './utils/constants';
 // Import the report utilities
 import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
-import type { CodeReviewReport } from './types/report';
 
-/**
- * Run a triumvirate review across multiple LLMs
- */
 export interface TriumvirateReviewOptions {
     models?: string[];
     exclude?: string[];
@@ -37,7 +34,7 @@ export async function runTriumvirateReview({
     diffOnly = DEFAULT_REVIEW_OPTIONS.DIFF_ONLY,
     outputPath = DEFAULT_REVIEW_OPTIONS.OUTPUT_PATH,
     failOnError = DEFAULT_REVIEW_OPTIONS.FAIL_ON_ERROR,
-    summaryOnly = DEFAULT_REVIEW_OPTIONS.SUMMARY_ONLY,
+    summaryOnly = DEFAULT_REVIEW_OPTIONS.SUMMARY_ONLY, // eslint-disable-line @typescript-eslint/no-unused-vars
     tokenLimit = DEFAULT_REVIEW_OPTIONS.TOKEN_LIMIT,
     reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
     repomixOptions = {},
@@ -174,13 +171,13 @@ export async function runTriumvirateReview({
     if (hasError && failOnError) {
         // Filter out successful results if we're failing on error
         for (const result of modelResults.filter(result => result.error)) {
-            const { error, ...rest } = result;
+            const { ...rest } = result;
             results.push(rest);
         }
     } else {
         // Add all results (removing the temporary error flag)
         for (const result of modelResults) {
-            const { error, ...rest } = result;
+            const { ...rest } = result;
             results.push(rest);
         }
     }
@@ -196,7 +193,7 @@ export async function runTriumvirateReview({
             try {
                 const fs_stat = fs.statSync(outputPath);
                 isDirectory = fs_stat.isDirectory();
-            } catch (e) {
+            } catch {
                 // Path doesn't exist yet - not a directory
                 isDirectory = false;
             }
@@ -290,7 +287,10 @@ export async function runTriumvirateReview({
 /**
  * Generate prompt template based on review type
  */
-function generatePromptTemplate(reviewType: string, repomixResult: any): string {
+function generatePromptTemplate(
+    reviewType: string,
+    repomixResult: { directoryStructure: string; summary: string }
+): string {
     // Base template with structure info
     const baseTemplate = `You are an expert code reviewer. I'm going to share a codebase with you for review.
 

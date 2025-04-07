@@ -1,6 +1,7 @@
 import { run } from '@stricli/core';
-import { buildContext } from './context';
+
 import { app } from './app';
+import { buildContext } from './context';
 
 // Entry point for CLI when run directly
 export async function runCli(args: string[] = process.argv.slice(2)): Promise<void> {

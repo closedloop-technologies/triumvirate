@@ -1,7 +1,7 @@
 // DEPRECATED: This module has been consolidated into report-utils.ts
 // Please use formatReportAsMarkdown from report-utils.ts instead
-import { type CodeReviewReport } from '../types/report';
 import { formatReportAsMarkdown } from './report-utils';
+import { type CodeReviewReport } from '../types/report';
 
 /**
  * @deprecated This function has been moved to report-utils.ts. Please use formatReportAsMarkdown from report-utils.ts instead.
@@ -15,6 +15,8 @@ import { formatReportAsMarkdown } from './report-utils';
  * 6. Improves Code Example Formatting
  */
 export function enhancedFormatReportAsMarkdown(report: CodeReviewReport): string {
-    console.warn('enhancedFormatReportAsMarkdown is deprecated. Use formatReportAsMarkdown from report-utils.ts instead.');
+    console.warn(
+        'enhancedFormatReportAsMarkdown is deprecated. Use formatReportAsMarkdown from report-utils.ts instead.'
+    );
     return formatReportAsMarkdown(report);
 }

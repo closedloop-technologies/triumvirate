@@ -4,8 +4,8 @@
  */
 
 // Re-export error handling utilities from the central error-handling module
-import { ErrorCategory } from './error-handling';
 import type { ModelError } from './error-handling';
+import { ErrorCategory } from './error-handling';
 import {
     createModelError,
     handleModelError,

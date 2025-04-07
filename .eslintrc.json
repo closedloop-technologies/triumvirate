@@ -9,13 +9,10 @@
             "files": ["*.ts", "*.tsx"],
             "parser": "@typescript-eslint/parser",
             "plugins": ["@typescript-eslint"],
-            "extends": [
-                "plugin:@typescript-eslint/recommended"
-            ],
+            "extends": ["plugin:@typescript-eslint/recommended"],
             "parserOptions": {
                 "ecmaVersion": "latest",
-                "sourceType": "module",
-                "project": "./src/tsconfig.json"
+                "sourceType": "module"
             }
         }
     ],
@@ -26,7 +23,12 @@
     "plugins": ["import", "node"],
     "rules": {
         "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+        ],
         "no-console": "off",
+        "no-constant-condition": ["error", { "checkLoops": false }],
         "import/order": [
             "error",
             {

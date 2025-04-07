@@ -1,7 +1,8 @@
 import { execSync, spawn } from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+
 import {
     DEFAULT_REPOMIX_OPTIONS,
     DEFAULT_REVIEW_OPTIONS,
@@ -107,7 +108,7 @@ export async function runRepomix({
             if (changedFiles.length > 0) {
                 repomixArgs.push(`--include=${changedFiles.join(',')}`);
             }
-        } catch (error) {
+        } catch {
             console.warn('Git diff failed, falling back to processing all files');
         }
     }
@@ -158,7 +159,7 @@ export async function runRepomix({
             exclude,
             diffOnly,
             tokenLimit,
-            currentTokens: tokenCount,
+            // currentTokens: tokenCount, // Commented out to fix linting error
             tempFilePath,
             include,
             ignorePatterns,
@@ -172,7 +173,7 @@ export async function runRepomix({
             topFilesLen,
             tokenCountEncoding,
             stdout,
-            stderr,
+            // stderr, // Commented out to fix linting error
         });
     }
 
@@ -209,43 +210,27 @@ async function optimizeRepomix({
     exclude,
     diffOnly,
     tokenLimit,
-    currentTokens,
-    tempFilePath,
+    // currentTokens,
+    // tempFilePath,
     include,
     ignorePatterns,
     style,
-    compress,
-    removeComments,
-    removeEmptyLines,
+    // compress,
+    // removeComments,
+    // removeEmptyLines,
     showLineNumbers,
     headerText,
     instructionFilePath,
     topFilesLen,
     tokenCountEncoding,
     stdout,
-    stderr,
+    // stderr,
 }: RepomixOptions & {
-    currentTokens: number;
+    // currentTokens: number;
     tempFilePath: string;
     stdout: string;
-    stderr: string;
+    // stderr: string;
 }): Promise<RepomixResult> {
-    // Read the original file to extract summary and structure
-    const fileContent = fs.readFileSync(tempFilePath, 'utf8');
-
-    // Extract directory structure
-    const directoryStructureMatch = fileContent.match(
-        /<directory_structure>([\s\S]*?)<\/directory_structure>/
-    );
-    const directoryStructure =
-        directoryStructureMatch && directoryStructureMatch[1]
-            ? directoryStructureMatch[1].trim()
-            : '';
-
-    // Extract file summary
-    const summaryMatch = fileContent.match(/<file_summary>([\s\S]*?)<\/file_summary>/);
-    const summary = summaryMatch && summaryMatch[1] ? summaryMatch[1].trim() : '';
-
     // Automatic optimization strategy:
     // 1. If compress wasn't used, try with compression
     // 2. Try removing comments
@@ -291,10 +276,14 @@ async function optimizeRepomix({
         // dependencies between files and importance to the codebase
         let filesExcluded = 0;
         for (const file of topFiles) {
-            if (filesExcluded >= MAX_FILES_TO_EXCLUDE) break; // Don't exclude too many files at once
+            if (filesExcluded >= MAX_FILES_TO_EXCLUDE) {
+                break; // Don't exclude too many files at once
+            }
 
             // Skip if file is already excluded
-            if (updatedOptions.exclude?.includes(file.path)) continue;
+            if (updatedOptions.exclude?.includes(file.path)) {
+                continue;
+            }
 
             // Add to exclude list
             updatedOptions.exclude?.push(file.path);

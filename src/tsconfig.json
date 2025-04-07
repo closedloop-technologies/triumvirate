@@ -15,8 +15,11 @@
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
         "noUncheckedIndexedAccess": true,
-        "verbatimModuleSyntax": true
+        "verbatimModuleSyntax": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
     },
-    "include": ["**/*"],
+    "include": ["**/*", "**/*.d.ts"],
     "exclude": []
 }

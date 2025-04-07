@@ -24,7 +24,7 @@ export async function safeExecuteAsync<T, D>(
     logLevel: 'error' | 'warn' | 'info' = 'error'
 ): Promise<T | D> {
     // Track any resources that need cleanup
-    let cleanupFunctions: Array<() => void> = [];
+    const cleanupFunctions: Array<() => void> = [];
 
     try {
         // Execute the async function and return its result
@@ -175,7 +175,7 @@ export async function safeFileOperationAsync<T, D>(
     defaultValue: D
 ): Promise<T | D> {
     // Track any resources that need cleanup
-    let cleanupFunctions: Array<() => void> = [];
+    const cleanupFunctions: Array<() => void> = [];
 
     try {
         // Execute the async function and return its result

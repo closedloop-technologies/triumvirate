@@ -1,8 +1,10 @@
+import * as readline from 'readline';
+
 import type { LocalContext } from './context';
+import { validateApiKeys, getApiKeySetupInstructions, MODEL_API_KEYS } from './utils/api-keys';
+
 import { runTriumvirateReview } from './index';
 import type { TriumvirateReviewOptions } from './index';
-import { validateApiKeys, getApiKeySetupInstructions, MODEL_API_KEYS } from './utils/api-keys';
-import * as readline from 'readline';
 
 export interface ReviewCommandFlags {
     // Triumvirate's original flags
@@ -205,7 +207,7 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
         const reviewText =
             typeof result.review === 'string'
                 ? result.review
-                : (result.review as any).text || JSON.stringify(result.review);
+                : (result.review as { text?: string }).text || JSON.stringify(result.review);
 
         if (summaryOnly) {
             console.log(reviewText);
@@ -222,12 +224,16 @@ export async function review(flags: ReviewCommandFlags): Promise<void> {
     }
 }
 
-export async function install(context: LocalContext): Promise<void> {
+export async function install(
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ _: LocalContext
+): Promise<void> {
     // Installation code
     console.log('Installing Triumvirate CLI...');
 }
 
-export async function uninstall(context: LocalContext): Promise<void> {
+export async function uninstall(
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ _: LocalContext
+): Promise<void> {
     // Uninstallation code
     console.log('Uninstalling Triumvirate CLI...');
 }

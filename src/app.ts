@@ -1,8 +1,12 @@
 // src/app.ts
+import { buildInstallCommand, buildUninstallCommand } from '@stricli/auto-complete';
 import { buildApplication, buildCommand, buildRouteMap } from '@stricli/core';
-import { name, version } from '../package.json';
+
 import type { LocalContext } from './context';
 import type { ReviewCommandFlags } from './impl';
+
+const name = 'triumvirate';
+const version = '0.1.1';
 
 const REVIEW_TYPES = ['general', 'security', 'performance', 'architecture', 'docs'];
 
@@ -178,6 +182,3 @@ export const app = buildApplication(routes, {
         caseStyle: 'allow-kebab-for-camel',
     },
 });
-
-// Import missing functions at the end to avoid circular reference issues
-import { buildInstallCommand, buildUninstallCommand } from '@stricli/auto-complete';

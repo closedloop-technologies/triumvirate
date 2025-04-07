@@ -2,7 +2,7 @@
  * Types for error handling and API error responses
  */
 
-import { ErrorCategory } from '../utils/error-handling';
+// import { ErrorCategory } from '../utils/error-handling';
 
 /**
  * Represents an HTTP error with status code

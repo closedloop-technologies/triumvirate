@@ -1,17 +1,18 @@
 import { GoogleGenAI } from '@google/genai';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import OpenAI from 'openai';
-import { normalizeUsage } from './types/usage';
+
+// import { normalizeUsage } from './types/usage';
 import type { ModelUsage, OpenAIUsage, ClaudeUsage, GeminiUsage } from './types/usage';
+import { API_TIMEOUT_MS, MAX_API_RETRIES } from './utils/constants';
 import {
     handleModelError,
-    exponentialBackoff,
+    // exponentialBackoff,
     withErrorHandlingAndRetry,
     ErrorCategory,
     createModelError,
-    type ModelError,
+    // type ModelError,
 } from './utils/model-utils';
-import { API_TIMEOUT_MS, MAX_API_RETRIES } from './utils/constants';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -25,7 +26,7 @@ dotenv.config();
  */
 async function runOpenAIModel(
     prompt: string,
-    retryCount = 0,
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ _retryCount = 0,
     maxRetries = MAX_API_RETRIES
 ): Promise<{ text: string; usage: OpenAIUsage }> {
     // Validate API key
@@ -102,7 +103,7 @@ async function runOpenAIModel(
  */
 async function runClaudeModel(
     prompt: string,
-    retryCount = 0,
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ _retryCount = 0,
     maxRetries = MAX_API_RETRIES
 ): Promise<{ text: string; usage: ClaudeUsage }> {
     // Validate API key
@@ -186,7 +187,7 @@ async function runClaudeModel(
 async function runClaudeModelStructured<T>(
     prompt: string,
     schema: Record<string, unknown>,
-    retryCount = 0,
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ _retryCount = 0,
     maxRetries = MAX_API_RETRIES
 ): Promise<{ data: T; usage: ClaudeUsage }> {
     if (!process.env['ANTHROPIC_API_KEY']) {
@@ -289,7 +290,7 @@ async function runClaudeModelStructured<T>(
  */
 async function runGeminiModel(
     prompt: string,
-    retryCount = 0,
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ _retryCount = 0,
     maxRetries = MAX_API_RETRIES
 ): Promise<{ text: string; usage: GeminiUsage }> {
     // Validate API key
@@ -317,7 +318,7 @@ async function runGeminiModel(
     const ai = new GoogleGenAI({ apiKey: process.env['GOOGLE_API_KEY'] });
 
     return withErrorHandlingAndRetry(
-        async (signal: AbortSignal) => {
+        async (_signal: AbortSignal) => {
             try {
                 // Note: Gemini API might not directly support AbortSignal
                 // We're using the signal in our HOF, but the actual API call might not use it

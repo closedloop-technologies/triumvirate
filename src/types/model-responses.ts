@@ -2,7 +2,7 @@
  * Types for model responses and related structures
  */
 
-import type { ReviewCategory, CodeReviewReport } from './report';
+// import type { ReviewCategory, CodeReviewReport } from './report';
 
 /**
  * Base model result structure that represents the common fields
