@@ -143,28 +143,37 @@ export async function runTriumvirateReview({
     // Process all models in parallel with improved error handling
     const modelPromises = models.map(model => processModel(model));
 
-    // Use try-catch with Promise.all to handle potential errors
-    let modelResults;
-    try {
-        modelResults = await Promise.all(modelPromises);
-    } catch (error) {
-        console.error('Unexpected error during parallel model processing:', error);
-        // Create a fallback result for all models if Promise.all fails completely
-        modelResults = models.map(model => ({
-            model,
-            summary: `ERROR: Unexpected error during parallel processing`,
-            review: `ERROR: Unexpected error during parallel processing: ${error instanceof Error ? error.message : String(error)}`,
-            metrics: {
-                latency: 0,
-                tokenInput: 0,
-                tokenOutput: 0,
-                tokenTotal: 0,
-                cost: '$0.00',
-                error: error instanceof Error ? error.message : String(error),
-            },
-            error: true,
-        }));
-    }
+    // Use Promise.allSettled to handle model failures individually without discarding successful results
+    const settledPromises = await Promise.allSettled(modelPromises);
+
+    // Process each promise result based on its status (fulfilled or rejected)
+    const modelResults = settledPromises.map((result, index) => {
+        // Ensure model is always a string, defaulting to 'unknown' if undefined
+        const model = models[index] || 'unknown';
+
+        if (result.status === 'fulfilled') {
+            // Return the successful result directly
+            return result.value;
+        } else {
+            // Handle only the failed model with an error result
+            const error = result.reason;
+            console.error(`Error with model ${model}:`, error);
+            return {
+                model,
+                summary: `ERROR: ${error instanceof Error ? error.message : String(error)}`,
+                review: `ERROR: ${error instanceof Error ? error.message : String(error)}`,
+                metrics: {
+                    latency: 0,
+                    tokenInput: 0,
+                    tokenOutput: 0,
+                    tokenTotal: 0,
+                    cost: '$0.00',
+                    error: error instanceof Error ? error.message : String(error),
+                },
+                error: true,
+            };
+        }
+    });
 
     // Check if any model failed and we should fail on error
     const hasError = modelResults.some(result => result.error);
