@@ -1,6 +1,6 @@
 {
     "name": "@justbuild/triumvirate",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
     "type": "module",
     "bin": {
@@ -8,10 +8,9 @@
         "tri": "./dist/triumvirate-new.js",
         "__triumvirate_bash_complete": "./dist/bash-complete.js"
     },
-    "main": "src/index.js",
+    "main": "dist/index.js",
     "files": [
-        "bin",
-        "src",
+        "dist",
         "LICENSE",
         "README.md"
     ],
@@ -34,8 +33,7 @@
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "type-check": "tsc -p src/tsconfig.json --noEmit --resolveJsonModule --esModuleInterop",
-        "type-check:changed": "node scripts/check-types-changed.js",
-        "postinstall": "npm run build && node dist/triumvirate-new.js install"
+        "type-check:changed": "node scripts/check-types-changed.js"
     },
     "keywords": [
         "review",
