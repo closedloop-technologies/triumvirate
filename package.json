@@ -1,6 +1,6 @@
 {
     "name": "@justbuild/triumvirate",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
     "type": "module",
     "bin": {
