@@ -1,23 +1,47 @@
 // src/utils/report-utils.ts - Consolidated report formatting utilities
-import { runClaudeModelStructured } from '../models';
 import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
-import type { ModelResult } from '../types/model-responses';
+import { LLMProviderFactory } from './llm-providers';
+import type { ModelResult, FindingItem } from '../types/model-responses';
 import {
     type ReviewCategory,
-    type ModelInfo,
     type ModelMetrics,
     type ReviewFinding,
     type ModelInsight,
     type CategoryAgreementAnalysis,
     type AgreementStatistics,
-    Priority,
     type CodeReviewReport,
+    Priority,
+    type ModelInfo,
 } from '../types/report';
 
+// Add back the FindingsResponse interface
+interface FindingsResponse {
+    findings: FindingItem[]; // Use the imported FindingItem type
+}
+
+interface InsightsResponse {
+    modelInsights: Array<{
+        modelId: string;
+        insight: string;
+        details: string;
+    }>;
+}
+
+interface PrioritizedResponse {
+    highPriority: string[];
+    mediumPriority: string[];
+    lowPriority: string[];
+}
+
+// Define the expected response type
+export interface CategoryResponse {
+    categories: ReviewCategory[];
+}
+
 /**
- * Extract categories from model reviews using Claude's structured tools API
+ * Extract categories from model reviews using structured output from any available LLM provider
  */
-export async function extractCategoriesWithClaude(reviews: string[]): Promise<ReviewCategory[]> {
+export async function extractCategories(reviews: string[]): Promise<ReviewCategory[]> {
     try {
         // Create a prompt for category extraction
         const prompt = createCategoryExtractionPrompt(reviews);
@@ -25,33 +49,21 @@ export async function extractCategoriesWithClaude(reviews: string[]): Promise<Re
         // Define the schema for structured output
         const schema = createCategorySchema();
 
-        // Define the expected response type
-        interface ClaudeResponse {
-            categories: Array<{
-                name: string;
-                description: string;
-            }>;
-        }
-
-        // Call Claude with structured output using tools API
-        const response = await runClaudeModelStructured<ClaudeResponse>(prompt, schema);
+        // Call the best available LLM provider with structured output
+        const response = await LLMProviderFactory.runStructured<CategoryResponse>(prompt, schema);
 
         // Validate response
         if (!isValidCategoryResponse(response)) {
-            console.warn(
-                'Claude did not return expected category structure, falling back to regex extraction'
-            );
-            return extractCategoriesWithRegex(reviews.join('\n\n'));
+            throw new Error('LLM did not return expected category structure');
         }
 
         // Map the categories to the required format
-        return mapCategoriesToRequiredFormat(response.data.categories);
+        return response.data.categories;
     } catch {
         // Use the new error handling utilities for consistent error handling
         return safeReportGenerationAsync(
             async () => {
-                console.warn('Falling back to regex extraction method due to error');
-                return extractCategoriesWithRegex(reviews.join('\n\n'));
+                return [];
             },
             'categories',
             'extraction',
@@ -111,7 +123,8 @@ function createCategorySchema(): Record<string, unknown> {
 }
 
 /**
- * Validates if the Claude response has the expected structure
+ * Validates if the Claude response has the expected structure and content
+ * Performs both structural validation and content validation to ensure data integrity
  */
 function isValidCategoryResponse(response: unknown): boolean {
     if (!response) {
@@ -119,141 +132,59 @@ function isValidCategoryResponse(response: unknown): boolean {
     }
 
     // Type guard to check if response has the expected structure
-    return (
+    const hasValidStructure =
         response !== null &&
         typeof response === 'object' &&
         'data' in response &&
         response.data !== null &&
         typeof response.data === 'object' &&
         'categories' in response.data &&
-        Array.isArray(response.data.categories)
-    );
-}
+        Array.isArray(response.data.categories);
 
-/**
- * Maps the Claude response categories to the required format
- */
-function mapCategoriesToRequiredFormat(
-    categories: Array<{ name: string; description: string }>
-): ReviewCategory[] {
-    return categories.map((cat, index) => {
-        // Ensure we have valid data
-        const name = cat.name?.trim() || `Category ${index + 1}`;
-        const shortDescription = cat.description?.trim() || `Analysis of ${name}`;
+    // If structure is invalid, return false immediately
+    if (!hasValidStructure) {
+        return false;
+    }
+    // Content validation - ensure categories have required properties and valid values
+    const { categories } = (response as Record<string, unknown>)['data'] as Record<string, unknown>;
 
-        // Generate a stable ID based on the category name
-        const id = `category_${index}_${name.toLowerCase().replace(/\s+/g, '_')}`;
-
-        return {
-            id,
-            name,
-            shortDescription,
-        };
-    });
-}
-
-/**
- * Extract categories from a review text using regex (fallback method)
- */
-export function extractCategoriesWithRegex(reviewText: string): ReviewCategory[] {
-    // Look for section headers
-    const headerMatches = findSectionHeaders(reviewText);
-
-    // Filter out common non-category headers
-    const potentialCategories = filterNonCategoryHeaders(headerMatches);
-
-    // If we can't find headers, fall back to common code review categories
-    const categories =
-        potentialCategories.length > 0 ? potentialCategories : getDefaultCategories();
-
-    // Create category objects
-    return createCategoryObjects(categories, reviewText);
-}
-
-/**
- * Find section headers in review text
- */
-function findSectionHeaders(reviewText: string): string[] {
-    const headerPattern = /##\s+(.*?)\n/g;
-    // Use Array.from instead of spread operator to avoid TypeScript iteration errors
-    const headerMatches = Array.from(reviewText.matchAll(headerPattern));
-    return headerMatches.map(match => match[1] || '').filter(Boolean);
-}
-
-/**
- * Filter out common non-category headers
- */
-function filterNonCategoryHeaders(headers: string[]): string[] {
-    const excludeHeaders = [
-        'Overview',
-        'Summaries',
-        'Results',
-        'Executive Summary',
-        'Conclusion',
-        'Recommendations',
-        'Model-Specific Highlights',
-    ];
-
-    return headers.filter(
-        header => header && !excludeHeaders.includes(header) && header.length < 60
-    );
-}
-
-/**
- * Get default categories when none are found
- */
-function getDefaultCategories(): string[] {
-    return [
-        'Code Quality and Readability',
-        'Potential Bugs or Issues',
-        'Architecture and Design',
-        'Performance Concerns',
-        'Security Considerations',
-    ];
-}
-
-/**
- * Create category objects from category names
- */
-function createCategoryObjects(categories: string[], reviewText: string): ReviewCategory[] {
-    return categories.map((name, index) => {
-        // Ensure name is a string
-        const categoryName = name || `Category ${index + 1}`;
-
-        // Generate a stable ID based on the category name
-        const id = `category_${index}_${categoryName.toLowerCase().replace(/\s+/g, '_')}`;
-
-        // Try to extract a short description from the text
-        const shortDescription = extractCategoryDescription(categoryName, reviewText);
-
-        return {
-            id,
-            name: categoryName,
-            shortDescription: shortDescription || `Analysis of ${categoryName}`,
-        };
-    });
-}
-
-/**
- * Extract a short description for a category from the review text
- */
-function extractCategoryDescription(categoryName: string, reviewText: string): string | undefined {
-    const descriptionPattern = new RegExp(`${categoryName}.*?\\n(.*?)(?=\\n##|\\Z)`, 's');
-    const descriptionMatch = reviewText.match(descriptionPattern);
-
-    if (descriptionMatch && descriptionMatch[1]) {
-        // Try to get first sentence
-        const sentences = descriptionMatch[1].trim().split(/\.\s+/);
-        if (sentences.length > 0 && sentences[0]) {
-            return sentences[0].trim();
-        }
+    // Check if there are any categories at all
+    if (!Array.isArray(categories) || categories.length === 0) {
+        console.warn('Category response contains an empty categories array');
+        return false;
     }
 
-    return undefined;
-}
+    // Validate each category has required fields with valid content
+    return categories.every((category: unknown) => {
+        // Check if category is an object with required properties
+        if (!category || typeof category !== 'object') {
+            console.warn('Invalid category: not an object');
+            return false;
+        }
 
-// For backward compatibility
-export const extractCategories = extractCategoriesWithRegex;
+        const cat = category as Record<string, unknown>;
+
+        // Check for required properties
+        if (!('name' in cat) || !('description' in cat)) {
+            console.warn('Invalid category: missing required properties');
+            return false;
+        }
+
+        // Validate property types
+        if (typeof cat['name'] !== 'string' || typeof cat['description'] !== 'string') {
+            console.warn('Invalid category: properties have incorrect types');
+            return false;
+        }
+
+        // Validate property values (non-empty strings)
+        if (cat['name'].trim() === '' || cat['description'].trim() === '') {
+            console.warn('Invalid category: empty name or description');
+            return false;
+        }
+
+        return true;
+    });
+}
 
 /**
  * Create a standardized structure for the model metrics
@@ -621,20 +552,32 @@ function formatAndLimitFindings(findings: string[], limit: number): string[] {
     // Clean up findings and create a list of key points
     const cleanedFindings = findings.map(finding => {
         // Remove any markdown headers, bullet points, or numbering
-        const cleaned = finding
+        let cleaned = finding
             .replace(/^#+\s+/g, '')
             .replace(/^[\d*\-•]+\.?\s*/g, '')
             .trim();
 
-        // Extract just the key point - look for the first sentence or phrase
-        const firstSentence = cleaned.split(/[.!?]\s+/)[0];
-        if (firstSentence && firstSentence.length < 80) {
-            return firstSentence;
+        // Get common prefixes to remove
+        const prefixesToRemove = getCommonPrefixesToRemove();
+
+        // Remove common prefixes that make findings verbose
+        for (const prefix of prefixesToRemove) {
+            if (cleaned.toLowerCase().startsWith(prefix)) {
+                cleaned = cleaned.substring(prefix.length).trim();
+                // Remove leading punctuation after removing prefix
+                cleaned = cleaned.replace(/^[,:;\s]+/, '');
+                break;
+            }
         }
 
-        // If the finding is too long, truncate it
-        if (cleaned.length > 60) {
-            return cleaned.substring(0, 57) + '...';
+        // Capitalize first letter
+        if (cleaned.length > 0) {
+            cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+        }
+
+        // Truncate if still too long
+        if (cleaned.length > 80) {
+            cleaned = cleaned.substring(0, 77) + '...';
         }
 
         return cleaned;
@@ -821,7 +764,7 @@ export function calculateAgreementStats(
         let twoModels = 0;
         let oneModel = 0;
 
-        const categoryFindings = findings[category.id] || [];
+        const categoryFindings = findings[category.name] || [];
 
         for (const finding of categoryFindings) {
             if (finding.modelAgreement && finding.modelAgreement.modelAgreements) {
@@ -878,25 +821,23 @@ export async function generateCodeReviewReport(
         // Create simple model metrics
         const modelMetrics = createModelMetrics(modelResults);
 
-        // If we don't have any reviews, create a basic report
+        // If we don't have any reviews, throw an error
         if (!reviews.length || reviews.every(r => !r)) {
-            console.warn('No valid reviews found in model results, creating basic report');
-            return createBasicReport(modelResults, models, modelMetrics);
+            throw new Error('No valid reviews found in model results');
         }
 
         // Extract categories using Claude - ensure proper promise handling
         console.log('Extracting categories from reviews...');
         let categories;
         try {
-            categories = await extractCategoriesWithClaude(reviews);
+            categories = await extractCategories(reviews);
         } catch (categoryError) {
             console.error('Error extracting categories:', categoryError);
-            return createBasicReport(modelResults, models, modelMetrics);
+            throw new Error('Failed to extract categories');
         }
 
         if (!categories.length) {
-            console.warn('Failed to extract categories, creating basic report');
-            return createBasicReport(modelResults, models, modelMetrics);
+            throw new Error('Failed to extract categories');
         }
 
         console.log(
@@ -908,21 +849,14 @@ export async function generateCodeReviewReport(
         console.log('Extracting findings from reviews...');
         let findings;
         try {
-            findings = await extractFindingsWithClaude(reviews, categories, models);
+            findings = await extractFindings(reviews, categories, models);
         } catch (findingsError) {
             console.error('Error extracting findings:', findingsError);
-            return {
-                ...createBasicReport(modelResults, models, modelMetrics),
-                categories,
-            };
+            throw new Error('Failed to extract findings');
         }
 
         if (!findings.length) {
-            console.warn('Failed to extract findings, creating basic report with categories');
-            return {
-                ...createBasicReport(modelResults, models, modelMetrics),
-                categories,
-            };
+            throw new Error('Failed to extract findings');
         }
 
         console.log(`Extracted ${findings.length} findings`);
@@ -954,7 +888,7 @@ export async function generateCodeReviewReport(
         console.log('Extracting model insights...');
         let modelInsights;
         try {
-            modelInsights = await extractModelInsightsWithClaude(reviews, models);
+            modelInsights = await extractModelInsights(reviews, models);
         } catch (insightsError) {
             console.error('Error extracting model insights:', insightsError);
             modelInsights = models.map(model => ({
@@ -994,18 +928,9 @@ export async function generateCodeReviewReport(
             agreementStatistics,
             prioritizedRecommendations,
         };
-    } catch {
-        // Use the new error handling utilities for consistent error handling
-        return safeReportGenerationAsync(
-            async () => {
-                console.warn('Error in main report generation, falling back to basic report');
-                return createBasicReport(modelResults);
-            },
-            'code review',
-            'generation',
-            createBasicReport(modelResults), // Default basic report as fallback
-            true // Log error stack trace
-        );
+    } catch (error) {
+        console.error('Error generating code review report:', error);
+        throw error;
     } finally {
         // Clean up any resources
         resources.forEach(resource => {
@@ -1061,8 +986,8 @@ function organizeFindingsByCategory(
     const findingsByCategory: Record<string, ReviewFinding[]> = {};
 
     categories.forEach(category => {
-        findingsByCategory[category.id] = findings.filter(
-            f => f.category && f.category.id === category.id
+        findingsByCategory[category.name] = findings.filter(
+            f => f.category && f.category.name === category.name
         );
     });
 
@@ -1077,9 +1002,9 @@ function logFindingsDistribution(
     categories: ReviewCategory[]
 ): void {
     console.log('Findings distribution by category:');
-    for (const [categoryId, catFindings] of Object.entries(findingsByCategory)) {
-        const category = categories.find(c => c.id === categoryId);
-        console.log(`- ${category?.name || categoryId}: ${catFindings.length} findings`);
+    for (const [categoryName, catFindings] of Object.entries(findingsByCategory)) {
+        const category = categories.find(c => c.name === categoryName);
+        console.log(`- ${category?.name || categoryName}: ${catFindings.length} findings`);
     }
 }
 
@@ -1122,8 +1047,9 @@ function identifyKeyFindingsImportance(findings: ReviewFinding[]): {
 
     return { keyStrengths, keyAreasForImprovement };
 }
+
 /**
- * Extracts code review findings using structured Claude output
+ * Extracts code review findings using structured output from any available LLM provider
  * This function handles the analysis of review texts to identify specific findings
  * and categorize them properly
  *
@@ -1132,7 +1058,8 @@ function identifyKeyFindingsImportance(findings: ReviewFinding[]): {
  * @param models - Array of model information objects
  * @returns Promise with array of review findings
  */
-async function extractFindingsWithClaude(
+
+export async function extractFindings(
     reviews: string[],
     categories: ReviewCategory[],
     models: ModelInfo[]
@@ -1147,38 +1074,24 @@ async function extractFindingsWithClaude(
         const prompt = createFindingsExtractionPrompt(reviews, categories, models);
 
         // Define the schema for the structured output
-        const schema = createFindingsSchema(models);
+        const schema = createFindingsSchema(models, categories); // Pass categories
 
-        // Define the response type
-        interface FindingsResponse {
-            findings: Array<{
-                title: string;
-                description: string;
-                categoryName: string;
-                isStrength: boolean;
-                modelAgreement: Record<string, boolean>;
-                codeExample?: {
-                    code: string;
-                    language: string;
-                };
-                recommendation?: string;
-            }>;
-        }
-
-        // Call Claude with structured output
-        console.log('Calling Claude for structured findings extraction...');
-        const response = await runClaudeModelStructured<FindingsResponse>(prompt, schema);
+        // Call the best available LLM provider with structured output
+        console.log('Calling LLM provider for structured findings extraction...');
+        const response = await LLMProviderFactory.runStructured<FindingsResponse>(prompt, schema);
         console.log('Claude findings extraction complete');
 
+        console.log('Response:', JSON.stringify(response, null, 2));
+
         // Validate the response structure
-        if (!isValidFindingsResponse(response)) {
-            throw new Error('Claude did not return expected findings structure');
+        if (!response || !response.data || !response.data.findings) {
+            throw new Error('LLM did not return expected findings structure');
         }
 
         console.log(`Extracted ${response.data.findings.length} findings`);
 
         // Map the findings to the required format
-        return mapExtractedFindingsToRequiredFormat(response.data.findings, categories);
+        return mapExtractedFindingsToRequiredFormat(response.data.findings, categories, models);
     } catch (error) {
         // Use the new error handling utilities for consistent error handling
         return safeReportGenerationAsync(
@@ -1207,7 +1120,7 @@ I need you to analyze these code review outputs and extract specific findings.
 ${reviews.map((review, index) => `MODEL ${index + 1} (${models[index]?.name || 'Unknown Model Name'}) REVIEW:\n${review}`).join('\n\n')}
 
 Categories to consider:
-${categories.map(cat => `- ${cat.name}: ${cat.shortDescription}`).join('\n')}
+${categories.map(cat => `- ${cat.name}: ${cat.description}`).join('\n')}
 
 For each finding, determine:
 1. A concise title
@@ -1225,7 +1138,10 @@ Please be thorough in extracting distinct findings from all reviews.
 /**
  * Creates the schema for findings extraction
  */
-function createFindingsSchema(models: ModelInfo[]): Record<string, unknown> {
+function createFindingsSchema(
+    models: ModelInfo[],
+    categories: ReviewCategory[]
+): Record<string, unknown> {
     return {
         type: 'object',
         properties: {
@@ -1242,9 +1158,10 @@ function createFindingsSchema(models: ModelInfo[]): Record<string, unknown> {
                             type: 'string',
                             description: 'Detailed description of the finding',
                         },
-                        categoryName: {
+                        category: {
                             type: 'string',
                             description: 'Category name from the provided list',
+                            enum: categories.map(cat => cat.name), // Use categories for enum
                         },
                         isStrength: {
                             type: 'boolean',
@@ -1284,13 +1201,7 @@ function createFindingsSchema(models: ModelInfo[]): Record<string, unknown> {
                             description: 'Specific recommendation for addressing the finding',
                         },
                     },
-                    required: [
-                        'title',
-                        'description',
-                        'categoryName',
-                        'isStrength',
-                        'modelAgreement',
-                    ],
+                    required: ['title', 'description', 'category', 'isStrength', 'modelAgreement'],
                 },
             },
         },
@@ -1299,97 +1210,114 @@ function createFindingsSchema(models: ModelInfo[]): Record<string, unknown> {
 }
 
 /**
- * Validates if the findings response has the expected structure
- */
-function isValidFindingsResponse(response: unknown): boolean {
-    if (!response) {
-        return false;
-    }
-
-    // Type guard to check if response has the expected structure
-    return (
-        typeof response === 'object' &&
-        response !== null &&
-        'data' in response &&
-        typeof response.data === 'object' &&
-        response.data !== null &&
-        'findings' in response.data &&
-        Array.isArray(response.data.findings)
-    );
-}
-
-/**
- * Maps the extracted findings to the required format
+ * Map the findings extracted by the LLM (FindingItem) to the required report format (ReviewFinding).
  */
 function mapExtractedFindingsToRequiredFormat(
-    findings: Array<{
-        title: string;
-        description: string;
-        categoryName: string;
-        isStrength: boolean;
-        modelAgreement: Record<string, boolean>;
-        codeExample?: {
-            code: string;
-            language: string;
-        };
-        recommendation?: string;
-    }>,
-    categories: ReviewCategory[]
+    findings: FindingItem[],
+    categories: ReviewCategory[],
+    models: ModelInfo[]
 ): ReviewFinding[] {
-    return findings.map(finding => {
-        // Find the matching category
-        const category = findMatchingCategory(finding.categoryName, categories);
+    // Ensure we have the 'Unknown Category' definition readily available
+    let unknownCategory = categories.find(cat => cat.name === 'Unknown Category');
 
-        return {
-            title: finding.title,
-            description: finding.description,
-            category,
-            isStrength: finding.isStrength,
-            modelAgreement: {
-                modelAgreements: finding.modelAgreement,
-            },
-            codeExample: finding.codeExample,
-            recommendation: finding.recommendation,
+    // If unknown category doesn't exist, create it
+    if (!unknownCategory) {
+        console.warn('Creating fallback Unknown Category for findings with invalid categories');
+        unknownCategory = {
+            name: 'Unknown Category',
+            description: 'Findings that could not be mapped to a specific category',
         };
+        // Add it to the categories array for future use
+        categories.push(unknownCategory);
+    }
+
+    return findings.map(finding => {
+        let targetCategory: ReviewCategory | null = null;
+
+        // Handle missing, empty, or invalid category string from LLM
+        if (typeof finding.category !== 'string' || !finding.category.trim()) {
+            console.warn(
+                `Finding has missing or invalid category string. Assigning to "Unknown Category". Finding: ${JSON.stringify(
+                    {
+                        title: finding.title,
+                        description: finding.description,
+                        category: finding.category, // Log the invalid value
+                        isStrength: finding.isStrength,
+                    },
+                    null,
+                    2
+                )}`
+            );
+            targetCategory = unknownCategory; // Assign directly
+        } else {
+            // Attempt to find a matching category object based on the string name
+            // First try exact match
+            let matchedCategory = categories.find(cat => cat.name === finding.category);
+
+            // If no exact match, try case-insensitive match
+            if (!matchedCategory) {
+                matchedCategory = categories.find(
+                    cat => cat.name.toLowerCase() === finding.category.toLowerCase()
+                );
+            }
+
+            // If still no match, try partial match (finding category contains category name or vice versa)
+            if (!matchedCategory) {
+                matchedCategory = categories.find(
+                    cat =>
+                        cat.name.toLowerCase().includes(finding.category.toLowerCase()) ||
+                        finding.category.toLowerCase().includes(cat.name.toLowerCase())
+                );
+            }
+
+            // If all matching attempts fail, use unknown category
+            if (!matchedCategory) {
+                console.warn(
+                    `Could not find matching category for '${finding.category}', using Unknown Category`
+                );
+                matchedCategory = unknownCategory;
+            }
+
+            // Assign the final matched category
+            targetCategory = matchedCategory;
+        }
+
+        // Map CodeExample if it exists
+        const codeExample = finding.codeExample
+            ? {
+                  code: finding.codeExample.code,
+                  language: finding.codeExample.language,
+              }
+            : undefined;
+
+        // Construct the valid ReviewFinding object
+        const reviewFinding: ReviewFinding = {
+            // Use a more robust ID generation if needed
+            title: finding.title || 'Untitled Finding', // Use finding title or a default
+            description: finding.description || 'No description provided.',
+            category: targetCategory as ReviewCategory, // We ensure it's assigned above
+            modelAgreement: {
+                modelAgreements: models.reduce(
+                    (acc: Record<string, boolean>, model: ModelInfo) => ({
+                        ...acc,
+                        [model.id]: false,
+                    }),
+                    {} as Record<string, boolean>
+                ),
+            }, // Initialize agreement
+            isStrength: finding.isStrength ?? false, // Use isStrength flag, default to false
+            recommendation: finding.recommendation, // Optional field
+            codeExample, // Optional field
+        };
+
+        return reviewFinding;
     });
 }
 
 /**
- * Finds a matching category or creates a fallback one
+ * Extract model-specific insights using structured output from any available LLM provider
  */
-function findMatchingCategory(categoryName: string, categories: ReviewCategory[]): ReviewCategory {
-    // Find the matching category
-    const category = categories.find(cat => cat.name.toLowerCase() === categoryName.toLowerCase());
-
-    // If we found a match, return it
-    if (category) {
-        return category;
-    }
-
-    // If we didn't find a match but have categories, use the first one
-    if (categories.length > 0) {
-        // We've already checked categories.length > 0, so this is safe
-        const fallbackCategory = categories[0]!;
-        console.warn(
-            `Could not find exact match for category "${categoryName}". Using fallback category "${fallbackCategory.name}".`
-        );
-        return fallbackCategory;
-    }
-
-    // If we have no categories at all, create a default one
-    console.warn(`No categories available. Creating default category for "${categoryName}".`);
-
-    return {
-        id: `default_${Date.now()}`,
-        name: categoryName || 'General',
-        shortDescription: 'Automatically created category',
-    };
-}
-
-/**
- * Extract model-specific insights using structured Claude output
- */
-async function extractModelInsightsWithClaude(
+async function extractModelInsights(
     reviews: string[],
     models: ModelInfo[]
 ): Promise<ModelInsight[]> {
@@ -1432,31 +1360,20 @@ For each model, identify 1-2 unique insights or perspectives that are not emphas
             required: ['modelInsights'],
         };
 
-        // Define response type
-        interface InsightsResponse {
-            modelInsights: Array<{
-                modelId: string;
-                insight: string;
-                details: string;
-            }>;
-        }
-
-        // Call Claude with structured output
-        const response = await runClaudeModelStructured<InsightsResponse>(prompt, schema);
+        // Call the best available LLM provider with structured output
+        const response = await LLMProviderFactory.runStructured<InsightsResponse>(prompt, schema);
 
         if (!response || !response.data || !response.data.modelInsights) {
-            throw new Error('Claude did not return expected model insights structure');
+            throw new Error('LLM did not return expected model insights structure');
         }
 
         // Map the insights to the required format
         return mapModelInsightsToRequiredFormat(response.data.modelInsights, models);
-    } catch {
+    } catch (error) {
         // Use the new error handling utilities for consistent error handling
         return safeReportGenerationAsync(
             async () => {
-                // Log the error but don't throw, instead return an empty array
-                console.warn('Error extracting model insights, returning empty array');
-                return [];
+                throw error; // Re-throw the error to be handled by safeReportGenerationAsync
             },
             'model insights',
             'extraction',
@@ -1504,9 +1421,9 @@ function mapModelInsightsToRequiredFormat(
 }
 
 /**
- * Generate prioritized recommendations using structured Claude
+ * Generate prioritized recommendations using structured output from any available LLM provider
  */
-async function generatePrioritizedRecommendations(
+export async function generatePrioritizedRecommendations(
     findings: ReviewFinding[]
 ): Promise<Record<Priority, string[]>> {
     try {
@@ -1538,7 +1455,7 @@ High priority: High impact items, especially those with small effort
 Medium priority: Medium impact items and high impact with large effort
 Low priority: Low impact items and nice-to-have improvements
 
-Provide at least 1-2 recommendations for each priority level.
+Please be thorough in prioritizing these recommendations.
 `;
 
         // Define schema for prioritized recommendations
@@ -1564,18 +1481,14 @@ Provide at least 1-2 recommendations for each priority level.
             required: ['highPriority', 'mediumPriority', 'lowPriority'],
         };
 
-        // Define response type
-        interface PrioritizedResponse {
-            highPriority: string[];
-            mediumPriority: string[];
-            lowPriority: string[];
-        }
-
-        // Call Claude with structured output
-        const response = await runClaudeModelStructured<PrioritizedResponse>(prompt, schema);
+        // Call the best available LLM provider with structured output
+        const response = await LLMProviderFactory.runStructured<PrioritizedResponse>(
+            prompt,
+            schema
+        );
 
         if (!response || !response.data) {
-            throw new Error('Claude did not return expected prioritized recommendations structure');
+            throw new Error('LLM did not return expected prioritized recommendations structure');
         }
 
         // Map priorities to required format
@@ -1608,186 +1521,6 @@ Provide at least 1-2 recommendations for each priority level.
             true // Log error stack trace
         );
     }
-}
-
-/**
- * Create a basic report when structured analysis fails
- * This ensures we always have a valid report even if the enhanced analysis fails
- */
-function createBasicReport(
-    modelResults: ModelResult[],
-    models?: ModelInfo[],
-    modelMetrics?: ModelMetrics[]
-): CodeReviewReport {
-    // Create model info objects if not provided
-    const safeModels =
-        models ||
-        modelResults.map(result => ({
-            id: result.model.toLowerCase(),
-            name: result.model,
-        }));
-
-    // Create model metrics if not provided
-    const safeMetrics = modelMetrics || createModelMetrics(modelResults);
-
-    // Create simple categories and findings using regex extraction
-    const { simpleCategories, simpleFindings, simpleFindingsByCategory } =
-        createSimpleCategoriesAndFindings(modelResults, safeModels);
-
-    // Create simple model insights
-    const simpleModelInsights = createSimpleModelInsights(safeModels);
-
-    // Create simple agreement analysis
-    const simpleAgreementAnalysis = createSimpleAgreementAnalysis(simpleCategories);
-
-    // Create simple agreement statistics
-    const simpleAgreementStatistics = createSimpleAgreementStatistics(simpleCategories);
-
-    // Create simple prioritized recommendations
-    const simplePrioritizedRecommendations = createSimplePrioritizedRecommendations(modelResults);
-
-    return {
-        projectName: 'Triumvirate',
-        reviewDate: new Date().toISOString(),
-        categories: simpleCategories,
-        models: safeModels,
-        modelMetrics: safeMetrics,
-        keyStrengths: simpleFindings.filter(f => f.isStrength),
-        keyAreasForImprovement: simpleFindings.filter(f => !f.isStrength),
-        findingsByCategory: simpleFindingsByCategory,
-        modelInsights: simpleModelInsights,
-        agreementAnalysis: simpleAgreementAnalysis,
-        agreementStatistics: simpleAgreementStatistics,
-        prioritizedRecommendations: simplePrioritizedRecommendations,
-    };
-}
-
-/**
- * Create simple categories and findings for a basic report
- */
-function createSimpleCategoriesAndFindings(
-    modelResults: ModelResult[],
-    safeModels: ModelInfo[]
-): {
-    simpleCategories: ReviewCategory[];
-    simpleFindings: ReviewFinding[];
-    simpleFindingsByCategory: Record<string, ReviewFinding[]>;
-} {
-    const simpleCategories: ReviewCategory[] = [];
-    const simpleFindings: ReviewFinding[] = [];
-
-    try {
-        // Try to extract some basic categories using regex
-        const combinedReview = modelResults.map(r => r.review || '').join('\n\n');
-        const extractedCategories = extractCategoriesWithRegex(combinedReview);
-
-        if (extractedCategories.length) {
-            simpleCategories.push(...extractedCategories);
-
-            // Create a simple finding for each category
-            extractedCategories.forEach(category => {
-                // Create a simple finding for strengths
-                simpleFindings.push({
-                    title: `${category.name} Strengths`,
-                    description: `Strengths related to ${category.name.toLowerCase()}`,
-                    category: category,
-                    isStrength: true,
-                    modelAgreement: {
-                        modelAgreements: safeModels.reduce(
-                            (acc, model) => {
-                                acc[model.id] = true;
-                                return acc;
-                            },
-                            {} as Record<string, boolean>
-                        ),
-                    },
-                });
-
-                // Create a simple finding for areas of improvement
-                simpleFindings.push({
-                    title: `${category.name} Areas for Improvement`,
-                    description: `Areas for improvement related to ${category.name.toLowerCase()}`,
-                    category: category,
-                    isStrength: false,
-                    modelAgreement: {
-                        modelAgreements: safeModels.reduce(
-                            (acc, model) => {
-                                acc[model.id] = true;
-                                return acc;
-                            },
-                            {} as Record<string, boolean>
-                        ),
-                    },
-                });
-            });
-        }
-    } catch (e) {
-        console.error('Error creating simple findings:', e);
-    }
-
-    // Create a simple findingsByCategory map
-    const simpleFindingsByCategory: Record<string, ReviewFinding[]> = {};
-    simpleCategories.forEach(category => {
-        if (category && category.id) {
-            simpleFindingsByCategory[category.id] = simpleFindings.filter(
-                f => f.category && f.category.id === category.id
-            );
-        }
-    });
-
-    return { simpleCategories, simpleFindings, simpleFindingsByCategory };
-}
-
-/**
- * Create simple model insights for a basic report
- */
-function createSimpleModelInsights(safeModels: ModelInfo[]): ModelInsight[] {
-    return safeModels.map(model => ({
-        model,
-        insight: `Review from ${model.name}`,
-        details: `Check the full review from ${model.name} for detailed insights`,
-    }));
-}
-
-/**
- * Create simple agreement analysis for a basic report
- */
-function createSimpleAgreementAnalysis(
-    simpleCategories: ReviewCategory[]
-): CategoryAgreementAnalysis[] {
-    return simpleCategories.map(category => ({
-        area: category.name,
-        highAgreement: [`${category.name} is important`],
-        partialAgreement: [],
-        disagreement: [],
-    }));
-}
-
-/**
- * Create simple agreement statistics for a basic report
- */
-function createSimpleAgreementStatistics(
-    simpleCategories: ReviewCategory[]
-): AgreementStatistics[] {
-    return simpleCategories.map(category => ({
-        category: category.name,
-        allThreeModels: 1,
-        twoModels: 0,
-        oneModel: 0,
-    }));
-}
-
-/**
- * Create simple prioritized recommendations for a basic report
- */
-function createSimplePrioritizedRecommendations(
-    modelResults: ModelResult[]
-): Record<Priority, string[]> {
-    return {
-        [Priority.HIGH]: modelResults.map(r => r.summary || '').filter(Boolean),
-        [Priority.MEDIUM]: [],
-        [Priority.LOW]: [],
-    };
 }
 
 /**
@@ -1968,17 +1701,17 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
         if (report.categories && Array.isArray(report.categories) && report.categories.length > 0) {
             report.categories.forEach(category => {
                 try {
-                    if (!category || !category.id) {
+                    if (!category || !category.name) {
                         return;
                     }
 
-                    markdown += `### ${category.name || 'Unknown Category'}\n\n`;
+                    markdown += `### ${category.name}\n\n`;
                     // Check if description exists on the category object
                     if ('description' in category && category.description) {
                         markdown += `${category.description}\n\n`;
                     }
 
-                    const findings = report.findingsByCategory?.[category.id] || [];
+                    const findings = report.findingsByCategory?.[category.name] || [];
                     if (findings.length > 0) {
                         // Group findings by strength vs. improvement
                         const strengths = findings.filter(f => f.isStrength);
@@ -2080,24 +1813,25 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
         markdown += '|------|---------------|-------------------|-------------|\n';
 
         // Safely handle agreementAnalysis
-        if (Array.isArray(report.agreementAnalysis) && report.agreementAnalysis.length > 0) {
-            report.agreementAnalysis.forEach(analysis => {
+        const agreementAnalysis = report.agreementAnalysis || [];
+        if (Array.isArray(agreementAnalysis) && agreementAnalysis.length > 0) {
+            agreementAnalysis.forEach(analysis => {
                 try {
                     const highAgreement =
-                        Array.isArray(analysis.highAgreement) && analysis.highAgreement.length > 0
+                        Array.isArray(analysis?.highAgreement) && analysis.highAgreement.length > 0
                             ? analysis.highAgreement.join('<br>')
                             : '-';
                     const partialAgreement =
-                        Array.isArray(analysis.partialAgreement) &&
+                        Array.isArray(analysis?.partialAgreement) &&
                         analysis.partialAgreement.length > 0
                             ? analysis.partialAgreement.join('<br>')
                             : '-';
                     const disagreement =
-                        Array.isArray(analysis.disagreement) && analysis.disagreement.length > 0
+                        Array.isArray(analysis?.disagreement) && analysis.disagreement.length > 0
                             ? analysis.disagreement.join('<br>')
                             : '-';
 
-                    markdown += `| ${analysis.area || 'Unknown'} | ${highAgreement} | ${partialAgreement} | ${disagreement} |\n`;
+                    markdown += `| ${analysis?.area || 'Unknown'} | ${highAgreement} | ${partialAgreement} | ${disagreement} |\n`;
                 } catch (analysisError) {
                     console.error('Error processing agreement analysis:', analysisError);
                     markdown += `| Error processing analysis | - | - | - |\n`;
@@ -2114,56 +1848,84 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
 
         // Safely handle prioritizedRecommendations
         const prioritizedRecommendations = report.prioritizedRecommendations || {};
-        Object.entries(prioritizedRecommendations).forEach(([priority, recommendations]) => {
-            try {
-                markdown += `### ${priority}\n`;
-                if (Array.isArray(recommendations) && recommendations.length > 0) {
-                    recommendations.forEach((recommendation, index) => {
-                        markdown += `${index + 1}. ${recommendation}\n`;
-                    });
-                } else if (
-                    priority === 'High Priority' &&
-                    Array.isArray(report.keyAreasForImprovement) &&
-                    report.keyAreasForImprovement.length > 0
-                ) {
-                    // Add fallback recommendations based on findings if no recommendations are available
-                    report.keyAreasForImprovement.slice(0, 2).forEach((area, index) => {
-                        if (area.recommendation) {
-                            markdown += `${index + 1}. ${area.recommendation}\n`;
-                        }
-                    });
-                } else if (
-                    priority === 'Medium Priority' &&
-                    Array.isArray(report.keyAreasForImprovement) &&
-                    report.keyAreasForImprovement.length > 2
-                ) {
-                    report.keyAreasForImprovement.slice(2, 4).forEach((area, index) => {
-                        if (area.recommendation) {
-                            markdown += `${index + 1}. ${area.recommendation}\n`;
-                        }
-                    });
-                } else {
-                    markdown += 'No recommendations available.\n';
-                }
-                markdown += '\n';
-            } catch {
-                // Use consistent error handling
-                const errorSection = safeDataProcessing(
-                    () => {
-                        console.warn(
-                            `Error processing ${priority} recommendations, using placeholder`
-                        );
-                        return `### Error processing ${priority} recommendations\n\n`;
-                    },
-                    'priority recommendations',
-                    'processing',
-                    `### Error processing ${priority} recommendations\n\n`,
-                    'warn'
-                );
-                markdown += errorSection;
-            }
-        });
+        const keyAreasForImprovement = report.keyAreasForImprovement || [];
 
+        // Define default recommendations if none exist
+        interface PriorityRecommendations {
+            'High Priority': string[];
+            'Medium Priority': string[];
+            'Low Priority': string[];
+        }
+
+        const defaultRecommendations: PriorityRecommendations = {
+            'High Priority': [
+                'Review the codebase for critical security issues',
+                'Address any high-impact performance bottlenecks',
+            ],
+            'Medium Priority': [
+                'Implement code documentation improvements',
+                'Enhance error handling mechanisms',
+            ],
+            'Low Priority': [
+                'Update code comments for clarity',
+                'Refactor minor code organization issues',
+            ],
+        };
+
+        Object.entries(prioritizedRecommendations).forEach(
+            ([priority, recommendations]: [string, string[]]) => {
+                try {
+                    markdown += `### ${priority}\n`;
+                    if (Array.isArray(recommendations) && recommendations.length > 0) {
+                        recommendations.forEach((recommendation: string, index: number) => {
+                            markdown += `${index + 1}. ${recommendation}\n`;
+                        });
+                    } else if (priority === 'High Priority' && keyAreasForImprovement.length > 0) {
+                        // Add fallback recommendations based on findings if no recommendations are available
+                        keyAreasForImprovement
+                            .slice(0, 2)
+                            .forEach((area: { recommendation?: string }, index: number) => {
+                                if (area?.recommendation) {
+                                    markdown += `${index + 1}. ${area.recommendation}\n`;
+                                }
+                            });
+                    } else if (
+                        priority === 'Medium Priority' &&
+                        keyAreasForImprovement.length > 2
+                    ) {
+                        keyAreasForImprovement
+                            .slice(2, 4)
+                            .forEach((area: { recommendation?: string }, index: number) => {
+                                if (area?.recommendation) {
+                                    markdown += `${index + 1}. ${area.recommendation}\n`;
+                                }
+                            });
+                    } else {
+                        // Use default recommendations if none exist
+                        const defaultRecs =
+                            defaultRecommendations[priority as keyof PriorityRecommendations] || [];
+                        defaultRecs.forEach((recommendation: string, index: number) => {
+                            markdown += `${index + 1}. ${recommendation}\n`;
+                        });
+                    }
+                    markdown += '\n';
+                } catch {
+                    const errorSection = safeDataProcessing(
+                        () => {
+                            console.warn(
+                                `Error processing ${priority} recommendations, using placeholder`
+                            );
+                            return `### Error processing ${priority} recommendations\n\n`;
+                        },
+                        'priority recommendations',
+                        'processing',
+                        `### Error processing ${priority} recommendations\n\n`,
+                        'warn'
+                    );
+                    markdown += errorSection;
+                }
+            }
+        );
         return markdown;
     } catch {
         // Use consistent error handling

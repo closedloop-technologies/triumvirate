@@ -1,8 +1,6 @@
-// src/types/report.ts - New file for report data types
 export interface ReviewCategory {
-    id: string;
     name: string;
-    shortDescription?: string;
+    description: string;
 }
 
 export interface ModelInfo {
