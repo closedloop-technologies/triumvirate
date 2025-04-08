@@ -87,6 +87,7 @@ export interface FindingItem {
         code: string;
         language: string;
     };
+    modelAgreement?: Record<string, boolean>;
 }
 
 /**

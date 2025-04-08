@@ -218,7 +218,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             enhancedReport,
         };
 
-        spinner.update('Running code review across models...');
+        spinner.update(`Running code review across models: [${modelList.join(', ')}]...`);
         const results = await runTriumvirateReview(reviewOptions);
 
         spinner.succeed('Code review completed successfully!');

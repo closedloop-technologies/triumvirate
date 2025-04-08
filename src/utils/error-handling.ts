@@ -577,6 +577,22 @@ function categorizeModelError(
         );
     }
 
+    // Handle server overload errors (especially for Claude)
+    if (
+        (error instanceof Error && 'status' in error && error['status'] === 529) ||
+        errorMessage.includes('overloaded') ||
+        errorMessage.includes('overloaded_error')
+    ) {
+        return new TriumvirateError(
+            `${component} API is currently overloaded. Will retry with exponential backoff.`,
+            ErrorCategory.RATE_LIMIT, // Treat as rate limit for retry purposes
+            component,
+            true, // retryable
+            error,
+            context
+        );
+    }
+
     // Handle invalid response errors
     if (
         errorMessage.includes('invalid response') ||

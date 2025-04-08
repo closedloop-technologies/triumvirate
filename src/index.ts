@@ -89,7 +89,6 @@ export async function runTriumvirateReview({
     // Create an async function to process each model
     const processModel = async (model: string) => {
         try {
-            console.log(`Running review with model: ${model}`);
             const modelStartTime = Date.now();
 
             const { text: review, usage } = await runModelReview(prompt, model);
