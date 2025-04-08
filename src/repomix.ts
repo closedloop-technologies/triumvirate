@@ -4,7 +4,8 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
-// Import repomix as a direct dependency instead of using CLI
+import logUpdate from 'log-update';
+import pc from 'picocolors';
 import { pack } from 'repomix';
 
 import {
@@ -145,12 +146,55 @@ export async function runRepomix({
 
         console.log('Running Repomix with configuration:', JSON.stringify(config, null, 2));
 
+        // Create a simple array to store the last 5 log messages
+        const logMessages: string[] = [];
+        const maxLogLines = 5;
+
+        // Function to update the log box
+        const updateLogBox = async () => {
+            if (logMessages.length === 0) {
+                return;
+            }
+
+            // Create the box with the lines
+            const boxWidth = 80;
+            const topBorder = `┌${'─'.repeat(boxWidth)}┐`;
+            const bottomBorder = `└${'─'.repeat(boxWidth)}┘`;
+
+            const contentLines = logMessages.map(line => {
+                // Truncate or pad the line to fit the box width
+                const displayLine =
+                    line.length > boxWidth - 4
+                        ? line.substring(0, boxWidth - 7) + '...'
+                        : line.padEnd(boxWidth - 4, ' ');
+                return `│ ${pc.gray(displayLine)} │`;
+            });
+
+            // Join all lines with newlines
+            const content = contentLines.join('\n');
+
+            // Use logUpdate to update the console in place
+            logUpdate(`${pc.cyan(topBorder)}\n${content}\n${pc.cyan(bottomBorder)}`);
+        };
+
         // Run repomix programmatically
         // Use unknown type to bypass TypeScript checking
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const packResult = await pack(rootDirs, config as unknown as any, message => {
-            process.stdout.write(message + '\n');
+            // Add message to our log array
+            logMessages.push(message.trim());
+            // Keep only the last 5 messages
+            if (logMessages.length > maxLogLines) {
+                logMessages.shift();
+            }
+            // Update the log box
+            updateLogBox();
+            // Still write to stdout but don't display it
+            // process.stdout.write(message + '\n');
         });
+
+        // Finalize the log display
+        logUpdate.done();
 
         // Check if we need to optimize
         if (packResult.totalTokens > tokenLimit) {
