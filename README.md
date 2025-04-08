@@ -20,29 +20,63 @@ cp .env.example .env
 
 ## CLI Usage
 
+Triumvirate provides a set of subcommands to support a complete code review workflow:
+
 ```bash
-npx triumvirate \
+# Run a code review with default settings
+npx tri report
+
+# Run a code review with specific models and options
+npx tri report \
   --models openai,claude,gemini \
   --diff \
   --output triumvirate.json \
   --fail-on-error \
   --summary-only
+
+# Generate a summary from existing raw reports
+npx tri summarize --input raw-reports.json --output summary.md
+
+# Decompose a review into tasks with dependencies
+npx tri plan --input summary.md --output plan.json
+
+# Get the next available task
+npx tri next --input plan.json
 ```
 
-## Advanced CLI Usage
+You can also use the full command name `triumvirate` instead of the shorthand `tri`.
 
-Triumvirate integrates [Repomix](https://github.com/yamadashy/repomix) for codebase packaging and provides many configuration options:
+## CLI Workflow
 
-### Core Options
+Triumvirate now supports a complete code review workflow through its subcommands:
+
+1. **`report`**: Run code reviews across multiple LLM providers and generate raw reports
+2. **`summarize`**: Generate a summary from existing raw reports
+3. **`plan`**: Decompose the review into a set of tasks with dependencies
+4. **`next`**: Identify and display the next available task to work on
+
+## Advanced CLI Options
+
+Triumvirate integrates [Repomix](https://github.com/yamadashy/repomix) for codebase packaging and provides many configuration options.
+
+### Global Options
+
+```bash
+--version, -v        Show version information
+--verbose            Enable verbose logging for detailed output
+--quiet              Disable all output to stdout
+```
+
+### Report Command Options
 
 ```bash
 --models, -m         Comma-separated model list (openai,claude,gemini)
---exclude, -e        Comma-separated list of patterns to exclude
---diff, -d           Only review files changed in the current git diff
+--ignore, -i         Comma-separated list of patterns to exclude
+--diff               Only review files changed in the current git diff
 --output, -o         Path to write the review output JSON
---fail-on-error, -f  Exit with non-zero code if any model fails
---summary-only, -s   Only include summary in results
---token-limit, -l    Maximum number of tokens to send to the model
+--fail-on-error      Exit with non-zero code if any model fails
+--summary-only       Only include summary in results
+--token-limit        Maximum number of tokens to send to the model
 ```
 
 ### Review Type Options
@@ -79,24 +113,63 @@ Triumvirate passes through many Repomix options for fine-grained control:
 --token-count-encoding Token counting method (e.g., o200k_base)
 ```
 
+### Summarize Command Options
+
+```bash
+--input, -i          Input file containing raw reports
+--output, -o         Output file for the summary
+--enhanced-report    Generate enhanced report with model agreement analysis
+```
+
+### Plan Command Options
+
+```bash
+--input, -i          Input file containing the summary
+--output, -o         Output file for the plan
+```
+
+### Next Command Options
+
+```bash
+--input, -i          Input file containing the plan
+```
+
 ## Examples
 
 Review only changed files using OpenAI:
 
 ```bash
-npx triumvirate --models openai --diff
+npx tri report --models openai --diff
 ```
 
 Perform a security review:
 
 ```bash
-npx triumvirate --review-type security --output security-review.json
+npx tri report --review-type security --output security-review.json
 ```
 
 Focus on specific files with compression:
 
 ```bash
-npx triumvirate --include "src/**/*.js,src/**/*.ts" --compress
+npx tri report --include "src/**/*.js,src/**/*.ts" --compress
+```
+
+Generate a summary from existing reports:
+
+```bash
+npx tri summarize --input raw-reports.json --output summary.md
+```
+
+Create a task plan from a summary:
+
+```bash
+npx tri plan --input summary.md --output plan.json
+```
+
+Get the next task to work on:
+
+```bash
+npx tri next --input plan.json
 ```
 
 ## GitHub Actions

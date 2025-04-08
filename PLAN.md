@@ -106,6 +106,7 @@ Here are the most sophisticated models that support more than 100,000 tokens, or
   - Access via providers:
     - AWS Bedrock: <https://aws.amazon.com/bedrock/>
     - Snowflake: <https://www.snowflake.com/>
+- **Llama 4**: 10,000,000 tokens
 
 ## Amazon Bedrock
 
@@ -134,10 +135,32 @@ Here are the most sophisticated models that support more than 100,000 tokens, or
 
 # Also
 
-- Store configuration settings and api keys in ~/.triumvirate/config.json
-- Implement the badging system
+- Store configuration settings and api keys in ~/.triumvirate/config.json (like OCO)
+- Implement the badging system (like some security repos)
+
+- Add llm logging - weave or something
+
 - Test the context window shortening agentic calls
 - Swap out the report generation agent to use openai or claude or a different model
 - Enable richer prompt engineering on the feedback side - Generate task prompts
 - Add formatting for the md to ensure linting is good.
 - Implement this as a github action to run on PRs and pushes to main
+- clean up logging to make it a cleaner cli experience
+
+```bash
+# Run a code review with default settings and creates the summary
+tri report 
+
+# Just runs the summary from an existing set of raw reports
+tri summarize
+--input <file>  # Can accept multiple or wildcard
+--output <file>
+--fail-on-error
+--strict
+
+# Given a summary, will decompose the review into a set of tasks with dependencies
+tri plan
+
+# Reads the plan and emits the next task available task
+tri next
+```

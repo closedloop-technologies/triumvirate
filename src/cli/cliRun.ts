@@ -5,6 +5,26 @@ import { runCliAction } from './actions/runAction.js';
 import { runUninstallAction } from './actions/uninstallAction.js';
 import { handleError } from '../utils/error.js';
 import { logger } from '../utils/logger.js';
+// These imports will be available after building the project
+// For now, we'll define placeholder functions to avoid TypeScript errors
+interface CommandOptions {
+    [key: string]: unknown;
+}
+
+const runSummarizeAction = async (_options: CommandOptions) => {
+    logger.error('The summarize command is not yet implemented.');
+    process.exit(1);
+};
+
+const runPlanAction = async (_options: CommandOptions) => {
+    logger.error('The plan command is not yet implemented.');
+    process.exit(1);
+};
+
+const runNextAction = async (_options: CommandOptions) => {
+    logger.error('The next command is not yet implemented.');
+    process.exit(1);
+};
 
 // Semantic mapping for CLI suggestions
 const semanticSuggestionMap: Record<string, string[]> = {
@@ -35,10 +55,15 @@ export const run = async () => {
             .description(
                 'Triumvirate - Run codebase reviews across OpenAI, Claude, and Gemini models'
             )
-            .argument('[directories...]', 'list of directories to process', ['.'])
+            .option('--verbose', 'enable verbose logging for detailed output')
+            .option('--quiet', 'disable all output to stdout')
+            .option('-v, --version', 'show version information');
 
-            // Basic Options
-            .option('-v, --version', 'show version information')
+        // Report command (previously the base command)
+        const reportCommand = program
+            .command('report')
+            .description('Run a code review with default settings and creates the summary')
+            .argument('[directories...]', 'list of directories to process', ['.'])
 
             // Triumvirate-specific options
             .option(
@@ -79,15 +104,12 @@ export const run = async () => {
             .option('--include <patterns>', 'list of include patterns (comma-separated)')
             .option('-i, --ignore <patterns>', 'additional ignore patterns (comma-separated)')
             .option('--diff', 'only review files changed in git diff')
+            .action(runCliAction);
 
-            // Other options
-            .option('--verbose', 'enable verbose logging for detailed output')
-            .option('--quiet', 'disable all output to stdout')
-
-            // Custom help formatting to group options
-            .addHelpText(
-                'after',
-                `
+        // Add custom help text for the report command
+        reportCommand.addHelpText(
+            'after',
+            `
 Option Groups:
 
   Triumvirate Options:
@@ -118,8 +140,31 @@ Option Groups:
     -i, --ignore                   Patterns to ignore
     --diff                         Only review files in git diff
 `
-            )
-            .action(runCliAction);
+        );
+
+        // Summarize command - Just runs the summary from an existing set of raw reports
+        program
+            .command('summarize')
+            .description('Generate a summary from existing raw reports')
+            .option('-i, --input <file>', 'input file containing raw reports')
+            .option('-o, --output <file>', 'output file for the summary')
+            .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
+            .action(runSummarizeAction);
+
+        // Plan command - Decompose the review into a set of tasks with dependencies
+        program
+            .command('plan')
+            .description('Decompose a review into a set of tasks with dependencies')
+            .option('-i, --input <file>', 'input file containing the summary')
+            .option('-o, --output <file>', 'output file for the plan')
+            .action(runPlanAction);
+
+        // Next command - Emits the next available task
+        program
+            .command('next')
+            .description('Read the plan and emit the next available task')
+            .option('-i, --input <file>', 'input file containing the plan')
+            .action(runNextAction);
 
         // Add install and uninstall commands
         program

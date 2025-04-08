@@ -1,11 +1,12 @@
 # Triumvirate CLI Structure
 
-This document describes the new CLI structure for Triumvirate, which is modeled after the Repomix CLI.
+This document describes the CLI structure for Triumvirate, which provides a robust and user-friendly command-line interface for running code reviews across multiple LLM providers.
 
 ## Overview
 
-The Triumvirate CLI has been restructured to provide a more robust and user-friendly command-line interface. The new structure includes:
+The Triumvirate CLI has been structured to provide a consistent and intuitive command-line experience. The structure includes:
 
+- Organized subcommands for different operations (`report`, `summarize`, `plan`, `next`)
 - Better error handling with detailed error messages
 - Progress reporting with spinners
 - Semantic suggestions for typos in command options
@@ -14,32 +15,56 @@ The Triumvirate CLI has been restructured to provide a more robust and user-frie
 ## Usage
 
 ```bash
-# Run a code review with default settings
-triumvirate-new
-
-# Run a code review with specific models
-triumvirate-new --models openai,claude
-
-# Run a security-focused review
-triumvirate-new --review-type security
+# Main command and alias
+triumvirate
+tri
 
 # Show version information
-triumvirate-new --version
+tri --version
+
+# Get help
+tri --help
+```
+
+### Subcommands
+
+```bash
+# Run a code review with default settings and create the summary
+tri report
+
+# Run a code review with specific models
+tri report --models openai,claude
+
+# Run a security-focused review
+tri report --review-type security
+
+# Just run the summary from an existing set of raw reports
+tri summarize --input raw-reports.json --output summary.md
+
+# Given a summary, decompose the review into a set of tasks with dependencies
+tri plan --input summary.md --output plan.json
+
+# Read the plan and emit the next available task
+tri next --input plan.json
 
 # Install CLI completion
-triumvirate-new install
+tri install
 
 # Uninstall CLI completion
-triumvirate-new uninstall
+tri uninstall
 ```
 
 ## Command Options
 
-### Basic Options
+### Global Options
 
 - `-v, --version`: Show version information
+- `--verbose`: Enable verbose logging for detailed output
+- `--quiet`: Disable all output to stdout
 
-### Model Options
+### Report Command Options
+
+#### Model Options
 
 - `-m, --models <models>`: Comma-separated list of models (default: openai,claude,gemini)
 
@@ -72,27 +97,42 @@ triumvirate-new uninstall
 
 - `--token-count-encoding <encoding>`: Specify token count encoding (e.g., o200k_base, cl100k_base)
 
-### Other Options
+### Other Report Options
 
 - `--top-files-len <number>`: Specify the number of top files to display
 - `--skip-api-key-validation`: Skip API key validation check
-- `--verbose`: Enable verbose logging for detailed output
-- `--quiet`: Disable all output to stdout
+
+### Summarize Command Options
+
+- `-i, --input <file>`: Input file containing raw reports
+- `-o, --output <file>`: Output file for the summary
+- `--enhanced-report`: Generate enhanced report with model agreement analysis
+
+### Plan Command Options
+
+- `-i, --input <file>`: Input file containing the summary
+- `-o, --output <file>`: Output file for the plan
+
+### Next Command Options
+
+- `-i, --input <file>`: Input file containing the plan
 
 ## Architecture
 
-The new CLI structure is organized as follows:
+The CLI structure is organized as follows:
 
 ```text
 src/
 ├── bin/
-│   ├── triumvirate.ts        # Original CLI entry point
-│   ├── triumvirate-new.ts    # New CLI entry point
+│   ├── triumvirate-new.ts    # CLI entry point
 │   └── bash-complete.ts      # Bash completion script
 ├── cli/
 │   ├── actions/
 │   │   ├── installAction.ts  # Install command implementation
-│   │   ├── runAction.ts      # Main command implementation
+│   │   ├── runAction.ts      # Report command implementation
+│   │   ├── summarizeAction.ts # Summarize command implementation
+│   │   ├── planAction.ts     # Plan command implementation
+│   │   ├── nextAction.ts     # Next command implementation
 │   │   ├── uninstallAction.ts # Uninstall command implementation
 │   │   └── versionAction.ts  # Version command implementation
 │   ├── utils/
@@ -100,6 +140,8 @@ src/
 │   └── cliRun.ts             # CLI setup and command routing
 └── utils/
     ├── error.ts             # Error handling utilities
+    ├── error-handling.ts    # Enhanced error handling utilities
+    ├── report-utils.ts      # Report generation utilities
     └── logger.ts            # Logging utilities
 ```
 
@@ -126,14 +168,21 @@ The CLI now includes progress reporting with spinners to provide visual feedback
 
 The CLI includes semantic suggestions for common option variations. For example, if you use `--exclude` instead of `--ignore`, the CLI will suggest the correct option.
 
-## Comparison with Original CLI
+## Command Workflow
 
-The new CLI structure provides several advantages over the original CLI:
+The Triumvirate CLI is designed to support a complete code review workflow:
 
-1. **Better Error Handling**: More detailed error messages and suggestions for common mistakes
-2. **Progress Reporting**: Visual feedback during long-running operations
-3. **Semantic Suggestions**: Suggestions for common option variations
-4. **Modular Architecture**: Easier maintenance and extension
+1. **Report**: Run code reviews across multiple LLM providers and generate raw reports
+2. **Summarize**: Generate a summary from existing raw reports
+3. **Plan**: Decompose the review into a set of tasks with dependencies
+4. **Next**: Identify and display the next available task to work on
+
+This workflow allows for a more structured approach to code reviews, enabling teams to:
+
+- Run comprehensive code reviews
+- Generate actionable summaries
+- Create task plans with dependencies
+- Track and prioritize code improvement tasks
 
 ## Future Improvements
 
@@ -142,3 +191,5 @@ Future improvements to the CLI structure could include:
 1. **Configuration Files**: Support for configuration files to store common options
 2. **Interactive Mode**: Interactive prompts for common options
 3. **Plugin System**: Support for plugins to extend the CLI functionality
+4. **Task Tracking**: Integration with issue tracking systems
+5. **Continuous Integration**: Better integration with CI/CD pipelines
