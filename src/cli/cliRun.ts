@@ -36,56 +36,89 @@ export const run = async () => {
                 'Triumvirate - Run codebase reviews across OpenAI, Claude, and Gemini models'
             )
             .argument('[directories...]', 'list of directories to process', ['.'])
+
             // Basic Options
             .option('-v, --version', 'show version information')
-            // Model Options
+
+            // Triumvirate-specific options
             .option(
                 '-m, --models <models>',
                 'comma-separated list of models (default: openai,claude,gemini)'
             )
-            // Output Options
-            .option('-o, --output <file>', 'specify the output file name')
-            .option('--style <type>', 'specify the output style (xml, markdown, plain)')
-            .option('--compress', 'perform code compression to reduce token count')
-            .option('--output-show-line-numbers', 'add line numbers to each line in the output')
-            .option('--summary-only', 'only include summary in results')
+            .option(
+                '--review-type <type>',
+                'type of review: general, security, performance, architecture, docs'
+            )
+            .option('--fail-on-error', 'exit with non-zero code if any model fails')
+            .option('--skip-api-key-validation', 'skip API key validation check')
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
+            .option('--summary-only', 'only include summary in results')
+
+            // Repomix-specific options
+            .option('--token-limit <number>', 'maximum tokens to send to the model')
+            .option(
+                '--token-count-encoding <encoding>',
+                'specify token count encoding (e.g., o200k_base, cl100k_base)'
+            )
+            .option('--compress', 'perform code compression to reduce token count')
             .option('--remove-comments', 'remove comments')
             .option('--remove-empty-lines', 'remove empty lines')
+            .option('--top-files-len <number>', 'specify the number of top files to display')
             .option('--header-text <text>', 'specify the header text')
             .option(
                 '--instruction-file-path <path>',
                 'path to a file containing detailed custom instructions'
             )
-            // Filter Options
+
+            // Output options
+            .option('-o, --output <file>', 'specify the output file name')
+            .option('--style <type>', 'specify the output style (xml, markdown, plain)')
+            .option('--output-show-line-numbers', 'add line numbers to each line in the output')
+
+            // Filter options
             .option('--include <patterns>', 'list of include patterns (comma-separated)')
             .option('-i, --ignore <patterns>', 'additional ignore patterns (comma-separated)')
             .option('--diff', 'only review files changed in git diff')
-            // Review Options
-            .option(
-                '--review-type <type>',
-                'type of review: general, security, performance, architecture, docs'
-            )
-            .option(
-                '--token-limit <number>',
-                'maximum tokens to send to the model',
-                Number.parseInt
-            )
-            .option('--fail-on-error', 'exit with non-zero code if any model fails')
-            // Token Count Options
-            .option(
-                '--token-count-encoding <encoding>',
-                'specify token count encoding (e.g., o200k_base, cl100k_base)'
-            )
-            // Other Options
-            .option(
-                '--top-files-len <number>',
-                'specify the number of top files to display',
-                Number.parseInt
-            )
-            .option('--skip-api-key-validation', 'skip API key validation check')
+
+            // Other options
             .option('--verbose', 'enable verbose logging for detailed output')
             .option('--quiet', 'disable all output to stdout')
+
+            // Custom help formatting to group options
+            .addHelpText(
+                'after',
+                `
+Option Groups:
+
+  Triumvirate Options:
+    -m, --models                    Models to use for code review
+    --review-type                  Type of review to perform
+    --fail-on-error                Exit with error if any model fails
+    --skip-api-key-validation      Skip API key validation
+    --enhanced-report              Generate enhanced report with model agreement
+    --summary-only                 Only include summary in results
+
+  Repomix Options:
+    --token-limit                  Maximum tokens to send to the model
+    --token-count-encoding         Token count encoding to use
+    --compress                     Compress code to reduce token count
+    --remove-comments              Remove comments from code
+    --remove-empty-lines           Remove empty lines from code
+    --top-files-len                Number of top files to display
+    --header-text                  Header text for the report
+    --instruction-file-path        Path to custom instructions file
+
+  Output Options:
+    -o, --output                   Output file path
+    --style                        Output style format
+    --output-show-line-numbers     Show line numbers in output
+
+  Filter Options:
+    --include                      Patterns to include
+    -i, --ignore                   Patterns to ignore
+    --diff                         Only review files in git diff
+`
+            )
             .action(runCliAction);
 
         // Add install and uninstall commands
