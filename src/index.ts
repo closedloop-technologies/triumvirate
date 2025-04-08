@@ -155,10 +155,13 @@ export async function runTriumvirateReview({
         model_status[model] = 'pending';
     });
 
+    console.log('Running review across models:');
+
     // Process models with individual promises that update the spinner
     const updateSpinner = () => {
+        // Lets assume the spinner is at the bottom row so lets update it without adding a new ling
         spinner.update(
-            `Running review across models: [${models
+            `\t[${models
                 .map(model => {
                     if (model_status[model] === 'fulfilled') {
                         return pc.green(model); // Successful

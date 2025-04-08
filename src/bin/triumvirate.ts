@@ -15,8 +15,9 @@ const EXIT_CODES = {
   ERROR: 1,
 };
 
-if (major === undefined || major < 20) {
-  console.error(`Triumvirate requires Node.js version 20 or higher. Current version: ${nodeVersion}\n`);
+// Temporarily allow Node.js 18 for development
+if (major === undefined || major < 18) {
+  console.error(`Triumvirate requires Node.js version 18 or higher. Current version: ${nodeVersion}\n`);
   process.exit(EXIT_CODES.ERROR);
 }
 

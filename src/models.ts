@@ -4,6 +4,7 @@ import OpenAI from 'openai';
 
 // import { normalizeUsage } from './types/usage';
 import type { ModelUsage, OpenAIUsage, ClaudeUsage, GeminiUsage } from './types/usage';
+import { logApiCall, initApiLogger } from './utils/api-logger';
 import { API_TIMEOUT_MS, MAX_API_RETRIES } from './utils/constants';
 import {
     handleModelError,
@@ -16,6 +17,9 @@ import {
 
 // Load environment variables from .env file
 dotenv.config();
+
+// Initialize API logger
+initApiLogger();
 
 /**
  * Run the OpenAI model with the given prompt
@@ -79,11 +83,34 @@ async function runOpenAIModel(
                 }
 
                 // Validate output text
-                return {
+                const result = {
                     text: output_text ?? '',
                     usage: usage as OpenAIUsage,
                 };
+
+                // Log the successful API call
+                logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: 'gpt-4o',
+                    operation: 'completion',
+                    inputTokens: result.usage.input_tokens,
+                    outputTokens: result.usage.output_tokens,
+                    totalTokens: result.usage.total_tokens,
+                    success: true,
+                    cost: result.usage.total_tokens * 0.00001, // Simplified cost calculation
+                });
+
+                return result;
             } catch (error) {
+                // Log the failed API call
+                logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: 'gpt-4o',
+                    operation: 'completion',
+                    success: false,
+                    error: error instanceof Error ? error.message : String(error),
+                });
+
                 // Convert to a ModelError with appropriate category
                 throw handleModelError(error, 'OpenAI', maxRetries);
             }
@@ -168,8 +195,29 @@ async function runClaudeModel(
                     total_tokens: msg.usage?.total_tokens ?? 0,
                 };
 
+                // Log the successful API call
+                logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: 'claude-3-7-sonnet-20250219',
+                    operation: 'completion',
+                    inputTokens: usage.input_tokens,
+                    outputTokens: usage.output_tokens,
+                    totalTokens: usage.total_tokens,
+                    success: true,
+                    latencyMs: 0, // Just log 0 latency for now
+                });
+
                 return { text: messageContent, usage };
             } catch (error) {
+                // Log the failed API call
+                logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: 'claude-3-7-sonnet-20250219',
+                    operation: 'completion',
+                    success: false,
+                    error: error instanceof Error ? error.message : String(error),
+                });
+
                 // Convert to a ModelError with appropriate category
                 throw handleModelError(error, 'Claude', maxRetries);
             }
@@ -262,6 +310,18 @@ async function runClaudeModelStructured<T>(
                 cache_creation_input_tokens: result.usage?.cache_creation_input_tokens,
                 cache_read_input_tokens: result.usage?.cache_read_input_tokens,
             };
+
+            // Log the successful API call
+            logApiCall({
+                timestamp: new Date().toISOString(),
+                model: 'claude-3-7-sonnet-20250219',
+                operation: 'structured_output',
+                inputTokens: usage.input_tokens,
+                outputTokens: usage.output_tokens,
+                totalTokens: usage.total_tokens,
+                success: true,
+                latencyMs: 0, // Just log 0 latency for now
+            });
 
             // Log the full input for debugging
             console.log(
@@ -364,8 +424,28 @@ async function runGeminiModel(
                         .join('');
                 }
 
+                // Log the successful API call
+                logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: 'gemini-pro',
+                    operation: 'completion',
+                    inputTokens: usage.input_tokens,
+                    outputTokens: usage.output_tokens,
+                    totalTokens: usage.total_tokens,
+                    success: true,
+                });
+
                 return { text, usage };
             } catch (error) {
+                // Log the failed API call
+                logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: 'gemini-pro',
+                    operation: 'completion',
+                    success: false,
+                    error: error instanceof Error ? error.message : String(error),
+                });
+
                 // Convert to a ModelError with appropriate category
                 throw handleModelError(error, 'Gemini', maxRetries);
             }
@@ -424,14 +504,37 @@ export async function runModelReview(
         }
 
         // Handle unsupported model
+        const errorMessage = `Unsupported model: ${modelName}`;
+
+        // Log the API call error
+        logApiCall({
+            timestamp: new Date().toISOString(),
+            model: modelName,
+            operation: 'completion',
+            success: false,
+            error: errorMessage,
+        });
+
         throw createModelError(
-            `Unsupported model: ${modelName}`,
+            errorMessage,
             ErrorCategory.INVALID_RESPONSE,
             modelName,
             false,
-            new Error(`Unsupported model: ${modelName}`)
+            new Error(errorMessage)
         );
     } catch (error) {
+        // If error is not already logged (like from model-specific functions)
+        if (!(error && typeof error === 'object' && 'category' in error)) {
+            // Log the API call error
+            logApiCall({
+                timestamp: new Date().toISOString(),
+                model: modelName,
+                operation: 'completion',
+                success: false,
+                error: error instanceof Error ? error.message : String(error),
+            });
+        }
+
         // If error is already a ModelError, rethrow it
         if (error && typeof error === 'object' && 'category' in error) {
             throw error;

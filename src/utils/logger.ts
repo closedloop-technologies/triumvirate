@@ -13,6 +13,16 @@ const LOG_LEVELS = {
     trace: 6,
 };
 
+// Hacker/arcade style prefixes for different log levels
+const LOG_PREFIXES = {
+    error: '░░ [ERROR]', // ░░ [ERROR]
+    warn: '▒▒ [WARN]', // ▒▒ [WARN]
+    info: '▓▓ [INFO]', // ▓▓ [INFO]
+    note: '██ [NOTE]', // ██ [NOTE]
+    debug: '⟨DEBUG⟩', // ⟨DEBUG⟩
+    trace: '⟨TRACE⟩', // ⟨TRACE⟩
+};
+
 class Logger {
     private logLevel: number = LOG_LEVELS.info;
 
@@ -36,37 +46,37 @@ class Logger {
 
     error(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.error) {
-            console.error(pc.red(args.join(' ')));
+            console.error(pc.red(`${LOG_PREFIXES.error} ${args.join(' ')}`));
         }
     }
 
     warn(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.warn) {
-            console.warn(pc.yellow(args.join(' ')));
+            console.warn(pc.yellow(`${LOG_PREFIXES.warn} ${args.join(' ')}`));
         }
     }
 
     info(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.info) {
-            console.info(pc.blue(args.join(' ')));
+            console.info(pc.cyan(`${LOG_PREFIXES.info} ${args.join(' ')}`));
         }
     }
 
     note(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.note) {
-            console.info(pc.dim(args.join(' ')));
+            console.info(pc.green(`${LOG_PREFIXES.note} ${args.join(' ')}`));
         }
     }
 
     debug(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.debug) {
-            console.debug(pc.magenta(args.join(' ')));
+            console.debug(pc.magenta(`${LOG_PREFIXES.debug} ${args.join(' ')}`));
         }
     }
 
     trace(...args: unknown[]): void {
         if (this.logLevel >= LOG_LEVELS.trace) {
-            console.debug(pc.gray(args.join(' ')));
+            console.debug(pc.gray(`${LOG_PREFIXES.trace} ${args.join(' ')}`));
         }
     }
 }

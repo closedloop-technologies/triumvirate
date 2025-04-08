@@ -1,4 +1,3 @@
-import cliSpinners from 'cli-spinners';
 import logUpdate from 'log-update';
 import pc from 'picocolors';
 
@@ -7,8 +6,39 @@ interface SpinnerOptions {
     verbose?: boolean;
 }
 
+// Custom spinner frames for a more hacker/arcade aesthetic
+const hackerSpinner = {
+    interval: 80,
+    frames: [
+        '▓▒░    ',
+        '▒░▓    ',
+        '░▓▒    ',
+        '▓▒░    ',
+        '▒░▓    ',
+        '░▓▒    ',
+        '█▓▒░   ',
+        '▓▒░█   ',
+        '▒░█▓   ',
+        '░█▓▒   ',
+        '█▓▒░   ',
+        '▓▒░█   ',
+        '⟨⟩     ',
+        '⟨⟩     ',
+        '⟨=⟩    ',
+        '⟨==⟩   ',
+        '⟨===⟩  ',
+        '⟨====⟩ ',
+        '⟨=====⟩',
+        '⟨====⟩ ',
+        '⟨===⟩  ',
+        '⟨==⟩   ',
+        '⟨=⟩    ',
+        '⟨⟩     ',
+    ],
+};
+
 export class Spinner {
-    private spinner = cliSpinners.dwarfFortress;
+    private spinner = hackerSpinner;
     private message: string;
     private currentFrame = 0;
     private interval: ReturnType<typeof setInterval> | null = null;
@@ -30,7 +60,7 @@ export class Spinner {
         this.interval = setInterval(() => {
             this.currentFrame++;
             const frame = frames[this.currentFrame % framesLength] || '';
-            logUpdate(`${pc.cyan(frame)} ${this.message}`);
+            logUpdate(`${pc.cyan(frame)} ${pc.yellow(this.message)}`);
         }, this.spinner.interval);
     }
 
@@ -40,6 +70,9 @@ export class Spinner {
         }
 
         this.message = message;
+        const { frames } = this.spinner;
+        const frame = frames[this.currentFrame % frames.length] || '';
+        logUpdate(`${pc.cyan(frame)} ${pc.yellow(this.message)}`);
     }
 
     stop(finalMessage: string): void {
@@ -60,7 +93,7 @@ export class Spinner {
             return;
         }
 
-        this.stop(`${pc.green('✔')} ${message}`);
+        this.stop(`${pc.green('██')} ${pc.cyan(message)}`);
     }
 
     fail(message: string): void {
@@ -68,6 +101,6 @@ export class Spinner {
             return;
         }
 
-        this.stop(`${pc.red('✖')} ${message}`);
+        this.stop(`${pc.red('░░')} ${pc.magenta(message)}`);
     }
 }
