@@ -30,13 +30,13 @@ tri --help
 
 ```bash
 # Run a code review with default settings and create the summary
-tri report
+tri review
 
 # Run a code review with specific models
-tri report --models openai,claude
+tri review --models openai,claude
 
 # Run a security-focused review
-tri report --review-type security
+tri review --review-type security
 
 # Just run the summary from an existing set of raw reports
 tri summarize --input raw-reports.json --output summary.md
@@ -124,7 +124,7 @@ The CLI structure is organized as follows:
 ```text
 src/
 ├── bin/
-│   ├── triumvirate-new.ts    # CLI entry point
+│   ├── triumvirate.ts    # CLI entry point
 │   └── bash-complete.ts      # Bash completion script
 ├── cli/
 │   ├── actions/

@@ -19,7 +19,7 @@
     },
     "scripts": {
         "start": "node dist/triumvirate-new.js",
-        "dev": "tsx src/bin/triumvirate-new.ts",
+        "dev": "tsx src/bin/triumvirate.ts",
         "build": "tsup",
         "clean": "rm -rf dist",
         "rebuild": "npm run clean && npm run build",
@@ -50,7 +50,7 @@
     "license": "MIT",
     "tsup": {
         "entry": [
-            "src/bin/triumvirate-new.ts",
+            "src/bin/triumvirate.ts",
             "src/bin/bash-complete.ts"
         ],
         "format": [

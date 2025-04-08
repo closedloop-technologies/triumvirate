@@ -59,9 +59,9 @@ export const run = async () => {
             .option('--quiet', 'disable all output to stdout')
             .option('-v, --version', 'show version information');
 
-        // Report command (previously the base command)
-        const reportCommand = program
-            .command('report')
+        // Review command (previously the report command)
+        const reviewCommand = program
+            .command('review')
             .description('Run a code review with default settings and creates the summary')
             .argument('[directories...]', 'list of directories to process', ['.'])
 
@@ -106,8 +106,8 @@ export const run = async () => {
             .option('--diff', 'only review files changed in git diff')
             .action(runCliAction);
 
-        // Add custom help text for the report command
-        reportCommand.addHelpText(
+        // Add custom help text for the review command
+        reviewCommand.addHelpText(
             'after',
             `
 Option Groups:

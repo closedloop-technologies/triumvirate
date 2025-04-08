@@ -24,10 +24,10 @@ Triumvirate provides a set of subcommands to support a complete code review work
 
 ```bash
 # Run a code review with default settings
-npx tri report
+npx tri review
 
 # Run a code review with specific models and options
-npx tri report \
+npx tri review \
   --models openai,claude,gemini \
   --diff \
   --output triumvirate.json \
@@ -139,19 +139,19 @@ Triumvirate passes through many Repomix options for fine-grained control:
 Review only changed files using OpenAI:
 
 ```bash
-npx tri report --models openai --diff
+npx tri review --models openai --diff
 ```
 
 Perform a security review:
 
 ```bash
-npx tri report --review-type security --output security-review.json
+npx tri review --review-type security --output security-review.json
 ```
 
 Focus on specific files with compression:
 
 ```bash
-npx tri report --include "src/**/*.js,src/**/*.ts" --compress
+npx tri review --include "src/**/*.js,src/**/*.ts" --compress
 ```
 
 Generate a summary from existing reports:

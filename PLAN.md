@@ -149,7 +149,7 @@ Here are the most sophisticated models that support more than 100,000 tokens, or
 
 ```bash
 # Run a code review with default settings and creates the summary
-tri report 
+tri review 
 
 # Just runs the summary from an existing set of raw reports
 tri summarize
