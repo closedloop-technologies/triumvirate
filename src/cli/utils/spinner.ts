@@ -8,7 +8,7 @@ interface SpinnerOptions {
 }
 
 export class Spinner {
-    private spinner = cliSpinners.dots;
+    private spinner = cliSpinners.dwarfFortress;
     private message: string;
     private currentFrame = 0;
     private interval: ReturnType<typeof setInterval> | null = null;

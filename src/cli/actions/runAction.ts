@@ -2,40 +2,13 @@ import * as readline from 'readline';
 
 import { runTriumvirateReview } from '../../index.js';
 import type { TriumvirateReviewOptions } from '../../index.js';
+import type { CliOptions } from '../../types/report.js';
 import {
     validateApiKeys,
     getApiKeySetupInstructions,
     MODEL_API_KEYS,
 } from '../../utils/api-keys.js';
 import { logger } from '../../utils/logger.js';
-import { Spinner } from '../utils/spinner.js';
-
-interface CliOptions {
-    models?: string;
-    ignore?: string;
-    diff?: boolean;
-    output?: string;
-    failOnError?: boolean;
-    summaryOnly?: boolean;
-    tokenLimit?: number;
-    reviewType?: string;
-    include?: string;
-    ignorePatterns?: string;
-    style?: string;
-    compress?: boolean;
-    removeComments?: boolean;
-    removeEmptyLines?: boolean;
-    outputShowLineNumbers?: boolean;
-    headerText?: string;
-    instructionFilePath?: string;
-    topFilesLen?: number;
-    tokenCountEncoding?: string;
-    skipApiKeyValidation?: boolean;
-    enhancedReport?: boolean;
-    verbose?: boolean;
-    quiet?: boolean;
-    version?: boolean;
-}
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
     // Set log level based on verbose and quiet flags
@@ -179,12 +152,6 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
     // const targetPaths = directories.map(directory => path.resolve(process.cwd(), directory));
 
     // Create a spinner for progress reporting
-    const spinner = new Spinner('Preparing codebase for review...', {
-        quiet: options.quiet,
-        verbose: options.verbose,
-    });
-    spinner.start();
-
     try {
         // Assemble repomix options
         const repomixOptions = {
@@ -218,11 +185,9 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             enhancedReport,
         };
 
-        spinner.update(`Running code review across models: [${modelList.join(', ')}]...`);
         const results = await runTriumvirateReview(reviewOptions);
 
-        spinner.succeed('Code review completed successfully!');
-        logger.log('');
+        logger.log('Code review completed successfully!');
 
         // Output results to console
         for (const result of results) {
@@ -256,7 +221,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             process.exit(1);
         }
     } catch (error) {
-        spinner.fail('Error during code review');
+        logger.error('Error during code review');
         throw error;
     }
 };

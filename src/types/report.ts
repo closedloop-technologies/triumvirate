@@ -1,3 +1,30 @@
+export interface CliOptions {
+    models?: string;
+    ignore?: string;
+    diff?: boolean;
+    output?: string;
+    failOnError?: boolean;
+    summaryOnly?: boolean;
+    tokenLimit?: number;
+    reviewType?: string;
+    include?: string;
+    ignorePatterns?: string;
+    style?: string;
+    compress?: boolean;
+    removeComments?: boolean;
+    removeEmptyLines?: boolean;
+    outputShowLineNumbers?: boolean;
+    headerText?: string;
+    instructionFilePath?: string;
+    topFilesLen?: number;
+    tokenCountEncoding?: string;
+    skipApiKeyValidation?: boolean;
+    enhancedReport?: boolean;
+    verbose?: boolean;
+    quiet?: boolean;
+    version?: boolean;
+}
+
 export interface ReviewCategory {
     name: string;
     description: string;
@@ -76,4 +103,19 @@ export interface CodeReviewReport {
     agreementAnalysis: CategoryAgreementAnalysis[];
     agreementStatistics: AgreementStatistics[];
     prioritizedRecommendations: Record<Priority, string[]>;
+}
+
+export interface ModelReviewResult {
+    model: string;
+    summary: string;
+    review: string;
+    metrics: {
+        latency: number;
+        tokenInput: number;
+        tokenOutput: number;
+        tokenTotal: number;
+        cost: string;
+        error?: string;
+    };
+    error: boolean;
 }

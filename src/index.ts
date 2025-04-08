@@ -2,12 +2,14 @@
 
 import * as fs from 'fs';
 
+import pc from 'picocolors';
+
+import { Spinner } from './cli/utils/spinner';
 import { runModelReview } from './models';
 import { runRepomix } from './repomix';
-import type { CodeReviewReport } from './types/report';
+import type { CliOptions, CodeReviewReport, ModelReviewResult } from './types/report';
 import { normalizeUsage } from './types/usage';
 import { COST_RATES, DEFAULT_REVIEW_OPTIONS } from './utils/constants';
-// Import the report utilities
 import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
 
 export interface TriumvirateReviewOptions {
@@ -21,6 +23,7 @@ export interface TriumvirateReviewOptions {
     reviewType?: string;
     repomixOptions?: Record<string, unknown>;
     enhancedReport?: boolean;
+    options?: CliOptions;
 }
 
 /**
@@ -39,6 +42,7 @@ export async function runTriumvirateReview({
     reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
     repomixOptions = {},
     enhancedReport = true, // Enable enhanced reporting by default
+    options = {},
 }: TriumvirateReviewOptions = {}) {
     // Initialize results array
     const results = [];
@@ -140,42 +144,100 @@ export async function runTriumvirateReview({
     };
 
     // Process all models in parallel with improved error handling
-    const modelPromises = models.map(model => processModel(model));
-
-    // Use Promise.allSettled to handle model failures individually without discarding successful results
-    const settledPromises = await Promise.allSettled(modelPromises);
-
-    // Process each promise result based on its status (fulfilled or rejected)
-    const modelResults = settledPromises.map((result, index) => {
-        // Ensure model is always a string, defaulting to 'unknown' if undefined
-        const model = models[index] || 'unknown';
-
-        if (result.status === 'fulfilled') {
-            // Return the successful result directly
-            return result.value;
-        } else {
-            // Handle only the failed model with an error result
-            const error = result.reason;
-            console.error(`Error with model ${model}:`, error);
-            return {
-                model,
-                summary: `ERROR: ${error instanceof Error ? error.message : String(error)}`,
-                review: `ERROR: ${error instanceof Error ? error.message : String(error)}`,
-                metrics: {
-                    latency: 0,
-                    tokenInput: 0,
-                    tokenOutput: 0,
-                    tokenTotal: 0,
-                    cost: '$0.00',
-                    error: error instanceof Error ? error.message : String(error),
-                },
-                error: true,
-            };
-        }
+    const spinner = new Spinner('Preparing codebase for review...', {
+        quiet: options?.quiet,
+        verbose: options?.verbose,
     });
+    spinner.start();
+    // Track model status for spinner updates
+    const model_status: Record<string, string> = {};
+    models.forEach(model => {
+        model_status[model] = 'pending';
+    });
+
+    // Process models with individual promises that update the spinner
+    const updateSpinner = () => {
+        spinner.update(
+            `Running review across models: [${models
+                .map(model => {
+                    if (model_status[model] === 'fulfilled') {
+                        return pc.green(model); // Successful
+                    } else if (model_status[model] === 'failed') {
+                        return pc.red(model); // Failed
+                    } else {
+                        return pc.blue(model); // Pending
+                    }
+                })
+                .join(', ')}]...`
+        );
+    };
+    updateSpinner();
+
+    const modelResults: ModelReviewResult[] = [];
+
+    // Process each model and update spinner when it completes
+    await Promise.all(
+        models.map(async model => {
+            try {
+                const result = await processModel(model);
+                model_status[model] = 'fulfilled';
+                modelResults.push(result);
+                updateSpinner();
+            } catch (error) {
+                model_status[model] = 'failed';
+                console.error(`Error with model ${model}:`, error);
+                modelResults.push({
+                    model,
+                    summary: `ERROR: ${error instanceof Error ? error.message : String(error)}`,
+                    review: `ERROR: ${error instanceof Error ? error.message : String(error)}`,
+                    metrics: {
+                        latency: 0,
+                        tokenInput: 0,
+                        tokenOutput: 0,
+                        tokenTotal: 0,
+                        cost: '$0.00',
+                        error: error instanceof Error ? error.message : String(error),
+                    },
+                    error: true,
+                });
+                updateSpinner();
+            }
+        })
+    );
 
     // Check if any model failed and we should fail on error
     const hasError = modelResults.some(result => result.error);
+
+    if (hasError) {
+        spinner.fail(
+            `Failed to complete review across all models: [${models
+                .map(model => {
+                    if (model_status[model] === 'fulfilled') {
+                        return pc.green(model); // Successful
+                    } else if (model_status[model] === 'failed') {
+                        return pc.red(model); // Failed
+                    } else {
+                        return pc.blue(model); // Pending
+                    }
+                })
+                .join(', ')}]`
+        );
+    } else {
+        spinner.succeed(
+            `Completed review across models: [${models
+                .map(model => {
+                    if (model_status[model] === 'fulfilled') {
+                        return pc.green(model); // Successful
+                    } else if (model_status[model] === 'failed') {
+                        return pc.red(model); // Failed
+                    } else {
+                        return pc.blue(model); // Pending
+                    }
+                })
+                .join(', ')}]`
+        );
+    }
+
     if (hasError && failOnError) {
         // Filter out successful results if we're failing on error
         for (const result of modelResults.filter(result => result.error)) {

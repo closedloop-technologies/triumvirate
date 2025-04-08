@@ -152,8 +152,6 @@ export async function runRepomix({
             process.stdout.write(message + '\n');
         });
 
-        console.log(`Codebase packaged with ${packResult.totalTokens} tokens`);
-
         // Check if we need to optimize
         if (packResult.totalTokens > tokenLimit) {
             console.log(
