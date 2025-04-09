@@ -353,8 +353,11 @@ export function handleExternalApiError(error: unknown, apiName: string): Triumvi
  * @param retryCount Current retry attempt number
  * @returns Promise that resolves after the backoff period
  */
-export async function exponentialBackoff(retryCount: number): Promise<void> {
-    const backoffMs = 1000 * Math.pow(2, retryCount);
+export async function exponentialBackoff(
+    retryCount: number,
+    additionalBackoffMs: number = 1000
+): Promise<void> {
+    const backoffMs = 1000 * Math.pow(2, retryCount) + additionalBackoffMs;
     console.log(`Backing off for ${backoffMs}ms before retry`);
 
     return new Promise<void>(resolve => {
@@ -429,7 +432,11 @@ export async function withErrorHandlingAndRetry<T>(
                     `${component} API call failed: ${lastError.message}. ` +
                         `Retrying (${retryCount + 1}/${maxRetries})...`
                 );
-                await exponentialBackoff(retryCount);
+                if (lastError.category === ErrorCategory.RATE_LIMIT) {
+                    await exponentialBackoff(retryCount, 60000);
+                } else {
+                    await exponentialBackoff(retryCount);
+                }
                 retryCount++;
                 continue;
             }

@@ -46,7 +46,6 @@ export async function runTriumvirateReview({
     options = {},
 }: TriumvirateReviewOptions = {}) {
     // Initialize results array
-    console.log('initial models', models, DEFAULT_REVIEW_OPTIONS.MODELS);
     const results = [];
     //  throw Error("as")
 
@@ -353,6 +352,7 @@ export async function runTriumvirateReview({
         console.warn('Could not delete temporary file:', error);
     }
 
+    spinner.succeed('Code review completed successfully!');
     return results;
 }
 

@@ -48,7 +48,6 @@ export interface ApiKeyValidationResult {
  */
 export function validateApiKeys(requestedModels: string[]): ApiKeyValidationResult {
     // Default result
-    console.log('requestedModels', requestedModels);
     const result: ApiKeyValidationResult = {
         valid: true,
         missingKeys: [],

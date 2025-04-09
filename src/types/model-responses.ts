@@ -76,6 +76,7 @@ export interface FindingsExtractionResponse {
 
 /**
  * Individual finding item in Claude's response
+ * FIXED VERSION - Correctly defines the model agreement structure
  */
 export interface FindingItem {
     title: string;
@@ -87,7 +88,7 @@ export interface FindingItem {
         code: string;
         language: string;
     };
-    modelAgreement?: Record<string, boolean>;
+    modelAgreement: Record<string, boolean>; // Maps model ID to boolean agreement status
 }
 
 /**

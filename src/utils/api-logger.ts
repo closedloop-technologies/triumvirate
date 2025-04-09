@@ -4,7 +4,7 @@ import * as path from 'path';
 import pc from 'picocolors';
 
 // Define the log file path
-const LOG_FILE_PATH = path.join(process.cwd(), 'api-calls.jsonl');
+const LOG_FILE_PATH = path.join(process.cwd(), 'tri-review-api-calls.jsonl');
 
 // Interface for API call logs
 export interface ApiCallLog {

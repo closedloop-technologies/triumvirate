@@ -54,12 +54,9 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         tokenCountEncoding = 'o200k_base',
     } = options;
 
-    console.log('models', models);
-
     // Convert string options to arrays
     let modelList = models.split(',');
     const excludeList = ignore ? ignore.split(',') : [];
-    console.log('modelList', modelList);
 
     // Check API keys if validation is not skipped
     if (!skipApiKeyValidation) {
@@ -106,36 +103,6 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         };
 
         const results = await runTriumvirateReview(reviewOptions);
-
-        logger.log('Code review completed successfully!');
-
-        // Output results to console
-        for (const result of results) {
-            logger.log(`\n--- ${result.model.toUpperCase()} REVIEW ---`);
-
-            if (result.metrics.error) {
-                logger.error(`Error: ${result.metrics.error}`);
-                continue;
-            }
-
-            // Convert review to string regardless of its type
-            const reviewText =
-                typeof result.review === 'string'
-                    ? result.review
-                    : (result.review as { text?: string }).text || JSON.stringify(result.review);
-
-            if (summaryOnly) {
-                logger.log(reviewText);
-            } else {
-                logger.log(`${reviewText.slice(0, 500)}...\n(${reviewText.length} chars total)`);
-            }
-
-            logger.log(`Metrics: ${result.metrics.latency}, Cost: ${result.metrics.cost}`);
-        }
-
-        logger.log('');
-        logger.info('Review completed! 🎉');
-
         // Check if any reviews failed
         if (failOnError && results.some(r => r.metrics.error)) {
             process.exit(1);

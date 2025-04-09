@@ -45,10 +45,6 @@ export interface ModelMetrics {
     costPer1kTokens: number;
 }
 
-export interface ModelAgreement {
-    modelAgreements: Record<string, boolean>;
-}
-
 export interface CodeExample {
     code: string;
     language: string;
@@ -58,7 +54,7 @@ export interface ReviewFinding {
     title: string;
     description: string;
     category: ReviewCategory;
-    modelAgreement: ModelAgreement;
+    modelAgreements: Record<string, boolean>;
     codeExample?: CodeExample;
     recommendation?: string;
     isStrength: boolean;

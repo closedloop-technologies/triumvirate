@@ -144,7 +144,7 @@ export async function runRepomix({
             }
         }
 
-        console.log('Running Repomix with configuration:', JSON.stringify(config, null, 2));
+        // console.debug('Running Repomix with configuration:', JSON.stringify(config, null, 2));
 
         // Create a simple array to store the last 5 log messages
         const logMessages: string[] = [];

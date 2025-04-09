@@ -228,8 +228,8 @@ function isValidCategoryResponse(response: unknown): boolean {
 export function createModelMetrics(modelResults: ModelResult[]): ModelMetrics[] {
     return modelResults.map(result => {
         const modelInfo: ModelInfo = {
-            id: result.model.toLowerCase(),
             name: result.model,
+            id: result.model,
         };
 
         const tokenTotal = result.metrics.tokenTotal || 0;
@@ -789,6 +789,7 @@ function calculateSimilarity(str1: string, str2: string): number {
 
 /**
  * Calculate agreement statistics
+ * FIXED VERSION - Handles model agreement structure correctly
  */
 export function calculateAgreementStats(
     findings: Record<string, ReviewFinding[]>,
@@ -803,11 +804,12 @@ export function calculateAgreementStats(
         const categoryFindings = findings[category.name] || [];
 
         for (const finding of categoryFindings) {
-            if (finding.modelAgreement && finding.modelAgreement.modelAgreements) {
-                const agreementCount = Object.values(finding.modelAgreement.modelAgreements).filter(
+            if (finding.modelAgreements) {
+                const agreementCount = Object.values(finding.modelAgreements).filter(
                     Boolean
                 ).length;
-                if (agreementCount === 3) {
+
+                if (agreementCount >= 3) {
                     allThree++;
                 } else if (agreementCount === 2) {
                     twoModels++;
@@ -936,26 +938,21 @@ export async function generateCodeReviewReport(
 
         // Save findings to json file
         const findingsJson = JSON.stringify(findings, null, 2);
-        fs.writeFileSync('findings.json', findingsJson);
+        fs.writeFileSync('tri-review-findings.json', findingsJson);
 
         // Count improvements with different agreement levels
         let improvementsWithHighAgreement = 0;
         let improvementsWithPartialAgreement = 0;
         let improvementsWithLowAgreement = 0;
         improvements.map(improvement => {
-            const { modelAgreement } = improvement;
-            if (modelAgreement?.modelAgreements) {
-                console.log(`\n${pc.bold('⟨')}${pc.magenta(improvement.title)}${pc.bold('⟩')}`);
-                console.log('modelAgreement.modelAgreements', modelAgreement.modelAgreements);
-            }
-            if (modelAgreement?.modelAgreements) {
+            const { modelAgreements } = improvement;
+            if (modelAgreements) {
                 let agreementCount = 0;
-                Object.values(modelAgreement.modelAgreements).forEach(agreement => {
+                Object.values(modelAgreements).forEach(agreement => {
                     if (agreement) {
                         agreementCount++;
                     }
                 });
-                console.log(`Agreement Count: ${agreementCount}`);
                 if (agreementCount >= 3) {
                     improvementsWithHighAgreement++;
                 } else if (agreementCount >= 2) {
@@ -1017,7 +1014,7 @@ export async function generateCodeReviewReport(
         }
 
         // Create the complete report
-        spinner.update('Enhanced report generation complete');
+        spinner.succeed('Enhanced report generation complete');
         return {
             projectName: 'Triumvirate',
             reviewDate: new Date().toISOString(),
@@ -1129,10 +1126,19 @@ function logFindingsDistribution(
     findingsByCategory: Record<string, ReviewFinding[]>,
     categories: ReviewCategory[]
 ): void {
+    console.log(pc.gray('──────────────────────────────────────────────────'));
     console.log('Findings distribution by category:');
     for (const [categoryName, catFindings] of Object.entries(findingsByCategory)) {
         const category = categories.find(c => c.name === categoryName);
-        console.log(`- ${category?.name || categoryName}: ${catFindings.length} findings`);
+        const findingCount = catFindings.length;
+
+        // Choose color based on finding count
+        const countColor = findingCount > 3 ? pc.red : findingCount > 1 ? pc.yellow : pc.cyan;
+
+        console.log(
+            `- ${pc.magenta(category?.name || categoryName)}: ` +
+                `${countColor(findingCount.toString())} ${pc.gray('findings')}`
+        );
     }
 }
 
@@ -1145,30 +1151,22 @@ function identifyKeyFindingsImportance(findings: ReviewFinding[]): {
 } {
     // Identify key strengths
     const keyStrengths = findings
-        .filter(f => f.isStrength && f.modelAgreement && f.modelAgreement.modelAgreements)
+        .filter(f => f.isStrength && f.modelAgreements)
         .sort((a, b) => {
             // Sort by model agreement count (highest first)
-            const agreementCountA = Object.values(a.modelAgreement.modelAgreements).filter(
-                Boolean
-            ).length;
-            const agreementCountB = Object.values(b.modelAgreement.modelAgreements).filter(
-                Boolean
-            ).length;
+            const agreementCountA = Object.values(a.modelAgreements).filter(Boolean).length;
+            const agreementCountB = Object.values(b.modelAgreements).filter(Boolean).length;
             return agreementCountB - agreementCountA;
         })
         .slice(0, 5); // Take top 5 strengths
 
     // Identify key areas for improvement
     const keyAreasForImprovement = findings
-        .filter(f => !f.isStrength && f.modelAgreement && f.modelAgreement.modelAgreements)
+        .filter(f => !f.isStrength && f.modelAgreements)
         .sort((a, b) => {
             // Sort by model agreement count (highest first)
-            const agreementCountA = Object.values(a.modelAgreement.modelAgreements).filter(
-                Boolean
-            ).length;
-            const agreementCountB = Object.values(b.modelAgreement.modelAgreements).filter(
-                Boolean
-            ).length;
+            const agreementCountA = Object.values(a.modelAgreements).filter(Boolean).length;
+            const agreementCountB = Object.values(b.modelAgreements).filter(Boolean).length;
             return agreementCountB - agreementCountA;
         })
         .slice(0, 5); // Take top 5 areas for improvement
@@ -1288,7 +1286,6 @@ For each finding, determine:
 Please be thorough in extracting distinct findings from all reviews.
 `;
 }
-
 /**
  * Creates the schema for findings extraction
  */
@@ -1324,17 +1321,17 @@ function createFindingsSchema(
                         },
                         modelAgreement: {
                             type: 'object',
-                            description: 'Which models mentioned this finding',
                             properties: models.reduce(
                                 (acc, model) => ({
                                     ...acc,
-                                    [model.id]: {
+                                    [model?.id || model?.name || 'unknown']: {
                                         type: 'boolean',
-                                        description: `Whether ${model.name} mentioned this finding`,
+                                        description: `Whether ${model?.name || 'unknown'} mentioned this finding`,
                                     },
                                 }),
                                 {}
                             ),
+                            description: 'Which models mentioned this finding',
                         },
                         codeExample: {
                             type: 'object',
@@ -1362,7 +1359,6 @@ function createFindingsSchema(
         required: ['findings'],
     };
 }
-
 /**
  * Map the findings extracted by the LLM (FindingItem) to the required report format (ReviewFinding).
  */
@@ -1443,21 +1439,39 @@ function mapExtractedFindingsToRequiredFormat(
               }
             : undefined;
 
+        // Create an empty record for model agreements - we'll fill it below
+        const modelAgreements: Record<string, boolean> = {};
+
+        // Map model agreements from the finding
+        if (finding.modelAgreement) {
+            // Extract the model agreements
+            models.forEach(model => {
+                // First try with model.id
+                if (finding.modelAgreement[model.id] !== undefined) {
+                    modelAgreements[model.name] = !!finding.modelAgreement[model.id];
+                }
+                // If not found by id, try with model.name
+                else if (finding.modelAgreement[model.name] !== undefined) {
+                    modelAgreements[model.name] = !!finding.modelAgreement[model.name];
+                }
+                // Default to false if not specified
+                else {
+                    modelAgreements[model.name] = false;
+                }
+            });
+        } else {
+            // If no model agreement data, default all to false
+            models.forEach(model => {
+                modelAgreements[model.name] = false;
+            });
+        }
+
         // Construct the valid ReviewFinding object
         const reviewFinding: ReviewFinding = {
-            // Use a more robust ID generation if needed
             title: finding.title || 'Untitled Finding', // Use finding title or a default
             description: finding.description || 'No description provided.',
             category: targetCategory as ReviewCategory, // We ensure it's assigned above
-            modelAgreement: {
-                modelAgreements: models.reduce(
-                    (acc: Record<string, boolean>, model: ModelInfo) => ({
-                        ...acc,
-                        [model.id]: false,
-                    }),
-                    {} as Record<string, boolean>
-                ),
-            }, // Initialize agreement
+            modelAgreements: modelAgreements,
             isStrength: finding.isStrength ?? false, // Use isStrength flag, default to false
             recommendation: finding.recommendation, // Optional field
             codeExample, // Optional field
@@ -1567,9 +1581,9 @@ For each model, identify 1-2 unique insights or perspectives that are not emphas
         );
     }
 }
-
 /**
  * Map model insights to required format
+ * FIXED VERSION - Properly handles model identifiers
  */
 function mapModelInsightsToRequiredFormat(
     insightsData: Array<{
@@ -1580,8 +1594,13 @@ function mapModelInsightsToRequiredFormat(
     models: ModelInfo[]
 ): ModelInsight[] {
     return insightsData.map(insightData => {
-        // Find the matching model or create a default one
-        let model = models.find(m => m.id === insightData.modelId) || models[0];
+        // First try to find the model by id
+        let model = models.find(m => m.id === insightData.modelId);
+
+        // If not found by id, try to find by name
+        if (!model) {
+            model = models.find(m => m.name.toLowerCase() === insightData.modelId.toLowerCase());
+        }
 
         // If we still don't have a valid model, create a default one
         if (!model) {
@@ -1936,13 +1955,8 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                             strengths.forEach((finding, idx) => {
                                 markdown += `${idx + 1}. **${finding.title || 'Finding'}**: ${finding.description || 'No description provided'}\n`;
                                 // Add model agreement info if available
-                                if (
-                                    finding.modelAgreement &&
-                                    finding.modelAgreement.modelAgreements
-                                ) {
-                                    const agreementModels = Object.entries(
-                                        finding.modelAgreement.modelAgreements
-                                    )
+                                if (finding.modelAgreements) {
+                                    const agreementModels = Object.entries(finding.modelAgreements)
                                         .filter(([_, agrees]) => agrees)
                                         .map(([modelId]) => modelId);
                                     if (agreementModels.length > 0) {
@@ -1970,13 +1984,8 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
                             improvements.forEach((finding, idx) => {
                                 markdown += `${idx + 1}. **${finding.title || 'Finding'}**: ${finding.description || 'No description provided'}\n`;
                                 // Add model agreement info if available
-                                if (
-                                    finding.modelAgreement &&
-                                    finding.modelAgreement.modelAgreements
-                                ) {
-                                    const agreementModels = Object.entries(
-                                        finding.modelAgreement.modelAgreements
-                                    )
+                                if (finding.modelAgreements) {
+                                    const agreementModels = Object.entries(finding.modelAgreements)
                                         .filter(([_, agrees]) => agrees)
                                         .map(([modelId]) => modelId);
                                     if (agreementModels.length > 0) {
