@@ -1,7 +1,11 @@
-// src/utils/report-utils.ts - Consolidated report formatting utilities
+import pc from 'picocolors';
+
+import { logApiCall, type ApiCallLog } from './api-logger';
+import { MAX_API_RETRIES } from './constants';
 import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
-import { LLMProviderFactory } from './llm-providers';
-import type { ModelResult, FindingItem } from '../types/model-responses';
+import { ClaudeProvider } from './llm-providers';
+import { Spinner } from '../cli/utils/spinner';
+import type { FindingItem, ModelResult } from '../types/model-responses';
 import {
     type ReviewCategory,
     type ModelMetrics,
@@ -42,6 +46,7 @@ export interface CategoryResponse {
  * Extract categories from model reviews using structured output from any available LLM provider
  */
 export async function extractCategories(reviews: string[]): Promise<ReviewCategory[]> {
+    const provider = new ClaudeProvider();
     try {
         // Create a prompt for category extraction
         const prompt = createCategoryExtractionPrompt(reviews);
@@ -50,17 +55,45 @@ export async function extractCategories(reviews: string[]): Promise<ReviewCatego
         const schema = createCategorySchema();
 
         // Call the best available LLM provider with structured output
-        const response = await LLMProviderFactory.runStructured<CategoryResponse>(prompt, schema);
+        const categoriesResponse = await provider.runStructured<CategoryResponse>(
+            prompt,
+            schema,
+            MAX_API_RETRIES,
+            'category_extraction',
+            'Extract categories from model reviews'
+        );
+        const apilog: ApiCallLog = {
+            timestamp: new Date().toISOString(),
+            model: provider.model,
+            operation: 'categories',
+            inputTokens: categoriesResponse.usage.input_tokens,
+            outputTokens: categoriesResponse.usage.output_tokens,
+            totalTokens: categoriesResponse.usage.total_tokens,
+            success: true,
+            cost: categoriesResponse.cost,
+        };
+        logApiCall(apilog);
 
         // Validate response
-        if (!isValidCategoryResponse(response)) {
+        if (!isValidCategoryResponse(categoriesResponse)) {
             throw new Error('LLM did not return expected category structure');
         }
 
         // Map the categories to the required format
-        return response.data.categories;
+        return categoriesResponse.data.categories;
     } catch {
         // Use the new error handling utilities for consistent error handling
+        const apilog: ApiCallLog = {
+            timestamp: new Date().toISOString(),
+            model: provider.model,
+            operation: 'structured',
+            inputTokens: 0,
+            outputTokens: 0,
+            totalTokens: 0,
+            success: false,
+            cost: 0,
+        };
+        logApiCall(apilog);
         return safeReportGenerationAsync(
             async () => {
                 return [];
@@ -794,23 +827,20 @@ export function calculateAgreementStats(
  * Generate a comprehensive code review report with structured Claude analysis
  */
 export async function generateCodeReviewReport(
-    modelResults: ModelResult[]
+    modelResults: ModelResult[],
+    spinner?: Spinner
 ): Promise<CodeReviewReport> {
     // Track any resources that need cleanup
     const resources: { cleanup: () => void }[] = [];
 
+    if (!spinner) {
+        spinner = new Spinner('Generating summary report...');
+        spinner.start();
+    }
+
     try {
-        console.log(`Generating enhanced report from ${modelResults.length} model results`);
-
-        // Log input data structure for debugging
-        logModelResults(modelResults);
-
         // Extract review texts
         const reviews = extractReviewTexts(modelResults);
-        console.log(
-            `Extracted ${reviews.length} reviews with lengths:`,
-            reviews.map(r => r.length)
-        );
 
         // Create model info objects
         const models = modelResults.map(result => ({
@@ -826,9 +856,8 @@ export async function generateCodeReviewReport(
             throw new Error('No valid reviews found in model results');
         }
 
-        // Extract categories using Claude - ensure proper promise handling
-        console.log('Extracting categories from reviews...');
         let categories;
+        spinner.update('Finding common categories...');
         try {
             categories = await extractCategories(reviews);
         } catch (categoryError) {
@@ -840,13 +869,27 @@ export async function generateCodeReviewReport(
             throw new Error('Failed to extract categories');
         }
 
+        // Log categories with hacker/arcade style
+        console.log(pc.cyan('┌─────────────────────────────────────────────────────┐'));
         console.log(
-            `Extracted ${categories.length} categories:`,
-            categories.map(c => c.name)
+            pc.cyan('│') +
+                pc.yellow('         █▓▒░ REVIEW CATEGORIES DETECTED ░▒▓█        ') +
+                pc.cyan('│')
         );
+        console.log(pc.cyan('└─────────────────────────────────────────────────────┘'));
+
+        categories.forEach((category, index) => {
+            console.log(
+                pc.gray(`[${(index + 1).toString().padStart(2, '0')}]`) +
+                    ` ${pc.cyan('⟨')}${pc.magenta(category.name)}${pc.cyan('⟩')}`
+            );
+        });
+
+        // Add separator line at the end
+        console.log(pc.gray('─'.repeat(50)));
 
         // Extract findings using Claude - ensure proper promise handling
-        console.log('Extracting findings from reviews...');
+        spinner.update('Extracting specific findings from reviews...');
         let findings;
         try {
             findings = await extractFindings(reviews, categories, models);
@@ -859,7 +902,37 @@ export async function generateCodeReviewReport(
             throw new Error('Failed to extract findings');
         }
 
-        console.log(`Extracted ${findings.length} findings`);
+        // Display findings with hacker/arcade style
+        console.log(pc.cyan('┌─────────────────────────────────────────────────────┐'));
+        console.log(
+            pc.cyan('│') +
+                pc.yellow(`         █▓▒░ ${findings.length} FINDINGS EXTRACTED ░▒▓█         `) +
+                pc.cyan('│')
+        );
+        console.log(pc.cyan('└─────────────────────────────────────────────────────┘'));
+
+        // Display findings breakdown by strengths vs. areas for improvement
+        const strengths = findings.filter(f => f.isStrength);
+        const improvements = findings.filter(f => !f.isStrength);
+
+        // Count findings by category
+        const categoryCounts = new Map<string, number>();
+        findings.forEach(finding => {
+            const categoryName = finding.category.name;
+            categoryCounts.set(categoryName, (categoryCounts.get(categoryName) || 0) + 1);
+        });
+
+        console.log(
+            pc.green(`${pc.bold('⟨+')}${pc.bold('+')}${pc.bold('⟩')} `) +
+                pc.green(`${strengths.length.toString().padStart(2, '0')} strengths`) +
+                pc.gray(' | ') +
+                pc.red(`${improvements.length.toString().padStart(2, '0')} improvements`) +
+                pc.gray(' | ') +
+                pc.cyan(`${findings.length.toString().padStart(2, '0')} total`)
+        );
+
+        // Add separator line
+        console.log(pc.gray('─'.repeat(50)));
 
         // Log distribution of findings by category
         const findingsByCategory = organizeFindingsByCategory(findings, categories);
@@ -869,7 +942,7 @@ export async function generateCodeReviewReport(
         const { keyStrengths, keyAreasForImprovement } = identifyKeyFindingsImportance(findings);
 
         // Create model agreement analysis - ensure proper promise handling
-        console.log('Analyzing model agreement...');
+        spinner.update('Analyzing model agreement...');
         let agreementAnalysis: CategoryAgreementAnalysis[];
         try {
             agreementAnalysis = analyzeModelAgreement(
@@ -944,21 +1017,46 @@ export async function generateCodeReviewReport(
 }
 
 /**
- * Log model results for debugging
+ * Log model results with hacker/arcade style formatting
  */
-function logModelResults(modelResults: ModelResult[]): void {
+export function logModelResults(modelResults: ModelResult[]): void {
+    // Import picocolors dynamically to avoid dependency issues
+
+    console.log(pc.cyan('┌─────────────────────────────────────────────────────┐'));
     console.log(
-        'Model results structure:',
-        JSON.stringify(
-            modelResults.map(r => ({
-                model: r.model,
-                reviewLength: typeof r.review === 'string' ? r.review.length : 'non-string',
-                metrics: r.metrics,
-            })),
-            null,
-            2
-        )
+        pc.cyan('│') +
+            pc.yellow('         █▓▒░ MODEL RESULTS DIAGNOSTIC ░▒▓█          ') +
+            pc.cyan('│')
     );
+    console.log(pc.cyan('└─────────────────────────────────────────────────────┘'));
+
+    modelResults.forEach(result => {
+        const modelName = result.model.toUpperCase();
+        const reviewLength =
+            typeof result.review === 'string' ? result.review.length : 'non-string';
+        const tokenTotal = result.metrics?.tokenTotal || 0;
+        const cost = result.metrics?.cost || '0.00';
+
+        // Create visual model identifier with different colors per model
+        const modelColor =
+            result.model === 'openai'
+                ? pc.green
+                : result.model === 'claude'
+                  ? pc.magenta
+                  : result.model === 'gemini'
+                    ? pc.blue
+                    : pc.yellow;
+
+        console.log(
+            modelColor(`[${modelName}]`) +
+                ` ${pc.gray('⟨')}${pc.yellow(reviewLength.toString().padStart(6, ' '))}${pc.gray('⟩')} chars | ` +
+                `${pc.gray('⟨')}${pc.cyan(tokenTotal.toString().padStart(6, ' '))}${pc.gray('⟩')} tokens | ` +
+                `${pc.gray('$')}${pc.yellow(cost.padStart(8, ' '))}`
+        );
+    });
+
+    // Add separator line at the end
+    console.log(pc.gray('─'.repeat(50)));
 }
 
 /**
@@ -1064,12 +1162,8 @@ export async function extractFindings(
     categories: ReviewCategory[],
     models: ModelInfo[]
 ): Promise<ReviewFinding[]> {
+    const provider = new ClaudeProvider();
     try {
-        // Log the inputs for debugging
-        console.log(
-            `Extracting findings with ${reviews.length} reviews, ${categories.length} categories, and ${models.length} models`
-        );
-
         // Create the prompt for findings extraction
         const prompt = createFindingsExtractionPrompt(reviews, categories, models);
 
@@ -1077,23 +1171,55 @@ export async function extractFindings(
         const schema = createFindingsSchema(models, categories); // Pass categories
 
         // Call the best available LLM provider with structured output
-        console.log('Calling LLM provider for structured findings extraction...');
-        const response = await LLMProviderFactory.runStructured<FindingsResponse>(prompt, schema);
-        console.log('Claude findings extraction complete');
+        const findingsResponse = await provider.runStructured<FindingsResponse>(
+            prompt,
+            schema,
+            MAX_API_RETRIES,
+            'findings',
+            'Extract a list of findings from model reviews'
+        );
 
-        console.log('Response:', JSON.stringify(response, null, 2));
+        const apilog: ApiCallLog = {
+            timestamp: new Date().toISOString(),
+            model: provider.model,
+            operation: 'findings',
+            inputTokens: findingsResponse.usage.input_tokens,
+            outputTokens: findingsResponse.usage.output_tokens,
+            totalTokens: findingsResponse.usage.total_tokens,
+            success: true,
+            cost: findingsResponse.cost,
+        };
+        logApiCall(apilog);
+
+        console.log('Response:', JSON.stringify(findingsResponse, null, 2));
 
         // Validate the response structure
-        if (!response || !response.data || !response.data.findings) {
+        if (!findingsResponse || !findingsResponse.data || !findingsResponse.data.findings) {
             throw new Error('LLM did not return expected findings structure');
         }
 
-        console.log(`Extracted ${response.data.findings.length} findings`);
+        console.log(`Extracted ${findingsResponse.data.findings.length} findings`);
 
         // Map the findings to the required format
-        return mapExtractedFindingsToRequiredFormat(response.data.findings, categories, models);
+        return mapExtractedFindingsToRequiredFormat(
+            findingsResponse.data.findings,
+            categories,
+            models
+        );
     } catch (error) {
         // Use the new error handling utilities for consistent error handling
+
+        const apilog: ApiCallLog = {
+            timestamp: new Date().toISOString(),
+            model: provider.model,
+            operation: 'findings',
+            inputTokens: 0,
+            outputTokens: 0,
+            totalTokens: 0,
+            success: false,
+            cost: 0,
+        };
+        logApiCall(apilog);
         return safeReportGenerationAsync(
             async () => {
                 throw error; // Re-throw the error to be handled by safeReportGenerationAsync
@@ -1321,6 +1447,7 @@ async function extractModelInsights(
     reviews: string[],
     models: ModelInfo[]
 ): Promise<ModelInsight[]> {
+    const provider = new ClaudeProvider();
     try {
         // Create prompt for extracting model-specific insights
         const prompt = `
@@ -1361,16 +1488,46 @@ For each model, identify 1-2 unique insights or perspectives that are not emphas
         };
 
         // Call the best available LLM provider with structured output
-        const response = await LLMProviderFactory.runStructured<InsightsResponse>(prompt, schema);
+        const insightsResponse = await provider.runStructured<InsightsResponse>(
+            prompt,
+            schema,
+            MAX_API_RETRIES,
+            'insights',
+            'Extract model insights from model reviews'
+        );
 
-        if (!response || !response.data || !response.data.modelInsights) {
+        const apilog: ApiCallLog = {
+            timestamp: new Date().toISOString(),
+            model: provider.model,
+            operation: 'insights',
+            inputTokens: insightsResponse.usage.input_tokens,
+            outputTokens: insightsResponse.usage.output_tokens,
+            totalTokens: insightsResponse.usage.total_tokens,
+            success: true,
+            cost: insightsResponse.cost,
+        };
+        logApiCall(apilog);
+
+        if (!insightsResponse || !insightsResponse.data || !insightsResponse.data.modelInsights) {
             throw new Error('LLM did not return expected model insights structure');
         }
 
         // Map the insights to the required format
-        return mapModelInsightsToRequiredFormat(response.data.modelInsights, models);
+        return mapModelInsightsToRequiredFormat(insightsResponse.data.modelInsights, models);
     } catch (error) {
         // Use the new error handling utilities for consistent error handling
+
+        const apilog: ApiCallLog = {
+            timestamp: new Date().toISOString(),
+            model: provider.model,
+            operation: 'insights',
+            inputTokens: 0,
+            outputTokens: 0,
+            totalTokens: 0,
+            success: false,
+            cost: 0,
+        };
+        logApiCall(apilog);
         return safeReportGenerationAsync(
             async () => {
                 throw error; // Re-throw the error to be handled by safeReportGenerationAsync
@@ -1426,6 +1583,7 @@ function mapModelInsightsToRequiredFormat(
 export async function generatePrioritizedRecommendations(
     findings: ReviewFinding[]
 ): Promise<Record<Priority, string[]>> {
+    const provider = new ClaudeProvider();
     try {
         // Extract all recommendations from findings
         const recommendations = findings
@@ -1482,10 +1640,25 @@ Please be thorough in prioritizing these recommendations.
         };
 
         // Call the best available LLM provider with structured output
-        const response = await LLMProviderFactory.runStructured<PrioritizedResponse>(
+        const response = await provider.runStructured<PrioritizedResponse>(
             prompt,
-            schema
+            schema,
+            MAX_API_RETRIES,
+            'priorities',
+            'Extract priorities from model reviews'
         );
+
+        const apilog: ApiCallLog = {
+            timestamp: new Date().toISOString(),
+            model: provider.model,
+            operation: 'priorities',
+            inputTokens: response.usage.input_tokens,
+            outputTokens: response.usage.output_tokens,
+            totalTokens: response.usage.total_tokens,
+            success: true,
+            cost: response.cost,
+        };
+        logApiCall(apilog);
 
         if (!response || !response.data) {
             throw new Error('LLM did not return expected prioritized recommendations structure');
@@ -1499,6 +1672,18 @@ Please be thorough in prioritizing these recommendations.
         };
     } catch {
         // Use the new error handling utilities for consistent error handling
+
+        const apilog: ApiCallLog = {
+            timestamp: new Date().toISOString(),
+            model: provider.model,
+            operation: 'priorities',
+            inputTokens: 0,
+            outputTokens: 0,
+            totalTokens: 0,
+            success: false,
+            cost: 0,
+        };
+        logApiCall(apilog);
         return safeReportGenerationAsync(
             async () => {
                 // Log the error but don't throw, instead return an empty priority object

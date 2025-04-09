@@ -1,28 +1,22 @@
 import * as dotenv from 'dotenv';
 
-import {
-    ClaudeProvider,
-    GeminiProvider,
-    LLMProviderFactory,
-    OpenAIProvider,
-} from '../src/utils/llm-providers';
+import { ClaudeProvider, GeminiProvider, OpenAIProvider } from '../src/utils/llm-providers';
 
 // Load environment variables
 dotenv.config();
 
 // Debug helper function
-function debugObject(obj) {
+function debugObject(obj: unknown) {
     return JSON.stringify(
         obj,
         (key, value) => {
             if (value instanceof Error) {
                 // Create a new object with Error properties
                 // Spread first to avoid overwriting built-in properties
-                const errorObj = {
+                const errorObj: Error = {
                     ...value,
                     // Then explicitly add the important properties to ensure they're included
-                    errorName: value.name,
-                    errorMessage: value.message,
+                    message: value.message,
                     stack: value.stack,
                 };
                 return errorObj;
@@ -39,25 +33,6 @@ async function testProviders() {
     console.log('- OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
     console.log('- ANTHROPIC_API_KEY exists:', !!process.env.ANTHROPIC_API_KEY);
     console.log('- GOOGLE_API_KEY exists:', !!process.env.GOOGLE_API_KEY);
-
-    // Test factory first - this is safer
-    try {
-        console.log('\nTesting LLMProviderFactory.getBestAvailableProvider:');
-        const bestProvider = LLMProviderFactory.getBestAvailableProvider();
-        console.log('Best available provider:', bestProvider.name);
-
-        console.log('\nTesting best available provider via factory:');
-        try {
-            const bestResponse = await LLMProviderFactory.runCompletion('Say hello world');
-            console.log('Best available provider response:', bestResponse);
-        } catch (error) {
-            console.error('Best provider test failed:', error.message);
-            console.error('Detailed error:', debugObject(error));
-        }
-    } catch (error) {
-        console.error('Factory test failed:', error.message);
-        console.error('Detailed error:', debugObject(error));
-    }
 
     // Test individual providers
     // Test OpenAI provider

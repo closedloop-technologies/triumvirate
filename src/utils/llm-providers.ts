@@ -191,7 +191,9 @@ export class ClaudeProvider implements LLMProvider {
     async runStructured<T>(
         prompt: string,
         schema: Record<string, unknown>,
-        maxRetries = MAX_API_RETRIES
+        maxRetries = MAX_API_RETRIES,
+        toolName = 'generate_structured_data',
+        toolDescription = 'Generate structured data based on the provided information'
     ): Promise<LLMResponse<T>> {
         if (!this.isAvailable()) {
             throw new Error('ANTHROPIC_API_KEY is not set');
@@ -204,12 +206,15 @@ export class ClaudeProvider implements LLMProvider {
         const baseURL = 'https://api.anthropic.com/v1';
 
         // Define the tool for structured output
-        const toolName = 'generate_structured_data';
         const tool = {
             name: toolName,
-            description: 'Generate structured data based on the provided information',
+            description: toolDescription,
             input_schema: schema,
         };
+        console.log('tool', tool);
+        console.log('schema', schema);
+        // console.log('prompt', prompt)
+        console.log('');
 
         return withErrorHandlingAndRetry(
             async (signal: AbortSignal) => {
@@ -239,12 +244,21 @@ export class ClaudeProvider implements LLMProvider {
                     throw new Error(`Claude API error (${response.status}): ${errorText}`);
                 }
 
-                const result = (await response.json()) as {
+                const json_result = await response.json();
+                console.log('json_result', json_result);
+
+                const result = json_result as {
+                    id: string;
+                    type: string;
+                    role: string;
+                    model: string;
                     content: Array<{
                         type: string;
                         name?: string;
                         input?: Record<string, unknown>;
                     }>;
+                    stop_reason: string;
+                    stop_sequence: string | null;
                     usage: LLMUsage;
                 };
 
@@ -252,6 +266,7 @@ export class ClaudeProvider implements LLMProvider {
                 const toolCallContent = result.content.find(
                     item => item.type === 'tool_use' && item.name === toolName
                 );
+                console.log('toolCallContent', toolCallContent);
 
                 if (!toolCallContent) {
                     console.error('Claude tool response structure:', String(result));
@@ -619,83 +634,5 @@ export class GeminiProvider implements LLMProvider {
         _maxRetries = MAX_API_RETRIES
     ): Promise<LLMResponse<T>> {
         throw new Error('Structured output not yet implemented for Gemini provider');
-    }
-}
-
-/**
- * LLM Provider Factory
- * Creates and manages LLM provider instances
- */
-export class LLMProviderFactory {
-    private static providers: LLMProvider[] = [
-        new ClaudeProvider(),
-        new OpenAIProvider(),
-        new GeminiProvider(),
-    ];
-
-    /**
-     * Get the best available provider
-     * Returns the first available provider in order of preference
-     */
-    static getBestAvailableProvider(): LLMProvider {
-        for (const provider of this.providers) {
-            if (provider.isAvailable()) {
-                return provider;
-            }
-        }
-        throw new Error('No LLM provider is available. Please set at least one API key.');
-    }
-
-    /**
-     * Get a specific provider by name
-     */
-    static getProviderByName(name: string): LLMProvider | undefined {
-        return this.providers.find(p => p.name === name);
-    }
-
-    /**
-     * Get all available providers
-     */
-    static getAvailableProviders(): LLMProvider[] {
-        return this.providers.filter(p => p.isAvailable());
-    }
-
-    /**
-     * Run a structured prompt with the best available provider
-     */
-    static async runStructured<T>(
-        prompt: string,
-        schema: Record<string, unknown>,
-        maxRetries = MAX_API_RETRIES
-    ): Promise<LLMResponse<T>> {
-        const provider = this.getBestAvailableProvider();
-        console.log(`Using ${provider.name} provider for structured output`);
-        return provider.runStructured<T>(prompt, schema, maxRetries);
-    }
-
-    /**
-     * Run a completion prompt with the specified provider or best available
-     */
-    static async runCompletion(
-        prompt: string,
-        modelName?: string,
-        maxRetries = MAX_API_RETRIES
-    ): Promise<LLMResponse<string>> {
-        let provider: LLMProvider;
-
-        if (modelName) {
-            // Get specific provider by name if requested
-            const specificProvider = this.getProviderByName(modelName);
-            if (!specificProvider) {
-                throw new Error(`Provider not found for model: ${modelName}`);
-            }
-            provider = specificProvider;
-        } else {
-            // Use best available provider
-            provider = this.getBestAvailableProvider();
-        }
-
-        console.log(`Using ${provider.name} provider for completion`);
-        return provider.runCompletion(prompt, maxRetries);
     }
 }

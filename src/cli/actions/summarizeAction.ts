@@ -3,7 +3,11 @@ import * as path from 'path';
 
 import type { ModelResult } from '../../types/model-responses';
 import { logger } from '../../utils/logger.js';
-import { formatReportAsMarkdown, generateCodeReviewReport } from '../../utils/report-utils.js';
+import {
+    formatReportAsMarkdown,
+    generateCodeReviewReport,
+    logModelResults,
+} from '../../utils/report-utils.js';
 import { Spinner } from '../utils/spinner.js';
 
 interface SummarizeOptions {
@@ -65,9 +69,9 @@ export const runSummarizeAction = async (options: SummarizeOptions) => {
             process.exit(1);
         }
 
+        logModelResults(rawReports);
         // Generate the summary report
-        spinner.update('Generating summary report...');
-        const report = await generateCodeReviewReport(rawReports as ModelResult[]);
+        const report = await generateCodeReviewReport(rawReports as ModelResult[], spinner);
 
         // Format the report as markdown
         const formattedReport = formatReportAsMarkdown(report);
