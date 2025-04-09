@@ -1,11 +1,11 @@
 {
     "name": "@justbuild/triumvirate",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
     "type": "module",
     "bin": {
-        "triumvirate": "./dist/triumvirate-new.js",
-        "tri": "./dist/triumvirate-new.js",
+        "triumvirate": "./dist/triumvirate.js",
+        "tri": "./dist/triumvirate.js",
         "__triumvirate_bash_complete": "./dist/bash-complete.js"
     },
     "main": "dist/index.js",
@@ -18,7 +18,7 @@
         "node": ">=20"
     },
     "scripts": {
-        "start": "node dist/triumvirate-new.js",
+        "start": "node dist/triumvirate.js",
         "dev": "tsx src/bin/triumvirate.ts",
         "build": "tsup",
         "clean": "rm -rf dist",
