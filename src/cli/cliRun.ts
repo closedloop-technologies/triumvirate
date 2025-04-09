@@ -1,30 +1,13 @@
 import { Command } from 'commander';
 
 import { runInstallAction } from './actions/installAction.js';
+import { runNextAction } from './actions/nextAction.js';
+import { runPlanAction } from './actions/planAction.js';
 import { runCliAction } from './actions/runAction.js';
+import { runSummarizeAction } from './actions/summarizeAction.js';
 import { runUninstallAction } from './actions/uninstallAction.js';
 import { handleError } from '../utils/error.js';
 import { logger } from '../utils/logger.js';
-// These imports will be available after building the project
-// For now, we'll define placeholder functions to avoid TypeScript errors
-interface CommandOptions {
-    [key: string]: unknown;
-}
-
-const runSummarizeAction = async (_options: CommandOptions) => {
-    logger.error('The summarize command is not yet implemented.');
-    process.exit(1);
-};
-
-const runPlanAction = async (_options: CommandOptions) => {
-    logger.error('The plan command is not yet implemented.');
-    process.exit(1);
-};
-
-const runNextAction = async (_options: CommandOptions) => {
-    logger.error('The next command is not yet implemented.');
-    process.exit(1);
-};
 
 // Semantic mapping for CLI suggestions
 const semanticSuggestionMap: Record<string, string[]> = {
