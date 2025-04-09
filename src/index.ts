@@ -9,7 +9,8 @@ import { runModelReview } from './models';
 import { runRepomix } from './repomix';
 import type { CliOptions, CodeReviewReport, ModelReviewResult } from './types/report';
 import { normalizeUsage } from './types/usage';
-import { COST_RATES, DEFAULT_REVIEW_OPTIONS } from './utils/constants';
+import { DEFAULT_REVIEW_OPTIONS } from './utils/constants';
+import { estimateCost } from './utils/llm-providers';
 import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
 
 export interface TriumvirateReviewOptions {
@@ -45,7 +46,9 @@ export async function runTriumvirateReview({
     options = {},
 }: TriumvirateReviewOptions = {}) {
     // Initialize results array
+    console.log('initial models', models, DEFAULT_REVIEW_OPTIONS.MODELS);
     const results = [];
+    //  throw Error("as")
 
     console.log('Packaging codebase with repomix...');
 
@@ -84,7 +87,6 @@ export async function runTriumvirateReview({
     // Step 4: Generate prompt and send to LLMs
     const prompt = promptTemplate.replace('{{CODEBASE}}', codebase);
 
-    console.log('Sending prompt to models...');
     console.log(`Using review type: ${reviewType}`);
 
     // Step 5: Send to all models in parallel and collect responses
@@ -155,13 +157,13 @@ export async function runTriumvirateReview({
         model_status[model] = 'pending';
     });
 
-    console.log('Running review across models:');
+    console.log(`Running a review gauntlet across ${models.length} models:`);
 
     // Process models with individual promises that update the spinner
     const updateSpinner = () => {
         // Lets assume the spinner is at the bottom row so lets update it without adding a new ling
         spinner.update(
-            `\t[${models
+            ` [${models
                 .map(model => {
                     if (model_status[model] === 'fulfilled') {
                         return pc.green(model); // Successful
@@ -171,7 +173,7 @@ export async function runTriumvirateReview({
                         return pc.blue(model); // Pending
                     }
                 })
-                .join(', ')}]...`
+                .join(', ')}]`
         );
     };
     updateSpinner();
@@ -487,31 +489,4 @@ function summarizeReview(review: string): string {
     // Fall back to first few sentences if no better option found
     const sentences = review.split(/\.\s+/);
     return sentences.slice(0, 3).join('. ') + '.';
-}
-
-/**
- * Estimate the cost of a model run based on input and output tokens
- */
-function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
-    // Use the provided output tokens directly
-
-    // Set rates based on model
-    let inputRate = 0.0;
-    let outputRate = 0.0;
-
-    // Use rates from constants
-    if (model in COST_RATES) {
-        inputRate = COST_RATES[model as keyof typeof COST_RATES].input;
-        outputRate = COST_RATES[model as keyof typeof COST_RATES].output;
-    } else {
-        // Default to OpenAI rates if model not found
-        inputRate = COST_RATES.openai.input;
-        outputRate = COST_RATES.openai.output;
-    }
-
-    // Calculate cost
-    const inputCost = inputTokens * inputRate;
-    const outputCost = outputTokens * outputRate;
-
-    return inputCost + outputCost;
 }

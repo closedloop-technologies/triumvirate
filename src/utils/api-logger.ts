@@ -60,7 +60,7 @@ export function logApiCall(logData: ApiCallLog): void {
 
     // Format cost if available with arcade-style credits
     const costInfo =
-        logData.cost !== undefined && logData.cost !== null ? `₵${logData.cost.toFixed(4)}` : '';
+        logData.cost !== undefined && logData.cost !== null ? `$${logData.cost.toFixed(4)}` : '';
 
     // Format timestamp for display
     const formattedTime = timestamp.includes('T')

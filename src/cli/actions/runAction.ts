@@ -1,13 +1,7 @@
-import * as readline from 'readline';
-
 import { runTriumvirateReview } from '../../index.js';
 import type { TriumvirateReviewOptions } from '../../index.js';
 import type { CliOptions } from '../../types/report.js';
-import {
-    validateApiKeys,
-    getApiKeySetupInstructions,
-    MODEL_API_KEYS,
-} from '../../utils/api-keys.js';
+import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { logger } from '../../utils/logger.js';
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
@@ -20,8 +14,8 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         logger.setLogLevel('info');
     }
 
-    logger.debug('directories:', directories);
-    logger.debug('options:', options);
+    logger.log('directories:', directories);
+    logger.log('options:', options);
 
     if (options.version) {
         await runVersionAction();
@@ -60,92 +54,18 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         tokenCountEncoding = 'o200k_base',
     } = options;
 
+    console.log('models', models);
+
     // Convert string options to arrays
-    const modelList = models.split(',');
+    let modelList = models.split(',');
     const excludeList = ignore ? ignore.split(',') : [];
+    console.log('modelList', modelList);
 
     // Check API keys if validation is not skipped
     if (!skipApiKeyValidation) {
-        try {
-            const keyValidation = validateApiKeys(modelList);
-
-            if (!keyValidation.valid) {
-                // Display detailed error message based on validation results
-                logger.error(`\n⚠️ ${keyValidation.message}\n`);
-
-                // If there are invalid keys, provide more specific guidance
-                if (keyValidation.invalidKeys.length > 0) {
-                    logger.error(
-                        `⚠️ The following API keys have invalid formats: ${keyValidation.invalidKeys.join(', ')}\n`
-                    );
-                }
-
-                logger.info(getApiKeySetupInstructions());
-
-                // If failOnError is true, exit immediately
-                if (failOnError) {
-                    process.exit(1);
-                }
-
-                // Filter out models with missing or invalid keys
-                const availableModels = modelList.filter(model => {
-                    const requirement = MODEL_API_KEYS.find(req => req.model === model);
-                    if (!requirement) {
-                        return true; // Unknown model, assume it's available
-                    }
-
-                    const { envVar } = requirement;
-                    return (
-                        !keyValidation.missingKeys.includes(envVar) &&
-                        !keyValidation.invalidKeys.includes(envVar)
-                    );
-                });
-
-                if (availableModels.length === 0) {
-                    logger.error('\n❌ No models available with valid API keys.\n');
-                    process.exit(1);
-                }
-
-                // Ask for confirmation before proceeding with available models
-                const rl = readline.createInterface({
-                    input: process.stdin,
-                    output: process.stdout,
-                });
-
-                const confirm = await new Promise<boolean>(resolve => {
-                    rl.question(
-                        `Continue with available models (${availableModels.join(', ')})? (y/N): `,
-                        (answer: string) => {
-                            rl.close();
-                            resolve(answer.toLowerCase() === 'y');
-                        }
-                    );
-                });
-
-                if (!confirm) {
-                    logger.info('Exiting...');
-                    process.exit(0);
-                }
-
-                logger.info(`Continuing with available models: ${availableModels.join(', ')}...`);
-
-                // Update modelList to only include available models
-                modelList.length = 0;
-                modelList.push(...availableModels);
-            } else {
-                logger.info('✅ API key validation passed.');
-            }
-        } catch (error) {
-            // Handle unexpected errors in the validation process
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            logger.error(`\n❌ Error during API key validation: ${errorMessage}\n`);
-
-            if (failOnError) {
-                process.exit(1);
-            }
-
-            logger.info('Continuing despite API key validation error...');
-        }
+        // Use the centralized API key validation function
+        const validatedModels = await processApiKeyValidation(modelList, failOnError, logger);
+        modelList = validatedModels;
     }
 
     // Get absolute paths for directories - we'll use these in the future when needed

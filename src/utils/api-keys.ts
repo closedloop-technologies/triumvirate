@@ -48,6 +48,7 @@ export interface ApiKeyValidationResult {
  */
 export function validateApiKeys(requestedModels: string[]): ApiKeyValidationResult {
     // Default result
+    console.log('requestedModels', requestedModels);
     const result: ApiKeyValidationResult = {
         valid: true,
         missingKeys: [],
@@ -158,4 +159,101 @@ Format requirements:
 - Anthropic API keys start with 'sk-ant-' followed by a string of characters
 - Google API keys are typically 39 characters long
 `;
+}
+
+/**
+ * Process API key validation and handle user interaction for available models
+ *
+ * @param modelList - List of models to validate API keys for
+ * @param failOnError - Whether to exit the process on validation failure
+ * @param logger - Logger object to use (defaults to console)
+ * @returns The filtered list of models with valid API keys
+ */
+export async function processApiKeyValidation(
+    modelList: string[],
+    failOnError: boolean = false,
+    logger: { error: (message: string) => void; info: (message: string) => void } = console
+): Promise<string[]> {
+    try {
+        const keyValidation = validateApiKeys(modelList);
+
+        if (!keyValidation.valid) {
+            // Display detailed error message based on validation results
+            logger.error(`\n⚠️ ${keyValidation.message}\n`);
+
+            // If there are invalid keys, provide more specific guidance
+            if (keyValidation.invalidKeys.length > 0) {
+                logger.error(
+                    `⚠️ The following API keys have invalid formats: ${keyValidation.invalidKeys.join(', ')}\n`
+                );
+            }
+
+            logger.info(getApiKeySetupInstructions());
+
+            // If failOnError is true, exit immediately
+            if (failOnError) {
+                process.exit(1);
+            }
+
+            // Filter out models with missing or invalid keys
+            const availableModels = modelList.filter(model => {
+                const requirement = MODEL_API_KEYS.find(req => req.model === model);
+                if (!requirement) {
+                    return true; // Unknown model, assume it's available
+                }
+
+                const { envVar } = requirement;
+                return (
+                    !keyValidation.missingKeys.includes(envVar) &&
+                    !keyValidation.invalidKeys.includes(envVar)
+                );
+            });
+
+            if (availableModels.length === 0) {
+                logger.error('\n❌ No models available with valid API keys.\n');
+                process.exit(1);
+            }
+
+            // Ask for confirmation before proceeding with available models
+            const readline = await import('readline');
+            const rl = readline.createInterface({
+                input: process.stdin,
+                output: process.stdout,
+            });
+
+            const confirm = await new Promise<boolean>(resolve => {
+                rl.question(
+                    `Continue with available models (${availableModels.join(', ')})? (y/N): `,
+                    (answer: string) => {
+                        rl.close();
+                        resolve(answer.toLowerCase() === 'y');
+                    }
+                );
+            });
+
+            if (!confirm) {
+                logger.info('Exiting...');
+                process.exit(0);
+            }
+
+            logger.info(`Continuing with available models: ${availableModels.join(', ')}...`);
+
+            // Return the filtered model list
+            return availableModels;
+        } else {
+            logger.info('✅ API key validation passed.');
+            return modelList;
+        }
+    } catch (error) {
+        // Handle unexpected errors in the validation process
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        logger.error(`\n❌ Error during API key validation: ${errorMessage}\n`);
+
+        if (failOnError) {
+            process.exit(1);
+        }
+
+        logger.info('Continuing despite API key validation error...');
+        return modelList;
+    }
 }

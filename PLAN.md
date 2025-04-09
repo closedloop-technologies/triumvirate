@@ -99,6 +99,8 @@ Here are the most sophisticated models that support more than 100,000 tokens, or
   - Access: <https://ai.google.dev/> or <https://console.cloud.google.com/vertex-ai>
 - **Gemini 2.5 Pro**: 2,097,152 token
   - Access: <https://ai.google.dev/> or <https://console.cloud.google.com/vertex-ai>
+  - gemini-2.5-pro-preview-03-25 - no rate limit but $$
+  - gemini-2.5-pro-exp-03-25 -- free but rate limited
 
 ## Meta/Llama Models
 
