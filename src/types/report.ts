@@ -102,7 +102,6 @@ export interface CodeReviewReport {
     modelInsights: ModelInsight[];
     agreementAnalysis: CategoryAgreementAnalysis[];
     agreementStatistics: AgreementStatistics[];
-    prioritizedRecommendations: Record<Priority, string[]>;
 }
 
 export interface ModelReviewResult {

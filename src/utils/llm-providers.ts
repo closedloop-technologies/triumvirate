@@ -193,7 +193,8 @@ export class ClaudeProvider implements LLMProvider {
         schema: Record<string, unknown>,
         maxRetries = MAX_API_RETRIES,
         toolName = 'generate_structured_data',
-        toolDescription = 'Generate structured data based on the provided information'
+        toolDescription = 'Generate structured data based on the provided information',
+        maxTokens = 4096
     ): Promise<LLMResponse<T>> {
         if (!this.isAvailable()) {
             throw new Error('ANTHROPIC_API_KEY is not set');
@@ -211,11 +212,6 @@ export class ClaudeProvider implements LLMProvider {
             description: toolDescription,
             input_schema: schema,
         };
-        console.log('tool', tool);
-        console.log('schema', schema);
-        // console.log('prompt', prompt)
-        console.log('');
-
         return withErrorHandlingAndRetry(
             async (signal: AbortSignal) => {
                 // Create request options
@@ -228,7 +224,7 @@ export class ClaudeProvider implements LLMProvider {
                     },
                     body: JSON.stringify({
                         model: this.model,
-                        max_tokens: 4096,
+                        max_tokens: maxTokens,
                         messages: [{ role: 'user', content: prompt }],
                         tools: [tool],
                         tool_choice: { type: 'tool', name: toolName },
@@ -245,8 +241,6 @@ export class ClaudeProvider implements LLMProvider {
                 }
 
                 const json_result = await response.json();
-                console.log('json_result', json_result);
-
                 const result = json_result as {
                     id: string;
                     type: string;
@@ -266,10 +260,8 @@ export class ClaudeProvider implements LLMProvider {
                 const toolCallContent = result.content.find(
                     item => item.type === 'tool_use' && item.name === toolName
                 );
-                console.log('toolCallContent', toolCallContent);
 
                 if (!toolCallContent) {
-                    console.error('Claude tool response structure:', String(result));
                     throw new Error('Claude did not return expected tool use response');
                 }
 

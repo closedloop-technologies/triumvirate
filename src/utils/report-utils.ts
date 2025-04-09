@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import pc from 'picocolors';
 
 import { logApiCall, type ApiCallLog } from './api-logger';
@@ -60,7 +62,8 @@ export async function extractCategories(reviews: string[]): Promise<ReviewCatego
             schema,
             MAX_API_RETRIES,
             'category_extraction',
-            'Extract categories from model reviews'
+            'Extract categories from model reviews',
+            8192 // Increased token limit to handle larger reviews
         );
         const apilog: ApiCallLog = {
             timestamp: new Date().toISOString(),
@@ -931,6 +934,48 @@ export async function generateCodeReviewReport(
                 pc.cyan(`${findings.length.toString().padStart(2, '0')} total`)
         );
 
+        // Save findings to json file
+        const findingsJson = JSON.stringify(findings, null, 2);
+        fs.writeFileSync('findings.json', findingsJson);
+
+        // Count improvements with different agreement levels
+        let improvementsWithHighAgreement = 0;
+        let improvementsWithPartialAgreement = 0;
+        let improvementsWithLowAgreement = 0;
+        improvements.map(improvement => {
+            const { modelAgreement } = improvement;
+            if (modelAgreement?.modelAgreements) {
+                console.log(`\n${pc.bold('⟨')}${pc.magenta(improvement.title)}${pc.bold('⟩')}`);
+                console.log('modelAgreement.modelAgreements', modelAgreement.modelAgreements);
+            }
+            if (modelAgreement?.modelAgreements) {
+                let agreementCount = 0;
+                Object.values(modelAgreement.modelAgreements).forEach(agreement => {
+                    if (agreement) {
+                        agreementCount++;
+                    }
+                });
+                console.log(`Agreement Count: ${agreementCount}`);
+                if (agreementCount >= 3) {
+                    improvementsWithHighAgreement++;
+                } else if (agreementCount >= 2) {
+                    improvementsWithPartialAgreement++;
+                } else if (agreementCount >= 1) {
+                    improvementsWithLowAgreement++;
+                }
+            }
+        });
+
+        // Log the agreement statistics
+        console.log(
+            pc.yellow(`Model Agreement: `) +
+                pc.green(`${improvementsWithHighAgreement} high`) +
+                pc.gray(' | ') +
+                pc.yellow(`${improvementsWithPartialAgreement} partial`) +
+                pc.gray(' | ') +
+                pc.red(`${improvementsWithLowAgreement} low`)
+        );
+
         // Add separator line
         console.log(pc.gray('─'.repeat(50)));
 
@@ -958,7 +1003,7 @@ export async function generateCodeReviewReport(
         const agreementStatistics = calculateAgreementStats(findingsByCategory, categories);
 
         // Extract model insights - ensure proper promise handling
-        console.log('Extracting model insights...');
+        spinner.update('Extracting model insights...');
         let modelInsights;
         try {
             modelInsights = await extractModelInsights(reviews, models);
@@ -971,22 +1016,8 @@ export async function generateCodeReviewReport(
             }));
         }
 
-        // Generate prioritized recommendations - ensure proper promise handling
-        console.log('Generating prioritized recommendations...');
-        let prioritizedRecommendations;
-        try {
-            prioritizedRecommendations = await generatePrioritizedRecommendations(findings);
-        } catch (recommendationsError) {
-            console.error('Error generating prioritized recommendations:', recommendationsError);
-            prioritizedRecommendations = {
-                [Priority.HIGH]: [],
-                [Priority.MEDIUM]: [],
-                [Priority.LOW]: [],
-            };
-        }
-
         // Create the complete report
-        console.log('Enhanced report generation complete');
+        spinner.update('Enhanced report generation complete');
         return {
             projectName: 'Triumvirate',
             reviewDate: new Date().toISOString(),
@@ -999,10 +1030,9 @@ export async function generateCodeReviewReport(
             modelInsights,
             agreementAnalysis,
             agreementStatistics,
-            prioritizedRecommendations,
         };
     } catch (error) {
-        console.error('Error generating code review report:', error);
+        spinner.fail(`Error generating code review report: ${error}`);
         throw error;
     } finally {
         // Clean up any resources
@@ -1171,12 +1201,14 @@ export async function extractFindings(
         const schema = createFindingsSchema(models, categories); // Pass categories
 
         // Call the best available LLM provider with structured output
+        // Use a higher max token limit (8192) for findings extraction as it can be token-intensive
         const findingsResponse = await provider.runStructured<FindingsResponse>(
             prompt,
             schema,
             MAX_API_RETRIES,
             'findings',
-            'Extract a list of findings from model reviews'
+            'Extract a list of findings from model reviews',
+            8192 // Increased token limit to handle larger reviews
         );
 
         const apilog: ApiCallLog = {
@@ -1191,14 +1223,10 @@ export async function extractFindings(
         };
         logApiCall(apilog);
 
-        console.log('Response:', JSON.stringify(findingsResponse, null, 2));
-
         // Validate the response structure
         if (!findingsResponse || !findingsResponse.data || !findingsResponse.data.findings) {
             throw new Error('LLM did not return expected findings structure');
         }
-
-        console.log(`Extracted ${findingsResponse.data.findings.length} findings`);
 
         // Map the findings to the required format
         return mapExtractedFindingsToRequiredFormat(
@@ -1348,7 +1376,6 @@ function mapExtractedFindingsToRequiredFormat(
 
     // If unknown category doesn't exist, create it
     if (!unknownCategory) {
-        console.warn('Creating fallback Unknown Category for findings with invalid categories');
         unknownCategory = {
             name: 'Unknown Category',
             description: 'Findings that could not be mapped to a specific category',
@@ -1493,7 +1520,8 @@ For each model, identify 1-2 unique insights or perspectives that are not emphas
             schema,
             MAX_API_RETRIES,
             'insights',
-            'Extract model insights from model reviews'
+            'Extract model insights from model reviews',
+            8192 // Increased token limit to handle larger reviews
         );
 
         const apilog: ApiCallLog = {
@@ -1645,7 +1673,8 @@ Please be thorough in prioritizing these recommendations.
             schema,
             MAX_API_RETRIES,
             'priorities',
-            'Extract priorities from model reviews'
+            'Extract priorities from model reviews',
+            8192 // Increased token limit to handle larger reviews
         );
 
         const apilog: ApiCallLog = {
@@ -2025,92 +2054,6 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
         } else {
             markdown += `| No agreement analysis available | - | - | - |\n`;
         }
-
-        // Enhanced Recommendations Priority Matrix
-        markdown += '\n## Recommendations Priority Matrix\n\n';
-        markdown +=
-            '> Recommendations are prioritized based on impact, urgency, and implementation effort.\n\n';
-
-        // Safely handle prioritizedRecommendations
-        const prioritizedRecommendations = report.prioritizedRecommendations || {};
-        const keyAreasForImprovement = report.keyAreasForImprovement || [];
-
-        // Define default recommendations if none exist
-        interface PriorityRecommendations {
-            'High Priority': string[];
-            'Medium Priority': string[];
-            'Low Priority': string[];
-        }
-
-        const defaultRecommendations: PriorityRecommendations = {
-            'High Priority': [
-                'Review the codebase for critical security issues',
-                'Address any high-impact performance bottlenecks',
-            ],
-            'Medium Priority': [
-                'Implement code documentation improvements',
-                'Enhance error handling mechanisms',
-            ],
-            'Low Priority': [
-                'Update code comments for clarity',
-                'Refactor minor code organization issues',
-            ],
-        };
-
-        Object.entries(prioritizedRecommendations).forEach(
-            ([priority, recommendations]: [string, string[]]) => {
-                try {
-                    markdown += `### ${priority}\n`;
-                    if (Array.isArray(recommendations) && recommendations.length > 0) {
-                        recommendations.forEach((recommendation: string, index: number) => {
-                            markdown += `${index + 1}. ${recommendation}\n`;
-                        });
-                    } else if (priority === 'High Priority' && keyAreasForImprovement.length > 0) {
-                        // Add fallback recommendations based on findings if no recommendations are available
-                        keyAreasForImprovement
-                            .slice(0, 2)
-                            .forEach((area: { recommendation?: string }, index: number) => {
-                                if (area?.recommendation) {
-                                    markdown += `${index + 1}. ${area.recommendation}\n`;
-                                }
-                            });
-                    } else if (
-                        priority === 'Medium Priority' &&
-                        keyAreasForImprovement.length > 2
-                    ) {
-                        keyAreasForImprovement
-                            .slice(2, 4)
-                            .forEach((area: { recommendation?: string }, index: number) => {
-                                if (area?.recommendation) {
-                                    markdown += `${index + 1}. ${area.recommendation}\n`;
-                                }
-                            });
-                    } else {
-                        // Use default recommendations if none exist
-                        const defaultRecs =
-                            defaultRecommendations[priority as keyof PriorityRecommendations] || [];
-                        defaultRecs.forEach((recommendation: string, index: number) => {
-                            markdown += `${index + 1}. ${recommendation}\n`;
-                        });
-                    }
-                    markdown += '\n';
-                } catch {
-                    const errorSection = safeDataProcessing(
-                        () => {
-                            console.warn(
-                                `Error processing ${priority} recommendations, using placeholder`
-                            );
-                            return `### Error processing ${priority} recommendations\n\n`;
-                        },
-                        'priority recommendations',
-                        'processing',
-                        `### Error processing ${priority} recommendations\n\n`,
-                        'warn'
-                    );
-                    markdown += errorSection;
-                }
-            }
-        );
         return markdown;
     } catch {
         // Use consistent error handling
