@@ -191,36 +191,61 @@ export class EnhancedLogger {
      */
     printApiSummary(): void {
         if (this.totalApiCalls === 0) {
-            this.note('No API calls were made during this operation.');
+            console.log(pc.cyan('┌─────────────────────────────────────────────────────┐'));
+            console.log(
+                pc.cyan('│') +
+                    pc.yellow('             █▓▒░ API USAGE SUMMARY ░▒▓█             ') +
+                    pc.cyan('│')
+            );
+            console.log(pc.cyan('└─────────────────────────────────────────────────────┘'));
+            this.info('No API calls were made during this operation.');
             return;
         }
 
         const totalTokens = this.totalInputTokens + this.totalOutputTokens;
 
-        this.note('\n📊 API USAGE SUMMARY 📊');
-        this.note('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-        this.note(`Total API Calls: ${pc.cyan(this.totalApiCalls.toString())}`);
-        this.note(`Total Cost: ${pc.green('$' + this.totalCost.toFixed(4))}`);
-        this.note(
-            `Total Tokens: ${pc.blue(totalTokens.toString())} (${pc.blue(this.totalInputTokens.toString())} input, ${pc.blue(this.totalOutputTokens.toString())} output)`
+        // Top banner
+        console.log(pc.cyan('┌─────────────────────────────────────────────────────┐'));
+        console.log(
+            pc.cyan('│') + pc.yellow('             █▓▒░ API USAGE SUMMARY ░▒▓█             ')
+        );
+        console.log(pc.cyan('├─────────────────────────────────────────────────────┤'));
+
+        // Stat lines
+        console.log(
+            ` Total API Calls:      ${pc.cyan(this.totalApiCalls.toString().padStart(6, ' '))}  `
+        );
+        console.log(
+            ` Total Cost:           ${pc.green('$' + this.totalCost.toFixed(4)).padEnd(18, ' ')}         `
+        );
+        console.log(
+            ` Total Tokens:         ${pc.blue(totalTokens.toString())}  ` +
+                `(${pc.blue(this.totalInputTokens.toString())} input, ${pc.blue(this.totalOutputTokens.toString())} output)`.padEnd(
+                    19,
+                    ' '
+                )
         );
 
-        // Print model-specific stats
+        // Model breakdown
         if (Object.keys(this.modelCallCounts).length > 0) {
-            this.note('\n📱 MODEL BREAKDOWN 📱');
-            this.note('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-
+            console.log(pc.cyan('├─────────────────────────────────────────────────────┤'));
+            console.log(
+                pc.cyan('│') +
+                    pc.yellow('             █▓▒░  MODEL BREAKDOWN  ░▒▓█             ') +
+                    pc.cyan('│')
+            );
+            console.log(pc.cyan('├─────────────────────────────────────────────────────┤'));
             Object.keys(this.modelCallCounts).forEach(model => {
-                const callCount = this.modelCallCounts[model];
+                const callCount = this.modelCallCounts[model] || 0;
                 const cost = this.modelCosts[model] || 0;
-
-                this.note(
-                    `${pc.cyan(model)}: ${callCount} calls, ${pc.green('$' + cost.toFixed(4))}`
+                console.log(
+                    ` ${pc.cyan(model.padEnd(22, ' '))}: ${callCount.toString().padStart(3, ' ')} calls, ${pc.green('$' + cost.toFixed(4)).padEnd(10, ' ')} `
                 );
             });
         }
 
-        this.note('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+        // Bottom banner
+        console.log(pc.cyan('└─────────────────────────────────────────────────────┘'));
     }
 
     /**

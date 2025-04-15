@@ -917,7 +917,7 @@ export async function generateCodeReviewReport(
         console.log(
             pc.cyan('│') +
                 pc.yellow(
-                    `         █▓▒░ ${findings.length.toString().padStart(3, ' ')} FINDINGS EXTRACTED ░▒▓█       `
+                    `          █▓▒░ ${findings.length.toString().padStart(3, ' ')} FINDINGS EXTRACTED ░▒▓█           `
                 ) +
                 pc.cyan('│')
         );
@@ -1126,7 +1126,7 @@ function logFindingsDistribution(
     console.log(pc.cyan('┌─────────────────────────────────────────────────────┐'));
     console.log(
         pc.cyan('│') +
-            pc.yellow('       █▓▒░ FINDINGS DISTRIBUTION BY CATEGORY ░▒▓█      ') +
+            pc.yellow('     █▓▒░ FINDINGS DISTRIBUTION BY CATEGORY ░▒▓█     ') +
             pc.cyan('│')
     );
     console.log(pc.cyan('└─────────────────────────────────────────────────────┘'));

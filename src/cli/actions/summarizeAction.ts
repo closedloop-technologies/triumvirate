@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import type { ModelResult } from '../../types/model-responses';
-import { logger } from '../../utils/logger.js';
+import { enhancedLogger } from '../../utils/enhanced-logger.js';
 import {
     formatReportAsMarkdown,
     generateCodeReviewReport,
@@ -21,14 +21,17 @@ interface SummarizeOptions {
 export const runSummarizeAction = async (options: SummarizeOptions) => {
     // Set log level based on verbose and quiet flags
     if (options.quiet) {
-        logger.setLogLevel('silent');
+        enhancedLogger.setLogLevel('silent');
     } else if (options.verbose) {
-        logger.setLogLevel('debug');
+        enhancedLogger.setLogLevel('debug');
     } else {
-        logger.setLogLevel('info');
+        enhancedLogger.setLogLevel('info');
     }
 
-    logger.debug('options:', options);
+    // Initialize the API logger
+    enhancedLogger.initApiLogger();
+
+    enhancedLogger.debug('options:', options);
 
     const {
         input,
@@ -38,7 +41,15 @@ export const runSummarizeAction = async (options: SummarizeOptions) => {
     } = options;
 
     if (!input) {
-        logger.error('Error: Input file is required. Use --input to specify the raw reports file.');
+        enhancedLogger.error(
+            'Error: Input file is required. Use --input to specify the raw reports file.'
+        );
+        process.exit(1);
+    }
+    if (!output) {
+        enhancedLogger.error(
+            'Error: Output file is required. Use --output to specify the summary file.'
+        );
         process.exit(1);
     }
 
@@ -54,6 +65,7 @@ export const runSummarizeAction = async (options: SummarizeOptions) => {
         const rawReportsPath = path.resolve(process.cwd(), input);
         if (!fs.existsSync(rawReportsPath)) {
             spinner.fail(`Error: Input file not found: ${rawReportsPath}`);
+            enhancedLogger.printApiSummary();
             process.exit(1);
         }
 
@@ -66,28 +78,28 @@ export const runSummarizeAction = async (options: SummarizeOptions) => {
             spinner.fail(
                 `Error: Failed to parse raw reports file: ${error instanceof Error ? error.message : String(error)}`
             );
+            enhancedLogger.printApiSummary();
             process.exit(1);
         }
 
         logModelResults(rawReports);
+        // (Optional) If you want to log API calls for summarize, you can add enhancedLogger.logApiCall() here as needed.
         // Generate the summary report
         const report = await generateCodeReviewReport(rawReports as ModelResult[], spinner);
 
         // Format the report as markdown
         const formattedReport = formatReportAsMarkdown(report);
 
-        // Write the report to a file if output is specified
-        if (output) {
-            const outputPath = path.resolve(process.cwd(), output);
-            fs.writeFileSync(outputPath, formattedReport, 'utf8');
-            spinner.succeed(`Summary report generated and saved to: ${outputPath}`);
-        } else {
-            spinner.succeed('Summary report generated:');
-            logger.log('\n' + formattedReport);
-        }
+        enhancedLogger.printApiSummary();
+
+        // Write the report to a file
+        const outputPath = path.resolve(process.cwd(), output);
+        fs.writeFileSync(outputPath, formattedReport, 'utf8');
+        spinner.succeed(`Summary report generated and saved to: ${outputPath}`);
     } catch (error) {
         spinner.fail('Error generating summary report');
-        logger.error('Error:', error instanceof Error ? error.message : String(error));
+        enhancedLogger.error('Error:', error instanceof Error ? error.message : String(error));
+        enhancedLogger.printApiSummary();
         process.exit(1);
     }
 };
