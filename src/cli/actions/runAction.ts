@@ -2,20 +2,23 @@ import { runTriumvirateReview } from '../../index.js';
 import type { TriumvirateReviewOptions } from '../../index.js';
 import type { CliOptions } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
-import { logger } from '../../utils/logger.js';
+import { enhancedLogger } from '../../utils/enhanced-logger.js';
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
     // Set log level based on verbose and quiet flags
     if (options.quiet) {
-        logger.setLogLevel('silent');
+        enhancedLogger.setLogLevel('silent');
     } else if (options.verbose) {
-        logger.setLogLevel('debug');
+        enhancedLogger.setLogLevel('debug');
     } else {
-        logger.setLogLevel('info');
+        enhancedLogger.setLogLevel('info');
     }
 
-    logger.log('directories:', directories);
-    logger.log('options:', options);
+    // Initialize the API logger
+    enhancedLogger.initApiLogger();
+
+    enhancedLogger.log('directories:', directories);
+    enhancedLogger.log('options:', options);
 
     if (options.version) {
         await runVersionAction();
@@ -23,7 +26,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
     }
 
     const { version } = await import('../../../package.json');
-    logger.log(`
+    enhancedLogger.log(`
 📦 Triumvirate v${version}
 `);
 
@@ -61,7 +64,11 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
     // Check API keys if validation is not skipped
     if (!skipApiKeyValidation) {
         // Use the centralized API key validation function
-        const validatedModels = await processApiKeyValidation(modelList, failOnError, logger);
+        const validatedModels = await processApiKeyValidation(
+            modelList,
+            failOnError,
+            enhancedLogger
+        );
         modelList = validatedModels;
     }
 
@@ -107,8 +114,15 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         if (failOnError && results.some(r => r.metrics.error)) {
             process.exit(1);
         }
+
+        // Print API usage summary
+        enhancedLogger.printApiSummary();
     } catch (error) {
-        logger.error('Error during code review');
+        enhancedLogger.error('Error during code review');
+
+        // Print API usage summary even if there was an error
+        enhancedLogger.printApiSummary();
+
         throw error;
     }
 };
@@ -116,5 +130,5 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 // Helper function to run version action
 async function runVersionAction() {
     const { version } = await import('../../../package.json');
-    logger.log(`Triumvirate v${version}`);
+    enhancedLogger.log(`Triumvirate v${version}`);
 }

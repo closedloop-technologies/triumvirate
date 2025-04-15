@@ -2,8 +2,9 @@ import fs from 'fs';
 
 import pc from 'picocolors';
 
-import { logApiCall, type ApiCallLog } from './api-logger';
+import type { ApiCallLog } from './api-logger.js';
 import { MAX_API_RETRIES } from './constants';
+import { enhancedLogger } from './enhanced-logger.js';
 import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
 import { ClaudeProvider } from './llm-providers';
 import { Spinner } from '../cli/utils/spinner';
@@ -75,7 +76,7 @@ export async function extractCategories(reviews: string[]): Promise<ReviewCatego
             success: true,
             cost: categoriesResponse.cost,
         };
-        logApiCall(apilog);
+        enhancedLogger.logApiCall(apilog);
 
         // Validate response
         if (!isValidCategoryResponse(categoriesResponse)) {
@@ -96,7 +97,7 @@ export async function extractCategories(reviews: string[]): Promise<ReviewCatego
             success: false,
             cost: 0,
         };
-        logApiCall(apilog);
+        enhancedLogger.logApiCall(apilog);
         return safeReportGenerationAsync(
             async () => {
                 return [];
@@ -907,11 +908,17 @@ export async function generateCodeReviewReport(
             throw new Error('Failed to extract findings');
         }
 
+        // Save findings to json file
+        const findingsJson = JSON.stringify(findings, null, 2);
+        fs.writeFileSync('tri-review-findings.json', findingsJson);
+
         // Display findings with hacker/arcade style
         console.log(pc.cyan('┌─────────────────────────────────────────────────────┐'));
         console.log(
             pc.cyan('│') +
-                pc.yellow(`         █▓▒░ ${findings.length} FINDINGS EXTRACTED ░▒▓█         `) +
+                pc.yellow(
+                    `         █▓▒░ ${findings.length.toString().padStart(3, ' ')} FINDINGS EXTRACTED ░▒▓█       `
+                ) +
                 pc.cyan('│')
         );
         console.log(pc.cyan('└─────────────────────────────────────────────────────┘'));
@@ -926,65 +933,16 @@ export async function generateCodeReviewReport(
             const categoryName = finding.category.name;
             categoryCounts.set(categoryName, (categoryCounts.get(categoryName) || 0) + 1);
         });
-
-        console.log(
-            pc.green(`${pc.bold('⟨+')}${pc.bold('+')}${pc.bold('⟩')} `) +
-                pc.green(`${strengths.length.toString().padStart(2, '0')} strengths`) +
-                pc.gray(' | ') +
-                pc.red(`${improvements.length.toString().padStart(2, '0')} improvements`) +
-                pc.gray(' | ') +
-                pc.cyan(`${findings.length.toString().padStart(2, '0')} total`)
-        );
-
-        // Save findings to json file
-        const findingsJson = JSON.stringify(findings, null, 2);
-        fs.writeFileSync('tri-review-findings.json', findingsJson);
-
-        // Count improvements with different agreement levels
-        let improvementsWithHighAgreement = 0;
-        let improvementsWithPartialAgreement = 0;
-        let improvementsWithLowAgreement = 0;
-        improvements.map(improvement => {
-            const { modelAgreements } = improvement;
-            if (modelAgreements) {
-                let agreementCount = 0;
-                Object.values(modelAgreements).forEach(agreement => {
-                    if (agreement) {
-                        agreementCount++;
-                    }
-                });
-                if (agreementCount >= 3) {
-                    improvementsWithHighAgreement++;
-                } else if (agreementCount >= 2) {
-                    improvementsWithPartialAgreement++;
-                } else if (agreementCount >= 1) {
-                    improvementsWithLowAgreement++;
-                }
-            }
-        });
-
-        // Log the agreement statistics
-        console.log(
-            pc.yellow(`Model Agreement: `) +
-                pc.green(`${improvementsWithHighAgreement} high`) +
-                pc.gray(' | ') +
-                pc.yellow(`${improvementsWithPartialAgreement} partial`) +
-                pc.gray(' | ') +
-                pc.red(`${improvementsWithLowAgreement} low`)
-        );
-
-        // Add separator line
-        console.log(pc.gray('─'.repeat(50)));
-
-        // Log distribution of findings by category
+        // Calculate agreement statistics
         const findingsByCategory = organizeFindingsByCategory(findings, categories);
-        logFindingsDistribution(findingsByCategory, categories);
+        const agreementStatistics = calculateAgreementStats(findingsByCategory, categories);
+
+        logFindingCounts(strengths, improvements, agreementStatistics);
 
         // Identify key strengths and areas for improvement
         const { keyStrengths, keyAreasForImprovement } = identifyKeyFindingsImportance(findings);
 
         // Create model agreement analysis - ensure proper promise handling
-        spinner.update('Analyzing model agreement...');
         let agreementAnalysis: CategoryAgreementAnalysis[];
         try {
             agreementAnalysis = analyzeModelAgreement(
@@ -996,11 +954,11 @@ export async function generateCodeReviewReport(
             agreementAnalysis = [];
         }
 
-        // Calculate agreement statistics
-        const agreementStatistics = calculateAgreementStats(findingsByCategory, categories);
+        logFindingsDistribution(findingsByCategory, categories);
 
         // Extract model insights - ensure proper promise handling
         spinner.update('Extracting model insights...');
+
         let modelInsights;
         try {
             modelInsights = await extractModelInsights(reviews, models);
@@ -1014,7 +972,8 @@ export async function generateCodeReviewReport(
         }
 
         // Create the complete report
-        spinner.succeed('Enhanced report generation complete');
+        spinner.succeed('Triumvirate report generation complete');
+
         return {
             projectName: 'Triumvirate',
             reviewDate: new Date().toISOString(),
@@ -1041,6 +1000,43 @@ export async function generateCodeReviewReport(
             }
         });
     }
+}
+
+function logFindingCounts(
+    strengths: ReviewFinding[],
+    improvements: ReviewFinding[],
+    agreementStatistics: AgreementStatistics[]
+) {
+    console.log(
+        pc.green(`Key Findings:          `) +
+            pc.green(`${strengths.length.toString().padStart(2, '0')} ✅`) +
+            pc.gray(' | ') +
+            pc.red(`${improvements.length.toString().padStart(2, '0')} ❌`)
+    );
+
+    // Count improvements with different agreement levels
+    const improvementsWithHighAgreement = agreementStatistics
+        .map(s => s.allThreeModels)
+        .reduce((a, b) => a + b, 0);
+    const improvementsWithPartialAgreement = agreementStatistics
+        .map(s => s.twoModels)
+        .reduce((a, b) => a + b, 0);
+    const improvementsWithLowAgreement = agreementStatistics
+        .map(s => s.oneModel)
+        .reduce((a, b) => a + b, 0);
+
+    // Log the agreement statistics
+    console.log(
+        pc.yellow(`Improvement Agreement: `) +
+            pc.red(`${improvementsWithHighAgreement.toString().padStart(2, '0')} 🚨`) +
+            pc.gray(' | ') +
+            pc.yellow(`${improvementsWithPartialAgreement.toString().padStart(2, '0')} ❗`) +
+            pc.gray(' | ') +
+            pc.green(`${improvementsWithLowAgreement.toString().padStart(2, '0')} ⚠️`)
+    );
+
+    // Add separator line
+    console.log(pc.gray('─'.repeat(50)));
 }
 
 /**
@@ -1126,20 +1122,27 @@ function logFindingsDistribution(
     findingsByCategory: Record<string, ReviewFinding[]>,
     categories: ReviewCategory[]
 ): void {
-    console.log(pc.gray('──────────────────────────────────────────────────'));
-    console.log('Findings distribution by category:');
-    for (const [categoryName, catFindings] of Object.entries(findingsByCategory)) {
+    // Create a visual table for findings distribution
+    console.log(pc.cyan('┌─────────────────────────────────────────────────────┐'));
+    console.log(
+        pc.cyan('│') +
+            pc.yellow('       █▓▒░ FINDINGS DISTRIBUTION BY CATEGORY ░▒▓█      ') +
+            pc.cyan('│')
+    );
+    console.log(pc.cyan('└─────────────────────────────────────────────────────┘'));
+
+    Object.entries(findingsByCategory).forEach(([categoryName, catFindings]) => {
         const category = categories.find(c => c.name === categoryName);
         const findingCount = catFindings.length;
-
-        // Choose color based on finding count
         const countColor = findingCount > 3 ? pc.red : findingCount > 1 ? pc.yellow : pc.cyan;
+        const displayName = category?.name || categoryName;
 
         console.log(
-            `- ${pc.magenta(category?.name || categoryName)}: ` +
-                `${countColor(findingCount.toString())} ${pc.gray('findings')}`
+            ` ${countColor(`[${findingCount.toString().padStart(2, '0')}]`)}` +
+                ` ${pc.cyan('⟨')}${pc.magenta(displayName)}${pc.cyan('⟩')}`
         );
-    }
+    });
+    console.log('');
 }
 
 /**
@@ -1219,7 +1222,7 @@ export async function extractFindings(
             success: true,
             cost: findingsResponse.cost,
         };
-        logApiCall(apilog);
+        enhancedLogger.logApiCall(apilog);
 
         // Validate the response structure
         if (!findingsResponse || !findingsResponse.data || !findingsResponse.data.findings) {
@@ -1245,7 +1248,7 @@ export async function extractFindings(
             success: false,
             cost: 0,
         };
-        logApiCall(apilog);
+        enhancedLogger.logApiCall(apilog);
         return safeReportGenerationAsync(
             async () => {
                 throw error; // Re-throw the error to be handled by safeReportGenerationAsync
@@ -1548,7 +1551,7 @@ For each model, identify 1-2 unique insights or perspectives that are not emphas
             success: true,
             cost: insightsResponse.cost,
         };
-        logApiCall(apilog);
+        enhancedLogger.logApiCall(apilog);
 
         if (!insightsResponse || !insightsResponse.data || !insightsResponse.data.modelInsights) {
             throw new Error('LLM did not return expected model insights structure');
@@ -1569,7 +1572,7 @@ For each model, identify 1-2 unique insights or perspectives that are not emphas
             success: false,
             cost: 0,
         };
-        logApiCall(apilog);
+        enhancedLogger.logApiCall(apilog);
         return safeReportGenerationAsync(
             async () => {
                 throw error; // Re-throw the error to be handled by safeReportGenerationAsync
@@ -1706,7 +1709,7 @@ Please be thorough in prioritizing these recommendations.
             success: true,
             cost: response.cost,
         };
-        logApiCall(apilog);
+        enhancedLogger.logApiCall(apilog);
 
         if (!response || !response.data) {
             throw new Error('LLM did not return expected prioritized recommendations structure');
@@ -1731,7 +1734,7 @@ Please be thorough in prioritizing these recommendations.
             success: false,
             cost: 0,
         };
-        logApiCall(apilog);
+        enhancedLogger.logApiCall(apilog);
         return safeReportGenerationAsync(
             async () => {
                 // Log the error but don't throw, instead return an empty priority object

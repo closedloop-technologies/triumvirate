@@ -68,7 +68,7 @@ export function logApiCall(logData: ApiCallLog): void {
         : timestamp;
 
     // Create model identifier with arcade-style formatting
-    const modelIdentifier = getModelIcon(logData.model) + ' ' + pc.cyan(logData.model);
+    const modelIdentifier = '🤖 ' + pc.cyan(logData.model);
 
     // Build the terminal log message
     const logMessage = [
@@ -85,27 +85,6 @@ export function logApiCall(logData: ApiCallLog): void {
         .join(' ');
 
     console.log(logMessage);
-}
-
-/**
- * Get an icon representation for a specific model
- */
-function getModelIcon(model: string): string {
-    const modelLower = model.toLowerCase();
-
-    if (modelLower.includes('gpt') || modelLower.includes('openai')) {
-        return '🧠'; // Brain for OpenAI
-    }
-
-    if (modelLower.includes('claude')) {
-        return '🔮'; // Crystal ball for Claude
-    }
-
-    if (modelLower.includes('gemini')) {
-        return '💎'; // Gem for Gemini
-    }
-
-    return '🤖'; // Robot for unknown models
 }
 
 /**

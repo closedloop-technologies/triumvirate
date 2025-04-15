@@ -3,16 +3,15 @@ import * as dotenv from 'dotenv';
 // Import only the types and utilities we still need
 import type { ModelUsage } from './types/usage';
 import { MODEL_API_KEYS } from './utils/api-keys';
-import { logApiCall, initApiLogger } from './utils/api-logger';
 import { MAX_API_RETRIES } from './utils/constants';
+import { enhancedLogger } from './utils/enhanced-logger.js';
 import { ClaudeProvider, GeminiProvider, OpenAIProvider } from './utils/llm-providers';
 import { handleModelError, ErrorCategory, createModelError } from './utils/model-utils';
 
 // Load environment variables from .env file
 dotenv.config();
 
-// Initialize API logger
-initApiLogger();
+// API logger is now initialized in the CLI action
 
 /**
  * Validates model input and API key
@@ -122,7 +121,7 @@ export async function runModelReview(
         // If error is not already logged (like from model-specific functions)
         if (!(error && typeof error === 'object' && 'category' in error)) {
             // Log the API call error
-            logApiCall({
+            enhancedLogger.logApiCall({
                 timestamp: new Date().toISOString(),
                 model: modelName,
                 operation: 'completion',
@@ -139,7 +138,3 @@ export async function runModelReview(
         throw handleModelError(error, modelName, MAX_API_RETRIES);
     }
 }
-
-/**
- * Export the structured Claude model function for use in report generation
- */

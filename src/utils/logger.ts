@@ -1,7 +1,7 @@
 import pc from 'picocolors';
 
 // Define log levels
-type LogLevel = 'silent' | 'error' | 'warn' | 'info' | 'note' | 'debug' | 'trace';
+export type LogLevel = 'silent' | 'error' | 'warn' | 'info' | 'note' | 'debug' | 'trace';
 
 const LOG_LEVELS = {
     silent: 0,

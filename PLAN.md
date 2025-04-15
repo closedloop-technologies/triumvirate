@@ -62,7 +62,6 @@ flowchart TB
 - specify which models to use for the big report
 - specific which model to use for the agentic and report generation side
 - wrap the repomix output in a nicer box
-- better parse the repomix output to access the token count and results better
 - create a script that pulls costs from <https://raw.githubusercontent.com/BerriAI/litellm/refs/heads/main/model_prices_and_context_window.json> and filters them by model to make sure the costs are uptodate.
 - cli printout should implement the opencommit format
 - add better testing and logging

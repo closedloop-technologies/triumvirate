@@ -8,8 +8,8 @@
 
 import OpenAI from 'openai';
 
-import { logApiCall } from './api-logger';
 import { COST_RATES } from './constants';
+import { enhancedLogger } from './enhanced-logger.js';
 import { withErrorHandlingAndRetry } from './error-handling';
 import { createModelError, handleModelError, ErrorCategory } from './model-utils';
 import type { OpenAIUsage } from '../types/usage';
@@ -165,7 +165,7 @@ export class ClaudeProvider implements LLMProvider {
                 const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
 
                 // Log the successful API call
-                logApiCall({
+                enhancedLogger.logApiCall({
                     timestamp: new Date().toISOString(),
                     model: this.model,
                     operation: 'completion',
@@ -366,7 +366,7 @@ export class OpenAIProvider implements LLMProvider {
                     const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
 
                     // Log the successful API call
-                    logApiCall({
+                    enhancedLogger.logApiCall({
                         timestamp: new Date().toISOString(),
                         model: this.model,
                         operation: 'completion',
@@ -384,7 +384,7 @@ export class OpenAIProvider implements LLMProvider {
                     };
                 } catch (error) {
                     // Log the failed API call
-                    logApiCall({
+                    enhancedLogger.logApiCall({
                         timestamp: new Date().toISOString(),
                         model: this.model,
                         operation: 'completion',
@@ -583,7 +583,7 @@ export class GeminiProvider implements LLMProvider {
                     const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
 
                     // Log the successful API call
-                    logApiCall({
+                    enhancedLogger.logApiCall({
                         timestamp: new Date().toISOString(),
                         model: this.model,
                         operation: 'completion',
@@ -601,7 +601,7 @@ export class GeminiProvider implements LLMProvider {
                     };
                 } catch (error) {
                     // Log the failed API call
-                    logApiCall({
+                    enhancedLogger.logApiCall({
                         timestamp: new Date().toISOString(),
                         model: this.model,
                         operation: 'completion',
