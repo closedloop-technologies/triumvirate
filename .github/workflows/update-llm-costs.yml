@@ -1,0 +1,45 @@
+name: Update LLM Costs
+
+on:
+  schedule:
+    # Runs at 2:00 AM UTC every Sunday
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+
+jobs:
+  update-llm-costs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Make update_costs.sh executable
+        run: chmod +x update_costs.sh
+
+      - name: Run update_costs.sh
+        run: ./update_costs.sh
+
+      - name: Check for changes
+        id: git-diff
+        run: |
+          if git diff --quiet llm_costs.json; then
+            echo "No changes to llm_costs.json."
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "llm_costs.json changed."
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push if llm_costs.json changed
+        if: steps.git-diff.outputs.changed == 'true'
+        run: |
+          git add llm_costs.json
+          git commit -m "chore: update llm_costs.json [automated]"
+          git push origin main

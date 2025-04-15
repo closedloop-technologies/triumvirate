@@ -937,7 +937,7 @@ export async function generateCodeReviewReport(
         const findingsByCategory = organizeFindingsByCategory(findings, categories);
         const agreementStatistics = calculateAgreementStats(findingsByCategory, categories);
 
-        logFindingCounts(strengths, improvements, agreementStatistics);
+        logFindingCounts(strengths, improvements);
 
         // Identify key strengths and areas for improvement
         const { keyStrengths, keyAreasForImprovement } = identifyKeyFindingsImportance(findings);
@@ -1002,11 +1002,7 @@ export async function generateCodeReviewReport(
     }
 }
 
-function logFindingCounts(
-    strengths: ReviewFinding[],
-    improvements: ReviewFinding[],
-    agreementStatistics: AgreementStatistics[]
-) {
+function logFindingCounts(strengths: ReviewFinding[], improvements: ReviewFinding[]) {
     console.log(
         pc.green(`Key Findings:          `) +
             pc.green(`${strengths.length.toString().padStart(2, '0')} ✅`) +
@@ -1015,26 +1011,49 @@ function logFindingCounts(
     );
 
     // Count improvements with different agreement levels
-    const improvementsWithHighAgreement = agreementStatistics
-        .map(s => s.allThreeModels)
-        .reduce((a, b) => a + b, 0);
-    const improvementsWithPartialAgreement = agreementStatistics
-        .map(s => s.twoModels)
-        .reduce((a, b) => a + b, 0);
-    const improvementsWithLowAgreement = agreementStatistics
-        .map(s => s.oneModel)
-        .reduce((a, b) => a + b, 0);
+    const improvementsWithHighAgreement = improvements.filter(
+        s => !s.isStrength && Object.values(s.modelAgreements).filter(Boolean).length >= 3
+    );
+    const improvementsWithPartialAgreement = improvements.filter(
+        s => !s.isStrength && Object.values(s.modelAgreements).filter(Boolean).length === 2
+    );
+    const improvementsWithLowAgreement = improvements.filter(
+        s => !s.isStrength && Object.values(s.modelAgreements).filter(Boolean).length === 1
+    );
 
     // Log the agreement statistics
     console.log(
         pc.yellow(`Improvement Agreement: `) +
-            pc.red(`${improvementsWithHighAgreement.toString().padStart(2, '0')} 🚨`) +
+            pc.red(`${improvementsWithHighAgreement.length.toString().padStart(2, '0')} 🚨`) +
             pc.gray(' | ') +
-            pc.yellow(`${improvementsWithPartialAgreement.toString().padStart(2, '0')} ❗`) +
+            pc.yellow(`${improvementsWithPartialAgreement.length.toString().padStart(2, '0')} ❗`) +
             pc.gray(' | ') +
-            pc.green(`${improvementsWithLowAgreement.toString().padStart(2, '0')} ⚠️`)
+            pc.green(`${improvementsWithLowAgreement.length.toString().padStart(2, '0')} ⚠️`)
     );
 
+    // Print each of the improvements with their agreement level
+    if (improvementsWithHighAgreement.length > 0) {
+        console.log(
+            pc.red(
+                `🚨 ${improvementsWithHighAgreement.length} findings have high agreement across models`
+            )
+        );
+
+        improvementsWithHighAgreement.forEach((improvement, index) => {
+            console.log(pc.red(`${index + 1}. ${improvement.title}`));
+        });
+    }
+    if (improvementsWithPartialAgreement.length > 0) {
+        console.log(
+            pc.yellow(
+                `❗ ${improvementsWithPartialAgreement.length} findings have partial agreement across models`
+            )
+        );
+
+        improvementsWithPartialAgreement.forEach((improvement, index) => {
+            console.log(pc.yellow(`${index + 1}. ${improvement.title}`));
+        });
+    }
     // Add separator line
     console.log(pc.gray('─'.repeat(50)));
 }

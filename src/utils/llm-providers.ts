@@ -293,7 +293,7 @@ export class ClaudeProvider implements LLMProvider {
  */
 export class OpenAIProvider implements LLMProvider {
     name = 'OpenAI';
-    model = 'gpt-4o';
+    model = 'gpt-4.1';
 
     isAvailable(): boolean {
         return !!process.env['OPENAI_API_KEY'];

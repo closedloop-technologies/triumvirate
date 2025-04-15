@@ -6,12 +6,13 @@
 export const API_TIMEOUT_MS = 30000; // 30 seconds timeout
 
 // Cost estimation rates ($ per 1M tokens)
-// Source: https://raw.githubusercontent.com/BerriAI/litellm/refs/heads/main/model_prices_and_context_window.json
 // https://ai.google.dev/gemini-api/docs/pricing
+// Run ./update_costs.sh
+// Update Coosts from ./llm_costs.json
 export const COST_RATES = {
     openai: {
-        input: 0.0000025, // $2.5 per 1M tokens
-        output: 0.00001, // $10 per 1M tokens
+        input: 0.000002,
+        output: 0.000008,
     },
     claude: {
         input: 0.000003, // $3 per 1M tokens (text / image / video)
