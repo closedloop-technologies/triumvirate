@@ -1,11 +1,12 @@
 /**
- * Error handling utilities for Triumvirate
+ * Consolidated Error Handling Utilities for Triumvirate
  *
  * This module provides a centralized error handling system for the application.
  * It includes error categorization, standardized error classes, and utilities for
- * handling errors from external APIs and model providers.
+ * handling errors from external APIs, model providers, file operations, data processing,
+ * and report generation.
  */
-import type { HttpError, NetworkError } from '../types/error-types';
+import type { HttpError, NetworkError } from '../types/error-types'; // Keep this import
 
 /**
  * Error categories for better error handling and reporting
@@ -17,6 +18,9 @@ export enum ErrorCategory {
     INPUT_SIZE = 'input_size',
     NETWORK = 'network',
     INVALID_RESPONSE = 'invalid_response',
+    FILE_SYSTEM = 'file_system', // Added category
+    DATA_PROCESSING = 'data_processing', // Added category
+    REPORT_GENERATION = 'report_generation', // Added category
     UNKNOWN = 'unknown',
 }
 
@@ -60,7 +64,13 @@ export class TriumvirateError extends Error {
     /**
      * Log the error with appropriate level based on category
      */
-    logError(): void {
+    logError(
+        logger: {
+            error: (...args: unknown[]) => void;
+            warn: (...args: unknown[]) => void;
+            debug: (...args: unknown[]) => void;
+        } = console
+    ): void {
         const errorMessage = this.getDetailedMessage();
 
         // Log based on error category
@@ -68,15 +78,18 @@ export class TriumvirateError extends Error {
             case ErrorCategory.TIMEOUT:
             case ErrorCategory.RATE_LIMIT:
             case ErrorCategory.NETWORK:
-                console.warn(errorMessage);
+                logger.warn(errorMessage);
                 break;
             default:
-                console.error(errorMessage);
+                logger.error(errorMessage);
         }
 
-        // Log original error stack if available
+        // Log original error stack if available for debugging
         if (this.originalError instanceof Error && this.originalError.stack) {
-            console.debug('Original error stack:', this.originalError.stack);
+            logger.debug('Original error stack:', this.originalError.stack);
+        }
+        if (this.context) {
+            logger.debug('Error context:', this.context);
         }
     }
 }
@@ -85,11 +98,9 @@ export class TriumvirateError extends Error {
  * Standardized model error interface with additional context
  * Used for errors specific to model API calls (OpenAI, Claude, Gemini)
  */
-export interface ModelError extends Error {
-    category: ErrorCategory;
-    modelName: string;
-    retryable: boolean;
-    originalError?: unknown;
+export interface ModelError extends TriumvirateError {
+    // Inherit from TriumvirateError
+    modelName: string; // Keep specific property if needed, though component could cover this
 }
 
 /**
@@ -101,19 +112,25 @@ export interface ModelError extends Error {
  * @param originalError The original error object
  * @returns A standardized ModelError
  */
+// Modify createModelError to return TriumvirateError but potentially set modelName in context
 export function createModelError(
     message: string,
     category: ErrorCategory,
     modelName: string,
     retryable: boolean,
     originalError?: unknown
-): ModelError {
-    const error = new Error(message) as ModelError;
-    error.category = category;
-    error.modelName = modelName;
-    error.retryable = retryable;
-    error.originalError = originalError;
-    error.name = 'ModelError';
+): TriumvirateError {
+    // Return TriumvirateError
+    const context = { modelName }; // Add modelName to context
+    const error = new TriumvirateError(
+        message,
+        category,
+        modelName, // Use modelName as component
+        retryable,
+        originalError,
+        context
+    );
+    error.name = 'ModelError'; // Keep the specific name if needed for identification
     return error;
 }
 
@@ -124,11 +141,13 @@ export function createModelError(
  * @param maxRetries The maximum number of retries attempted
  * @returns A standardized ModelError with appropriate category
  */
+// Modify handleModelError to return TriumvirateError
 export function handleModelError(
     error: unknown,
     modelName: string,
     maxRetries: number
-): ModelError {
+): TriumvirateError {
+    // Return TriumvirateError
     // Log the original error for debugging
     console.debug(`Original ${modelName} error:`, error);
 
@@ -136,11 +155,11 @@ export function handleModelError(
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     // Create context for error tracking
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const context = {
         modelName,
         maxRetries,
         errorType: error instanceof Error ? error.constructor.name : typeof error,
+        originalErrorMessage: errorMessage, // Include original message in context
     };
 
     // Type guards for common error types
@@ -152,9 +171,10 @@ export function handleModelError(
         return typeof err === 'object' && err !== null && ('code' in err || 'message' in err);
     };
 
-    // If already a ModelError, return it
-    if (error && typeof error === 'object' && 'category' in error && 'modelName' in error) {
-        return error as ModelError;
+    // If already a TriumvirateError, add context and return it
+    if (error instanceof TriumvirateError) {
+        error.context = { ...error.context, ...context }; // Merge context
+        return error;
     }
 
     // Handle timeout errors
@@ -175,7 +195,7 @@ export function handleModelError(
 
     // Handle authentication errors (bad API key)
     if (
-        (isHttpError(error) && error.status === 401) ||
+        (isHttpError(error) && (error as HttpError).status === 401) || // Use HttpError type guard
         errorMessage.includes('authentication') ||
         errorMessage.includes('API key') ||
         errorMessage.includes('auth')
@@ -191,12 +211,14 @@ export function handleModelError(
 
     // Handle rate limit errors
     if (
-        (isHttpError(error) && error.status === 429) ||
+        (isHttpError(error) && (error as HttpError).status === 429) ||
         errorMessage.includes('rate limit') ||
-        errorMessage.includes('too many requests')
+        errorMessage.includes('too many requests') ||
+        errorMessage.includes('overloaded') || // Added Claude overload
+        errorMessage.includes('overloaded_error') // Added Claude overload
     ) {
         return createModelError(
-            `${modelName} API rate limit exceeded. Please try again later.`,
+            `${modelName} API rate limit exceeded or service overloaded. Please try again later.`,
             ErrorCategory.RATE_LIMIT,
             modelName,
             true, // retryable
@@ -207,7 +229,7 @@ export function handleModelError(
     // Handle input too large errors
     if (
         isHttpError(error) &&
-        error.status === 400 &&
+        (error as HttpError).status === 400 &&
         (errorMessage.includes('too large') ||
             errorMessage.includes('maximum context length') ||
             errorMessage.includes('token limit'))
@@ -224,7 +246,9 @@ export function handleModelError(
     // Handle network errors
     if (
         (isNetworkError(error) &&
-            ['ENOTFOUND', 'ECONNREFUSED', 'ECONNRESET'].includes(error.code || '')) ||
+            ['ENOTFOUND', 'ECONNREFUSED', 'ECONNRESET'].includes(
+                (error as NetworkError).code || ''
+            )) ||
         errorMessage.includes('network') ||
         errorMessage.includes('connection')
     ) {
@@ -237,17 +261,30 @@ export function handleModelError(
         );
     }
 
-    // Handle invalid response errors
+    // Handle invalid response errors (e.g., JSON parsing errors)
     if (
         errorMessage.includes('invalid response') ||
         errorMessage.includes('unexpected response') ||
-        errorMessage.includes('parsing')
+        errorMessage.includes('parsing') ||
+        errorMessage.includes('Failed to parse') // Catch specific parsing errors
     ) {
         return createModelError(
             `Received invalid response from ${modelName} API.`,
             ErrorCategory.INVALID_RESPONSE,
             modelName,
-            true, // generally retryable
+            false, // Parsing errors are generally not retryable
+            error
+        );
+    }
+
+    // Handle other HTTP errors
+    if (isHttpError(error) && (error as HttpError).status) {
+        const status = (error as HttpError).status;
+        return createModelError(
+            `${modelName} API request failed with status ${status}: ${errorMessage}`,
+            ErrorCategory.UNKNOWN, // Or map specific statuses if needed
+            modelName,
+            false, // Generally not retryable unless specific status codes indicate otherwise
             error
         );
     }
@@ -355,18 +392,17 @@ export function handleExternalApiError(error: unknown, apiName: string): Triumvi
  */
 export async function exponentialBackoff(
     retryCount: number,
-    additionalBackoffMs: number = 1000
+    baseDelayMs: number = 1000, // Base delay
+    maxDelayMs: number = 60000 // Max delay to prevent excessively long waits
 ): Promise<void> {
-    const backoffMs = 1000 * Math.pow(2, retryCount) + additionalBackoffMs;
-    console.log(`Backing off for ${backoffMs}ms before retry`);
+    const backoffMs = Math.min(
+        maxDelayMs,
+        baseDelayMs * Math.pow(2, retryCount) + Math.random() * 1000
+    ); // Add jitter
+    console.log(`Backing off for ${backoffMs.toFixed(0)}ms before retry ${retryCount + 1}`);
 
     return new Promise<void>(resolve => {
-        // Store the timeout ID so it can be cleared if needed
-        const timeoutId = setTimeout(() => {
-            // Clear the timeout reference and resolve the promise
-            clearTimeout(timeoutId);
-            resolve();
-        }, backoffMs);
+        setTimeout(resolve, backoffMs);
     });
 }
 
@@ -382,83 +418,71 @@ export async function exponentialBackoff(
  */
 export async function withErrorHandlingAndRetry<T>(
     apiCall: (signal: AbortSignal) => Promise<T>,
-    component: string,
+    component: string, // component can represent the model name or a specific API operation
     maxRetries = 3,
     timeoutMs = 60000
 ): Promise<T> {
     let retryCount = 0;
     let lastError: TriumvirateError | null = null;
 
-    // Use explicit loop condition instead of while(true) to prevent potential infinite loops
     while (retryCount <= maxRetries) {
-        // Set up timeout with AbortController
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+        const timeoutId = setTimeout(
+            () => controller.abort(new Error('Operation timed out')),
+            timeoutMs
+        );
 
         try {
-            // Log attempt
             if (retryCount > 0) {
                 console.log(
                     `Attempt ${retryCount + 1}/${maxRetries + 1} for ${component} API call`
                 );
             }
-
-            // Execute the API call with the abort signal
             const result = await apiCall(controller.signal);
-
-            // Log success
+            clearTimeout(timeoutId); // Clear timeout on success
             if (retryCount > 0) {
                 console.log(`${component} API call succeeded after ${retryCount} retries`);
             }
-
             return result;
         } catch (error) {
-            // Handle the error with our standardized approach
-            lastError = categorizeModelError(error, component, maxRetries);
+            clearTimeout(timeoutId); // Clear timeout on error as well
 
-            // Log the error
-            const errorMessage = lastError.getDetailedMessage();
-            if (lastError.category === ErrorCategory.UNKNOWN) {
-                console.error(errorMessage);
-            } else {
-                console.warn(errorMessage);
-            }
+            // Categorize error using handleModelError (which now returns TriumvirateError)
+            // Pass the component name directly, as handleModelError expects it
+            lastError = handleModelError(error, component, maxRetries);
 
-            // Check if we should retry
+            // Log the error using the error's own logger method
+            lastError.logError(); // Use the standardized logger method
+
             const shouldRetry = lastError.retryable && retryCount < maxRetries;
 
             if (shouldRetry) {
                 console.log(
-                    `${component} API call failed: ${lastError.message}. ` +
-                        `Retrying (${retryCount + 1}/${maxRetries})...`
+                    `${component} API call failed (Attempt ${retryCount + 1}/${maxRetries + 1}): ${lastError.message}. Retrying...`
                 );
-                if (lastError.category === ErrorCategory.RATE_LIMIT) {
-                    await exponentialBackoff(retryCount, 60000);
-                } else {
-                    await exponentialBackoff(retryCount);
-                }
+                // Adjust backoff based on category
+                const baseDelay = lastError.category === ErrorCategory.RATE_LIMIT ? 5000 : 1000;
+                await exponentialBackoff(retryCount, baseDelay);
                 retryCount++;
-                continue;
+            } else {
+                console.error(
+                    `${component} API call failed permanently after ${retryCount + 1} attempt(s): ${lastError.message}`
+                );
+                throw lastError; // Throw the categorized error
             }
-
-            // If we shouldn't retry or have exhausted retries, throw the error
-            console.error(
-                `${component} API call failed after ${retryCount} attempts: ${lastError.message}`
-            );
-            throw lastError;
-        } finally {
-            // Always clear the timeout to prevent resource leaks, regardless of success or failure
-            clearTimeout(timeoutId);
         }
+        // No finally block needed for clearTimeout as it's handled in both try and catch
     }
 
-    // If we've exhausted all retries and haven't returned or thrown yet, throw the last error
-    // This ensures the function always returns or throws, fixing the TypeScript error
+    // This part should theoretically be unreachable if logic is correct,
+    // but throw the last known error if the loop finishes unexpectedly.
     if (lastError) {
+        console.error(`Exhausted retries for ${component}. Last error: ${lastError.message}`);
         throw lastError;
     } else {
+        // Should not happen if an error occurred, but needed for type safety
         throw new TriumvirateError(
-            'Maximum retries exceeded with no successful result',
+            'Maximum retries exceeded with no successful result and no specific error recorded',
             ErrorCategory.UNKNOWN,
             component,
             false
@@ -466,213 +490,404 @@ export async function withErrorHandlingAndRetry<T>(
     }
 }
 
+// --- Functions moved from error-handling-extensions.ts ---
+
 /**
- * Categorizes errors from model API calls
- *
+ * Safely execute an async function that might throw an error
+ * @param fn The async function to execute
+ * @param component The component name for context
+ * @param defaultValue The default value to return if the function throws
+ * @param logLevel Optional log level for errors (default: 'error')
+ * @returns Promise resolving to the result of the function or the default value
+ */
+export async function safeExecuteAsync<T, D>(
+    fn: () => Promise<T>,
+    component: string,
+    defaultValue: D,
+    logLevel: 'error' | 'warn' | 'info' = 'error'
+): Promise<T | D> {
+    try {
+        return await fn();
+    } catch (error) {
+        const triumvirateError =
+            error instanceof TriumvirateError
+                ? error
+                : new TriumvirateError(
+                      error instanceof Error ? error.message : String(error),
+                      ErrorCategory.UNKNOWN,
+                      component,
+                      false,
+                      error
+                  );
+
+        // Use the error's log method or a default logger
+        const loggerMethod = console[logLevel] || console.error;
+        loggerMethod(`${component} error in safeExecuteAsync: ${triumvirateError.message}`);
+        if (
+            logLevel === 'error' &&
+            triumvirateError.originalError instanceof Error &&
+            triumvirateError.originalError.stack
+        ) {
+            console.debug('Original stack trace:', triumvirateError.originalError.stack);
+        }
+
+        return defaultValue;
+    }
+}
+
+/**
+ * Handle file operation errors with consistent error messages
  * @param error The caught error
- * @param component The component name (e.g., 'OpenAI', 'Claude')
- * @param maxRetries Maximum retries attempted
+ * @param operation The file operation being performed (e.g., 'read', 'write', 'delete')
+ * @param filePath The path of the file being operated on
  * @returns A TriumvirateError with appropriate category
  */
-function categorizeModelError(
+export function handleFileError(
     error: unknown,
-    component: string,
-    maxRetries: number
+    operation: string,
+    filePath: string
 ): TriumvirateError {
-    // If error is already a TriumvirateError, return it
+    // If already a TriumvirateError, return it
     if (error instanceof TriumvirateError) {
         return error;
     }
 
-    // Default error message
     const errorMessage = error instanceof Error ? error.message : String(error);
-
-    // Context for the error
     const context = {
-        component,
-        maxRetries,
+        operation,
+        filePath,
         errorType: error instanceof Error ? error.constructor.name : typeof error,
     };
 
-    // Check for timeout errors
-    if (
-        (error instanceof Error && error.name === 'AbortError') ||
-        (error instanceof Error &&
-            'code' in error &&
-            (error as NetworkError).code === 'ETIMEDOUT') ||
-        errorMessage.includes('timeout') ||
-        errorMessage.includes('timed out')
-    ) {
+    // Check for common file operation errors
+    if (errorMessage.includes('ENOENT') || errorMessage.includes('no such file')) {
         return new TriumvirateError(
-            `${component} API call timed out after ${maxRetries} retries`,
-            ErrorCategory.TIMEOUT,
-            component,
-            true, // retryable
+            `File not found during ${operation}: ${filePath}`, // Adjusted message
+            ErrorCategory.FILE_SYSTEM,
+            'FileSystem',
+            false,
             error,
             context
         );
     }
 
-    // Handle authentication errors (bad API key)
-    if (
-        (error instanceof Error && 'status' in error && error['status'] === 401) ||
-        errorMessage.includes('authentication') ||
-        errorMessage.includes('API key') ||
-        errorMessage.includes('auth')
-    ) {
+    if (errorMessage.includes('EACCES') || errorMessage.includes('permission denied')) {
         return new TriumvirateError(
-            `Invalid ${component} API key. Please check your API key and try again.`,
-            ErrorCategory.AUTHENTICATION,
-            component,
-            false, // not retryable
+            `Permission denied for file operation: ${operation} on ${filePath}`,
+            ErrorCategory.FILE_SYSTEM,
+            'FileSystem',
+            false,
             error,
             context
         );
     }
 
-    // Handle rate limit errors
-    if (
-        (error instanceof Error && 'status' in error && error['status'] === 429) ||
-        errorMessage.includes('rate limit') ||
-        errorMessage.includes('too many requests')
-    ) {
+    if (errorMessage.includes('EEXIST') || errorMessage.includes('already exists')) {
         return new TriumvirateError(
-            `${component} API rate limit exceeded. Please try again later.`,
-            ErrorCategory.RATE_LIMIT,
-            component,
-            true, // retryable
+            `File already exists during ${operation}: ${filePath}`, // Adjusted message
+            ErrorCategory.FILE_SYSTEM,
+            'FileSystem',
+            false,
             error,
             context
         );
     }
 
-    // Handle input too large errors
-    if (
-        error instanceof Error &&
-        'status' in error &&
-        error['status'] === 400 &&
-        (errorMessage.includes('too large') ||
-            errorMessage.includes('maximum context length') ||
-            errorMessage.includes('token limit'))
-    ) {
-        // eslint-disable-next-line no-constant-condition
-        return new TriumvirateError(
-            'Input is too large for the model. Please reduce the size of your input.',
-            ErrorCategory.INPUT_SIZE,
-            component,
-            false, // not retryable
-            error,
-            context
-        );
-    }
-
-    // Handle network errors
-    if (
-        (error instanceof Error &&
-            'code' in error &&
-            ['ENOTFOUND', 'ECONNREFUSED', 'ECONNRESET'].includes(error['code'] as string)) ||
-        errorMessage.includes('network') ||
-        errorMessage.includes('connection')
-    ) {
-        return new TriumvirateError(
-            `Network error when calling ${component} API. Please check your internet connection.`,
-            ErrorCategory.NETWORK,
-            component,
-            true, // retryable
-            error,
-            context
-        );
-    }
-
-    // Handle server overload errors (especially for Claude)
-    if (
-        (error instanceof Error && 'status' in error && error['status'] === 529) ||
-        errorMessage.includes('overloaded') ||
-        errorMessage.includes('overloaded_error')
-    ) {
-        return new TriumvirateError(
-            `${component} API is currently overloaded. Will retry with exponential backoff.`,
-            ErrorCategory.RATE_LIMIT, // Treat as rate limit for retry purposes
-            component,
-            true, // retryable
-            error,
-            context
-        );
-    }
-
-    // Handle invalid response errors
-    if (
-        errorMessage.includes('invalid response') ||
-        errorMessage.includes('unexpected response') ||
-        errorMessage.includes('parsing')
-    ) {
-        return new TriumvirateError(
-            `Received invalid response from ${component} API.`,
-            ErrorCategory.INVALID_RESPONSE,
-            component,
-            true, // generally retryable
-            error,
-            context
-        );
-    }
-
-    // Handle other errors
+    // Default error
     return new TriumvirateError(
-        `${component} API error: ${errorMessage || 'Unknown error'}`,
-        ErrorCategory.UNKNOWN,
-        component,
-        false, // by default, unknown errors are not retryable
+        `Error during file ${operation} operation on ${filePath}: ${errorMessage}`,
+        ErrorCategory.FILE_SYSTEM, // Use FILE_SYSTEM category
+        'FileSystem',
+        false,
         error,
         context
     );
 }
 
 /**
- * Safely execute a function that might throw an error
+ * Safely execute a file operation that might throw an error
  * @param fn The function to execute
- * @param component The component name for context (or model name for model-specific functions)
+ * @param operation The file operation being performed (e.g., 'read', 'write', 'delete')
+ * @param filePath The path of the file being operated on
  * @param defaultValue The default value to return if the function throws
- * @param isModelComponent Optional flag to indicate if this is a model component (for model-specific error handling)
+ * @returns The result of the function or the default value
+ */
+export function safeFileOperation<T, D>(
+    fn: () => T,
+    operation: string,
+    filePath: string,
+    defaultValue: D
+): T | D {
+    try {
+        return fn();
+    } catch (error) {
+        const triumvirateError = handleFileError(error, operation, filePath);
+        triumvirateError.logError(); // Use the error's logging method
+        return defaultValue;
+    }
+}
+
+/**
+ * Safely execute an async file operation that might throw an error
+ * @param fn The async function to execute
+ * @param operation The file operation being performed (e.g., 'read', 'write', 'delete')
+ * @param filePath The path of the file being operated on
+ * @param defaultValue The default value to return if the function throws
+ * @returns Promise resolving to the result of the function or the default value
+ */
+export async function safeFileOperationAsync<T, D>(
+    fn: () => Promise<T>,
+    operation: string,
+    filePath: string,
+    defaultValue: D
+): Promise<T | D> {
+    try {
+        return await fn();
+    } catch (error) {
+        const triumvirateError = handleFileError(error, operation, filePath);
+        triumvirateError.logError();
+        return defaultValue;
+    }
+}
+
+/**
+ * Handle data processing errors with consistent error messages
+ * @param error The caught error
+ * @param dataType The type of data being processed
+ * @param operation The operation being performed on the data
+ * @returns A TriumvirateError with appropriate category
+ */
+export function handleDataProcessingError(
+    error: unknown,
+    dataType: string,
+    operation: string
+): TriumvirateError {
+    // If already a TriumvirateError, return it
+    if (error instanceof TriumvirateError) {
+        return error;
+    }
+
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const context = {
+        dataType,
+        operation,
+        errorType: error instanceof Error ? error.constructor.name : typeof error,
+    };
+
+    // Check for common data processing errors
+    if (errorMessage.includes('JSON') || errorMessage.includes('parse')) {
+        return new TriumvirateError(
+            `Error parsing ${dataType} data during ${operation}: ${errorMessage}`, // Adjusted message
+            ErrorCategory.DATA_PROCESSING, // Use specific category
+            'DataProcessing',
+            false,
+            error,
+            context
+        );
+    }
+
+    if (
+        errorMessage.includes('undefined') ||
+        errorMessage.includes('null') ||
+        errorMessage.includes('cannot read properties')
+    ) {
+        return new TriumvirateError(
+            `Missing or invalid data during ${operation} of ${dataType}: ${errorMessage}`,
+            ErrorCategory.DATA_PROCESSING, // Use specific category
+            'DataProcessing',
+            false,
+            error,
+            context
+        );
+    }
+
+    // Default error
+    return new TriumvirateError(
+        `Error during ${operation} of ${dataType} data: ${errorMessage}`,
+        ErrorCategory.DATA_PROCESSING, // Use specific category
+        'DataProcessing',
+        false,
+        error,
+        context
+    );
+}
+
+/**
+ * Safely execute a data processing function that might throw an error
+ * @param fn The function to execute
+ * @param dataType The type of data being processed
+ * @param operation The operation being performed on the data
+ * @param defaultValue The default value to return if the function throws
  * @param logLevel Optional log level for errors (default: 'error')
  * @returns The result of the function or the default value
  */
-export function safeExecute<T, D>(
+export function safeDataProcessing<T, D>(
     fn: () => T,
-    component: string,
+    dataType: string,
+    operation: string,
     defaultValue: D,
-    isModelComponent: boolean = false,
     logLevel: 'error' | 'warn' | 'info' = 'error'
 ): T | D {
     try {
         return fn();
     } catch (error) {
-        if (isModelComponent) {
-            // Use model-specific error handling
-            const modelError = handleModelError(
-                error,
-                component, // component is the model name in this case
-                3 // default max retries
-            );
-            if (logLevel === 'error') {
-                console.error(`Model error in safeExecute: ${modelError.message}`);
-            } else if (logLevel === 'warn') {
-                console.warn(`Model error in safeExecute: ${modelError.message}`);
-            } else {
-                console.info(`Model error in safeExecute: ${modelError.message}`);
-            }
-        } else {
-            // Use general error handling
-            const triumvirateError = new TriumvirateError(
-                error instanceof Error ? error.message : String(error),
-                ErrorCategory.UNKNOWN,
-                component,
-                false,
-                error
-            );
-            triumvirateError.logError();
+        const triumvirateError = handleDataProcessingError(error, dataType, operation);
+        // Use the error's log method or a default logger based on logLevel
+        const loggerMethod = console[logLevel] || console.error;
+        loggerMethod(`Data processing error: ${triumvirateError.message}`);
+        if (
+            logLevel === 'error' &&
+            triumvirateError.originalError instanceof Error &&
+            triumvirateError.originalError.stack
+        ) {
+            console.debug('Original stack trace:', triumvirateError.originalError.stack);
         }
         return defaultValue;
     }
 }
-// Re-export all error handling extensions
-export * from './error-handling-extensions';
+
+/**
+ * Handle report generation errors with consistent error messages
+ * @param error The caught error
+ * @param reportType The type of report being generated
+ * @param stage The stage of report generation where the error occurred
+ * @returns A TriumvirateError with appropriate category
+ */
+export function handleReportError(
+    error: unknown,
+    reportType: string,
+    stage: string
+): TriumvirateError {
+    // If already a TriumvirateError, return it
+    if (error instanceof TriumvirateError) {
+        return error;
+    }
+
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const context = {
+        reportType,
+        stage,
+        errorType: error instanceof Error ? error.constructor.name : typeof error,
+    };
+
+    // Default error
+    return new TriumvirateError(
+        `Error during ${stage} of ${reportType} report: ${errorMessage}`,
+        ErrorCategory.REPORT_GENERATION, // Use specific category
+        'ReportGeneration',
+        false,
+        error,
+        context
+    );
+}
+
+/**
+ * Safely execute a report generation function that might throw an error
+ * @param fn The function to execute
+ * @param reportType The type of report being generated
+ * @param stage The stage of report generation where the error occurred
+ * @param defaultValue The default value to return if the function throws
+ * @param logErrorStack Whether to log the error stack trace (default: true)
+ * @returns The result of the function or the default value
+ */
+export function safeReportGeneration<T, D>(
+    fn: () => T,
+    reportType: string,
+    stage: string,
+    defaultValue: D,
+    logErrorStack: boolean = true // Keep optional stack logging
+): T | D {
+    try {
+        return fn();
+    } catch (error) {
+        const triumvirateError = handleReportError(error, reportType, stage);
+        console.error(`Report generation error: ${triumvirateError.message}`);
+
+        if (
+            logErrorStack &&
+            triumvirateError.originalError instanceof Error &&
+            triumvirateError.originalError.stack
+        ) {
+            console.error('Stack trace:', triumvirateError.originalError.stack);
+        }
+
+        return defaultValue;
+    }
+}
+
+/**
+ * Safely execute an async report generation function that might throw an error
+ * @param fn The async function to execute
+ * @param reportType The type of report being generated
+ * @param stage The stage of report generation where the error occurred
+ * @param defaultValue The default value to return if the function throws
+ * @param logErrorStack Whether to log the error stack trace (default: true)
+ * @returns Promise resolving to the result of the function or the default value
+ */
+export async function safeReportGenerationAsync<T, D>(
+    fn: () => Promise<T>,
+    reportType: string,
+    stage: string,
+    defaultValue: D,
+    logErrorStack: boolean = true // Keep optional stack logging
+): Promise<T | D> {
+    try {
+        return await fn();
+    } catch (error) {
+        const triumvirateError = handleReportError(error, reportType, stage);
+        console.error(`Report generation error: ${triumvirateError.message}`);
+
+        if (
+            logErrorStack &&
+            triumvirateError.originalError instanceof Error &&
+            triumvirateError.originalError.stack
+        ) {
+            console.error('Stack trace:', triumvirateError.originalError.stack);
+        }
+
+        return defaultValue;
+    }
+}
+
+/**
+ * Safely execute a function that might throw an error (Synchronous version)
+ * @param fn The function to execute
+ * @param component The component name for context
+ * @param defaultValue The default value to return if the function throws
+ * @param logLevel Optional log level for errors (default: 'error')
+ * @returns The result of the function or the default value
+ */
+// Keep safeExecute for synchronous operations if needed
+export function safeExecute<T, D>(
+    fn: () => T,
+    component: string,
+    defaultValue: D,
+    logLevel: 'error' | 'warn' | 'info' = 'error'
+): T | D {
+    try {
+        return fn();
+    } catch (error) {
+        const triumvirateError =
+            error instanceof TriumvirateError
+                ? error
+                : new TriumvirateError(
+                      error instanceof Error ? error.message : String(error),
+                      ErrorCategory.UNKNOWN,
+                      component,
+                      false,
+                      error
+                  );
+
+        // Use the error's log method or a default logger
+        const loggerMethod = console[logLevel] || console.error;
+        loggerMethod(`${component} error in safeExecute: ${triumvirateError.message}`);
+        if (
+            logLevel === 'error' &&
+            triumvirateError.originalError instanceof Error &&
+            triumvirateError.originalError.stack
+        ) {
+            console.debug('Original stack trace:', triumvirateError.originalError.stack);
+        }
+        return defaultValue;
+    }
+}

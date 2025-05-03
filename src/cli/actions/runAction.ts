@@ -1,6 +1,7 @@
 import { runTriumvirateReview } from '../../index.js';
 import type { TriumvirateReviewOptions } from '../../index.js';
 import type { CliOptions } from '../../types/report.js';
+import type { CodeReviewReport } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
 
@@ -111,8 +112,18 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 
         const results = await runTriumvirateReview(reviewOptions);
         // Check if any reviews failed
-        if (failOnError && results.some(r => r.metrics.error)) {
-            process.exit(1);
+        if (failOnError) {
+            if (Array.isArray(results)) {
+                if (results.some(r => r.metrics.error)) {
+                    process.exit(1);
+                }
+            } else {
+                const report = results as CodeReviewReport;
+                // Check if any models in the report contain errors
+                if (report.modelMetrics && report.modelMetrics.some(m => m?.error)) {
+                    process.exit(1);
+                }
+            }
         }
 
         // Print API usage summary

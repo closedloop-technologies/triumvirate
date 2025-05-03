@@ -6,8 +6,12 @@ import { runPlanAction } from './actions/planAction.js';
 import { runCliAction } from './actions/runAction.js';
 import { runSummarizeAction } from './actions/summarizeAction.js';
 import { runUninstallAction } from './actions/uninstallAction.js';
-import { handleError } from '../utils/error.js';
-import { logger } from '../utils/logger.js';
+// Import consolidated error handling
+import { TriumvirateError, ErrorCategory } from '../utils/error-handling.js';
+import { logger } from '../utils/logger.js'; // Use the existing logger
+
+// Constants for support links (moved from error.ts)
+const TRIUMVIRATE_ISSUES_URL = 'https://github.com/closedloop-technologies/triumvirate/issues';
 
 // Semantic mapping for CLI suggestions
 const semanticSuggestionMap: Record<string, string[]> = {
@@ -31,6 +35,75 @@ const semanticSuggestionMap: Record<string, string[]> = {
 
 // Create the commander program
 const program = new Command();
+
+// Centralized CLI Error Handler
+function handleCliError(error: unknown): void {
+    logger.log(''); // Add a newline for better formatting
+
+    let displayError: TriumvirateError;
+
+    if (error instanceof TriumvirateError) {
+        displayError = error;
+        logger.error(`❌ ${displayError.getDetailedMessage()}`); // Use detailed message
+    } else if (error instanceof Error) {
+        // Wrap unexpected errors
+        displayError = new TriumvirateError(
+            `Unexpected error: ${error.message}`,
+            ErrorCategory.UNKNOWN,
+            'CLI',
+            false,
+            error
+        );
+        logger.error(`❌ ${displayError.message}`);
+        // Log stack trace for unexpected errors by default or if verbose
+        logger.note('Stack trace:', error.stack);
+    } else {
+        // Handle non-Error objects thrown
+        displayError = new TriumvirateError(
+            'An unknown error occurred',
+            ErrorCategory.UNKNOWN,
+            'CLI',
+            false,
+            error
+        );
+        logger.error(`❌ ${displayError.message}`);
+    }
+
+    // Log original error stack trace in debug mode
+    if (displayError.originalError instanceof Error && displayError.originalError.stack) {
+        logger.debug('Original error stack:', displayError.originalError.stack);
+    }
+
+    // Provide helpful context based on error category or message
+    if (displayError.category === ErrorCategory.AUTHENTICATION) {
+        logger.info(
+            'Please check your API key configuration (environment variables or .env file).'
+        );
+        // Consider adding getApiKeySetupInstructions() here if relevant
+    } else if (
+        displayError.message.includes('command not found') ||
+        displayError.message.includes('ENOENT')
+    ) {
+        logger.info(
+            'Ensure required external tools (like git or Node.js) are installed and in your PATH.'
+        );
+    }
+
+    // Show verbose hint only if not already in debug mode
+    if (logger.getLogLevel() < 5) {
+        // 5 corresponds to debug level in logger.ts
+        logger.log('');
+        logger.note('For detailed debug information, use the --verbose flag');
+    }
+
+    // Community support information
+    logger.log('');
+    logger.info('Need help?');
+    logger.info(`• File an issue on GitHub: ${TRIUMVIRATE_ISSUES_URL}`);
+
+    // Exit with error code
+    process.exit(1);
+}
 
 export const run = async () => {
     try {
@@ -191,6 +264,6 @@ Option Groups:
 
         await program.parseAsync(process.argv);
     } catch (error) {
-        handleError(error);
+        handleCliError(error); // Use the new central CLI error handler
     }
 };

@@ -14,6 +14,12 @@
                 "ecmaVersion": "latest",
                 "sourceType": "module"
             }
+        },
+        {
+            "files": ["test/**/*.ts", "test/**/*.tsx"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off"
+            }
         }
     ],
     "parserOptions": {
@@ -22,19 +28,35 @@
     },
     "plugins": ["import", "node"],
     "rules": {
-        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_"
+            }
+        ],
         "@typescript-eslint/no-unused-vars": [
             "error",
-            { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_"
+            }
         ],
         "no-console": "off",
-        "no-constant-condition": ["error", { "checkLoops": false }],
+        "no-constant-condition": [
+            "error",
+            {
+                "checkLoops": false
+            }
+        ],
         "import/order": [
             "error",
             {
                 "groups": ["builtin", "external", "internal", ["parent", "sibling"], "index"],
                 "newlines-between": "always",
-                "alphabetize": { "order": "asc", "caseInsensitive": true }
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                }
             }
         ]
     }

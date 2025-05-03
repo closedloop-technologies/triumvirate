@@ -43,6 +43,7 @@ export interface ModelMetrics {
     cost: number;
     totalTokens: number;
     costPer1kTokens: number;
+    error?: string;
 }
 
 export interface CodeExample {

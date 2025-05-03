@@ -613,8 +613,8 @@ function formatAndLimitFindings(findings: string[], limit: number): string[] {
         }
 
         // Truncate if still too long
-        if (cleaned.length > 80) {
-            cleaned = cleaned.substring(0, 77) + '...';
+        if (cleaned.length > 800) {
+            cleaned = cleaned.substring(0, 797) + '...';
         }
 
         return cleaned;
@@ -732,8 +732,8 @@ function formatFinding(text: string): string {
     }
 
     // Truncate if still too long
-    if (formatted.length > 80) {
-        formatted = formatted.substring(0, 77) + '...';
+    if (formatted.length > 800) {
+        formatted = formatted.substring(0, 797) + '...';
     }
 
     return formatted;
