@@ -1,6 +1,6 @@
 {
     "name": "@justbuild/triumvirate",
-    "version": "0.3.2",
+    "version": "0.4.0",
     "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
     "type": "module",
     "bin": {
@@ -26,6 +26,8 @@
         "prepare": "husky install",
         "prepublishOnly": "npm run verify && npm run build",
         "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "test:e2e": "node scripts/e2e-test.js",
         "lint": "eslint . --max-warnings=0",
         "lint:fix": "eslint . --fix",
         "format": "prettier --write .",
@@ -33,7 +35,11 @@
         "type-check": "tsc -p src/tsconfig.json --noEmit --resolveJsonModule --esModuleInterop",
         "verify": "npm run lint && npm run format:check && npm run type-check",
         "precommit": "lint-staged && npm run type-check:changed",
-        "type-check:changed": "node scripts/check-types-changed.js"
+        "type-check:changed": "node scripts/check-types-changed.js",
+        "check:spelling": "node scripts/check-spelling.js",
+        "check:coverage": "node scripts/check-coverage.js",
+        "verify:deployment": "node scripts/verify-deployment.js",
+        "release:prepare": "npm run verify && npm run test && npm run test:e2e && npm run check:spelling && npm run check:coverage && npm run verify:deployment"
     },
     "keywords": [
         "review",

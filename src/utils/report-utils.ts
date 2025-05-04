@@ -6,7 +6,7 @@ import type { ApiCallLog } from './api-logger.js';
 import { MAX_API_RETRIES } from './constants';
 import { enhancedLogger } from './enhanced-logger.js';
 import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
-import { ClaudeProvider } from './llm-providers';
+import { ClaudeProvider, type LLMProvider } from './llm-providers';
 import { Spinner } from '../cli/utils/spinner';
 import type { FindingItem, ModelResult } from '../types/model-responses';
 import {
@@ -48,8 +48,12 @@ export interface CategoryResponse {
 /**
  * Extract categories from model reviews using structured output from any available LLM provider
  */
-export async function extractCategories(reviews: string[]): Promise<ReviewCategory[]> {
-    const provider = new ClaudeProvider();
+export async function extractCategories(
+    reviews: string[],
+    provider?: LLMProvider
+): Promise<ReviewCategory[]> {
+    // Use provided provider or default to Claude
+    provider = provider || new ClaudeProvider();
     try {
         // Create a prompt for category extraction
         const prompt = createCategoryExtractionPrompt(reviews);
@@ -58,17 +62,10 @@ export async function extractCategories(reviews: string[]): Promise<ReviewCatego
         const schema = createCategorySchema();
 
         // Call the best available LLM provider with structured output
-        const categoriesResponse = await provider.runStructured<CategoryResponse>(
-            prompt,
-            schema,
-            MAX_API_RETRIES,
-            'category_extraction',
-            'Extract categories from model reviews',
-            8192 // Increased token limit to handle larger reviews
-        );
+        const categoriesResponse = await provider.runStructured<CategoryResponse>(prompt, schema);
         const apilog: ApiCallLog = {
             timestamp: new Date().toISOString(),
-            model: provider.model,
+            model: provider.name, // Use provider name instead of model
             operation: 'categories',
             inputTokens: categoriesResponse.usage.input_tokens,
             outputTokens: categoriesResponse.usage.output_tokens,
@@ -89,7 +86,7 @@ export async function extractCategories(reviews: string[]): Promise<ReviewCatego
         // Use the new error handling utilities for consistent error handling
         const apilog: ApiCallLog = {
             timestamp: new Date().toISOString(),
-            model: provider.model,
+            model: provider.name, // Use provider name instead of model
             operation: 'structured',
             inputTokens: 0,
             outputTokens: 0,
@@ -830,12 +827,18 @@ export function calculateAgreementStats(
 }
 
 /**
- * Generate a comprehensive code review report with structured Claude analysis
+ * Generate a comprehensive code review report with structured LLM analysis
+ * @param modelResults The results from each model's review
+ * @param provider The LLM provider to use for report generation (defaults to Claude if not provided)
+ * @param spinner Optional spinner for progress indication
  */
 export async function generateCodeReviewReport(
     modelResults: ModelResult[],
+    provider?: LLMProvider,
     spinner?: Spinner
 ): Promise<CodeReviewReport> {
+    // Use provided provider or default to Claude
+    provider = provider || new ClaudeProvider();
     // Track any resources that need cleanup
     const resources: { cleanup: () => void }[] = [];
 

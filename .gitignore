@@ -34,3 +34,6 @@ Thumbs.db
 repomix-output.*
 tri-review-*.json
 tri-review-*.md
+
+# Default output directory
+.justbuild/

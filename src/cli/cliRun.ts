@@ -111,6 +111,26 @@ export const run = async () => {
             .description(
                 'Triumvirate - Run codebase reviews across OpenAI, Claude, and Gemini models'
             )
+            // Add global options to the root command
+            .option(
+                '--agent-model <model>',
+                'Specify the LLM model to use (default: claude)',
+                'claude'
+            )
+            .option(
+                '--output-dir <dir>',
+                'Specify the output directory (default: ./.justbuild)',
+                './.justbuild'
+            )
+            .option(
+                '--pass-threshold <threshold>',
+                'Set review pass/fail threshold (strict, lenient, none)',
+                'lenient'
+            )
+            .option(
+                '--task <description>',
+                'Specify a task description for LLM-driven task generation'
+            )
             .option('--verbose', 'enable verbose logging for detailed output')
             .option('--quiet', 'disable all output to stdout')
             .option('-v, --version', 'show version information');
@@ -127,6 +147,7 @@ export const run = async () => {
                 'comma-separated list of models (default: openai,claude,gemini)'
             )
             .option(
+                // Existing review-type option
                 '--review-type <type>',
                 'type of review: general, security, performance, architecture, docs'
             )
@@ -134,6 +155,7 @@ export const run = async () => {
             .option('--skip-api-key-validation', 'skip API key validation check')
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
             .option('--summary-only', 'only include summary in results')
+            .option('--task <description>', 'Specific task or question to guide the review') // DoD: Add --task option
 
             // Repomix-specific options
             .option('--token-limit <number>', 'maximum tokens to send to the model')
@@ -149,10 +171,11 @@ export const run = async () => {
             .option(
                 '--instruction-file-path <path>',
                 'path to a file containing detailed custom instructions'
+                // DoD: Implement --docs functionality here or pass down
+                // Option: Could reuse --instruction-file-path or add explicit --docs
             )
 
             // Output options
-            .option('-o, --output <file>', 'specify the output file name')
             .option('--style <type>', 'specify the output style (xml, markdown, plain)')
             .option('--output-show-line-numbers', 'add line numbers to each line in the output')
 
@@ -160,6 +183,23 @@ export const run = async () => {
             .option('--include <patterns>', 'list of include patterns (comma-separated)')
             .option('-i, --ignore <patterns>', 'additional ignore patterns (comma-separated)')
             .option('--diff', 'only review files changed in git diff')
+
+            // Inherit global options for context
+            .option(
+                '--agent-model <model>',
+                'specify the LLM for report analysis (default: claude)',
+                'claude'
+            )
+            .option(
+                '--output-dir <dir>',
+                'specify the output directory (default: ./.justbuild)',
+                './.justbuild'
+            )
+            .option(
+                '--pass-threshold <level>',
+                'set review pass/fail threshold (strict, lenient, none)',
+                'none'
+            )
             .action(runCliAction);
 
         // Add custom help text for the review command
@@ -175,6 +215,8 @@ Option Groups:
     --skip-api-key-validation      Skip API key validation
     --enhanced-report              Generate enhanced report with model agreement
     --summary-only                 Only include summary in results
+    --agent-model                  LLM model for report analysis/planning
+    --task                         Specific task/question to guide review
 
   Repomix Options:
     --token-limit                  Maximum tokens to send to the model
@@ -187,7 +229,7 @@ Option Groups:
     --instruction-file-path        Path to custom instructions file
 
   Output Options:
-    -o, --output                   Output file path
+    --output-dir                   Output directory (default: ./.justbuild)
     --style                        Output style format
     --output-show-line-numbers     Show line numbers in output
 
@@ -195,6 +237,10 @@ Option Groups:
     --include                      Patterns to include
     -i, --ignore                   Patterns to ignore
     --diff                         Only review files in git diff
+
+  Threshold Options:
+    --pass-threshold               Set review pass/fail threshold (strict, lenient, none)
+
 `
         );
 
@@ -202,24 +248,51 @@ Option Groups:
         program
             .command('summarize')
             .description('Generate a summary from existing raw reports')
-            .option('-i, --input <file>', 'input file containing raw reports')
-            .option('-o, --output <file>', 'output file for the summary')
+            .option('-i, --input <file>', 'Input file containing raw JSON reports')
+            .option('-o, --output <file>', 'Output file for the summary (Markdown)')
+            .option(
+                '--agent-model <model>',
+                'Specify the LLM for summary analysis (default: claude)',
+                'claude'
+            ) // Inherit/Allow override
+            .option(
+                '--output-dir <dir>',
+                'Specify the output directory (default: ./.justbuild)',
+                './.justbuild'
+            ) // Inherit/Allow override
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
             .action(runSummarizeAction);
 
         // Plan command - Decompose the review into a set of tasks with dependencies
         program
             .command('plan')
-            .description('Decompose a review into a set of tasks with dependencies')
-            .option('-i, --input <file>', 'input file containing the summary')
-            .option('-o, --output <file>', 'output file for the plan')
+            .description('Decompose a review summary into a set of tasks with dependencies')
+            .option('-i, --input <file>', 'Input Markdown file containing the summary')
+            .option('-o, --output <file>', 'Output JSON file for the plan')
+            .option(
+                '--agent-model <model>',
+                'Specify the LLM for planning (default: claude)',
+                'claude'
+            ) // Inherit/Allow override
+            .option(
+                '--output-dir <dir>',
+                'Specify the output directory (default: ./.justbuild)',
+                './.justbuild'
+            ) // Inherit/Allow override
             .action(runPlanAction);
 
         // Next command - Emits the next available task
         program
             .command('next')
             .description('Read the plan and emit the next available task')
-            .option('-i, --input <file>', 'input file containing the plan')
+            .option('-i, --input <file>', 'Input JSON file containing the plan')
+            .option(
+                '--output-dir <dir>',
+                'Specify the output directory (default: ./.justbuild)',
+                './.justbuild'
+            ) // Inherit/Allow override
+            .option('--mark-complete <taskId>', 'Mark a specific task as completed')
+            .option('--branch', 'Create a git branch for the next task')
             .action(runNextAction);
 
         // Add install and uninstall commands

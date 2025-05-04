@@ -1,3 +1,4 @@
+import { runVersionAction } from './versionAction.js';
 import { runTriumvirateReview } from '../../index.js';
 import type { TriumvirateReviewOptions } from '../../index.js';
 import type { CliOptions } from '../../types/report.js';
@@ -36,11 +37,14 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         models = 'openai,claude,gemini',
         ignore = '',
         diff = false,
-        output,
+        // output, // Deprecated in favor of outputDir
+        outputDir = './.justbuild', // DoD: Default output dir
         failOnError = false,
         summaryOnly = false,
         tokenLimit = 100000,
         reviewType = 'general',
+        passThreshold = 'none', // DoD: Add pass threshold
+        agentModel = 'claude', // DoD: Add agent model
         skipApiKeyValidation = false,
         enhancedReport = true,
 
@@ -99,28 +103,56 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         // Run the review with our configured options
         const reviewOptions: TriumvirateReviewOptions = {
             models: modelList,
-            exclude: excludeList,
             diffOnly: diff,
-            outputPath: output,
+            outputPath: outputDir, // Use outputDir
             failOnError,
             summaryOnly,
             tokenLimit,
             reviewType,
-            repomixOptions,
+            repomixOptions, // Pass repomix specific flags
             enhancedReport,
+            agentModel, // Pass agent model
+            // Pass other options if needed by runTriumvirateReview
+            options: options, // Pass original options for context
         };
 
         const results = await runTriumvirateReview(reviewOptions);
-        // Check if any reviews failed
-        if (failOnError) {
+
+        // --- DoD: Pass/Fail Threshold Logic ---
+        let reviewPassed = true;
+        if (passThreshold !== 'none' && enhancedReport && !Array.isArray(results)) {
+            const report = results as CodeReviewReport;
+            const improvementFindings = Object.values(report.findingsByCategory || {})
+                .flat()
+                .filter(f => !f.isStrength);
+
+            if (passThreshold === 'strict') {
+                // Fail if >= 2 models agree on any improvement
+                reviewPassed = !improvementFindings.some(
+                    f => Object.values(f.modelAgreements).filter(Boolean).length >= 2
+                );
+            } else if (passThreshold === 'lenient') {
+                // Fail if >= 3 models agree on any improvement
+                reviewPassed = !improvementFindings.some(
+                    f => Object.values(f.modelAgreements).filter(Boolean).length >= 3
+                );
+            }
+        }
+
+        // Check if any reviews had errors OR if the threshold failed
+        if (failOnError || !reviewPassed) {
             if (Array.isArray(results)) {
-                if (results.some(r => r.metrics.error)) {
+                if (results.some(r => r.metrics?.error)) {
+                    enhancedLogger.error('Review failed due to model errors.');
                     process.exit(1);
                 }
             } else {
                 const report = results as CodeReviewReport;
                 // Check if any models in the report contain errors
                 if (report.modelMetrics && report.modelMetrics.some(m => m?.error)) {
+                    process.exit(1);
+                } else if (!reviewPassed) {
+                    enhancedLogger.error(`Review failed to meet pass threshold: ${passThreshold}`);
                     process.exit(1);
                 }
             }
@@ -138,8 +170,4 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
     }
 };
 
-// Helper function to run version action
-async function runVersionAction() {
-    const { version } = await import('../../../package.json');
-    enhancedLogger.log(`Triumvirate v${version}`);
-}
+// Removed internal runVersionAction, imported from versionAction.ts

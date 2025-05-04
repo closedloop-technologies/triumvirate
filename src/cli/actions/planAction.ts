@@ -1,23 +1,35 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import {
+    safeFileOperationAsync,
+    safeReportGenerationAsync,
+} from '../../utils/error-handling-extensions.js';
+import { TriumvirateError, ErrorCategory } from '../../utils/error-handling.js';
+import type { LLMProvider } from '../../utils/llm-providers.js';
+import { ClaudeProvider, OpenAIProvider, GeminiProvider } from '../../utils/llm-providers.js'; // Import providers
 import { logger } from '../../utils/logger.js';
 import { Spinner } from '../utils/spinner.js';
 
 interface PlanOptions {
     input?: string;
     output?: string;
+    agentModel?: string; // DoD: Add agent model option
+    task?: string; // DoD: Add task description option
     verbose?: boolean;
     quiet?: boolean;
 }
 
+// DoD: Align Task structure with TASKS.md requirements
 interface Task {
     id: string;
     title: string;
     description: string;
     priority: 'high' | 'medium' | 'low';
     dependencies: string[];
+    type?: 'bug' | 'enhancement' | 'debt' | 'docs' | 'refactor'; // Optional type
     completed: boolean;
+    // Future fields from TASKS.md: affected_components, acceptance_criteria, effort, git_prefix
 }
 
 interface Plan {
@@ -28,7 +40,49 @@ interface Plan {
     };
 }
 
-export const runPlanAction = async (options: PlanOptions) => {
+// DoD: Define schema for the structured LLM response
+const planSchema = {
+    type: 'object',
+    properties: {
+        tasks: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    id: {
+                        type: 'string',
+                        description: 'Unique identifier for the task (e.g., task-1)',
+                    },
+                    title: { type: 'string', description: 'Concise title for the task' },
+                    description: {
+                        type: 'string',
+                        description: 'Detailed description of the task',
+                    },
+                    priority: {
+                        type: 'string',
+                        enum: ['high', 'medium', 'low'],
+                        description: 'Priority of the task',
+                    },
+                    dependencies: {
+                        type: 'array',
+                        items: { type: 'string' },
+                        description: 'List of task IDs this task depends on',
+                    },
+                    type: {
+                        type: 'string',
+                        enum: ['bug', 'enhancement', 'debt', 'docs', 'refactor'],
+                        description: 'Type of task',
+                    },
+                },
+                required: ['id', 'title', 'description', 'priority', 'dependencies'],
+            },
+            description: 'List of tasks extracted from the code review summary',
+        },
+    },
+    required: ['tasks'],
+};
+
+export const runPlanAction = async (options: PlanOptions): Promise<void> => {
     // Set log level based on verbose and quiet flags
     if (options.quiet) {
         logger.setLogLevel('silent');
@@ -40,7 +94,7 @@ export const runPlanAction = async (options: PlanOptions) => {
 
     logger.debug('options:', options);
 
-    const { input, output } = options;
+    const { input, output, agentModel = 'claude', task } = options; // DoD: Use agentModel and task options
 
     if (!input) {
         logger.error('Error: Input file is required. Use --input to specify the summary file.');
@@ -55,21 +109,57 @@ export const runPlanAction = async (options: PlanOptions) => {
     spinner.start();
 
     try {
-        // Read the summary file
         const summaryPath = path.resolve(process.cwd(), input);
-        if (!fs.existsSync(summaryPath)) {
+        spinner.update(`Reading summary file: ${summaryPath}`);
+        const summaryContent = await safeFileOperationAsync(
+            async () => fs.promises.readFile(summaryPath, 'utf8'),
+            'read',
+            summaryPath,
+            null
+        );
+
+        if (summaryContent === null) {
             spinner.fail(`Error: Input file not found: ${summaryPath}`);
             process.exit(1);
         }
 
-        const summaryContent = fs.readFileSync(summaryPath, 'utf8');
+        // DoD: Implement actual task generation using the specified agent model
+        spinner.update(`Generating tasks using ${agentModel}...`);
 
-        // Generate tasks from the summary
-        spinner.update('Analyzing summary and generating tasks...');
+        let provider: LLMProvider;
+        switch (agentModel.toLowerCase()) {
+            case 'openai':
+                provider = new OpenAIProvider();
+                break;
+            case 'gemini':
+                provider = new GeminiProvider();
+                break;
+            case 'claude':
+            default:
+                provider = new ClaudeProvider();
+        }
 
-        // This is a placeholder for the actual task generation logic
-        // In a real implementation, this would use an LLM or other analysis to extract tasks
-        const tasks = generateTasksFromSummary(summaryContent);
+        if (!provider.isAvailable()) {
+            throw new TriumvirateError(
+                `API key for agent model '${agentModel}' not found.`,
+                ErrorCategory.AUTHENTICATION,
+                'PlanAction'
+            );
+        }
+
+        // DoD: Pass the task option to the prompt generation function if provided
+        const prompt = createPlanGenerationPrompt(summaryContent, task);
+        const llmResponse = await safeReportGenerationAsync(
+            () => provider.runStructured<{ tasks: Omit<Task, 'completed'>[] }>(prompt, planSchema),
+            'task plan',
+            'LLM generation',
+            null // Default value if LLM call fails
+        );
+
+        if (!llmResponse || !llmResponse.data || !llmResponse.data.tasks) {
+            throw new Error(`Failed to generate tasks using ${agentModel}. Response was invalid.`);
+        }
+        const tasks = llmResponse.data.tasks.map(task => ({ ...task, completed: false })); // Add completed: false
 
         const plan: Plan = {
             tasks,
@@ -82,40 +172,65 @@ export const runPlanAction = async (options: PlanOptions) => {
         // Write the plan to a file if output is specified
         if (output) {
             const outputPath = path.resolve(process.cwd(), output);
-            fs.writeFileSync(outputPath, JSON.stringify(plan, null, 2), 'utf8');
+            await safeFileOperationAsync(
+                async () =>
+                    fs.promises.writeFile(outputPath, JSON.stringify(plan, null, 2), 'utf8'),
+                'write',
+                outputPath,
+                null
+            );
             spinner.succeed(`Task plan generated and saved to: ${outputPath}`);
         } else {
             spinner.succeed('Task plan generated:');
             logger.log('\n' + JSON.stringify(plan, null, 2));
         }
-    } catch (error) {
+        // Don't return anything for void return type
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
         spinner.fail('Error generating task plan');
-        logger.error('Error:', error instanceof Error ? error.message : String(error));
+        // Error should be logged by safe wrappers or TriumvirateError handler
         process.exit(1);
     }
 };
 
-// This is a placeholder function that would be replaced with actual LLM-based task extraction
-function generateTasksFromSummary(summaryContent: string): Task[] {
-    // This is a simplified implementation that creates placeholder tasks
-    // In a real implementation, this would use NLP or an LLM to extract tasks from the summary
+/**
+ * Creates a prompt for the LLM to generate a task plan from a code review summary
+ * @param summary The code review summary content
+ * @param task Optional specific task description to focus on
+ * @returns A formatted prompt for the LLM
+ */
+function createPlanGenerationPrompt(summary: string, task?: string): string {
+    const taskGuidance = task
+        ? `
+# Specific Task Focus
 
-    // Extract potential tasks from headings or bullet points
-    const headingMatches = summaryContent.match(/#{1,3}\s+([^\n]+)/g) || [];
-    const bulletMatches = summaryContent.match(/[-*]\s+([^\n]+)/g) || [];
+${task}
 
-    const potentialTasks = [...headingMatches, ...bulletMatches];
+When generating tasks, prioritize addressing the specific task described above.
+`
+        : '';
 
-    // Create tasks from the potential tasks
-    return potentialTasks.slice(0, Math.min(potentialTasks.length, 10)).map((task, index) => {
-        const cleanedTask = task.replace(/^[-*#\s]+/, '').trim();
-        return {
-            id: `task-${index + 1}`,
-            title: cleanedTask,
-            description: `Task extracted from: "${cleanedTask}"`,
-            priority: index < 3 ? 'high' : index < 7 ? 'medium' : 'low',
-            dependencies: index > 0 ? [`task-${index}`] : [],
-            completed: false,
-        };
-    });
+    return `
+# Code Review Summary
+
+${summary}${taskGuidance}
+
+# Instructions
+
+Based on the code review summary above, generate a list of actionable tasks.
+Each task should address a specific issue, improvement, or feature mentioned in the summary.
+
+For each task:
+1. Assign a unique ID (e.g., task-1, task-2)
+2. Create a concise title
+3. Write a detailed description explaining what needs to be done
+4. Assign a priority (high, medium, or low)
+5. List any dependencies (other task IDs that must be completed first)
+6. Assign a type (bug, enhancement, debt, docs, or refactor)
+
+Ensure that the tasks are concrete, actionable, and directly related to the code review findings.
+Prioritize tasks that address critical issues or have the highest impact.
+
+Return the tasks in a structured format.
+`;
 }

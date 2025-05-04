@@ -1,18 +1,23 @@
-vi.mock('@google/generative-ai', () => ({
-    GoogleGenerativeAI: class {
-        constructor(_apiKey: string) {}
-        getGenerativeModel() {
-            return {
-                generateContent: async (_opts: any) => ({
-                    response: {
-                        candidates: [{ content: { parts: [{ text: 'Gemini review for code' }] } }],
-                    },
-                    text: 'Gemini review for code',
-                }),
-            };
-        }
-    },
-}));
+// Mock the GoogleGenerativeAI module
+vi.mock('@google/generative-ai', () => {
+    return {
+        GoogleGenerativeAI: class {
+            constructor(_apiKey: string) {}
+            getGenerativeModel() {
+                return {
+                    generateContent: async (_opts: any) => ({
+                        response: {
+                            candidates: [
+                                { content: { parts: [{ text: 'Gemini review for code' }] } },
+                            ],
+                        },
+                        text: () => 'Gemini review for code',
+                    }),
+                };
+            }
+        },
+    };
+});
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
@@ -146,7 +151,7 @@ describe('GeminiProvider', () => {
 
     it('runStructured throws error', async () => {
         await expect(provider.runStructured('prompt', {})).rejects.toThrow(
-            'Structured output not yet implemented for Gemini provider'
+            'Invalid schema for Gemini: must be an object with a properties field'
         );
     });
 });

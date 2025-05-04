@@ -2,6 +2,8 @@
 
 Here are some example workflows
 
+*(TODO: Expand with at least 3 detailed workflows)*
+
 ## `tri review`
 
 This runs inside an existing repo and on a branch.  Ideally the branch is clean.

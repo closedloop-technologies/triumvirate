@@ -28,5 +28,8 @@ jobs:
       - name: Verify code
         run: npm run verify
 
+      - name: Run tests
+        run: npm run test
+
       - name: Build package
         run: npm run build

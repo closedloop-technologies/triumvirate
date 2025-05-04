@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fsPromises from 'fs/promises'; // Use promises API for async file operations
 import * as path from 'path'; // Import path module
 
 import pc from 'picocolors';
@@ -11,7 +11,9 @@ import type { CliOptions, CodeReviewReport, ModelReviewResult } from './types/re
 import { normalizeUsage } from './types/usage';
 import { DEFAULT_REVIEW_OPTIONS } from './utils/constants';
 import { TriumvirateError, ErrorCategory } from './utils/error-handling'; // Use consolidated error handling
-import { estimateCost } from './utils/llm-providers';
+import type { LLMProvider } from './utils/llm-providers'; // Import provider type
+import { estimateCost } from './utils/llm-providers'; // Import cost estimator
+import { ClaudeProvider, OpenAIProvider, GeminiProvider } from './utils/llm-providers'; // Import provider classes
 import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
 
 export interface TriumvirateReviewOptions {
@@ -24,6 +26,8 @@ export interface TriumvirateReviewOptions {
     tokenLimit?: number;
     reviewType?: string;
     repomixOptions?: Record<string, unknown>;
+    agentModel?: string; // DoD: Add agent model
+    passThreshold?: 'strict' | 'lenient' | 'none'; // DoD: Add pass threshold
     enhancedReport?: boolean;
     options?: CliOptions; // Keep original options for spinner control etc.
 }
@@ -42,7 +46,8 @@ async function prepareCodebase(
 
     const repomixResult = await runRepomix(mergedRepomixOptions);
     console.log(`Codebase packaged with ${repomixResult.tokenCount} tokens`);
-    const codebase = fs.readFileSync(repomixResult.filePath, 'utf8');
+    // DoD: Use async file read
+    const codebase = await fsPromises.readFile(repomixResult.filePath, 'utf8');
     return { repomixResult, codebase };
 }
 
@@ -227,14 +232,30 @@ function summarizeReview(review: string): string {
 // --- Helper Function: Generate Report ---
 async function generateReport(
     results: ModelReviewResult[],
+    agentModelName: string, // DoD: Pass agent model name
     isEnhanced: boolean,
     spinner: Spinner
 ): Promise<{ jsonReport: CodeReviewReport | ModelReviewResult[]; mdReport: string }> {
     if (isEnhanced) {
         spinner.update('Generating enhanced report...');
-        const report = await generateCodeReviewReport(results, spinner); // Pass spinner
+
+        // DoD: Instantiate the correct agent provider
+        let agentProvider: LLMProvider;
+        switch (agentModelName.toLowerCase()) {
+            case 'openai':
+                agentProvider = new OpenAIProvider();
+                break;
+            case 'gemini':
+                agentProvider = new GeminiProvider();
+                break;
+            case 'claude':
+            default:
+                agentProvider = new ClaudeProvider();
+                break;
+        }
+        const report = await generateCodeReviewReport(results, agentProvider, spinner); // Pass provider and spinner
         const markdown = formatReportAsMarkdown(report);
-        spinner.succeed('Enhanced report generated.');
+        spinner.succeed(`Enhanced report generated using ${agentModelName}.`);
         return { jsonReport: report, mdReport: markdown };
     } else {
         spinner.update('Generating simple report...');
@@ -261,16 +282,24 @@ async function generateReport(
 }
 
 // --- Helper Function: Write Output ---
-function writeOutput(
+async function writeOutput(
     outputPath: string,
     jsonReport: CodeReviewReport | ModelReviewResult[],
     mdReport: string,
     isEnhanced: boolean
-): void {
+): Promise<void> {
+    // Make async
     try {
+        // DoD: Sanitize output path
+        const resolvedPath = path.resolve(outputPath);
+        const projectRoot = path.resolve(process.cwd());
+        if (!resolvedPath.startsWith(projectRoot)) {
+            throw new Error(`Output path "${outputPath}" is outside the project directory.`);
+        }
+
         let isDirectory = false;
         try {
-            isDirectory = fs.statSync(outputPath).isDirectory();
+            isDirectory = (await fsPromises.stat(resolvedPath)).isDirectory();
         } catch {
             isDirectory = false;
         }
@@ -279,6 +308,8 @@ function writeOutput(
         if (isDirectory) {
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
             baseOutputPath = path.join(outputPath, `tri-review-${timestamp}`); // Use path.join
+            // DoD: Ensure output directory exists
+            await fsPromises.mkdir(outputPath, { recursive: true });
             console.log(
                 `Output path is a directory. Writing reports with base name: ${baseOutputPath}`
             );
@@ -293,10 +324,10 @@ function writeOutput(
         const mdFilePath = `${baseOutputPath}.md`;
 
         console.log(`Writing JSON report to: ${jsonFilePath}`);
-        fs.writeFileSync(jsonFilePath, JSON.stringify(jsonReport, null, 2));
+        await fsPromises.writeFile(jsonFilePath, JSON.stringify(jsonReport, null, 2)); // Use async write
 
         console.log(`Writing Markdown report to: ${mdFilePath}`);
-        fs.writeFileSync(mdFilePath, mdReport);
+        await fsPromises.writeFile(mdFilePath, mdReport); // Use async write
     } catch (error) {
         // Throw a categorized error
         throw new TriumvirateError(
@@ -323,7 +354,9 @@ export async function runTriumvirateReview(
     const {
         models = DEFAULT_REVIEW_OPTIONS.MODELS,
         outputPath = DEFAULT_REVIEW_OPTIONS.OUTPUT_PATH,
+        // passThreshold is used in the runCliAction function, not here
         failOnError = DEFAULT_REVIEW_OPTIONS.FAIL_ON_ERROR,
+        agentModel = 'claude', // DoD: Get agent model
         reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
         enhancedReport = true, // Keep default as true
         options: cliOpts = {}, // Use passed CLI options for spinner control
@@ -368,14 +401,15 @@ export async function runTriumvirateReview(
         // Spinner updates happen within generateReport
         const { jsonReport, mdReport } = await generateReport(
             modelResults,
+            agentModel, // DoD: Pass agent model
             enhancedReport,
             spinner
         );
 
         // 5. Write Output
         if (outputPath) {
-            spinner.update('Writing output files...');
-            writeOutput(outputPath, jsonReport, mdReport, enhancedReport);
+            spinner.update(`Writing output files to ${outputPath}...`);
+            await writeOutput(outputPath, jsonReport, mdReport, enhancedReport);
             spinner.succeed('Output files written successfully.');
         }
 
@@ -399,7 +433,7 @@ export async function runTriumvirateReview(
         // 6. Cleanup
         if (repomixResult?.filePath) {
             try {
-                await fs.promises.unlink(repomixResult.filePath);
+                await fsPromises.unlink(repomixResult.filePath); // Use promises API
                 console.log('Cleaned up temporary repomix file.');
             } catch (cleanupError) {
                 console.warn('Could not delete temporary file:', cleanupError);

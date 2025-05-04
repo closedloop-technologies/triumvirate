@@ -85,7 +85,11 @@ export const runSummarizeAction = async (options: SummarizeOptions) => {
         logModelResults(rawReports);
         // (Optional) If you want to log API calls for summarize, you can add enhancedLogger.logApiCall() here as needed.
         // Generate the summary report
-        const report = await generateCodeReviewReport(rawReports as ModelResult[], spinner);
+        const report = await generateCodeReviewReport(
+            rawReports as ModelResult[],
+            undefined,
+            spinner
+        );
 
         // Format the report as markdown
         const formattedReport = formatReportAsMarkdown(report);

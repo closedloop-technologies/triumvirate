@@ -47,7 +47,7 @@ export const DEFAULT_REVIEW_OPTIONS = {
     MODELS: ['openai', 'claude', 'gemini'],
     EXCLUDE: [],
     DIFF_ONLY: false,
-    OUTPUT_PATH: '.',
+    OUTPUT_PATH: './.justbuild', // DoD: Default output path to .justbuild
     FAIL_ON_ERROR: false,
     SUMMARY_ONLY: false,
     TOKEN_LIMIT: 100000,

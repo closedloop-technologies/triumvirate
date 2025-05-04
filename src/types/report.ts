@@ -2,7 +2,8 @@ export interface CliOptions {
     models?: string;
     ignore?: string;
     diff?: boolean;
-    output?: string;
+    // output?: string; // Deprecated for outputDir
+    outputDir?: string; // DoD: Change to outputDir
     failOnError?: boolean;
     summaryOnly?: boolean;
     tokenLimit?: number;
@@ -18,11 +19,15 @@ export interface CliOptions {
     instructionFilePath?: string;
     topFilesLen?: number;
     tokenCountEncoding?: string;
+    passThreshold?: 'strict' | 'lenient' | 'none'; // DoD: Add pass threshold type
+    agentModel?: string; // DoD: Add agent model
+    task?: string; // DoD: Add task description option
     skipApiKeyValidation?: boolean;
     enhancedReport?: boolean;
     verbose?: boolean;
     quiet?: boolean;
     version?: boolean;
+    // DoD: Add placeholder for --docs if needed down the line
 }
 
 export interface ReviewCategory {

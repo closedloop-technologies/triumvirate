@@ -6,18 +6,18 @@ This file defines the necessary and sufficient criteria for Triumvirate to be co
 
 ## 🧠 Core Functionality
 
-* [ ] `tri review` performs successful multi-model LLM reviews from the CLI, with configurable models and output format.
-* [ ] `tri summarize` generates clean, structured markdown from raw LLM responses.
-* [ ] `tri plan` decomposes a review into task objects with IDs, priorities, and dependencies.
-* [ ] `tri next` surfaces the next unblocked, high-priority task from the plan.
+* [x] `tri review` performs successful multi-model LLM reviews from the CLI, with configurable models and output format.
+* [x] `tri summarize` generates clean, structured markdown from raw LLM responses.
+* [x] `tri plan` decomposes a review into task objects with IDs, priorities, and dependencies.
+* [x] `tri next` surfaces the next unblocked, high-priority task from the plan.
 
 ---
 
 ## 🔄 Usability & Developer Experience
 
-* [ ] Clear CLI help via `tri --help` and subcommand-specific help.
-* [ ] Quiet, verbose, and arcade-style output modes.
-* [ ] Output files (JSON/Markdown) saved to `.justbuild/` or specified path with timestamp.
+* [x] Clear CLI help via `tri --help` and subcommand-specific help.
+* [x] Quiet, verbose, and arcade-style output modes.
+* [x] Output files (JSON/Markdown) saved to `.justbuild/` or specified path with timestamp.
 
 ---
 
@@ -32,12 +32,13 @@ This file defines the necessary and sufficient criteria for Triumvirate to be co
 ## 🧪 Test Coverage
 
 * [ ] Unit tests exist for:
-
-  * [ ] LLM provider wrappers
-  * [ ] Plan generation logic
+  * [x] LLM provider wrappers
+  * [x] Plan generation logic
   * [ ] Task selection (`tri next`)
-* [ ] Integration test for end-to-end: `review → plan → next`.
-* [ ] `test/test-provider.ts` validates real LLM calls (manual opt-in).
+* [ ] Error Handling logic (`error-handling.ts`)
+* [ ] Report Generation logic (`report-utils.ts`)
+* [ ] Integration test for end-to-end: `review → summarize → plan → next`.
+* [x] `test/test-provider.ts` validates real LLM calls (manual opt-in).
 
 ---
 
@@ -45,7 +46,7 @@ This file defines the necessary and sufficient criteria for Triumvirate to be co
 
 * [ ] `README.md` includes installation, usage, CLI reference, and badges.
 * [ ] `USAGE.md` or `examples/` folder with at least 3 sample workflows.
-* [ ] `.env.example` fully describes necessary API keys and formats.
+* [x] `.env.example` fully describes necessary API keys and formats.
 
 ---
 
@@ -59,22 +60,20 @@ This file defines the necessary and sufficient criteria for Triumvirate to be co
 
 ## 🔁 Community & Contribution Readiness
 
-* [ ] `CONTRIBUTING.md` explains how to:
-
+* [x] `CONTRIBUTING.md` explains how to:
   * [ ] Run in development mode
   * [ ] Submit issues or PRs
   * [ ] Add new models or prompt types
-* [ ] GitHub Actions CI:
-
-  * [ ] Runs lint, type-check, and tests on PRs and pushes
-* [ ] Modular file layout: easy to fork, extend, or debug.
+* [x] GitHub Actions CI:
+  * [x] Runs lint, type-check, and tests on PRs and pushes
+* [x] Modular file layout: easy to fork, extend, or debug.
 
 ---
 
 ## 🏷️ Viral Growth Hooks *(Optional)*
 
 * [ ] Post-review badge can be optionally embedded in README.md.
-* [ ] `tri next` supports optional `--branch` mode to create git branches per task.
+* [x] `tri next` supports optional `--branch` mode to create git branches per task.
 * [ ] Summary supports markdown suitable for GitHub PR comments.
 
 ## Optional Features
@@ -113,9 +112,13 @@ This file defines the necessary and sufficient criteria for Triumvirate to be co
 CLI should
  * Allow specification of custom models in a {provider/model_name} format.  Support for many of the providers listed above.  We should be able to select three
  * Dynamically set the token limit based on the model selected
- * Specify the model for the --agent-model (currently Claude)
- * Specify the output directory (currently .justbuild)
- * specify a pass/fail threshold for the review.  Should 'fail' if the review does not meet the threshold.
- * Give me an example of this in a CI/CD pipeline
- * Provide a list of --docs flags which can be used as meta data and added to the repomix file for analysis
- * Provide a --task flag which is a string to guide the analysis.
+ * [x] Specify the model for the --agent-model (currently Claude)
+ * [x] Specify the output directory (currently .justbuild)
+ * [x] specify a pass/fail threshold for the review (`--pass-threshold strict|lenient|none`). Should 'fail' (exit 1) if the review does not meet the threshold.
+ * [x] Give me an example of this in a CI/CD pipeline
+ * [ ] Provide a list of --docs flags which can be used as meta data and added to the repomix file for analysis
+ * [x] Provide a --task flag which is a string to guide the analysis.
+
+### Note
+
+Checked items indicate implementation or confirmation in the provided code.
