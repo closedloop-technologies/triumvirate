@@ -290,12 +290,9 @@ async function writeOutput(
 ): Promise<void> {
     // Make async
     try {
-        // DoD: Sanitize output path
+        // Resolve the output path
         const resolvedPath = path.resolve(outputPath);
-        const projectRoot = path.resolve(process.cwd());
-        if (!resolvedPath.startsWith(projectRoot)) {
-            throw new Error(`Output path "${outputPath}" is outside the project directory.`);
-        }
+        // We no longer restrict to the project directory to allow arbitrary output paths
 
         let isDirectory = false;
         try {

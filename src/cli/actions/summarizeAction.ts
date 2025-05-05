@@ -62,7 +62,7 @@ export const runSummarizeAction = async (options: SummarizeOptions) => {
 
     try {
         // Read the raw reports file
-        const rawReportsPath = path.resolve(process.cwd(), input);
+        const rawReportsPath = path.isAbsolute(input) ? input : path.resolve(process.cwd(), input);
         if (!fs.existsSync(rawReportsPath)) {
             spinner.fail(`Error: Input file not found: ${rawReportsPath}`);
             enhancedLogger.printApiSummary();
@@ -97,7 +97,7 @@ export const runSummarizeAction = async (options: SummarizeOptions) => {
         enhancedLogger.printApiSummary();
 
         // Write the report to a file
-        const outputPath = path.resolve(process.cwd(), output);
+        const outputPath = path.isAbsolute(output) ? output : path.resolve(process.cwd(), output);
         fs.writeFileSync(outputPath, formattedReport, 'utf8');
         spinner.succeed(`Summary report generated and saved to: ${outputPath}`);
     } catch (error) {

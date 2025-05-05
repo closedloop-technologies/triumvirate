@@ -77,7 +77,7 @@ tri review --review-type security
 npm run dev review
 ```
 
-**Default output location:** Review artifacts (JSON, Markdown) are saved in the `.justbuild/` directory within your project root, named with a timestamp (e.g., `.justbuild/tri-review-2024-08-15T103000Z.md`). Use the `-o` option to specify a different file or directory.
+**Default output location:** Review artifacts (JSON, Markdown) are saved in the `.triumvirate/` directory within your project root, named with a timestamp (e.g., `.triumvirate/tri-review-2024-08-15T103000Z.md`). Use the `-o` option to specify a different file or directory.
 
 **Output format:** The review process provides real-time progress indicators and generates a comprehensive report with:
 
@@ -128,7 +128,7 @@ tri review [options]
 
 #### Output & Formatting Options
 
-- `-o, --output <file>` - Specify the output file or directory (defaults to `.justbuild/`)
+- `-o, --output <file>` - Specify the output file or directory (defaults to `.triumvirate/`)
 - `--style <type>` - Specify the output style (xml, markdown, plain)
 - `--output-show-line-numbers` - Add line numbers to each line in the output
 
@@ -155,7 +155,7 @@ tri review [options]
 #### Model & Threshold Options
 
 - `--agent-model <model>` - Specify the LLM for report analysis and planning (default: claude)
-- `--output-dir <dir>` - Specify the output directory (default: ./.justbuild)
+- `--output-dir <dir>` - Specify the output directory (default: ./.triumvirate)
 - `--pass-threshold <threshold>` - Set review pass/fail threshold (strict, lenient, none)
 
 ### Summarize Command Options
@@ -174,11 +174,11 @@ tri summarize [options]
 tri plan [options]
 ```
 
-- `-i, --input <file>` - Input file containing the summary
+- `-i, --input <file>` - Input file containing the summary (if not specified, will use the latest output from `tri review`)
 - `-o, --output <file>` - Output file for the plan
 - `--agent-model <model>` - Specify the LLM for task generation (default: claude)
 - `--task <description>` - Specific task or focus to guide the task generation
-- `--output-dir <dir>` - Specify the output directory (default: ./.justbuild)
+- `--output-dir <dir>` - Specify the output directory (default: ./.triumvirate)
 
 ### Next Command Options
 
@@ -217,11 +217,14 @@ tri review --include "src/**/*.js,src/**/*.ts" --compress
 ### Generate Plan from Existing Summary
 
 ```bash
-# Basic plan generation
+# Basic plan generation using the latest review summary
+tri plan
+
+# Basic plan generation with explicit input and output files
 tri plan --input summary.md --output plan.json
 
 # Generate plan with a specific LLM and task focus
-tri plan --input summary.md --output plan.json --agent-model openai --task "Improve error handling and add tests"
+tri plan --agent-model openai --task "Improve error handling and add tests"
 ```
 
 ## Understanding the Output
@@ -289,7 +292,7 @@ Add this step to your CI workflow (e.g., in `.github/workflows/ci.yml`):
     # Run on changed files, fail if any model errors, set pass threshold
     npx triumvirate review --models openai,claude,gemini \
       --diff \
-      --output-dir .justbuild \
+      --output-dir .triumvirate \
       --fail-on-error \
       --pass-threshold lenient \
       --agent-model claude
@@ -298,7 +301,7 @@ Add this step to your CI workflow (e.g., in `.github/workflows/ci.yml`):
   uses: actions/upload-artifact@v3
   with:
     name: triumvirate-results
-    path: .justbuild/triumvirate-review.json
+    path: .triumvirate/triumvirate-review.json
 ```
 
 ## Developer Workflow

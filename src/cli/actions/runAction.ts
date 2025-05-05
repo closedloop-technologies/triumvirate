@@ -38,7 +38,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         ignore = '',
         diff = false,
         // output, // Deprecated in favor of outputDir
-        outputDir = './.justbuild', // DoD: Default output dir
+        outputDir = './.triumvirate', // DoD: Default output dir
         failOnError = false,
         summaryOnly = false,
         tokenLimit = 100000,

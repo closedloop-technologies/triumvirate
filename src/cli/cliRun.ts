@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 
 import { runInstallAction } from './actions/installAction.js';
+import { runModelsAction } from './actions/modelsAction.js';
 import { runNextAction } from './actions/nextAction.js';
 import { runPlanAction } from './actions/planAction.js';
 import { runCliAction } from './actions/runAction.js';
@@ -119,8 +120,8 @@ export const run = async () => {
             )
             .option(
                 '--output-dir <dir>',
-                'Specify the output directory (default: ./.justbuild)',
-                './.justbuild'
+                'Specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
             )
             .option(
                 '--pass-threshold <threshold>',
@@ -192,8 +193,8 @@ export const run = async () => {
             )
             .option(
                 '--output-dir <dir>',
-                'specify the output directory (default: ./.justbuild)',
-                './.justbuild'
+                'specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
             )
             .option(
                 '--pass-threshold <level>',
@@ -229,7 +230,7 @@ Option Groups:
     --instruction-file-path        Path to custom instructions file
 
   Output Options:
-    --output-dir                   Output directory (default: ./.justbuild)
+    --output-dir                   Output directory (default: ./.triumvirate)
     --style                        Output style format
     --output-show-line-numbers     Show line numbers in output
 
@@ -257,8 +258,8 @@ Option Groups:
             ) // Inherit/Allow override
             .option(
                 '--output-dir <dir>',
-                'Specify the output directory (default: ./.justbuild)',
-                './.justbuild'
+                'Specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
             ) // Inherit/Allow override
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
             .action(runSummarizeAction);
@@ -276,8 +277,8 @@ Option Groups:
             ) // Inherit/Allow override
             .option(
                 '--output-dir <dir>',
-                'Specify the output directory (default: ./.justbuild)',
-                './.justbuild'
+                'Specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
             ) // Inherit/Allow override
             .action(runPlanAction);
 
@@ -288,8 +289,8 @@ Option Groups:
             .option('-i, --input <file>', 'Input JSON file containing the plan')
             .option(
                 '--output-dir <dir>',
-                'Specify the output directory (default: ./.justbuild)',
-                './.justbuild'
+                'Specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
             ) // Inherit/Allow override
             .option('--mark-complete <taskId>', 'Mark a specific task as completed')
             .option('--branch', 'Create a git branch for the next task')
@@ -305,6 +306,15 @@ Option Groups:
             .command('uninstall')
             .description('Uninstall Triumvirate CLI completion')
             .action(runUninstallAction);
+
+        // Models command to list available models
+        program
+            .command('models')
+            .description('List all available LLM models with cost information')
+            .option('--provider <provider>', 'Filter models by provider (e.g., openai, anthropic, google)')
+            .option('--all', 'Show all models without limiting the display')
+            .option('--sort <sort>', 'Sort models by cost or name', /^(cost|name)$/i, 'cost')
+            .action((options) => runModelsAction(options));
 
         // Custom error handling with semantic suggestions
         const configOutput = program.configureOutput();

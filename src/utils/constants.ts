@@ -1,29 +1,59 @@
 /**
  * Constants used throughout the application
  */
+import * as path from 'path';
+import * as fs from 'fs';
 
 // API timeout settings
 export const API_TIMEOUT_MS = 30000; // 30 seconds timeout
 
 // Cost estimation rates ($ per 1M tokens)
 // https://ai.google.dev/gemini-api/docs/pricing
-// Run ./update_costs.sh
+// Run ./update_costs.sh`
 // Update Coosts from ./llm_costs.json
-export const COST_RATES = {
-    openai: {
-        input: 0.000002,
-        output: 0.000008,
-    },
-    claude: {
-        input: 0.000003, // $3 per 1M tokens (text / image / video)
-        output: 0.000015, // $15 per 1M tokens (text / image / video)
-    },
-    gemini: {
-        // Currently free, but we're assuming a price of https://ai.google.dev/gemini-api/docs/pricing
-        input: 0.0, // $0.10 per 1M tokens (text / image / video)
-        output: 0.0, // $0.40 per 1M tokens (text / image / video)
-    },
+
+export interface ModelCosts {
+    provider: string;
+    model: string;
+    input: number;
+    output: number;
+    blended_per_million_tokens: number;
+    max_input_tokens: number;
+    max_output_tokens: number;
+}
+
+
+// Get costs from the JSON file, using a relative path that works regardless of where the code is executed from
+const getLLMCosts = (): [Record<string, ModelCosts>, Set<string>] => {
+    try {
+        // Resolve path relative to this file using import.meta.url (ES modules approach)
+        const moduleURL = new URL(import.meta.url);
+        const modulePath = path.dirname(moduleURL.pathname);
+        const costsPath = path.resolve(modulePath, '../../llm_costs.json');
+        const costsData = fs.readFileSync(costsPath, 'utf8');
+        const costs = JSON.parse(costsData);
+        const models: Record<string, ModelCosts> = {};
+        const providers = new Set<string>();
+        costs.forEach((cost: ModelCosts) => {
+            models[cost.provider + '/' + cost.model] = {
+                provider: cost.provider,
+                model: cost.model,
+                input: cost.input,
+                output: cost.output,
+                blended_per_million_tokens: (cost.input * 0.9 + cost.output * 0.1) * 1000000,
+                max_input_tokens: cost.max_input_tokens,
+                max_output_tokens: cost.max_output_tokens,
+            };
+            providers.add(cost.provider);
+        });
+        return [models, providers];
+    } catch (error) {
+        console.error('Error loading LLM costs:', error);
+        return [{}, new Set<string>()];
+    }
 };
+
+export const [COST_RATES, PROVIDERS] = getLLMCosts();
 
 // Maximum number of retries for API calls
 export const MAX_API_RETRIES = 3;
@@ -47,7 +77,7 @@ export const DEFAULT_REVIEW_OPTIONS = {
     MODELS: ['openai', 'claude', 'gemini'],
     EXCLUDE: [],
     DIFF_ONLY: false,
-    OUTPUT_PATH: './.justbuild', // DoD: Default output path to .justbuild
+    OUTPUT_PATH: './.triumvirate', // Default output path
     FAIL_ON_ERROR: false,
     SUMMARY_ONLY: false,
     TOKEN_LIMIT: 100000,

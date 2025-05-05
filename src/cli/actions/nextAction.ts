@@ -47,7 +47,7 @@ export const runNextAction = async (options: NextOptions) => {
 
     logger.debug('options:', options);
 
-    const { input, outputDir = './.justbuild', markComplete, branch } = options; // DoD: Extract all options
+    const { input, outputDir = './.triumvirate', markComplete, branch } = options; // DoD: Extract all options
 
     if (!input) {
         logger.error('Error: Input file is required. Use --input to specify the plan file.');
@@ -62,7 +62,7 @@ export const runNextAction = async (options: NextOptions) => {
     spinner.start();
 
     try {
-        const planPath = path.resolve(process.cwd(), input);
+        const planPath = path.isAbsolute(input) ? input : path.resolve(process.cwd(), input);
         spinner.update(`Reading plan file: ${planPath}`);
         const planContent = safeFileOperation(
             () => fs.readFileSync(planPath, 'utf8'),
@@ -92,7 +92,7 @@ export const runNextAction = async (options: NextOptions) => {
             const updatedPlan = markTaskAsCompleted(plan, markComplete);
             if (updatedPlan) {
                 // Ensure the output directory exists
-                const outputDirPath = path.resolve(process.cwd(), outputDir);
+                const outputDirPath = path.isAbsolute(outputDir) ? outputDir : path.resolve(process.cwd(), outputDir);
                 safeFileOperation(
                     () => {
                         if (!fs.existsSync(outputDirPath)) {

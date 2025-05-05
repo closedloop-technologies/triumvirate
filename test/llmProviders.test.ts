@@ -1,5 +1,5 @@
 // Mock the GoogleGenerativeAI module
-vi.mock('@google/generative-ai', () => {
+vi.mock('@google/generative-ai', async () => {
     return {
         GoogleGenerativeAI: class {
             constructor(_apiKey: string) {}
@@ -59,7 +59,16 @@ describe('ClaudeProvider', () => {
         vi.spyOn(global, 'fetch').mockResolvedValue({
             ok: true,
             json: async () => ({
-                content: [{ type: 'tool_use', tool_use: { output: '{"foo": "bar"}' } }],
+                content: [
+                    {
+                        type: 'tool_use',
+                        tool_use: {
+                            name: 'generate_structured_data',
+                            input: { schema: JSON.stringify({ type: 'object', properties: { foo: { type: 'string' } } }) },
+                            output: '{"foo": "bar"}'
+                        }
+                    }
+                ],
                 usage: mockUsage,
             }),
         } as any);
