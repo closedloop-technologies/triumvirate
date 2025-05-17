@@ -1,13 +1,17 @@
+import type { CliOptions } from './types/report';
+
 export interface TriumvirateReviewOptions {
-    models: string[];
-    exclude: string[];
-    diffOnly: boolean;
+    models?: string[];
+    exclude?: string[];
+    diffOnly?: boolean;
     outputPath?: string;
-    failOnError: boolean;
-    summaryOnly: boolean;
+    failOnError?: boolean;
+    summaryOnly?: boolean;
     tokenLimit?: number;
     reviewType?: string;
-    repomixOptions?: RepomixPassthroughOptions;
+    repomixOptions?: RepomixPassthroughOptions | Record<string, unknown>;
+    enhancedReport?: boolean;
+    options?: CliOptions;
 }
 
 export interface RepomixPassthroughOptions {
