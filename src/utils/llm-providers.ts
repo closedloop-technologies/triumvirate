@@ -621,10 +621,100 @@ export class GeminiProvider implements LLMProvider {
     }
 
     async runStructured<T>(
-        _prompt: string,
-        _schema: Record<string, unknown>,
-        _maxRetries = MAX_API_RETRIES
+        prompt: string,
+        schema: Record<string, unknown>,
+        maxRetries = MAX_API_RETRIES
     ): Promise<LLMResponse<T>> {
-        throw new Error('Structured output not yet implemented for Gemini provider');
+        if (!this.isAvailable()) {
+            throw new Error('GOOGLE_API_KEY is not set');
+        }
+
+        const apiKey = process.env['GOOGLE_API_KEY'];
+        if (!apiKey) {
+            throw new Error('GOOGLE_API_KEY is not set');
+        }
+
+        const { GoogleGenerativeAI, FunctionCallingMode } = await import(
+            '@google/generative-ai'
+        );
+        const genAI = new GoogleGenerativeAI(apiKey);
+
+        const tools = [
+            {
+                functionDeclarations: [
+                    {
+                        name: 'generate_structured_data',
+                        description:
+                            'Generate structured data based on the provided information',
+                        parameters: schema,
+                    },
+                ],
+            },
+        ];
+
+        const model = genAI.getGenerativeModel({
+            model: this.model,
+            tools,
+            toolConfig: { functionCallingConfig: { mode: FunctionCallingMode.ANY } },
+            generationConfig: {
+                responseMimeType: 'application/json',
+                responseSchema: schema,
+                maxOutputTokens: 4096,
+            },
+        });
+
+        return withErrorHandlingAndRetry(
+            async (_signal: AbortSignal) => {
+                const response = await model.generateContent(prompt);
+                const result = response.response;
+
+                if (!result) {
+                    throw new Error('Gemini returned an empty response');
+                }
+
+                let parsedData: T;
+                const calls = result.functionCalls?.();
+                if (calls && calls.length > 0) {
+                    parsedData = calls[0].args as T;
+                } else {
+                    const text = result.text();
+                    try {
+                        parsedData = JSON.parse(text) as T;
+                    } catch {
+                        throw new Error('Gemini did not return valid structured data');
+                    }
+                }
+
+                const usage: LLMUsage = {
+                    input_tokens: result.usageMetadata?.promptTokenCount || 0,
+                    output_tokens: result.usageMetadata?.candidatesTokenCount || 0,
+                    total_tokens: result.usageMetadata?.totalTokenCount || 0,
+                };
+                usage.total_tokens =
+                    usage.total_tokens || usage.input_tokens + usage.output_tokens;
+
+                const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
+
+                enhancedLogger.logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: this.model,
+                    operation: 'structured_output',
+                    inputTokens: usage.input_tokens,
+                    outputTokens: usage.output_tokens,
+                    totalTokens: usage.total_tokens,
+                    success: true,
+                    cost,
+                });
+
+                return {
+                    data: parsedData,
+                    usage,
+                    cost,
+                };
+            },
+            'Gemini Structured',
+            maxRetries,
+            API_TIMEOUT_MS * 2
+        );
     }
 }
