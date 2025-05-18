@@ -61,7 +61,7 @@ tri review
 tri review --models openai,claude
 
 # Run a security-focused review
-tri review --review-type security
+tri review --task security
 ```
 
 <!-- PLACEHOLDER: Add screenshot of review output -->
@@ -92,7 +92,9 @@ tri review [options]
 #### Model Options
 
 - `-m, --models <models>` - Comma-separated list of models (default: openai,claude,gemini)
-- `--review-type <type>` - Type of review: general, security, performance, architecture, docs
+- `--review-type <type>` - **Deprecated**. Use `--task` instead. Suggested types: general, security, performance, architecture, docs
+- `--task <task>` - Task description to customize the system prompt (e.g. security, performance, architecture, docs)
+- `--doc <path>` - Documentation file or URL (repeatable)
 - `--fail-on-error` - Exit with non-zero code if any model fails
 - `--skip-api-key-validation` - Skip API key validation check
 - `--enhanced-report` - Generate enhanced report with model agreement analysis (default: true)
@@ -157,7 +159,14 @@ tri next [options]
 ### Focused Security Review
 
 ```bash
-tri review --review-type security --output security-review.json
+tri review --task security --output security-review.json
+```
+
+### Custom Task with Documentation
+
+```bash
+tri review --task "focus on security, sql injections" \
+  --doc ./SECURITY.md --doc https://example.com/guide
 ```
 
 ### Only Review Changed Files

@@ -36,7 +36,7 @@ tri review
 tri review --models openai,claude
 
 # Run a security-focused review
-tri review --review-type security
+tri review --task security
 
 # Just run the summary from an existing set of raw reports
 tri summarize --input raw-reports.json --output summary.md
@@ -89,7 +89,9 @@ tri uninstall
 
 ### Review Options
 
-- `--review-type <type>`: Type of review: general, security, performance, architecture, docs
+- `--review-type <type>`: **Deprecated**. Use `--task` instead. Suggested types: general, security, performance, architecture, docs
+- `--task <task>`: Task description to customize the system prompt (e.g. security, performance, architecture, docs)
+- `--doc <path>`: Documentation file or URL (can be repeated)
 - `--token-limit <number>`: Maximum tokens to send to the model
 - `--fail-on-error`: Exit with non-zero code if any model fails
 

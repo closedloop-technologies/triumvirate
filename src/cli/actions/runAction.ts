@@ -3,6 +3,7 @@ import type { TriumvirateReviewOptions } from '../../index.js';
 import type { CliOptions } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
+import { resolveDocs, createSystemPrompt } from '../../utils/system-prompt.js';
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
     // Set log level based on verbose and quiet flags
@@ -40,6 +41,8 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         summaryOnly = false,
         tokenLimit = 100000,
         reviewType = 'general',
+        task,
+        doc = [],
         skipApiKeyValidation = false,
         enhancedReport = true,
 
@@ -95,6 +98,11 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             tokenCountEncoding,
         };
 
+        // Resolve documentation and build system prompt
+        const docs = Array.isArray(doc) ? doc : [doc].filter(Boolean);
+        const resolvedDocs = await resolveDocs(docs as string[]);
+        const systemPrompt = await createSystemPrompt(task, resolvedDocs);
+
         // Run the review with our configured options
         const reviewOptions: TriumvirateReviewOptions = {
             models: modelList,
@@ -107,6 +115,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             reviewType,
             repomixOptions,
             enhancedReport,
+            systemPrompt,
         };
 
         const results = await runTriumvirateReview(reviewOptions);

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { runAction } from '../scripts/github-action.js';
 
 describe('github action runner', () => {

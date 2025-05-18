@@ -11,6 +11,7 @@ export interface TriumvirateReviewOptions {
     reviewType?: string;
     repomixOptions?: RepomixPassthroughOptions | Record<string, unknown>;
     enhancedReport?: boolean;
+    systemPrompt?: string;
     options?: CliOptions;
 }
 
