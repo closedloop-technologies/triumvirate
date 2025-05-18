@@ -634,18 +634,16 @@ export class GeminiProvider implements LLMProvider {
             throw new Error('GOOGLE_API_KEY is not set');
         }
 
-        const { GoogleGenerativeAI, FunctionCallingMode } = await import(
-            '@google/generative-ai'
-        );
+        const { GoogleGenerativeAI, FunctionCallingMode } = await import('@google/generative-ai');
         const genAI = new GoogleGenerativeAI(apiKey);
 
-        const tools = [
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const tools: any = [
             {
                 functionDeclarations: [
                     {
                         name: 'generate_structured_data',
-                        description:
-                            'Generate structured data based on the provided information',
+                        description: 'Generate structured data based on the provided information',
                         parameters: schema,
                     },
                 ],
@@ -658,7 +656,8 @@ export class GeminiProvider implements LLMProvider {
             toolConfig: { functionCallingConfig: { mode: FunctionCallingMode.ANY } },
             generationConfig: {
                 responseMimeType: 'application/json',
-                responseSchema: schema,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                responseSchema: schema as any,
                 maxOutputTokens: 4096,
             },
         });
@@ -673,9 +672,10 @@ export class GeminiProvider implements LLMProvider {
                 }
 
                 let parsedData: T;
-                const calls = result.functionCalls?.();
-                if (calls && calls.length > 0) {
-                    parsedData = calls[0].args as T;
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const calls = result.functionCalls ? result.functionCalls() : undefined;
+                if (Array.isArray(calls) && calls.length > 0) {
+                    parsedData = (calls[0] as { args: unknown }).args as T;
                 } else {
                     const text = result.text();
                     try {
@@ -690,8 +690,7 @@ export class GeminiProvider implements LLMProvider {
                     output_tokens: result.usageMetadata?.candidatesTokenCount || 0,
                     total_tokens: result.usageMetadata?.totalTokenCount || 0,
                 };
-                usage.total_tokens =
-                    usage.total_tokens || usage.input_tokens + usage.output_tokens;
+                usage.total_tokens = usage.total_tokens || usage.input_tokens + usage.output_tokens;
 
                 const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
 
