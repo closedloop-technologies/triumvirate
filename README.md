@@ -206,11 +206,9 @@ jobs:
         with:
           node-version: '20'
       - run: npm install
-      - run: |
-          export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-          export ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
-          export GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
-          npx triumvirate --models openai,claude,gemini --diff --output triumvirate.json --fail-on-error
+      - uses: ./.github/actions/triumvirate-review
+        with:
+          mode: strict # or 'normal'
       - name: Upload Review Output
         uses: actions/upload-artifact@v3
         with:
