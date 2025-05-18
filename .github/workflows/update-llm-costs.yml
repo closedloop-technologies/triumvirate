@@ -2,8 +2,8 @@ name: Update LLM Costs
 
 on:
   schedule:
-    # Runs at 2:00 AM UTC every Sunday
-    - cron: '0 2 * * 0'
+    # Runs at 11:00 PM UTC every Friday
+    - cron: '0 23 * * 5'
   workflow_dispatch:
 
 jobs:
@@ -37,9 +37,14 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit and push if llm_costs.json changed
+      - name: Commit llm_costs.json if changed
         if: steps.git-diff.outputs.changed == 'true'
         run: |
           git add llm_costs.json
           git commit -m "chore: update llm_costs.json [automated]"
-          git push origin main
+
+      - name: Bump version and push release
+        if: steps.git-diff.outputs.changed == 'true'
+        run: |
+          npm version patch -m "chore: release v%s [automated]"
+          git push origin main --follow-tags
