@@ -226,6 +226,22 @@ Triumvirate supports productive development workflows with:
 - **Pre-push Hooks**: Complete verification before pushing
 - **Dependency Management**: Best practices for package lock files
 
+## Docker Development Environment
+
+A `Dockerfile` is provided for development and testing. Build the image and open a shell:
+
+```bash
+docker build -t triumvirate .
+docker run -it --rm triumvirate bash
+```
+
+Run tests inside the container:
+
+```bash
+docker run --rm triumvirate npm test
+```
+
+
 ## Report Output
 
 Triumvirate generates comprehensive reports that include:
