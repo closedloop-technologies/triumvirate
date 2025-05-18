@@ -55,7 +55,17 @@ export const run = async () => {
             )
             .option(
                 '--review-type <type>',
-                'type of review: general, security, performance, architecture, docs'
+                'DEPRECATED: use --task instead. Suggested types: general, security, performance, architecture, docs'
+            )
+            .option('--task <task>', 'task description to focus the review')
+            .option(
+                '--doc <path>',
+                'documentation file or URL (can be repeated)',
+                (value, previous: string[] = []) => {
+                    previous.push(value);
+                    return previous;
+                },
+                []
             )
             .option('--fail-on-error', 'exit with non-zero code if any model fails')
             .option('--skip-api-key-validation', 'skip API key validation check')
@@ -97,7 +107,9 @@ Option Groups:
 
   Triumvirate Options:
     -m, --models                    Models to use for code review
-    --review-type                  Type of review to perform
+    --review-type                  DEPRECATED: use --task instead
+    --task                         Task description for the review (e.g. security, performance, architecture, docs)
+    --doc                          Documentation file or URL
     --fail-on-error                Exit with error if any model fails
     --skip-api-key-validation      Skip API key validation
     --enhanced-report              Generate enhanced report with model agreement

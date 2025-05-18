@@ -20,6 +20,8 @@ export interface CliOptions {
     tokenCountEncoding?: string;
     skipApiKeyValidation?: boolean;
     enhancedReport?: boolean;
+    task?: string;
+    doc?: string[];
     verbose?: boolean;
     quiet?: boolean;
     version?: boolean;

@@ -24,6 +24,7 @@ export interface TriumvirateReviewOptions {
     reviewType?: string;
     repomixOptions?: Record<string, unknown>;
     enhancedReport?: boolean;
+    systemPrompt?: string;
     options?: CliOptions;
 }
 
@@ -43,6 +44,7 @@ export async function runTriumvirateReview({
     reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
     repomixOptions = {},
     enhancedReport = true, // Enable enhanced reporting by default
+    systemPrompt,
     options = {},
 }: TriumvirateReviewOptions = {}) {
     // Initialize results array
@@ -84,8 +86,10 @@ export async function runTriumvirateReview({
     // Read the packaged codebase
     const codebase = fs.readFileSync(repomixResult.filePath, 'utf8');
 
-    // Step 3: Generate prompt template based on review type
-    const promptTemplate = generatePromptTemplate(reviewType, repomixResult);
+    // Step 3: Generate prompt template based on review type or custom system prompt
+    const promptTemplate = systemPrompt
+        ? `${systemPrompt}\n\n{{CODEBASE}}`
+        : generatePromptTemplate(reviewType, repomixResult);
 
     // Step 4: Generate prompt and send to LLMs
     const prompt = promptTemplate.replace('{{CODEBASE}}', codebase);
