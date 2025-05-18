@@ -2,7 +2,8 @@ import { execSync } from 'child_process';
 
 export function runAction(mode = 'normal', execFn = execSync) {
     const failFlag = mode === 'strict' ? '--fail-on-error' : '';
-    const command = `npx triumvirate --models openai,claude,gemini --diff --output triumvirate.json ${failFlag}`.trim();
+    const command =
+        `npx triumvirate --models openai,claude,gemini --diff --output triumvirate.json ${failFlag}`.trim();
     execFn(command, { stdio: 'inherit' });
 }
 
