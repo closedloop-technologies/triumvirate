@@ -1,0 +1,10 @@
+name: 'Triumvirate Review'
+description: 'Run Triumvirate code review'
+inputs:
+  mode:
+    description: 'Execution mode: normal or strict'
+    required: false
+    default: 'normal'
+runs:
+  using: 'node20'
+  main: '../../scripts/github-action.js'
