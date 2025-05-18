@@ -25,6 +25,25 @@ export const COST_RATES = {
     },
 };
 
+/**
+ * Maximum context window sizes for supported models
+ */
+export const MODEL_CONTEXT_WINDOWS: Record<string, number> = {
+    openai: 128000,
+    claude: 200000,
+    gemini: 2000000,
+};
+
+/**
+ * Determine the smallest context window for the given models
+ */
+export function getDynamicTokenLimit(models: string[]): number {
+    const limits = models.map(
+        model => MODEL_CONTEXT_WINDOWS[model.toLowerCase()] ?? DEFAULT_REVIEW_OPTIONS.TOKEN_LIMIT
+    );
+    return Math.min(...limits);
+}
+
 // Maximum number of retries for API calls
 export const MAX_API_RETRIES = 3;
 

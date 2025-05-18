@@ -9,7 +9,7 @@ import { runModelReview } from './models';
 import { runRepomix } from './repomix';
 import type { CliOptions, CodeReviewReport, ModelReviewResult } from './types/report';
 import { normalizeUsage } from './types/usage';
-import { DEFAULT_REVIEW_OPTIONS } from './utils/constants';
+import { DEFAULT_REVIEW_OPTIONS, getDynamicTokenLimit } from './utils/constants';
 import { estimateCost } from './utils/llm-providers';
 import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
 
@@ -39,7 +39,7 @@ export async function runTriumvirateReview({
     outputPath = DEFAULT_REVIEW_OPTIONS.OUTPUT_PATH,
     failOnError = DEFAULT_REVIEW_OPTIONS.FAIL_ON_ERROR,
     summaryOnly = DEFAULT_REVIEW_OPTIONS.SUMMARY_ONLY, // eslint-disable-line @typescript-eslint/no-unused-vars
-    tokenLimit = DEFAULT_REVIEW_OPTIONS.TOKEN_LIMIT,
+    tokenLimit,
     reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
     repomixOptions = {},
     enhancedReport = true, // Enable enhanced reporting by default
@@ -47,7 +47,11 @@ export async function runTriumvirateReview({
 }: TriumvirateReviewOptions = {}) {
     // Initialize results array
     const results = [];
-    //  throw Error("as")
+    // Determine the effective token limit based on selected models if not provided
+    const effectiveTokenLimit =
+        typeof tokenLimit === 'number' && !Number.isNaN(tokenLimit)
+            ? tokenLimit
+            : getDynamicTokenLimit(models);
 
     console.log('Packaging codebase with repomix...');
 
@@ -55,7 +59,7 @@ export async function runTriumvirateReview({
     const mergedRepomixOptions = {
         exclude,
         diffOnly,
-        tokenLimit,
+        tokenLimit: effectiveTokenLimit,
         ...repomixOptions,
     };
 

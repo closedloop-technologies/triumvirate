@@ -38,7 +38,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         output,
         failOnError = false,
         summaryOnly = false,
-        tokenLimit = 100000,
+        tokenLimit,
         reviewType = 'general',
         skipApiKeyValidation = false,
         enhancedReport = true,

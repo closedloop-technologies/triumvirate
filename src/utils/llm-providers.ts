@@ -12,7 +12,7 @@ import { COST_RATES } from './constants';
 import { enhancedLogger } from './enhanced-logger.js';
 import { withErrorHandlingAndRetry } from './error-handling';
 import { createModelError, handleModelError, ErrorCategory } from './model-utils';
-import llmCosts from '../../llm_costs.json' assert { type: 'json' };
+import llmCosts from '../../llm_costs.json';
 import type { OpenAIUsage } from '../types/usage';
 
 // Constants
