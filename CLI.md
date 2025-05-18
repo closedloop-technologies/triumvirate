@@ -33,7 +33,7 @@ tri --help
 tri review
 
 # Run a code review with specific models
-tri review --models openai,claude
+tri review --models openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219
 
 # Run a security-focused review
 tri review --review-type security
@@ -66,7 +66,7 @@ tri uninstall
 
 #### Model Options
 
-- `-m, --models <models>`: Comma-separated list of models (default: openai,claude,gemini)
+- `-m, --models <models>`: Comma-separated list of models (default: openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25)
 
 ### Output Options
 

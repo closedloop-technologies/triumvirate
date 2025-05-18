@@ -18,7 +18,7 @@ export const MODEL_API_KEYS: ApiKeyRequirements[] = [
         minLength: 39,
     },
     {
-        model: 'claude',
+        model: 'anthropic',
         envVar: 'ANTHROPIC_API_KEY',
         format: /^sk-ant-[A-Za-z0-9_-]{32,}$/,
         minLength: 39,
@@ -65,7 +65,8 @@ export function validateApiKeys(requestedModels: string[]): ApiKeyValidationResu
 
         // Check each requested model
         for (const modelName of requestedModels) {
-            const requirement = MODEL_API_KEYS.find(req => req.model === modelName);
+            const provider = modelName.split('/')[0];
+            const requirement = MODEL_API_KEYS.find(req => req.model === provider);
 
             if (!requirement) {
                 console.warn(`Unknown model: ${modelName}, skipping API key validation`);

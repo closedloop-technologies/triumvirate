@@ -58,7 +58,7 @@ GOOGLE_API_KEY=your-google-key
 tri review
 
 # Run a review with specific models
-tri review --models openai,claude
+tri review --models openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219
 
 # Run a security-focused review
 tri review --review-type security
@@ -91,7 +91,7 @@ tri review [options]
 
 #### Model Options
 
-- `-m, --models <models>` - Comma-separated list of models (default: openai,claude,gemini)
+- `-m, --models <models>` - Comma-separated list of models (default: openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25)
 - `--review-type <type>` - Type of review: general, security, performance, architecture, docs
 - `--fail-on-error` - Exit with non-zero code if any model fails
 - `--skip-api-key-validation` - Skip API key validation check
@@ -163,7 +163,7 @@ tri review --review-type security --output security-review.json
 ### Only Review Changed Files
 
 ```bash
-tri review --diff --models openai
+tri review --diff --models openai/gpt-4.1
 ```
 
 ### Focus on Specific Files with Compression
@@ -206,9 +206,17 @@ jobs:
         with:
           node-version: '20'
       - run: npm install
+<<<<<<< HEAD
       - uses: ./.github/actions/triumvirate-review
         with:
           mode: strict # or 'normal'
+=======
+      - run: |
+          export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          export ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+          export GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+          npx triumvirate --models openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25 --diff --output triumvirate.json --fail-on-error
+>>>>>>> 99f72de (feat: support provider/model spec for models)
       - name: Upload Review Output
         uses: actions/upload-artifact@v3
         with:

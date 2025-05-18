@@ -32,7 +32,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 
     // Process the CLI options
     const {
-        models = 'openai,claude,gemini',
+        models = 'openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25',
         ignore = '',
         diff = false,
         output,
