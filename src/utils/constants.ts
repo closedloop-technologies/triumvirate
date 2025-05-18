@@ -14,11 +14,11 @@ export const COST_RATES = {
         input: 0.000002,
         output: 0.000008,
     },
-    claude: {
+    anthropic: {
         input: 0.000003, // $3 per 1M tokens (text / image / video)
         output: 0.000015, // $15 per 1M tokens (text / image / video)
     },
-    gemini: {
+    google: {
         // Currently free, but we're assuming a price of https://ai.google.dev/gemini-api/docs/pricing
         input: 0.0, // $0.10 per 1M tokens (text / image / video)
         output: 0.0, // $0.40 per 1M tokens (text / image / video)
@@ -44,7 +44,11 @@ export enum ReviewType {
 
 // Default values for triumvirate review options
 export const DEFAULT_REVIEW_OPTIONS = {
-    MODELS: ['openai', 'claude', 'gemini'],
+    MODELS: [
+        'openai/gpt-4.1',
+        'anthropic/claude-3-7-sonnet-20250219',
+        'google/gemini-2.5-pro-exp-03-25',
+    ],
     EXCLUDE: [],
     DIFF_ONLY: false,
     OUTPUT_PATH: '.',

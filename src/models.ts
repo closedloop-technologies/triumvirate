@@ -11,35 +11,41 @@ import { handleModelError, ErrorCategory, createModelError } from './utils/model
 // Load environment variables from .env file
 dotenv.config();
 
+export function parseModelSpec(spec: string): { provider: string; model: string } {
+    const [provider = '', ...rest] = spec.split('/');
+    const model = rest.join('/') || '';
+    return { provider: provider.toLowerCase(), model };
+}
+
 // API logger is now initialized in the CLI action
 
 /**
  * Validates model input and API key
  * @param prompt - The prompt to validate
- * @param modelName - The name of the model
+ * @param modelName - The provider/model specification
  * @throws ModelError if validation fails
  */
-function validateModelInput(prompt: string, modelName: string): void {
+function validateModelInput(prompt: string, provider: string): void {
     // Validate input
     if (!prompt || typeof prompt !== 'string') {
         throw createModelError(
             'Invalid prompt: must be a non-empty string',
             ErrorCategory.INVALID_RESPONSE,
-            modelName,
+            provider,
             false,
             new Error('Invalid prompt')
         );
     }
 
     // Find the API key requirement for this model
-    const apiKeyReq = MODEL_API_KEYS.find(req => req.model === modelName.toLowerCase());
+    const apiKeyReq = MODEL_API_KEYS.find(req => req.model === provider.toLowerCase());
     if (!apiKeyReq) {
         throw createModelError(
-            `Unknown model: ${modelName}`,
+            `Unknown model: ${provider}`,
             ErrorCategory.INVALID_RESPONSE,
-            modelName,
+            provider,
             false,
-            new Error(`Unknown model: ${modelName}`)
+            new Error(`Unknown model: ${provider}`)
         );
     }
 
@@ -48,7 +54,7 @@ function validateModelInput(prompt: string, modelName: string): void {
         throw createModelError(
             `${apiKeyReq.envVar} is not set`,
             ErrorCategory.AUTHENTICATION,
-            modelName,
+            provider,
             false,
             new Error(`${apiKeyReq.envVar} is not set`)
         );
@@ -96,21 +102,21 @@ export async function runModelReview(
     const prompt = `Please review the following codebase for bugs, design flaws, and potential improvements:\n\n${code}`;
 
     try {
-        // Convert model name to provider name (case insensitive)
-        const normalizedModelName = modelName.toLowerCase();
-        let modelProvider = null;
-        if (normalizedModelName === 'openai') {
-            modelProvider = new OpenAIProvider();
-        } else if (normalizedModelName === 'claude') {
-            modelProvider = new ClaudeProvider();
-        } else if (normalizedModelName === 'gemini') {
-            modelProvider = new GeminiProvider();
+        const { provider, model } = parseModelSpec(modelName);
+        let modelProvider: OpenAIProvider | ClaudeProvider | GeminiProvider;
+
+        if (provider === 'openai' || provider === 'openrouter' || provider === 'azure') {
+            modelProvider = new OpenAIProvider(model || 'gpt-4.1');
+        } else if (provider === 'claude' || provider === 'anthropic') {
+            modelProvider = new ClaudeProvider(model || 'claude-3-7-sonnet-20250219');
+        } else if (provider === 'gemini' || provider === 'google') {
+            modelProvider = new GeminiProvider(model || 'gemini-2.5-pro-exp-03-25');
         } else {
-            throw Error('Unsupported model');
+            // Default to OpenAI-compatible provider
+            modelProvider = new OpenAIProvider(model || provider);
         }
 
-        // Use the provider factory to run the completion
-        validateModelInput(prompt, modelName);
+        validateModelInput(prompt, provider);
         const response = await modelProvider.runCompletion(prompt);
 
         return {
