@@ -92,7 +92,9 @@ export const runNextAction = async (options: NextOptions) => {
             const updatedPlan = markTaskAsCompleted(plan, markComplete);
             if (updatedPlan) {
                 // Ensure the output directory exists
-                const outputDirPath = path.isAbsolute(outputDir) ? outputDir : path.resolve(process.cwd(), outputDir);
+                const outputDirPath = path.isAbsolute(outputDir)
+                    ? outputDir
+                    : path.resolve(process.cwd(), outputDir);
                 safeFileOperation(
                     () => {
                         if (!fs.existsSync(outputDirPath)) {

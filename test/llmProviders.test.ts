@@ -64,10 +64,15 @@ describe('ClaudeProvider', () => {
                         type: 'tool_use',
                         tool_use: {
                             name: 'generate_structured_data',
-                            input: { schema: JSON.stringify({ type: 'object', properties: { foo: { type: 'string' } } }) },
-                            output: '{"foo": "bar"}'
-                        }
-                    }
+                            input: {
+                                schema: JSON.stringify({
+                                    type: 'object',
+                                    properties: { foo: { type: 'string' } },
+                                }),
+                            },
+                            output: '{"foo": "bar"}',
+                        },
+                    },
                 ],
                 usage: mockUsage,
             }),

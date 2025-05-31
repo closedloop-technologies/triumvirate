@@ -15,6 +15,7 @@ import type { LLMProvider } from './utils/llm-providers'; // Import provider typ
 import { estimateCost } from './utils/llm-providers'; // Import cost estimator
 import { ClaudeProvider, OpenAIProvider, GeminiProvider } from './utils/llm-providers'; // Import provider classes
 import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
+import { resolveDocs, createSystemPrompt } from './utils/system-prompt';
 
 export interface TriumvirateReviewOptions {
     models?: string[];
@@ -55,7 +56,8 @@ async function prepareCodebase(
 function generateReviewPrompt(
     reviewType: string,
     repomixResult: RepomixResult,
-    codebase: string
+    codebase: string,
+    systemPrompt?: string
 ): string {
     // Base template with structure info
     const baseTemplate = `You are an expert code reviewer. I'm going to share a codebase with you for review.
@@ -71,15 +73,19 @@ Please review the following codebase and provide feedback:
 {{CODEBASE}}`;
 
     // Specific templates for different review types
-    const templates: Record<string, string> = {
-        general: `${baseTemplate}\n\nProvide a general review focusing on:\n1. Code quality and readability\n2. Potential bugs or issues\n3. Architecture and design\n4. Performance concerns\n5. Security considerations\n\nFormat your response with these sections and provide specific examples where possible.`,
-        security: `${baseTemplate}\n\nConduct a thorough security review focusing on:\n1. Authentication and authorization vulnerabilities\n2. Input validation and sanitization\n3. Injection vulnerabilities (SQL, XSS, etc.)\n4. Sensitive data exposure\n5. Security misconfiguration\n6. Hard-coded secrets or credentials\n7. Insecure cryptographic storage\n8. Insufficient logging and monitoring\n\nCategorize issues by severity (Critical, High, Medium, Low) and provide specific recommendations for each.`,
-        performance: `${baseTemplate}\n\nConduct a detailed performance review focusing on:\n1. Computational complexity analysis\n2. Memory usage and potential leaks\n3. Asynchronous operations and concurrency\n4. Database queries and data access patterns\n5. Network requests and API usage\n6. Resource-intensive operations\n7. Caching opportunities\n8. Bundle size considerations\n\nFor each issue, estimate the performance impact and provide specific recommendations for improvement.`,
-        architecture: `${baseTemplate}\n\nProvide an in-depth architecture review focusing on:\n1. Overall system design and component organization\n2. Separation of concerns and modularity\n3. Design patterns used (and opportunities for better patterns)\n4. Dependency management and coupling\n5. API design and consistency\n6. Error handling strategy\n7. Testability of the codebase\n8. Scalability considerations\n\nIdentify architectural strengths and weaknesses, with specific recommendations for improvement.`,
-        docs: `${baseTemplate}\n\nReview the codebase documentation focusing on:\n1. Code comments quality and coverage\n2. API documentation completeness\n3. README files and usage instructions\n4. Inline documentation of complex logic\n5. Type definitions and interfaces\n6. Examples and usage patterns\n7. Missing documentation areas\n\nSuggest specific documentation improvements with examples.`,
-    };
-
-    const specificTemplate = templates[reviewType] || templates['general'] || '';
+    let specificTemplate = '';
+    if (systemPrompt) {
+        specificTemplate = `${baseTemplate}\n\n${systemPrompt}`;
+    } else {
+        const templates: Record<string, string> = {
+            general: `${baseTemplate}\n\nProvide a general review focusing on:\n1. Code quality and readability\n2. Potential bugs or issues\n3. Architecture and design\n4. Performance concerns\n5. Security considerations\n\nFormat your response with these sections and provide specific examples where possible.`,
+            security: `${baseTemplate}\n\nConduct a thorough security review focusing on:\n1. Authentication and authorization vulnerabilities\n2. Input validation and sanitization\n3. Injection vulnerabilities (SQL, XSS, etc.)\n4. Sensitive data exposure\n5. Security misconfiguration\n6. Hard-coded secrets or credentials\n7. Insecure cryptographic storage\n8. Insufficient logging and monitoring\n\nCategorize issues by severity (Critical, High, Medium, Low) and provide specific recommendations for each.`,
+            performance: `${baseTemplate}\n\nConduct a detailed performance review focusing on:\n1. Computational complexity analysis\n2. Memory usage and potential leaks\n3. Asynchronous operations and concurrency\n4. Database queries and data access patterns\n5. Network requests and API usage\n6. Resource-intensive operations\n7. Caching opportunities\n8. Bundle size considerations\n\nFor each issue, estimate the performance impact and provide specific recommendations for improvement.`,
+            architecture: `${baseTemplate}\n\nProvide an in-depth architecture review focusing on:\n1. Overall system design and component organization\n2. Separation of concerns and modularity\n3. Design patterns used (and opportunities for better patterns)\n4. Dependency management and coupling\n5. API design and consistency\n6. Error handling strategy\n7. Testability of the codebase\n8. Scalability considerations\n\nIdentify architectural strengths and weaknesses, with specific recommendations for improvement.`,
+            docs: `${baseTemplate}\n\nReview the codebase documentation focusing on:\n1. Code comments quality and coverage\n2. API documentation completeness\n3. README files and usage instructions\n4. Inline documentation of complex logic\n5. Type definitions and interfaces\n6. Examples and usage patterns\n7. Missing documentation areas\n\nSuggest specific documentation improvements with examples.`,
+        };
+        specificTemplate = templates[reviewType] || templates['general'] || '';
+    }
     return specificTemplate.replace('{{CODEBASE}}', codebase);
 }
 
@@ -373,9 +379,15 @@ export async function runTriumvirateReview(
         const { repomixResult: rmResult, codebase } = await prepareCodebase(options);
         repomixResult = rmResult; // Store for cleanup
 
+        // Resolve documentation and build system prompt
+        const { doc, task } = options?.options || {};
+        const docs = Array.isArray(doc) ? doc : [doc].filter(Boolean);
+        const resolvedDocs = await resolveDocs(docs as string[]);
+        const systemPrompt = await createSystemPrompt(task, resolvedDocs);
+
         // 2. Generate Prompt
         spinner.update('Generating review prompt...');
-        const prompt = generateReviewPrompt(reviewType, repomixResult, codebase);
+        const prompt = generateReviewPrompt(reviewType, repomixResult, codebase, systemPrompt);
 
         // 3. Execute Reviews
         spinner.update('Executing reviews across models...');

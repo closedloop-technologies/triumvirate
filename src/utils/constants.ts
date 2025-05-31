@@ -1,8 +1,8 @@
 /**
  * Constants used throughout the application
  */
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
 
 // API timeout settings
 export const API_TIMEOUT_MS = 30000; // 30 seconds timeout
@@ -21,7 +21,6 @@ export interface ModelCosts {
     max_input_tokens: number;
     max_output_tokens: number;
 }
-
 
 // Get costs from the JSON file, using a relative path that works regardless of where the code is executed from
 const getLLMCosts = (): [Record<string, ModelCosts>, Set<string>] => {

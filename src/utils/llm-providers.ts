@@ -65,10 +65,7 @@ export interface LLMProvider {
  */
 export function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
     // Try to look up exact model in the costs file
-    const costs = llmCosts as Record<
-        string,
-        { input_cost_per_token?: number; output_cost_per_token?: number }
-    >;
+    const costs = COST_RATES;
 
     let info = costs[model];
     if (!info) {
@@ -78,21 +75,24 @@ export function estimateCost(model: string, inputTokens: number, outputTokens: n
         }
     }
 
-    if (info && info.input_cost_per_token && info.output_cost_per_token) {
-        return inputTokens * info.input_cost_per_token + outputTokens * info.output_cost_per_token;
+    if (info && info.input && info.output) {
+        return inputTokens * info.input + outputTokens * info.output;
     }
 
     // Fallback to provider level rates
     const provider = model.split('/')[0] ?? '';
     if (provider in COST_RATES) {
         return (
-            inputTokens * COST_RATES[provider as keyof typeof COST_RATES].input +
-            outputTokens * COST_RATES[provider as keyof typeof COST_RATES].output
+            inputTokens * (COST_RATES[provider as keyof typeof COST_RATES]?.input || 0) +
+            outputTokens * (COST_RATES[provider as keyof typeof COST_RATES]?.output || 0)
         );
     }
 
     // Default to OpenAI rates if everything else fails
-    return inputTokens * COST_RATES.openai.input + outputTokens * COST_RATES.openai.output;
+    return (
+        inputTokens * (COST_RATES['openai']?.input || 0) +
+        outputTokens * (COST_RATES['openai']?.output || 0)
+    );
 }
 
 /**
@@ -742,8 +742,11 @@ export class OpenAIProvider implements LLMProvider {
  */
 export class GeminiProvider implements LLMProvider {
     name = 'Gemini';
-    model = 'gemini-2.5-pro-exp-03-25'; // Or 'gemini-pro' for the stable version
+    model: string;
 
+    constructor(model = 'gemini-2.5-pro-exp-03-25') {
+        this.model = model;
+    }
     isAvailable(): boolean {
         return !!process.env['GOOGLE_API_KEY'];
     }

@@ -5,7 +5,6 @@ import type { CliOptions } from '../../types/report.js';
 import type { CodeReviewReport } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
-import { resolveDocs, createSystemPrompt } from '../../utils/system-prompt.js';
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
     // Set log level based on verbose and quiet flags
@@ -100,11 +99,6 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             topFilesLen,
             tokenCountEncoding,
         };
-
-        // Resolve documentation and build system prompt
-        const docs = Array.isArray(doc) ? doc : [doc].filter(Boolean);
-        const resolvedDocs = await resolveDocs(docs as string[]);
-        const systemPrompt = await createSystemPrompt(task, resolvedDocs);
 
         // Run the review with our configured options
         const reviewOptions: TriumvirateReviewOptions = {

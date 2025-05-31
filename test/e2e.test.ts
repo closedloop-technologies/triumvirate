@@ -1,11 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
+
 import { describe, it, beforeAll, afterAll, expect } from 'vitest';
 
+import { runNextAction } from '../src/cli/actions/nextAction.js';
+import { runPlanAction } from '../src/cli/actions/planAction.js';
 import { runCliAction } from '../src/cli/actions/runAction.js';
 import { runSummarizeAction } from '../src/cli/actions/summarizeAction.js';
-import { runPlanAction } from '../src/cli/actions/planAction.js';
-import { runNextAction } from '../src/cli/actions/nextAction.js';
 
 // Determine if we should run the end-to-end test
 const shouldRun =
@@ -24,8 +25,7 @@ describeIf('Triumvirate end-to-end workflow', () => {
     beforeAll(async () => {
         // Run a review across all models
         await runCliAction(['.'], {
-            models:
-                'openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25',
+            models: 'openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25',
             output: reviewJson,
             diff: true,
             enhancedReport: true,

@@ -94,23 +94,28 @@ export const runPlanAction = async (options: PlanOptions): Promise<void> => {
 
     logger.debug('options:', options);
 
-    let { input, output, agentModel = 'claude', task } = options; // DoD: Use agentModel and task options
+    let { input } = options; // DoD: Use agentModel and task options
+    const { output, agentModel = 'claude', task } = options; // DoD: Use agentModel and task options
 
     if (!input) {
         // Try to find the latest summary file from tri review in the default output directory
         const defaultOutputDir = './.triumvirate';
         try {
-            const outputDirPath = path.isAbsolute(defaultOutputDir) ? defaultOutputDir : path.resolve(process.cwd(), defaultOutputDir);
+            const outputDirPath = path.isAbsolute(defaultOutputDir)
+                ? defaultOutputDir
+                : path.resolve(process.cwd(), defaultOutputDir);
             const files = await safeFileOperationAsync(
                 async () => fs.promises.readdir(outputDirPath),
                 'read',
                 outputDirPath,
                 []
             );
-            
+
             // Filter for summary files (markdown files with tri-review prefix)
-            const summaryFiles = files.filter(file => file.startsWith('tri-review-') && file.endsWith('.md'));
-            
+            const summaryFiles = files.filter(
+                file => file.startsWith('tri-review-') && file.endsWith('.md')
+            );
+
             if (summaryFiles.length > 0) {
                 // Sort by modification time (most recent first)
                 const sortedFiles = await Promise.all(
@@ -121,22 +126,28 @@ export const runPlanAction = async (options: PlanOptions): Promise<void> => {
                     })
                 );
                 sortedFiles.sort((a, b) => b.mtime.getTime() - a.mtime.getTime());
-                
+
                 // Use the most recent file
                 if (sortedFiles.length > 0 && sortedFiles[0]) {
                     input = path.join(defaultOutputDir, sortedFiles[0].file);
                     logger.info(`Using latest review summary: ${input}`);
                 } else {
-                    logger.error('No valid review summary files found in the default output directory.');
-                    logger.error('Please run "tri review" first or specify an input file with --input.');
+                    logger.error(
+                        'No valid review summary files found in the default output directory.'
+                    );
+                    logger.error(
+                        'Please run "tri review" first or specify an input file with --input.'
+                    );
                     process.exit(1);
                 }
             } else {
                 logger.error('No review summary files found in the default output directory.');
-                logger.error('Please run "tri review" first or specify an input file with --input.');
+                logger.error(
+                    'Please run "tri review" first or specify an input file with --input.'
+                );
                 process.exit(1);
             }
-        } catch (error) {
+        } catch {
             logger.error('Error finding latest review summary file.');
             logger.error('Please run "tri review" first or specify an input file with --input.');
             process.exit(1);
@@ -213,7 +224,9 @@ export const runPlanAction = async (options: PlanOptions): Promise<void> => {
 
         // Write the plan to a file if output is specified
         if (output) {
-            const outputPath = path.isAbsolute(output) ? output : path.resolve(process.cwd(), output);
+            const outputPath = path.isAbsolute(output)
+                ? output
+                : path.resolve(process.cwd(), output);
             await safeFileOperationAsync(
                 async () =>
                     fs.promises.writeFile(outputPath, JSON.stringify(plan, null, 2), 'utf8'),

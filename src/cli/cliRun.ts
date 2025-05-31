@@ -323,10 +323,13 @@ Option Groups:
         program
             .command('models')
             .description('List all available LLM models with cost information')
-            .option('--provider <provider>', 'Filter models by provider (e.g., openai, anthropic, google)')
+            .option(
+                '--provider <provider>',
+                'Filter models by provider (e.g., openai, anthropic, google)'
+            )
             .option('--all', 'Show all models without limiting the display')
             .option('--sort <sort>', 'Sort models by cost or name', /^(cost|name)$/i, 'cost')
-            .action((options) => runModelsAction(options));
+            .action(options => runModelsAction(options));
 
         // Custom error handling with semantic suggestions
         const configOutput = program.configureOutput();

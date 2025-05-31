@@ -21,7 +21,6 @@ export interface CliOptions {
     tokenCountEncoding?: string;
     passThreshold?: 'strict' | 'lenient' | 'none'; // DoD: Add pass threshold type
     agentModel?: string; // DoD: Add agent model
-    task?: string; // DoD: Add task description option
     skipApiKeyValidation?: boolean;
     enhancedReport?: boolean;
     task?: string;

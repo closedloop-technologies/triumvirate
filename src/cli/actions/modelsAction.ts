@@ -5,7 +5,8 @@
  */
 
 import pc from 'picocolors';
-import { COST_RATES, PROVIDERS } from '../../utils/constants';
+
+import { COST_RATES } from '../../utils/constants';
 import type { ModelCosts } from '../../utils/constants';
 
 // Define model information structure
@@ -49,7 +50,7 @@ export function getAvailableModels(): ModelInfo[] {
                 inputCost: modelData.input,
                 outputCost: modelData.output,
                 blendedCost: blendedCost,
-                available: isAvailable
+                available: isAvailable,
             });
         }
     } else {
@@ -73,7 +74,7 @@ export function getAvailableModels(): ModelInfo[] {
                     blendedCost: modelData.blended_per_million_tokens,
                     available: isAvailable,
                     max_input_tokens: modelData.max_input_tokens,
-                    max_output_tokens: modelData.max_output_tokens
+                    max_output_tokens: modelData.max_output_tokens,
                 });
             }
         }
@@ -89,7 +90,7 @@ export function getAvailableModels(): ModelInfo[] {
                 inputCost: 0.000003,
                 outputCost: 0.000015,
                 blendedCost: 0.000003 * 0.9 + 0.000015 * 0.1,
-                available: !!process.env['ANTHROPIC_API_KEY']
+                available: !!process.env['ANTHROPIC_API_KEY'],
             },
             // OpenAI models
             {
@@ -98,7 +99,7 @@ export function getAvailableModels(): ModelInfo[] {
                 inputCost: 0.000002,
                 outputCost: 0.000008,
                 blendedCost: 0.000002 * 0.9 + 0.000008 * 0.1,
-                available: !!process.env['OPENAI_API_KEY']
+                available: !!process.env['OPENAI_API_KEY'],
             },
             // Gemini models
             {
@@ -107,7 +108,7 @@ export function getAvailableModels(): ModelInfo[] {
                 inputCost: 0.0,
                 outputCost: 0.0,
                 blendedCost: 0.0,
-                available: !!process.env['GOOGLE_API_KEY']
+                available: !!process.env['GOOGLE_API_KEY'],
             }
         );
     }
@@ -154,7 +155,9 @@ export const runModelsAction = async (options: ModelsOptions = {}): Promise<void
         // Check if the specified provider exists in our data
         filteredProviders = modelsByProvider[options.provider] ? [options.provider] : [];
         if (filteredProviders.length === 0) {
-            console.log(`Provider '${options.provider}' not found or has no models. Available providers: ${Array.from(providers).join(', ')}`);
+            console.log(
+                `Provider '${options.provider}' not found or has no models. Available providers: ${Array.from(providers).join(', ')}`
+            );
             return;
         }
     } else {
@@ -164,8 +167,12 @@ export const runModelsAction = async (options: ModelsOptions = {}): Promise<void
     // Sort providers alphabetically
     filteredProviders.sort();
     console.log('\nAvailable LLM Models:\n');
-    console.log('| Provider                   | Cost*    | Context   | Status   | Model                                          |');
-    console.log('|----------------------------|----------|-----------|----------|------------------------------------------------|');
+    console.log(
+        '| Provider                   | Cost*    | Context   | Status   | Model                                          |'
+    );
+    console.log(
+        '|----------------------------|----------|-----------|----------|------------------------------------------------|'
+    );
 
     // Display models grouped by provider, with limits unless --all is specified
     let totalDisplayed = 0;
@@ -178,7 +185,7 @@ export const runModelsAction = async (options: ModelsOptions = {}): Promise<void
         }
 
         // Sort models based on the specified sort option
-        let sortedModels = [...modelsByProvider[provider]];
+        const sortedModels = [...modelsByProvider[provider]];
         if (options.sort === 'name') {
             sortedModels.sort((a, b) => a.model.localeCompare(b.model));
         } else {
@@ -197,25 +204,34 @@ export const runModelsAction = async (options: ModelsOptions = {}): Promise<void
             const providerName = pc.cyan(model.provider.padEnd(26));
             const modelName = model.model.padEnd(46);
             const blendedCost = `$${model.blendedCost.toFixed(3)}`.padStart(8);
-            const inputContext = model.max_input_tokens ? `${model.max_input_tokens.toLocaleString()}`.padStart(12) : 'Unknown'.padStart(12);
+            const inputContext = model.max_input_tokens
+                ? `${model.max_input_tokens.toLocaleString()}`.padStart(12)
+                : 'Unknown'.padStart(12);
             const status = model.available ? pc.green('✓ Ready ') : pc.red('✗ No Key');
 
-            console.log(`| ${providerName} | ${blendedCost} | ${inputContext} | ${status} | ${modelName}`);
+            console.log(
+                `| ${providerName} | ${blendedCost} | ${inputContext} | ${status} | ${modelName}`
+            );
             totalDisplayed++;
         }
 
         // Show count of additional models if there are more
         const remaining = sortedModels.length - displayModels.length;
         if (remaining > 0) {
-            console.log(`| ${pc.cyan(provider.padEnd(9))} | ${pc.dim(`... and ${remaining} more models`).padEnd(26)} | ${' '.padEnd(26)} | ${' '.padEnd(20)} | ${' '.padEnd(8)} |`);
+            console.log(
+                `| ${pc.cyan(provider.padEnd(9))} | ${pc.dim(`... and ${remaining} more models`).padEnd(26)} | ${' '.padEnd(26)} | ${' '.padEnd(20)} | ${' '.padEnd(8)} |`
+            );
         }
     }
 
     // Show total model count
     console.log(`\nShowing ${totalDisplayed} of ${allModels.length} total models`);
 
-    console.log('\n*Blended cost is calculated as: 0.9 × input cost + 0.1 × output cost per 1M tokens');
+    console.log(
+        '\n*Blended cost is calculated as: 0.9 × input cost + 0.1 × output cost per 1M tokens'
+    );
 
-    console.log('\nTo use specific models, set the appropriate environment variables in format <provider>_API_KEY');
-
+    console.log(
+        '\nTo use specific models, set the appropriate environment variables in format <provider>_API_KEY'
+    );
 };
