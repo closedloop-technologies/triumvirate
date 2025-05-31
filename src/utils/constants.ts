@@ -74,7 +74,11 @@ export enum ReviewType {
 
 // Default values for triumvirate review options
 export const DEFAULT_REVIEW_OPTIONS = {
-    MODELS: ['openai', 'claude', 'gemini'],
+    MODELS: [
+        'openai/gpt-4.1',
+        'anthropic/claude-3-7-sonnet-20250219',
+        'google/gemini-2.5-pro-exp-03-25',
+    ],
     EXCLUDE: [],
     DIFF_ONLY: false,
     OUTPUT_PATH: './.triumvirate', // Default output path

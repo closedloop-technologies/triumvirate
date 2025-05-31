@@ -24,6 +24,8 @@ export interface CliOptions {
     task?: string; // DoD: Add task description option
     skipApiKeyValidation?: boolean;
     enhancedReport?: boolean;
+    task?: string;
+    doc?: string[];
     verbose?: boolean;
     quiet?: boolean;
     version?: boolean;

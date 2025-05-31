@@ -5,6 +5,7 @@ import type { CliOptions } from '../../types/report.js';
 import type { CodeReviewReport } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
+import { resolveDocs, createSystemPrompt } from '../../utils/system-prompt.js';
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
     // Set log level based on verbose and quiet flags
@@ -34,14 +35,14 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 
     // Process the CLI options
     const {
-        models = 'openai,claude,gemini',
+        models = 'openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25',
         ignore = '',
         diff = false,
         // output, // Deprecated in favor of outputDir
         outputDir = './.triumvirate', // DoD: Default output dir
         failOnError = false,
         summaryOnly = false,
-        tokenLimit = 100000,
+        tokenLimit,
         reviewType = 'general',
         passThreshold = 'none', // DoD: Add pass threshold
         agentModel = 'claude', // DoD: Add agent model
@@ -99,6 +100,11 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             topFilesLen,
             tokenCountEncoding,
         };
+
+        // Resolve documentation and build system prompt
+        const docs = Array.isArray(doc) ? doc : [doc].filter(Boolean);
+        const resolvedDocs = await resolveDocs(docs as string[]);
+        const systemPrompt = await createSystemPrompt(task, resolvedDocs);
 
         // Run the review with our configured options
         const reviewOptions: TriumvirateReviewOptions = {

@@ -64,7 +64,6 @@ After installing globally, you can run the tool using either `tri` or `triumvira
 ### Basic Usage
 
 ```bash
-# Run a review using all models
 tri review
 
 # Run a review with specific models
@@ -102,16 +101,14 @@ Triumvirate provides a command-line interface for running code reviews.
 tri <command> [options]
 ```
 
-### Main Commands
+- `review` – run code reviews across selected models
+- `summarize` – create a summary from raw review output
+- `plan` – break a summary into tasks with dependencies
+- `next` – display the next available task
 
-- `review` - Run code reviews across multiple LLM providers
-- `summarize` - Generate a summary from existing raw reports
-- `plan` - Decompose a review into tasks with dependencies
-- `next` - Identify and display the next available task
-- `install` - Install CLI completion
-- `uninstall` - Uninstall CLI completion
+Run `tri --help` to see all available options.
 
-### Review Command Options
+## GitHub Action
 
 ```bash
 tri review [options]
@@ -304,39 +301,10 @@ Add this step to your CI workflow (e.g., in `.github/workflows/ci.yml`):
     path: .triumvirate/triumvirate-review.json
 ```
 
-## Developer Workflow
+## Roadmap
 
-Triumvirate supports productive development workflows with:
-
-- **Pre-commit Hooks**: Fast checks on changed files only
-- **Pre-push Hooks**: Complete verification before pushing
-- **Dependency Management**: Best practices for package lock files
-
-## Report Output
-
-Triumvirate generates comprehensive reports that include:
-
-- Executive summary with key metrics
-- Model performance analysis
-- Key strengths and areas for improvement
-- Findings by category with code examples
-- Model agreement analysis
-- Actionable recommendations
-
-<!-- PLACEHOLDER: Add screenshot of report output -->
-
-## Supported Models
-
-Triumvirate works with these cutting-edge models:
-
-- **OpenAI**: GPT-4o (128k context)
-- **Anthropic**: Claude 3.7 Sonnet (200k context)
-- **Google**: Gemini 2.5 Pro (2M context)
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+See [ROADMAP.md](ROADMAP.md) for planned features and improvements.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT

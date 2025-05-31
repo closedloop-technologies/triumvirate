@@ -64,27 +64,35 @@ export interface LLMProvider {
  * Estimate the cost of a model run based on input and output tokens
  */
 export function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
-    // Use the provided output tokens directly
+    // Try to look up exact model in the costs file
+    const costs = llmCosts as Record<
+        string,
+        { input_cost_per_token?: number; output_cost_per_token?: number }
+    >;
 
-    // Set rates based on model
-    let inputRate = 0.0;
-    let outputRate = 0.0;
-
-    // Use rates from constants
-    if (model in COST_RATES) {
-        inputRate = COST_RATES[model as keyof typeof COST_RATES].input;
-        outputRate = COST_RATES[model as keyof typeof COST_RATES].output;
-    } else {
-        // Default to OpenAI rates if model not found
-        inputRate = COST_RATES.openai.input;
-        outputRate = COST_RATES.openai.output;
+    let info = costs[model];
+    if (!info) {
+        const parts = model.split('/');
+        if (parts.length > 1) {
+            info = costs[parts.slice(1).join('/')];
+        }
     }
 
-    // Calculate cost
-    const inputCost = inputTokens * inputRate;
-    const outputCost = outputTokens * outputRate;
+    if (info && info.input_cost_per_token && info.output_cost_per_token) {
+        return inputTokens * info.input_cost_per_token + outputTokens * info.output_cost_per_token;
+    }
 
-    return inputCost + outputCost;
+    // Fallback to provider level rates
+    const provider = model.split('/')[0] ?? '';
+    if (provider in COST_RATES) {
+        return (
+            inputTokens * COST_RATES[provider as keyof typeof COST_RATES].input +
+            outputTokens * COST_RATES[provider as keyof typeof COST_RATES].output
+        );
+    }
+
+    // Default to OpenAI rates if everything else fails
+    return inputTokens * COST_RATES.openai.input + outputTokens * COST_RATES.openai.output;
 }
 
 /**
@@ -92,7 +100,11 @@ export function estimateCost(model: string, inputTokens: number, outputTokens: n
  */
 export class ClaudeProvider implements LLMProvider {
     name = 'Claude';
-    model = 'claude-3-7-sonnet-20250219';
+    model: string;
+
+    constructor(model = 'claude-3-7-sonnet-20250219') {
+        this.model = model;
+    }
 
     isAvailable(): boolean {
         return !!process.env['ANTHROPIC_API_KEY'];
@@ -439,7 +451,11 @@ export class ClaudeProvider implements LLMProvider {
  */
 export class OpenAIProvider implements LLMProvider {
     name = 'OpenAI';
-    model = 'gpt-4.1';
+    model: string;
+
+    constructor(model = 'gpt-4.1') {
+        this.model = model;
+    }
 
     isAvailable(): boolean {
         return !!process.env['OPENAI_API_KEY'];
