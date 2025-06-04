@@ -145,14 +145,12 @@ export const run = async () => {
             // Triumvirate-specific options
             .option(
                 '-m, --models <models>',
-                'comma-separated list of models (default: openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25)'
+                'comma-separated list of models (default: openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,gemini/gemini-2.5-pro-preview-03-25)'
             )
             .option(
-                // Existing review-type option
-                '--review-type <type>',
-                'DEPRECATED: use --task instead. Suggested types: general, security, performance, architecture, docs'
+                '--task <task>',
+                'task description to focus the review'
             )
-            .option('--task <task>', 'task description to focus the review')
             .option(
                 '--doc <path>',
                 'documentation file or URL (can be repeated)',
@@ -220,16 +218,14 @@ export const run = async () => {
 Option Groups:
 
   Triumvirate Options:
-    -m, --models                    Models to use for code review
-    --review-type                  DEPRECATED: use --task instead
+    -m, --models                   Models to use for code review
     --task                         Task description for the review (e.g. security, performance, architecture, docs)
-    --doc                          Documentation file or URL
+    --doc                          Documentation file or URL (supports multiple)
     --fail-on-error                Exit with error if any model fails
     --skip-api-key-validation      Skip API key validation
     --enhanced-report              Generate enhanced report with model agreement
     --summary-only                 Only include summary in results
     --agent-model                  LLM model for report analysis/planning
-    --task                         Specific task/question to guide review
 
   Repomix Options:
     --token-limit                  Maximum tokens to send to the model

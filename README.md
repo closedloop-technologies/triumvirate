@@ -66,11 +66,11 @@ After installing globally, you can run the tool using either `tri` or `triumvira
 ```bash
 tri review
 
-# Run a review with specific models
-tri review --models openai,claude
+# Get list of models from running
+tri models
 
-# Run a security-focused review
-tri review --review-type security
+# Run a review with specific models
+tri review --models openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,gemini/gemini-2.5-pro-preview-03-25
 
 # For local development/testing
 npm run dev review
@@ -108,6 +108,8 @@ tri <command> [options]
 
 Run `tri --help` to see all available options.
 
+Run `tri models` to list all supported models and estimated prices.
+
 ## GitHub Action
 
 ```bash
@@ -117,7 +119,6 @@ tri review [options]
 #### Model Options
 
 - `-m, --models <models>` - Comma-separated list of models (default: openai,claude,gemini)
-- `--review-type <type>` - Type of review: general, security, performance, architecture, docs
 - `--fail-on-error` - Exit with non-zero code if any model fails
 - `--skip-api-key-validation` - Skip API key validation check
 - `--enhanced-report` - Generate enhanced report with model agreement analysis (default: true)
@@ -196,7 +197,7 @@ tri next [options]
 ### Focused Security Review
 
 ```bash
-tri review --review-type security --output security-review.json
+tri review --task "security focused code review" --output security-review.json
 ```
 
 ### Only Review Changed Files

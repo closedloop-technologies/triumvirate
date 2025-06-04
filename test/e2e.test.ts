@@ -25,7 +25,7 @@ describeIf('Triumvirate end-to-end workflow', () => {
     beforeAll(async () => {
         // Run a review across all models
         await runCliAction(['.'], {
-            models: 'openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25',
+            models: 'openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,gemini/gemini-2.5-pro-preview-03-25',
             output: reviewJson,
             diff: true,
             enhancedReport: true,

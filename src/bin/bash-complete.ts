@@ -39,7 +39,7 @@ const completions = [
   '--include',
   '--ignore', '-i',
   '--diff',
-  '--review-type',
+  '--task',
   '--token-limit',
   '--fail-on-error',
   '--token-count-encoding',
