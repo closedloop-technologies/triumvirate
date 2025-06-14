@@ -112,6 +112,14 @@
     "max_output_tokens": 16384
   },
   {
+    "model": "gpt-4o-audio-preview-2025-06-03",
+    "provider": "openai",
+    "input": 0.0000025,
+    "output": 0.00001,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "gpt-4o-mini-audio-preview",
     "provider": "openai",
     "input": 1.5E-7,
@@ -160,6 +168,14 @@
     "max_output_tokens": 16384
   },
   {
+    "model": "codex-mini-latest",
+    "provider": "openai",
+    "input": 0.0000015,
+    "output": 0.000006,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
     "model": "o1-pro",
     "provider": "openai",
     "input": 0.00015,
@@ -192,18 +208,34 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "o3-pro",
+    "provider": "openai",
+    "input": 0.000020,
+    "output": 0.000080,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "o3-pro-2025-06-10",
+    "provider": "openai",
+    "input": 0.000020,
+    "output": 0.000080,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
     "model": "o3",
     "provider": "openai",
-    "input": 0.00001,
-    "output": 0.00004,
+    "input": 0.000002,
+    "output": 0.000008,
     "max_input_tokens": 200000,
     "max_output_tokens": 100000
   },
   {
     "model": "o3-2025-04-16",
     "provider": "openai",
-    "input": 0.00001,
-    "output": 0.00004,
+    "input": 0.000002,
+    "output": 0.000008,
     "max_input_tokens": 200000,
     "max_output_tokens": 100000
   },
@@ -684,6 +716,14 @@
     "provider": "azure",
     "input": 0.0000165,
     "output": 0.000066,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "azure/codex-mini-latest",
+    "provider": "azure",
+    "input": 0.0000015,
+    "output": 0.000006,
     "max_input_tokens": 200000,
     "max_output_tokens": 100000
   },
@@ -1776,6 +1816,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "gemini-2.5-pro-preview-06-05",
+    "provider": "vertex_ai-language-models",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
     "model": "gemini-2.5-pro-preview-05-06",
     "provider": "vertex_ai-language-models",
     "input": 0.00000125,
@@ -1849,6 +1897,14 @@
   },
   {
     "model": "gemini/gemini-2.5-pro-preview-tts",
+    "provider": "gemini",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
+    "model": "gemini/gemini-2.5-pro-preview-06-05",
     "provider": "gemini",
     "input": 0.00000125,
     "output": 0.00001,
@@ -1968,12 +2024,28 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "vertex_ai/claude-opus-4",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000015,
+    "output": 0.000075,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 32000
+  },
+  {
     "model": "vertex_ai/claude-opus-4@20250514",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000015,
     "output": 0.000075,
     "max_input_tokens": 200000,
     "max_output_tokens": 32000
+  },
+  {
+    "model": "vertex_ai/claude-sonnet-4",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
   },
   {
     "model": "vertex_ai/claude-sonnet-4@20250514",
@@ -2597,7 +2669,7 @@
     "input": 3.5E-8,
     "output": 1.4E-7,
     "max_input_tokens": 300000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "us.amazon.nova-micro-v1:0",
@@ -2605,7 +2677,7 @@
     "input": 3.5E-8,
     "output": 1.4E-7,
     "max_input_tokens": 300000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "eu.amazon.nova-micro-v1:0",
@@ -2613,7 +2685,7 @@
     "input": 4.6E-8,
     "output": 1.84E-7,
     "max_input_tokens": 300000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "amazon.nova-lite-v1:0",
@@ -2621,7 +2693,7 @@
     "input": 6E-8,
     "output": 2.4E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "us.amazon.nova-lite-v1:0",
@@ -2629,7 +2701,7 @@
     "input": 6E-8,
     "output": 2.4E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "eu.amazon.nova-lite-v1:0",
@@ -2637,7 +2709,7 @@
     "input": 7.8E-8,
     "output": 3.12E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "amazon.nova-pro-v1:0",
@@ -2645,7 +2717,7 @@
     "input": 8E-7,
     "output": 0.0000032,
     "max_input_tokens": 300000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "us.amazon.nova-pro-v1:0",
@@ -2653,7 +2725,7 @@
     "input": 8E-7,
     "output": 0.0000032,
     "max_input_tokens": 300000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "eu.amazon.nova-pro-v1:0",
@@ -2661,7 +2733,7 @@
     "input": 0.00000105,
     "output": 0.0000042,
     "max_input_tokens": 300000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "us.amazon.nova-premier-v1:0",
@@ -2669,7 +2741,7 @@
     "input": 0.0000025,
     "output": 0.0000125,
     "max_input_tokens": 1000000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 10000
   },
   {
     "model": "anthropic.claude-3-sonnet-20240229-v1:0",

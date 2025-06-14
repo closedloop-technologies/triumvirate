@@ -134,7 +134,7 @@ describe('GeminiProvider', () => {
     beforeEach(() => {
         provider = new GeminiProvider();
         vi.resetAllMocks();
-        process.env['GOOGLE_API_KEY'] = 'test';
+        process.env['GEMINI_API_KEY'] = 'test';
     });
 
     it('runCompletion returns text', async () => {

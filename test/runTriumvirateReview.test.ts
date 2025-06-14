@@ -59,7 +59,7 @@ describe('runTriumvirateReview', () => {
         // Mock the environment variables
         process.env['OPENAI_API_KEY'] = 'test-key';
         process.env['ANTHROPIC_API_KEY'] = 'test-key';
-        process.env['GOOGLE_API_KEY'] = 'test-key';
+        process.env['GEMINI_API_KEY'] = 'test-key';
     });
 
     it('runs reviews for all models and aggregates results', async () => {

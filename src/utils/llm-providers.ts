@@ -748,7 +748,7 @@ export class GeminiProvider implements LLMProvider {
         this.model = model;
     }
     isAvailable(): boolean {
-        return !!process.env['GOOGLE_API_KEY'];
+        return !!process.env['GEMINI_API_KEY'];
     }
 
     async runCompletion(
@@ -758,11 +758,11 @@ export class GeminiProvider implements LLMProvider {
         // Validate input and API key
         if (!this.isAvailable()) {
             throw createModelError(
-                'GOOGLE_API_KEY is not set',
+                'GEMINI_API_KEY is not set',
                 ErrorCategory.AUTHENTICATION,
                 this.name, // Use this.name
                 false,
-                new Error('GOOGLE_API_KEY is not set')
+                new Error('GEMINI_API_KEY is not set')
             );
         }
 
@@ -777,14 +777,14 @@ export class GeminiProvider implements LLMProvider {
             );
         }
 
-        const apiKey = process.env['GOOGLE_API_KEY'];
+        const apiKey = process.env['GEMINI_API_KEY'];
         if (!apiKey) {
             throw createModelError(
-                'GOOGLE_API_KEY is not set (checked again)', // More specific error
+                'GEMINI_API_KEY is not set (checked again)', // More specific error
                 ErrorCategory.AUTHENTICATION,
                 this.name,
                 false,
-                new Error('GOOGLE_API_KEY is not set')
+                new Error('GEMINI_API_KEY is not set')
             );
         }
 
@@ -894,11 +894,11 @@ export class GeminiProvider implements LLMProvider {
     ): Promise<LLMResponse<T>> {
         if (!this.isAvailable()) {
             throw createModelError(
-                'GOOGLE_API_KEY is not set',
+                'GEMINI_API_KEY is not set',
                 ErrorCategory.AUTHENTICATION,
                 this.name,
                 false,
-                new Error('GOOGLE_API_KEY is not set')
+                new Error('GEMINI_API_KEY is not set')
             );
         }
         if (!prompt || typeof prompt !== 'string') {
@@ -925,14 +925,14 @@ export class GeminiProvider implements LLMProvider {
             );
         }
 
-        const apiKey = process.env['GOOGLE_API_KEY'];
+        const apiKey = process.env['GEMINI_API_KEY'];
         if (!apiKey) {
             throw createModelError(
-                'GOOGLE_API_KEY is not set (checked again)',
+                'GEMINI_API_KEY is not set (checked again)',
                 ErrorCategory.AUTHENTICATION,
                 this.name,
                 false,
-                new Error('GOOGLE_API_KEY is not set')
+                new Error('GEMINI_API_KEY is not set')
             );
         }
 

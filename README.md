@@ -58,7 +58,7 @@ After installing globally, you can run the tool using either `tri` or `triumvira
     ```bash
     OPENAI_API_KEY=your-openai-key
     ANTHROPIC_API_KEY=your-anthropic-key
-    GOOGLE_API_KEY=your-google-key
+    GEMINI_API_KEY=your-google-key
     ```
 
 ### Basic Usage
@@ -286,7 +286,7 @@ Add this step to your CI workflow (e.g., in `.github/workflows/ci.yml`):
 - run: |
     export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
     export ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
-    export GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+    export GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
     # Run on changed files, fail if any model errors, set pass threshold
     npx triumvirate review --models openai,claude,gemini \
       --diff \

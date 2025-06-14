@@ -32,7 +32,7 @@ async function testProviders() {
     console.log('Environment check:');
     console.log('- OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
     console.log('- ANTHROPIC_API_KEY exists:', !!process.env.ANTHROPIC_API_KEY);
-    console.log('- GOOGLE_API_KEY exists:', !!process.env.GOOGLE_API_KEY);
+    console.log('- GEMINI_API_KEY exists:', !!process.env.GEMINI_API_KEY);
 
     // Test individual providers
     // Test OpenAI provider

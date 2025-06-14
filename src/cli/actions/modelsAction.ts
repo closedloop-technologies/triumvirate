@@ -38,7 +38,7 @@ export function getAvailableModels(): ModelInfo[] {
             } else if (modelData.provider === 'openai') {
                 isAvailable = !!process.env['OPENAI_API_KEY'];
             } else if (modelData.provider === 'google') {
-                isAvailable = !!process.env['GOOGLE_API_KEY'];
+                isAvailable = !!process.env['GEMINI_API_KEY'];
             }
 
             // Calculate blended cost (0.9 × input + 0.1 × output)
@@ -108,7 +108,7 @@ export function getAvailableModels(): ModelInfo[] {
                 inputCost: 0.0,
                 outputCost: 0.0,
                 blendedCost: 0.0,
-                available: !!process.env['GOOGLE_API_KEY'],
+                available: !!process.env['GEMINI_API_KEY'],
             }
         );
     }
