@@ -81,7 +81,9 @@ export function getAvailableModels(): ModelInfo[] {
     }
 
     if (models.length === 0) {
-        throw new Error('No models found. Please check your API keys. and run ./update_costs.sh to update the costs.');
+        throw new Error(
+            'No models found. Please check your API keys. and run ./update_costs.sh to update the costs.'
+        );
     }
 
     return models;

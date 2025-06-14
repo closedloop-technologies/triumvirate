@@ -4,8 +4,8 @@ import type { TriumvirateReviewOptions } from '../../index.js';
 import type { CliOptions } from '../../types/report.js';
 import type { CodeReviewReport } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
-import { enhancedLogger } from '../../utils/enhanced-logger.js';
 import { DEFAULT_MODELS } from '../../utils/constants.js';
+import { enhancedLogger } from '../../utils/enhanced-logger.js';
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
     // Set log level based on verbose and quiet flags
@@ -35,7 +35,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 
     // Process the CLI options
     const {
-        models = DEFAULT_MODELS,
+        models = DEFAULT_MODELS.join(','),
         ignore = '',
         diff = false,
         // output, // Deprecated in favor of outputDir

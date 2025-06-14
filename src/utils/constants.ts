@@ -72,7 +72,6 @@ export enum ReviewType {
     DOCS = 'docs',
 }
 
-
 // Default values for triumvirate review options
 export const DEFAULT_REVIEW_OPTIONS = {
     MODELS: DEFAULT_MODELS,
