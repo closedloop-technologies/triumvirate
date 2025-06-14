@@ -8,7 +8,7 @@ import * as path from 'path';
 export const API_TIMEOUT_MS = 30000; // 30 seconds timeout
 
 export const DEFAULT_MODELS = [
-    'openai/gpt-o3',
+    'openai/o3',
     'anthropic/claude-opus-4-20250514',
     'gemini/gemini-2.5-pro-preview-06-05',
 ];

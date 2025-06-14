@@ -144,7 +144,7 @@ export const run = async () => {
             // Triumvirate-specific options
             .option(
                 '-m, --models <models>',
-                'comma-separated list of models (default: openai/gpt-o3,anthropic/claude-opus-4-20250514,gemini/gemini-2.5-pro-preview-06-05)'
+                'comma-separated list of models (default: openai/o3,anthropic/claude-opus-4-20250514,gemini/gemini-2.5-pro-preview-06-05)'
             )
             .option('--task <task>', 'task description to focus the review')
             .option(

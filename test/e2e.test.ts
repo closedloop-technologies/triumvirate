@@ -7,6 +7,7 @@ import { runNextAction } from '../src/cli/actions/nextAction.js';
 import { runPlanAction } from '../src/cli/actions/planAction.js';
 import { runCliAction } from '../src/cli/actions/runAction.js';
 import { runSummarizeAction } from '../src/cli/actions/summarizeAction.js';
+import { DEFAULT_MODELS } from '../src/utils/constants.js';
 
 // Determine if we should run the end-to-end test
 const shouldRun =
@@ -25,7 +26,7 @@ describeIf('Triumvirate end-to-end workflow', () => {
     beforeAll(async () => {
         // Run a review across all models
         await runCliAction(['.'], {
-            models: 'openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,gemini/gemini-2.5-pro-preview-03-25',
+            models: DEFAULT_MODELS.join(','),
             output: reviewJson,
             diff: true,
             enhancedReport: true,

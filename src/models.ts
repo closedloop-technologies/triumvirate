@@ -105,7 +105,7 @@ export async function runModelReview(
         const { provider, model } = parseModelSpec(modelName);
         let modelProvider: OpenAIProvider | ClaudeProvider | GeminiProvider;
         if (provider === 'openai' || provider === 'openrouter' || provider === 'azure') {
-            modelProvider = new OpenAIProvider(model || 'gpt-o3');
+            modelProvider = new OpenAIProvider(model || 'o3');
         } else if (provider === 'claude' || provider === 'anthropic') {
             modelProvider = new ClaudeProvider(model || 'claude-opus-4-20250514');
         } else if (provider === 'gemini' || provider === 'google') {

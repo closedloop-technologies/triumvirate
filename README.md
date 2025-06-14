@@ -69,7 +69,7 @@ tri review
 # Get list of models from running
 tri models
 # Run a review with specific models
-tri review --models openai/gpt-o3,anthropic/claude-opus-4-20250514,gemini/gemini-2.5-pro-preview-06-05
+tri review --models openai/o3,anthropic/claude-opus-4-20250514,gemini/gemini-2.5-pro-preview-06-05
 
 # For local development/testing
 npm run dev review

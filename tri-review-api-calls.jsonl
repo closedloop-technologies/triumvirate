@@ -1,0 +1,9 @@
+{"timestamp":"2025-06-14T19:12:33.381Z","model":"o3","operation":"completion","inputTokens":44421,"outputTokens":2860,"totalTokens":47281,"success":true,"cost":0}
+{"timestamp":"2025-06-14T19:12:47.703Z","model":"claude-opus-4-20250514","operation":"completion","inputTokens":54653,"outputTokens":1445,"totalTokens":56098,"success":true,"cost":0}
+{"timestamp":"2025-06-14T19:13:02.279Z","model":"gemini-2.5-pro-preview-06-05","operation":"completion","inputTokens":48588,"outputTokens":2544,"totalTokens":54690,"success":true,"cost":0}
+{"timestamp":"2025-06-14T19:13:12.076Z","model":"claude-3-7-sonnet-20250219","operation":"structured_output","inputTokens":6879,"outputTokens":408,"totalTokens":7287,"success":true,"cost":0}
+{"timestamp":"2025-06-14T19:13:12.076Z","model":"Claude","operation":"categories","inputTokens":6879,"outputTokens":408,"totalTokens":7287,"success":true,"cost":0}
+{"timestamp":"2025-06-14T19:14:39.126Z","model":"claude-3-7-sonnet-20250219","operation":"structured_output","inputTokens":7510,"outputTokens":5462,"totalTokens":12972,"success":true,"cost":0}
+{"timestamp":"2025-06-14T19:14:39.126Z","model":"claude-3-7-sonnet-20250219","operation":"findings","inputTokens":7510,"outputTokens":5462,"totalTokens":12972,"success":true,"cost":0}
+{"timestamp":"2025-06-14T19:14:54.076Z","model":"claude-3-7-sonnet-20250219","operation":"structured_output","inputTokens":2851,"outputTokens":734,"totalTokens":3585,"success":true,"cost":0}
+{"timestamp":"2025-06-14T19:14:54.076Z","model":"claude-3-7-sonnet-20250219","operation":"insights","inputTokens":2851,"outputTokens":734,"totalTokens":3585,"success":true,"cost":0}

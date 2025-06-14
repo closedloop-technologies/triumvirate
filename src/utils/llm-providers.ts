@@ -496,7 +496,7 @@ export class OpenAIProvider implements LLMProvider {
                     {
                         model: this.model,
                         messages: [{ role: 'user', content: prompt }],
-                        temperature: 0.2,
+                        temperature: this.model === 'o3' ? 1.0 : 0.2,
                     },
                     { signal }
                 );
