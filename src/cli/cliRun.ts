@@ -147,10 +147,7 @@ export const run = async () => {
                 '-m, --models <models>',
                 'comma-separated list of models (default: openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,gemini/gemini-2.5-pro-preview-03-25)'
             )
-            .option(
-                '--task <task>',
-                'task description to focus the review'
-            )
+            .option('--task <task>', 'task description to focus the review')
             .option(
                 '--doc <path>',
                 'documentation file or URL (can be repeated)',
