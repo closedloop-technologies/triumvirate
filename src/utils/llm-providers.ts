@@ -17,7 +17,7 @@ import type {
 import { GoogleGenerativeAI } from '@google/generative-ai'; // Ensure this is imported
 import OpenAI from 'openai';
 
-import { COST_RATES } from './constants';
+import { COST_RATES, DEFAULT_MODELS } from './constants';
 import { enhancedLogger } from './enhanced-logger.js';
 // Import directly from the consolidated error-handling module
 import {
@@ -744,8 +744,22 @@ export class GeminiProvider implements LLMProvider {
     name = 'Gemini';
     model: string;
 
-    constructor(model = 'gemini-2.5-pro-exp-03-25') {
-        this.model = model;
+    constructor(model?: string) {
+        if (!model) {
+            const geminiModel = DEFAULT_MODELS.find(model => model.includes('gemini'));
+            if (!geminiModel) {
+                throw new TriumvirateError(
+                    'No Gemini model found in DEFAULT_MODELS',
+                    ErrorCategory.INVALID_RESPONSE,
+                    'GeminiProvider',
+                    false,
+                    new Error('No Gemini model found in DEFAULT_MODELS')
+                );
+            }
+            this.model = geminiModel;
+        } else {
+            this.model = model;
+        }
     }
     isAvailable(): boolean {
         return !!process.env['GEMINI_API_KEY'];

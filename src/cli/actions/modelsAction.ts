@@ -81,36 +81,7 @@ export function getAvailableModels(): ModelInfo[] {
     }
 
     if (models.length === 0) {
-        // Fallback models in case the JSON file couldn't be loaded
-        models.push(
-            // Claude models
-            {
-                provider: 'anthropic',
-                model: 'claude-3-7-sonnet-20250219',
-                inputCost: 0.000003,
-                outputCost: 0.000015,
-                blendedCost: 0.000003 * 0.9 + 0.000015 * 0.1,
-                available: !!process.env['ANTHROPIC_API_KEY'],
-            },
-            // OpenAI models
-            {
-                provider: 'openai',
-                model: 'gpt-4.1',
-                inputCost: 0.000002,
-                outputCost: 0.000008,
-                blendedCost: 0.000002 * 0.9 + 0.000008 * 0.1,
-                available: !!process.env['OPENAI_API_KEY'],
-            },
-            // Gemini models
-            {
-                provider: 'google',
-                model: 'gemini-2.5-pro-exp-03-25',
-                inputCost: 0.0,
-                outputCost: 0.0,
-                blendedCost: 0.0,
-                available: !!process.env['GEMINI_API_KEY'],
-            }
-        );
+        throw new Error('No models found. Please check your API keys. and run ./update_costs.sh to update the costs.');
     }
 
     return models;

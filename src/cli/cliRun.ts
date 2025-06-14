@@ -141,11 +141,10 @@ export const run = async () => {
             .command('review')
             .description('Run a code review with default settings and creates the summary')
             .argument('[directories...]', 'list of directories to process', ['.'])
-
             // Triumvirate-specific options
             .option(
                 '-m, --models <models>',
-                'comma-separated list of models (default: openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,gemini/gemini-2.5-pro-preview-03-25)'
+                'comma-separated list of models (default: openai/gpt-o3,anthropic/claude-opus-4-20250514,gemini/gemini-2.5-pro-preview-06-05)'
             )
             .option('--task <task>', 'task description to focus the review')
             .option(

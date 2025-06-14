@@ -5,6 +5,7 @@ import type { CliOptions } from '../../types/report.js';
 import type { CodeReviewReport } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
+import { DEFAULT_MODELS } from '../../utils/constants.js';
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
     // Set log level based on verbose and quiet flags
@@ -34,7 +35,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 
     // Process the CLI options
     const {
-        models = 'openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,gemini/gemini-2.5-pro-preview-03-25',
+        models = DEFAULT_MODELS,
         ignore = '',
         diff = false,
         // output, // Deprecated in favor of outputDir

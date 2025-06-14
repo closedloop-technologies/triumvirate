@@ -7,10 +7,11 @@ import * as path from 'path';
 // API timeout settings
 export const API_TIMEOUT_MS = 30000; // 30 seconds timeout
 
-// Cost estimation rates ($ per 1M tokens)
-// https://ai.google.dev/gemini-api/docs/pricing
-// Run ./update_costs.sh`
-// Update Coosts from ./llm_costs.json
+export const DEFAULT_MODELS = [
+    'openai/gpt-o3',
+    'anthropic/claude-opus-4-20250514',
+    'gemini/gemini-2.5-pro-preview-06-05',
+];
 
 export interface ModelCosts {
     provider: string;
@@ -71,13 +72,10 @@ export enum ReviewType {
     DOCS = 'docs',
 }
 
+
 // Default values for triumvirate review options
 export const DEFAULT_REVIEW_OPTIONS = {
-    MODELS: [
-        'openai/gpt-4.1',
-        'anthropic/claude-3-7-sonnet-20250219',
-        'gemini/gemini-2.5-pro-preview-03-25',
-    ],
+    MODELS: DEFAULT_MODELS,
     EXCLUDE: [],
     DIFF_ONLY: false,
     OUTPUT_PATH: './.triumvirate', // Default output path
