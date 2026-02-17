@@ -109,6 +109,10 @@ export async function runRepomix({
             security: {
                 enabled: true,
             },
+            // Input options required by repomix 1.11+
+            input: {
+                maxFileSize: 10 * 1024 * 1024, // 10MB default
+            },
         };
 
         // Handle include patterns

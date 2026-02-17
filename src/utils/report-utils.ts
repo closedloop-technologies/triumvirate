@@ -3,6 +3,13 @@ import fs from 'fs';
 import pc from 'picocolors';
 
 import type { ApiCallLog } from './api-logger.js';
+import {
+    extractCategoriesWithBAML,
+    extractFindingsWithBAML,
+    generateInsightsWithBAML,
+    extractPrioritiesWithBAML,
+    useBAML,
+} from './baml-providers.js';
 import { MAX_API_RETRIES } from './constants';
 import { enhancedLogger } from './enhanced-logger.js';
 import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
@@ -55,7 +62,15 @@ export async function extractCategories(
     // Use provided provider or default to Claude
     provider = provider || new ClaudeProvider();
     try {
-        // Create a prompt for category extraction
+        // Use BAML if enabled
+        if (useBAML()) {
+            const reviewsText = reviews.join('\n\n');
+            const bamlResponse = await extractCategoriesWithBAML(reviewsText);
+            // BAML wrapper already logs the API call
+            return bamlResponse.data.categories;
+        }
+
+        // Legacy: Create a prompt for category extraction
         const prompt = createCategoryExtractionPrompt(reviews);
 
         // Define the schema for structured output
@@ -1217,7 +1232,27 @@ export async function extractFindings(
 ): Promise<ReviewFinding[]> {
     const provider = new ClaudeProvider();
     try {
-        // Create the prompt for findings extraction
+        // Use BAML if enabled
+        if (useBAML()) {
+            const reviewsText = reviews.join('\n\n');
+            const categoriesText = categories.map(c => `${c.name}: ${c.description}`).join('\n');
+            const modelsText = models.map(m => m.name || m.id).join(', ');
+            const bamlResponse = await extractFindingsWithBAML(
+                reviewsText,
+                categoriesText,
+                modelsText
+            );
+            // BAML wrapper already logs the API call
+            // Map BAML findings to local FindingItem type (convert null to undefined)
+            const mappedFindings = bamlResponse.data.findings.map(f => ({
+                ...f,
+                recommendation: f.recommendation ?? undefined,
+                codeExample: f.codeExample ?? undefined,
+            }));
+            return mapExtractedFindingsToRequiredFormat(mappedFindings, categories, models);
+        }
+
+        // Legacy: Create the prompt for findings extraction
         const prompt = createFindingsExtractionPrompt(reviews, categories, models);
 
         // Define the schema for the structured output
@@ -1515,7 +1550,27 @@ async function extractModelInsights(
 ): Promise<ModelInsight[]> {
     const provider = new ClaudeProvider();
     try {
-        // Create prompt for extracting model-specific insights
+        // Use BAML if enabled
+        if (useBAML()) {
+            const reviewsText = reviews
+                .map(
+                    (review, index) =>
+                        `MODEL ${index + 1} (${models[index]?.name || 'Unknown'}): ${review.slice(0, 3000)}`
+                )
+                .join('\n\n');
+            const modelsText = models.map(m => m.name || m.id).join(', ');
+            const bamlResponse = await generateInsightsWithBAML(reviewsText, modelsText);
+            // BAML wrapper already logs the API call
+            // Map BAML insights to local format (BAML has different structure)
+            const mappedInsights = bamlResponse.data.modelInsights.map(i => ({
+                modelId: i.modelId,
+                insight: i.strengths[0] || i.uniqueContributions[0] || '',
+                details: i.uniqueContributions.join('; ') || i.strengths.join('; '),
+            }));
+            return mapModelInsightsToRequiredFormat(mappedInsights, models);
+        }
+
+        // Legacy: Create prompt for extracting model-specific insights
         const prompt = `
 I need you to identify unique insights or perspectives that each model contributes to the code reviews.
 
@@ -1670,7 +1725,19 @@ export async function generatePrioritizedRecommendations(
             });
         }
 
-        // Create prompt for prioritizing recommendations
+        // Use BAML if enabled
+        if (useBAML()) {
+            const findingsText = recommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n');
+            const bamlResponse = await extractPrioritiesWithBAML(findingsText);
+            // BAML wrapper already logs the API call
+            return {
+                [Priority.HIGH]: bamlResponse.data.highPriority || [],
+                [Priority.MEDIUM]: bamlResponse.data.mediumPriority || [],
+                [Priority.LOW]: bamlResponse.data.lowPriority || [],
+            };
+        }
+
+        // Legacy: Create prompt for prioritizing recommendations
         const prompt = `
 I need you to prioritize these recommendations from a code review:
 

@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 // Import only the types and utilities we still need
 import type { ModelUsage } from './types/usage';
 import { MODEL_API_KEYS } from './utils/api-keys';
+import { reviewCodeWithBAML, useBAML } from './utils/baml-providers.js';
 import { MAX_API_RETRIES } from './utils/constants';
 import { enhancedLogger } from './utils/enhanced-logger.js';
 import { ClaudeProvider, GeminiProvider, OpenAIProvider } from './utils/llm-providers';
@@ -102,6 +103,16 @@ export async function runModelReview(
     const prompt = `Please review the following codebase for bugs, design flaws, and potential improvements:\n\n${code}`;
 
     try {
+        // Use BAML if enabled
+        if (useBAML()) {
+            const response = await reviewCodeWithBAML(code);
+            return {
+                text: response.data,
+                usage: response.usage,
+            };
+        }
+
+        // Legacy: Use provider-specific implementation
         const { provider, model } = parseModelSpec(modelName);
         let modelProvider: OpenAIProvider | ClaudeProvider | GeminiProvider;
         if (provider === 'openai' || provider === 'openrouter' || provider === 'azure') {

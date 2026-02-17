@@ -1,13 +1,14 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { generatePlanWithBAML, useBAML } from '../../utils/baml-providers.js';
 import {
     safeFileOperationAsync,
     safeReportGenerationAsync,
 } from '../../utils/error-handling-extensions.js';
 import { TriumvirateError, ErrorCategory } from '../../utils/error-handling.js';
 import type { LLMProvider } from '../../utils/llm-providers.js';
-import { ClaudeProvider, OpenAIProvider, GeminiProvider } from '../../utils/llm-providers.js'; // Import providers
+import { ClaudeProvider, OpenAIProvider, GeminiProvider } from '../../utils/llm-providers.js';
 import { logger } from '../../utils/logger.js';
 import { Spinner } from '../utils/spinner.js';
 
@@ -177,42 +178,77 @@ export const runPlanAction = async (options: PlanOptions): Promise<void> => {
         }
 
         // DoD: Implement actual task generation using the specified agent model
-        spinner.update(`Generating tasks using ${agentModel}...`);
+        spinner.update(`Generating tasks using ${useBAML() ? 'BAML' : agentModel}...`);
 
-        let provider: LLMProvider;
-        switch (agentModel.toLowerCase()) {
-            case 'openai':
-                provider = new OpenAIProvider();
-                break;
-            case 'gemini':
-                provider = new GeminiProvider();
-                break;
-            case 'claude':
-            default:
-                provider = new ClaudeProvider();
-        }
+        let tasks: Task[];
 
-        if (!provider.isAvailable()) {
-            throw new TriumvirateError(
-                `API key for agent model '${agentModel}' not found.`,
-                ErrorCategory.AUTHENTICATION,
-                'PlanAction'
+        if (useBAML()) {
+            // Use BAML for task generation
+            const llmResponse = await safeReportGenerationAsync(
+                () => generatePlanWithBAML(summaryContent, task),
+                'task plan',
+                'BAML generation',
+                null
             );
-        }
 
-        // DoD: Pass the task option to the prompt generation function if provided
-        const prompt = createPlanGenerationPrompt(summaryContent, task);
-        const llmResponse = await safeReportGenerationAsync(
-            () => provider.runStructured<{ tasks: Omit<Task, 'completed'>[] }>(prompt, planSchema),
-            'task plan',
-            'LLM generation',
-            null // Default value if LLM call fails
-        );
+            if (!llmResponse || !llmResponse.data || !llmResponse.data.tasks) {
+                throw new Error('Failed to generate tasks using BAML. Response was invalid.');
+            }
+            // Map BAML types to local Task interface (convert PascalCase enums to lowercase)
+            tasks = llmResponse.data.tasks.map(t => ({
+                id: t.id,
+                title: t.title,
+                description: t.description,
+                priority: t.priority.toLowerCase() as 'high' | 'medium' | 'low',
+                dependencies: t.dependencies,
+                type: t.type
+                    ? (t.type.toLowerCase() as 'bug' | 'enhancement' | 'debt' | 'docs' | 'refactor')
+                    : undefined,
+                completed: false,
+            }));
+        } else {
+            // Use legacy provider-based approach
+            let provider: LLMProvider;
+            switch (agentModel.toLowerCase()) {
+                case 'openai':
+                    provider = new OpenAIProvider();
+                    break;
+                case 'gemini':
+                    provider = new GeminiProvider();
+                    break;
+                case 'claude':
+                default:
+                    provider = new ClaudeProvider();
+            }
 
-        if (!llmResponse || !llmResponse.data || !llmResponse.data.tasks) {
-            throw new Error(`Failed to generate tasks using ${agentModel}. Response was invalid.`);
+            if (!provider.isAvailable()) {
+                throw new TriumvirateError(
+                    `API key for agent model '${agentModel}' not found.`,
+                    ErrorCategory.AUTHENTICATION,
+                    'PlanAction'
+                );
+            }
+
+            // DoD: Pass the task option to the prompt generation function if provided
+            const prompt = createPlanGenerationPrompt(summaryContent, task);
+            const llmResponse = await safeReportGenerationAsync(
+                () =>
+                    provider.runStructured<{ tasks: Omit<Task, 'completed'>[] }>(
+                        prompt,
+                        planSchema
+                    ),
+                'task plan',
+                'LLM generation',
+                null
+            );
+
+            if (!llmResponse || !llmResponse.data || !llmResponse.data.tasks) {
+                throw new Error(
+                    `Failed to generate tasks using ${agentModel}. Response was invalid.`
+                );
+            }
+            tasks = llmResponse.data.tasks.map(t => ({ ...t, completed: false }));
         }
-        const tasks = llmResponse.data.tasks.map(task => ({ ...task, completed: false })); // Add completed: false
 
         const plan: Plan = {
             tasks,

@@ -20,7 +20,8 @@
     "scripts": {
         "start": "node dist/triumvirate.js",
         "dev": "tsx src/bin/triumvirate.ts",
-        "build": "tsup",
+        "build": "npx baml-cli generate && tsup",
+        "baml:generate": "npx baml-cli generate",
         "clean": "rm -rf dist",
         "rebuild": "npm run clean && npm run build",
         "prepare": "husky",
@@ -69,6 +70,7 @@
     },
     "dependencies": {
         "@anthropic-ai/sdk": "^0.74.0",
+        "@boundaryml/baml": "^0.219.0",
         "@google/genai": "^1.41.0",
         "@google/generative-ai": "^0.24.1",
         "cli-spinners": "^3.4.0",

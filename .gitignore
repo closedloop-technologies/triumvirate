@@ -37,3 +37,6 @@ tri-review-*.md
 
 # Default output directory
 .justbuild/
+
+# BAML generated client (regenerated on build)
+baml_client/

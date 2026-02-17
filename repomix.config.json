@@ -1,4 +1,5 @@
 {
+    "cwd": ".",
     "output": {
         "filePath": "repomix-output.xml",
         "style": "xml",

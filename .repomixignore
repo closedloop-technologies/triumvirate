@@ -5,3 +5,4 @@
 llm_costs.json
 ./justbuild
 tri-review-*
+baml_client/

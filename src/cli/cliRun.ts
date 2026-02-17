@@ -160,7 +160,6 @@ export const run = async () => {
             .option('--skip-api-key-validation', 'skip API key validation check')
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
             .option('--summary-only', 'only include summary in results')
-            .option('--task <description>', 'Specific task or question to guide the review') // DoD: Add --task option
 
             // Repomix-specific options
             .option('--token-limit <number>', 'maximum tokens to send to the model')
