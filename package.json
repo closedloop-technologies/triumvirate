@@ -70,33 +70,33 @@
     "dependencies": {
         "@anthropic-ai/sdk": "^0.8.1",
         "@google/genai": "^0.7.0",
-        "@google/generative-ai": "^0.24.0",
+        "@google/generative-ai": "^0.24.1",
         "cli-spinners": "^2.9.2",
         "commander": "^11.0.0",
-        "dotenv": "^16.0.0",
+        "dotenv": "^16.6.1",
         "log-update": "^6.0.0",
-        "openai": "^4.91.1",
+        "openai": "^4.104.0",
         "picocolors": "^1.0.0",
-        "repomix": "^0.3.1"
+        "repomix": "^0.3.9"
     },
     "devDependencies": {
         "@types/log-update": "^3.1.0",
-        "@types/node": "20.x",
-        "@typescript-eslint/eslint-plugin": "^8.29.0",
-        "@typescript-eslint/parser": "^8.29.0",
-        "esbuild": "^0.25.2",
+        "@types/node": "20.19.x",
+        "@typescript-eslint/eslint-plugin": "^8.56.0",
+        "@typescript-eslint/parser": "^8.56.0",
+        "esbuild": "^0.25.12",
         "eslint": "^8.56.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-import": "^2.29.1",
+        "eslint-config-prettier": "^9.1.2",
+        "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-node": "^11.1.0",
         "husky": "^8.0.0",
-        "lint-staged": "^15.5.0",
-        "prettier": "^3.1.1",
+        "lint-staged": "^15.5.2",
+        "prettier": "^3.8.1",
         "ts-node": "^10.9.2",
-        "tsup": "^8.4.0",
-        "tsx": "^4.19.3",
+        "tsup": "^8.5.1",
+        "tsx": "^4.21.0",
         "typescript": "5.6.x",
-        "vitest": "^3.0.8"
+        "vitest": "^3.2.4"
     },
     "lint-staged": {
         "*.{ts,tsx,js,jsx}": [
