@@ -8,10 +8,13 @@ import * as path from 'path';
 export const API_TIMEOUT_MS = 30000; // 30 seconds timeout
 
 export const DEFAULT_MODELS = [
-    'openai/o3',
-    'anthropic/claude-opus-4-20250514',
-    'gemini/gemini-2.5-pro-preview-06-05',
+    'openai/gpt-4.1',
+    'anthropic/claude-opus-4-6',
+    'gemini/gemini-3-pro-preview',
 ];
+
+// Lower-cost agent model for repo structuring and prompt generation
+export const DEFAULT_AGENT_MODEL = 'anthropic/claude-sonnet-4-5';
 
 export interface ModelCosts {
     provider: string;

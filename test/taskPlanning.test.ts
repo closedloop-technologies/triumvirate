@@ -6,12 +6,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 // Mock process.exit to prevent tests from terminating
 vi.spyOn(process, 'exit').mockImplementation((() => {}) as any);
 
-// Mock data for tests
-const mockSummary = `# Codebase Summary
+// Mock data for tests (used in fs mock below)
+const _mockSummary = `# Codebase Summary
 
 - Module A: Handles auth
 - Module B: Processes data`;
-const mockPlan = JSON.stringify({
+const _mockPlan = JSON.stringify({
     tasks: [
         {
             id: 'task-1',
@@ -29,20 +29,42 @@ const mockPlan = JSON.stringify({
     },
 });
 
-// Mock fs module
+// Mock fs module - planAction uses fs.promises
 vi.mock('fs', async () => {
     const actual = await vi.importActual<typeof fs>('fs');
+
+    const mockSummaryContent = `# Codebase Summary
+
+- Module A: Handles auth
+- Module B: Processes data`;
+    const mockPlanContent = JSON.stringify({
+        tasks: [
+            {
+                id: 'task-1',
+                title: 'Fix authentication bug',
+                description: 'There is an issue with the auth module',
+                priority: 'high',
+                dependencies: [],
+                type: 'bug',
+                completed: false,
+            },
+        ],
+        metadata: {
+            createdAt: new Date().toISOString(),
+            sourceFile: 'summary.md',
+        },
+    });
+
     return {
         ...actual,
         readFileSync: vi.fn().mockImplementation((filePath, _options) => {
-            // Handle both string paths and resolved paths
             const fileName = typeof filePath === 'string' ? path.basename(filePath) : '';
 
             if (fileName === 'summary.md' || filePath.toString().includes('summary.md')) {
-                return mockSummary;
+                return mockSummaryContent;
             }
             if (fileName === 'plan.json' || filePath.toString().includes('plan.json')) {
-                return mockPlan;
+                return mockPlanContent;
             }
             throw new Error(`ENOENT: no such file or directory, open '${filePath}'`);
         }),
@@ -56,25 +78,21 @@ vi.mock('fs', async () => {
                 filePath.toString().includes('plan.json')
             );
         }),
-    };
-});
-
-// Mock fs/promises module
-vi.mock('fs/promises', async () => {
-    return {
-        readFile: vi.fn().mockImplementation(async (filePath, _options) => {
-            const fileName = typeof filePath === 'string' ? path.basename(filePath) : '';
-
-            if (fileName === 'summary.md' || filePath.toString().includes('summary.md')) {
-                return mockSummary;
-            }
-            if (fileName === 'plan.json' || filePath.toString().includes('plan.json')) {
-                return mockPlan;
-            }
-            throw new Error(`ENOENT: no such file or directory, open '${filePath}'`);
-        }),
-        writeFile: vi.fn(),
-        mkdir: vi.fn(),
+        promises: {
+            readFile: vi.fn().mockImplementation(async (filePath: string) => {
+                if (filePath.includes('summary.md')) {
+                    return mockSummaryContent;
+                }
+                if (filePath.includes('plan.json')) {
+                    return mockPlanContent;
+                }
+                throw new Error(`ENOENT: no such file or directory, open '${filePath}'`);
+            }),
+            writeFile: vi.fn().mockResolvedValue(undefined),
+            mkdir: vi.fn().mockResolvedValue(undefined),
+            readdir: vi.fn().mockResolvedValue([]),
+            stat: vi.fn().mockResolvedValue({ mtime: new Date() }),
+        },
     };
 });
 
@@ -118,12 +136,14 @@ vi.mock('../src/utils/llm-providers', () => {
 
 describe('Task Planning Pipeline', () => {
     beforeEach(() => {
-        vi.resetAllMocks();
         vi.clearAllMocks();
+        // Set up environment
+        process.env['ANTHROPIC_API_KEY'] = 'test-key';
     });
 
     it('planAction should process summary.md and produce a task plan', async () => {
         const { runPlanAction } = await import('../src/cli/actions/planAction');
+        const fsModule = await import('fs');
 
         // Override process.exit for this test
         const exitSpy = vi.spyOn(process, 'exit').mockImplementation((() => {}) as any);
@@ -134,8 +154,8 @@ describe('Task Planning Pipeline', () => {
             agentModel: 'claude',
         });
 
-        // Check that the file write was called
-        expect(fs.writeFileSync).toHaveBeenCalled();
+        // Check that the async file write was called (planAction uses fs.promises.writeFile)
+        expect(fsModule.promises.writeFile).toHaveBeenCalled();
         // Check that process.exit was not called with error code
         expect(exitSpy).not.toHaveBeenCalledWith(1);
     });

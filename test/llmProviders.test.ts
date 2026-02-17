@@ -10,8 +10,13 @@ vi.mock('@google/generative-ai', async () => {
                             candidates: [
                                 { content: { parts: [{ text: 'Gemini review for code' }] } },
                             ],
+                            text: () => 'Gemini review for code',
+                            usageMetadata: {
+                                promptTokenCount: 10,
+                                candidatesTokenCount: 15,
+                                totalTokenCount: 25,
+                            },
                         },
-                        text: () => 'Gemini review for code',
                     }),
                 };
             }
@@ -59,30 +64,44 @@ describe('ClaudeProvider', () => {
         vi.spyOn(global, 'fetch').mockResolvedValue({
             ok: true,
             json: async () => ({
+                id: 'msg_123',
+                type: 'message',
+                role: 'assistant',
+                model: 'claude-3-5-sonnet-20241022',
                 content: [
                     {
                         type: 'tool_use',
-                        tool_use: {
-                            name: 'generate_structured_data',
-                            input: {
-                                schema: JSON.stringify({
-                                    type: 'object',
-                                    properties: { foo: { type: 'string' } },
-                                }),
-                            },
-                            output: '{"foo": "bar"}',
-                        },
+                        name: 'generate_structured_data',
+                        input: { foo: 'bar' },
                     },
                 ],
+                stop_reason: 'tool_use',
+                stop_sequence: null,
                 usage: mockUsage,
             }),
         } as any);
 
         const schema = { type: 'object', properties: { foo: { type: 'string' } } };
-        const result = await provider.runStructured('prompt', schema);
+        const result = await provider.runStructured<{ foo: string }>('prompt', schema);
         expect(typeof result.data).toBe('object');
         expect(result.data.foo).toBe('bar');
     });
+});
+
+// Mock the OpenAI module for SDK v6
+vi.mock('openai', () => {
+    return {
+        default: class OpenAI {
+            chat = {
+                completions: {
+                    create: vi.fn().mockResolvedValue({
+                        choices: [{ message: { content: 'OpenAI response' } }],
+                        usage: { prompt_tokens: 10, completion_tokens: 15, total_tokens: 25 },
+                    }),
+                },
+            };
+        },
+    };
 });
 
 describe('OpenAIProvider', () => {
@@ -94,14 +113,6 @@ describe('OpenAIProvider', () => {
     });
 
     it('runCompletion returns text', async () => {
-        vi.spyOn(global, 'fetch').mockResolvedValue({
-            ok: true,
-            json: async () => ({
-                choices: [{ message: { content: 'OpenAI response' } }],
-                usage: mockUsage,
-            }),
-        } as any);
-
         const result = await provider.runCompletion('prompt');
         if (typeof result.data === 'string') {
             expect(result.data).toContain('OpenAI response');
@@ -115,15 +126,13 @@ describe('OpenAIProvider', () => {
         vi.spyOn(global, 'fetch').mockResolvedValue({
             ok: true,
             json: async () => ({
-                choices: [
-                    { message: { tool_calls: [{ function: { arguments: '{"foo": "bar"}' } }] } },
-                ],
-                usage: mockUsage,
+                choices: [{ message: { function_call: { arguments: '{"foo": "bar"}' } } }],
+                usage: { prompt_tokens: 10, completion_tokens: 15, total_tokens: 25 },
             }),
         } as any);
 
         const schema = { type: 'object', properties: { foo: { type: 'string' } } };
-        const result = await provider.runStructured('prompt', schema);
+        const result = await provider.runStructured<{ foo: string }>('prompt', schema);
         expect(typeof result.data).toBe('object');
         expect(result.data.foo).toBe('bar');
     });
@@ -138,28 +147,9 @@ describe('GeminiProvider', () => {
     });
 
     it('runCompletion returns text', async () => {
-        // Mock the dynamic import
-        vi.mock('@google/generative-ai', () => ({
-            default: {
-                GoogleGenerativeAI: class {
-                    constructor() {}
-                    getGenerativeModel() {
-                        return {
-                            generateContent: async () => ({
-                                response: {
-                                    text: () => 'Gemini response',
-                                    promptFeedback: { blockReason: null },
-                                },
-                            }),
-                        };
-                    }
-                },
-            },
-        }));
-
         const result = await provider.runCompletion('test code');
         expect(result).toBeDefined();
-        expect(typeof result.data === 'string' && result.data).toContain('review for code');
+        expect(typeof result.data === 'string' && result.data).toContain('Gemini review for code');
         expect(result.usage).toBeDefined();
     });
 
