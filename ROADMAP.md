@@ -1,29 +1,46 @@
 # Project Roadmap
 
-This file outlines planned features and areas of improvement that are not yet implemented.
+This file outlines planned features and areas of improvement.
 
-## CLI Enhancements
+## Implemented ✅
 
-- Support configuration files for common options
+- Multi-model code reviews (OpenAI, Claude, Gemini)
+- Cross-model consensus detection with agreement indicators
+- Model tier selection (cheap, standard, premium)
+- `--agent-model` option for report generation and planning
+- `--pass-threshold` for strict/lenient/none acceptance criteria
+- GitHub Actions integration
+- Cost transparency and token usage reporting
+- Shell completion (`tri install`)
+
+## In Progress 🚧
+
+- BAML integration for structured outputs
+- Automatic model cost updates via workflow
+
+## Planned Features
+
+### CLI Enhancements
+
+- Configuration file support (`~/.triumvirate/config.json` or `.triumviraterc`)
 - Interactive mode for easier command setup
 - Plugin system for extending functionality
-- Integration with issue tracking systems
-- Better CI/CD pipeline support
+- Integration with issue tracking systems (GitHub Issues, Jira)
 
-## Review Workflow
+### Review Workflow
 
 - Automatic repomix re-runs when token limits are exceeded
-- Custom repomix flags and improved output formatting
-- Option to choose different models for report generation and task planning
-- Strict vs lenient acceptance criteria for review failures
-- Richer prompt engineering for task creation
+- Smarter file filtering based on review focus
+- Incremental reviews (only re-review changed sections)
+- Custom prompt templates per project
 
-## Additional Features
+### Additional Features
 
-- Script to keep model cost data up to date
-- Expanded logging and testing
-- Support for a wider range of large context models
-- Ability to store configuration in `~/.triumvirate/config.json`
-- GitHub Action badges and improved logging output
+- Support for additional LLM providers (Mistral, Cohere, local models)
+- Web UI for viewing and comparing reviews
+- Review history and trend tracking
+- Team collaboration features
 
-These items are aspirational and subject to change as the project evolves.
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to help with these features.

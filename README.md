@@ -7,11 +7,18 @@
 ![Triumvirate](https://img.shields.io/badge/Triumvirate-Passed-brightgreen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## Run code reviews through multiple LLMs with one command
+## Multi-model AI code reviews with consensus detection
 
-Triumvirate is a powerful CLI tool and GitHub Action that analyzes your codebase through multiple AI models (OpenAI, Claude, and Gemini), providing a comprehensive, multi-perspective code review with actionable insights. The tool identifies areas of consensus across models, highlighting critical issues that multiple AI systems agree upon.
+Triumvirate is a CLI tool and GitHub Action that runs your codebase through multiple AI models (OpenAI, Claude, Gemini) simultaneously, then synthesizes their findings to surface issues with cross-model consensus. When multiple AI reviewers agree on a problem, you can be more confident it's a real issue worth fixing.
 
-> **Triumvirate gives vibe-coders, agentic coders, and lean dev teams a whole-repo AI review that LLMs can truly understand—uncovering subtle design flaws, logic slips, and cross-file inconsistencies that slip past linters and traditional static-analysis tools.**
+> **Triumvirate gives vibe-coders, agentic coders, and lean dev teams a whole-repo AI review—uncovering subtle design flaws, logic slips, and cross-file inconsistencies that slip past linters and traditional static-analysis tools.**
+
+## Who Is This For?
+
+- **Vibe-coders & AI-assisted developers** – Get a second (and third) opinion on AI-generated code
+- **Solo developers** – Professional-grade code reviews without a team
+- **Lean teams** – Automated quality gates that scale with your codebase
+- **CI/CD pipelines** – Integrate multi-model reviews into pull request workflows
 
 ## Features
 
@@ -22,8 +29,6 @@ Triumvirate is a powerful CLI tool and GitHub Action that analyzes your codebase
 - **CI/CD Integration** - Use as a GitHub Action in your workflow
 - **Cost Transparency** - View detailed API usage and cost breakdown for each model
 - **Comprehensive Reports** - Get categorized findings with detailed explanations
-
-<!-- PLACEHOLDER: Add CLI animation showing tool in action -->
 
 ## Installation
 
@@ -90,8 +95,6 @@ npm run dev review
 - Token usage (input and output)
 - Per-model cost breakdown
 
-<!-- PLACEHOLDER: Add screenshot of review output -->
-
 ## CLI Reference
 
 Triumvirate provides a command-line interface for running code reviews.
@@ -100,22 +103,24 @@ Triumvirate provides a command-line interface for running code reviews.
 tri <command> [options]
 ```
 
-- `review` – run code reviews across selected models
-- `summarize` – create a summary from raw review output
-- `plan` – break a summary into tasks with dependencies
-- `next` – display the next available task
+| Command     | Description                                    |
+|-------------|------------------------------------------------|
+| `review`    | Run code reviews across selected models        |
+| `summarize` | Create a summary from raw review output        |
+| `plan`      | Break a summary into tasks with dependencies   |
+| `next`      | Display the next available task                |
+| `models`    | List all supported models and estimated prices |
+| `install`   | Install shell completion                       |
 
 Run `tri --help` to see all available options.
 
-Run `tri models` to list all supported models and estimated prices.
-
-## GitHub Action
+## Review Command Options
 
 ```bash
 tri review [options]
 ```
 
-#### Model Options
+### Model Options
 
 - `-m, --models <models>` - Comma-separated list of models (default: openai,claude,gemini)
 - `--fail-on-error` - Exit with non-zero code if any model fails
@@ -123,24 +128,24 @@ tri review [options]
 - `--enhanced-report` - Generate enhanced report with model agreement analysis (default: true)
 - `--summary-only` - Only include summary in results
 
-#### Output & Formatting Options
+### Output & Formatting Options
 
 - `-o, --output <file>` - Specify the output file or directory (defaults to `.triumvirate/`)
 - `--style <type>` - Specify the output style (xml, markdown, plain)
 - `--output-show-line-numbers` - Add line numbers to each line in the output
 
-#### Filter Options
+### Filter Options
 
 - `--include <patterns>` - List of include patterns (comma-separated)
 - `-i, --ignore <patterns>` - Additional ignore patterns (comma-separated)
 - `--diff` - Only review files changed in git diff
 
-#### Task & Context Options
+### Task & Context Options
 
 - `--docs <paths...>` - List of documentation file paths to include as context
 - `--task <description>` - Specific task or question to guide the review
 
-#### Processing & Review Options
+### Processing & Review Options
 
 - `--token-limit <number>` - Maximum tokens to send to the model
 - `--token-count-encoding <encoding>` - Specify token count encoding
@@ -149,7 +154,7 @@ tri review [options]
 - `--remove-empty-lines` - Remove empty lines from code
 - `--top-files-len <number>` - Specify the number of top files to include
 
-#### Model & Threshold Options
+### Model & Threshold Options
 
 - `--agent-model <model>` - Specify the LLM for report analysis and planning (default: claude)
 - `--output-dir <dir>` - Specify the output directory (default: ./.triumvirate)
@@ -269,8 +274,6 @@ The API usage summary provides transparency about the cost of the review process
 ```bash
 tri next --input plan.json
 ```
-
-<!-- PLACEHOLDER: Add screenshot of next task output -->
 
 ## GitHub Actions Integration
 

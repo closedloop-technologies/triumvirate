@@ -24,10 +24,27 @@ We welcome contributions to Triumvirate! Whether it's bug reports, feature reque
     ```
     Alternatively, build the project first (`npm run build`) and then use the compiled output (`node dist/triumvirate.js review ...`).
 
+## Code Quality
+
+Before committing, always run:
+
+```bash
+npm run verify   # Lint, format check, type check
+npm test         # Run unit tests
+```
+
+The project uses:
+
+* **ESLint** for linting
+* **Prettier** for formatting
+* **TypeScript** for type checking
+* **Vitest** for testing
+* **Husky** for pre-commit hooks
+
 ## Submitting Issues and Pull Requests
 
-*   **Issues:** Please use the GitHub Issues tab to report bugs or suggest features. Provide as much detail as possible, including steps to reproduce, expected behavior, and actual behavior.
-*   **Pull Requests:**
+* **Issues:** Please use the GitHub Issues tab to report bugs or suggest features. Provide as much detail as possible, including steps to reproduce, expected behavior, and actual behavior.
+* **Pull Requests:**
     1.  Fork the repository.
     2.  Create a new branch for your feature or bugfix.
     3.  Make your changes.
@@ -38,15 +55,33 @@ We welcome contributions to Triumvirate! Whether it's bug reports, feature reque
 
 ## Adding New Models or Prompt Types
 
-*   **Adding Models:**
-    1.  Implement the `LLMProvider` interface in `src/utils/llm-providers.ts`.
-    2.  Add API key requirements to `src/utils/api-keys.ts`.
-    3.  Add cost information to `src/utils/constants.ts`.
-    4.  Update the model instantiation logic in `src/models.ts` (or potentially a factory if refactored).
-    5.  Add tests in `test/llmProviders.test.ts`.
-*   **Adding Prompts:**
-    1.  Create a new `.txt` file in `src/prompts/`.
-    2.  Update the `loadPromptTemplate` function in `src/prompts/index.ts` to handle the new review type.
-    3.  Add the new review type to the `ReviewType` enum in `src/utils/constants.ts` and the CLI options in `src/cli/cliRun.ts`.
+### Adding Models
+
+1. Implement the `LLMProvider` interface in `src/utils/llm-providers.ts`
+2. Add API key requirements to `src/utils/api-keys.ts`
+3. Add cost information to `llm_costs.json`
+4. Update the model instantiation logic in `src/models.ts`
+5. Add tests in `test/llmProviders.test.ts`
+
+### Adding Prompts
+
+1. Create a new `.txt` file in `src/prompts/`
+2. Update the `loadPromptTemplate` function in `src/prompts/index.ts` to handle the new review type
+3. Add the new review type to the CLI options in `src/cli/cliRun.ts`
+
+## Project Structure
+
+```text
+src/
+├── bin/           # CLI entry points
+├── cli/           # CLI commands and actions
+├── prompts/       # Review prompt templates
+├── types/         # TypeScript type definitions
+├── utils/         # Shared utilities (providers, logging, etc.)
+├── index.ts       # Main orchestration logic
+└── models.ts      # Model routing and execution
+test/              # Vitest unit tests
+baml_src/          # BAML schema definitions
+```
 
 Thank you for contributing!
