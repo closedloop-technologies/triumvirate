@@ -7,6 +7,7 @@ import { runPlanAction } from './actions/planAction.js';
 import { runCliAction } from './actions/runAction.js';
 import { runSummarizeAction } from './actions/summarizeAction.js';
 import { runUninstallAction } from './actions/uninstallAction.js';
+import { version as packageVersion } from '../../package.json';
 // Import consolidated error handling
 import { TriumvirateError, ErrorCategory } from '../utils/error-handling.js';
 import { logger } from '../utils/logger.js'; // Use the existing logger
@@ -109,9 +110,11 @@ function handleCliError(error: unknown): void {
 export const run = async () => {
     try {
         program
+            .name('triumvirate')
             .description(
                 'Triumvirate - Run codebase reviews across OpenAI, Claude, and Gemini models'
             )
+            .version(packageVersion, '-v, --version', 'show version information')
             // Add global options to the root command
             .option(
                 '--agent-model <model>',
@@ -133,18 +136,24 @@ export const run = async () => {
                 'Specify a task description for LLM-driven task generation'
             )
             .option('--verbose', 'enable verbose logging for detailed output')
-            .option('--quiet', 'disable all output to stdout')
-            .option('-v, --version', 'show version information');
+            .option('--quiet', 'disable all output to stdout');
 
         // Review command (previously the report command)
         const reviewCommand = program
             .command('review')
             .description('Run a code review with default settings and creates the summary')
             .argument('[directories...]', 'list of directories to process', ['.'])
-            // Triumvirate-specific options
+            // Model tier selection options
+            .option(
+                '--tier <tier>',
+                'model tier: cheap, standard, or premium (default: standard)',
+                'standard'
+            )
+            .option('--context <size>', 'context size: 100k, 1m, or auto (default: auto)', 'auto')
+            // Triumvirate-specific options (legacy - use --tier instead)
             .option(
                 '-m, --models <models>',
-                'comma-separated list of models (default: openai/o3,anthropic/claude-opus-4-20250514,gemini/gemini-2.5-pro-preview-06-05)'
+                '[DEPRECATED] comma-separated list of models - use --tier instead'
             )
             .option('--task <task>', 'task description to focus the review')
             .option(
@@ -212,8 +221,12 @@ export const run = async () => {
             `
 Option Groups:
 
+  Model Selection:
+    --tier <tier>                  Model tier: cheap, standard, or premium (default: standard)
+    --context <size>               Context size: 100k, 1m, or auto (default: auto)
+    -m, --models                   [DEPRECATED] Use --tier instead
+
   Triumvirate Options:
-    -m, --models                   Models to use for code review
     --task                         Task description for the review (e.g. security, performance, architecture, docs)
     --doc                          Documentation file or URL (supports multiple)
     --fail-on-error                Exit with error if any model fails

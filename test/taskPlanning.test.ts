@@ -139,6 +139,8 @@ describe('Task Planning Pipeline', () => {
         vi.clearAllMocks();
         // Set up environment
         process.env['ANTHROPIC_API_KEY'] = 'test-key';
+        // Use legacy providers instead of BAML for testing (BAML requires actual client)
+        process.env['USE_LEGACY'] = 'true';
     });
 
     it('planAction should process summary.md and produce a task plan', async () => {
