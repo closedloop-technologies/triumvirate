@@ -1,6 +1,6 @@
 {
     "name": "@justbuild/triumvirate",
-    "version": "0.3.3",
+    "version": "0.4.0",
     "description": "Run codebase reviews across OpenAI, Claude, and Gemini models.",
     "type": "module",
     "bin": {
@@ -20,12 +20,15 @@
     "scripts": {
         "start": "node dist/triumvirate.js",
         "dev": "tsx src/bin/triumvirate.ts",
-        "build": "tsup",
+        "build": "npx baml-cli generate && tsup",
+        "baml:generate": "npx baml-cli generate",
         "clean": "rm -rf dist",
         "rebuild": "npm run clean && npm run build",
-        "prepare": "husky install",
+        "prepare": "husky",
         "prepublishOnly": "npm run verify && npm run build",
         "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "test:e2e": "node scripts/e2e-test.js",
         "lint": "eslint . --max-warnings=0",
         "lint:fix": "eslint . --fix",
         "format": "prettier --write .",
@@ -33,7 +36,11 @@
         "type-check": "tsc -p src/tsconfig.json --noEmit --resolveJsonModule --esModuleInterop",
         "verify": "npm run lint && npm run format:check && npm run type-check",
         "precommit": "lint-staged && npm run type-check:changed",
-        "type-check:changed": "node scripts/check-types-changed.js"
+        "type-check:changed": "node scripts/check-types-changed.js",
+        "check:spelling": "node scripts/check-spelling.js",
+        "check:coverage": "node scripts/check-coverage.js",
+        "verify:deployment": "node scripts/verify-deployment.js",
+        "release:prepare": "npm run verify && npm run test && npm run test:e2e && npm run check:spelling && npm run check:coverage && npm run verify:deployment"
     },
     "keywords": [
         "review",
@@ -62,35 +69,36 @@
         "minify": true
     },
     "dependencies": {
-        "@anthropic-ai/sdk": "^0.8.1",
-        "@google/genai": "^0.7.0",
-        "@google/generative-ai": "^0.24.0",
-        "cli-spinners": "^2.9.2",
-        "commander": "^11.0.0",
-        "dotenv": "^16.0.0",
-        "log-update": "^6.0.0",
-        "openai": "^4.91.1",
+        "@anthropic-ai/sdk": "^0.74.0",
+        "@boundaryml/baml": "^0.219.0",
+        "@google/genai": "^1.41.0",
+        "@google/generative-ai": "^0.24.1",
+        "cli-spinners": "^3.4.0",
+        "commander": "^14.0.3",
+        "dotenv": "^17.3.1",
+        "log-update": "^7.1.0",
+        "openai": "^6.22.0",
         "picocolors": "^1.0.0",
-        "repomix": "^0.3.1"
+        "repomix": "^1.11.1"
     },
     "devDependencies": {
         "@types/log-update": "^3.1.0",
-        "@types/node": "20.x",
-        "@typescript-eslint/eslint-plugin": "^8.29.0",
-        "@typescript-eslint/parser": "^8.29.0",
-        "esbuild": "^0.25.2",
-        "eslint": "^8.56.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-import": "^2.29.1",
+        "@types/node": "^25.2.3",
+        "@typescript-eslint/eslint-plugin": "^8.56.0",
+        "@typescript-eslint/parser": "^8.56.0",
+        "esbuild": "^0.27.3",
+        "eslint": "^9.28.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-node": "^11.1.0",
-        "husky": "^8.0.0",
-        "lint-staged": "^15.5.0",
-        "prettier": "^3.1.1",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
+        "prettier": "^3.8.1",
         "ts-node": "^10.9.2",
-        "tsup": "^8.4.0",
-        "tsx": "^4.19.3",
-        "typescript": "5.6.x",
-        "vitest": "^3.0.8"
+        "tsup": "^8.5.1",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3",
+        "vitest": "^4.0.18"
     },
     "lint-staged": {
         "*.{ts,tsx,js,jsx}": [

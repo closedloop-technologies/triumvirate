@@ -4,7 +4,11 @@ import * as path from 'path';
 import pc from 'picocolors';
 
 // Define the log file path
+// Default log file path is relative to current working directory
 const LOG_FILE_PATH = path.join(process.cwd(), 'tri-review-api-calls.jsonl');
+
+// Allow overriding log file path with environment variable
+const logFilePath = process.env['TRI_LOG_FILE_PATH'] || LOG_FILE_PATH;
 
 // Interface for API call logs
 export interface ApiCallLog {
@@ -35,7 +39,7 @@ export function logApiCall(logData: ApiCallLog): void {
 
     // Append to JSONL file
     try {
-        fs.appendFileSync(LOG_FILE_PATH, jsonlEntry + '\n');
+        fs.appendFileSync(logFilePath, jsonlEntry + '\n');
     } catch (error) {
         console.error(`Error writing to API log file: ${(error as Error).message}`);
     }

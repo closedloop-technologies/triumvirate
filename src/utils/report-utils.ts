@@ -3,10 +3,17 @@ import fs from 'fs';
 import pc from 'picocolors';
 
 import type { ApiCallLog } from './api-logger.js';
+import {
+    extractCategoriesWithBAML,
+    extractFindingsWithBAML,
+    generateInsightsWithBAML,
+    extractPrioritiesWithBAML,
+    useBAML,
+} from './baml-providers.js';
 import { MAX_API_RETRIES } from './constants';
 import { enhancedLogger } from './enhanced-logger.js';
 import { safeReportGenerationAsync, safeDataProcessing } from './error-handling-extensions';
-import { ClaudeProvider } from './llm-providers';
+import { ClaudeProvider, type LLMProvider } from './llm-providers';
 import { Spinner } from '../cli/utils/spinner';
 import type { FindingItem, ModelResult } from '../types/model-responses';
 import {
@@ -48,27 +55,32 @@ export interface CategoryResponse {
 /**
  * Extract categories from model reviews using structured output from any available LLM provider
  */
-export async function extractCategories(reviews: string[]): Promise<ReviewCategory[]> {
-    const provider = new ClaudeProvider();
+export async function extractCategories(
+    reviews: string[],
+    provider?: LLMProvider
+): Promise<ReviewCategory[]> {
+    // Use provided provider or default to Claude
+    provider = provider || new ClaudeProvider();
     try {
-        // Create a prompt for category extraction
+        // Use BAML if enabled
+        if (useBAML()) {
+            const reviewsText = reviews.join('\n\n');
+            const bamlResponse = await extractCategoriesWithBAML(reviewsText);
+            // BAML wrapper already logs the API call
+            return bamlResponse.data.categories;
+        }
+
+        // Legacy: Create a prompt for category extraction
         const prompt = createCategoryExtractionPrompt(reviews);
 
         // Define the schema for structured output
         const schema = createCategorySchema();
 
         // Call the best available LLM provider with structured output
-        const categoriesResponse = await provider.runStructured<CategoryResponse>(
-            prompt,
-            schema,
-            MAX_API_RETRIES,
-            'category_extraction',
-            'Extract categories from model reviews',
-            8192 // Increased token limit to handle larger reviews
-        );
+        const categoriesResponse = await provider.runStructured<CategoryResponse>(prompt, schema);
         const apilog: ApiCallLog = {
             timestamp: new Date().toISOString(),
-            model: provider.model,
+            model: provider.name, // Use provider name instead of model
             operation: 'categories',
             inputTokens: categoriesResponse.usage.input_tokens,
             outputTokens: categoriesResponse.usage.output_tokens,
@@ -89,7 +101,7 @@ export async function extractCategories(reviews: string[]): Promise<ReviewCatego
         // Use the new error handling utilities for consistent error handling
         const apilog: ApiCallLog = {
             timestamp: new Date().toISOString(),
-            model: provider.model,
+            model: provider.name, // Use provider name instead of model
             operation: 'structured',
             inputTokens: 0,
             outputTokens: 0,
@@ -613,8 +625,8 @@ function formatAndLimitFindings(findings: string[], limit: number): string[] {
         }
 
         // Truncate if still too long
-        if (cleaned.length > 80) {
-            cleaned = cleaned.substring(0, 77) + '...';
+        if (cleaned.length > 800) {
+            cleaned = cleaned.substring(0, 797) + '...';
         }
 
         return cleaned;
@@ -732,8 +744,8 @@ function formatFinding(text: string): string {
     }
 
     // Truncate if still too long
-    if (formatted.length > 80) {
-        formatted = formatted.substring(0, 77) + '...';
+    if (formatted.length > 800) {
+        formatted = formatted.substring(0, 797) + '...';
     }
 
     return formatted;
@@ -830,12 +842,18 @@ export function calculateAgreementStats(
 }
 
 /**
- * Generate a comprehensive code review report with structured Claude analysis
+ * Generate a comprehensive code review report with structured LLM analysis
+ * @param modelResults The results from each model's review
+ * @param provider The LLM provider to use for report generation (defaults to Claude if not provided)
+ * @param spinner Optional spinner for progress indication
  */
 export async function generateCodeReviewReport(
     modelResults: ModelResult[],
+    provider?: LLMProvider,
     spinner?: Spinner
 ): Promise<CodeReviewReport> {
+    // Use provided provider or default to Claude
+    provider = provider || new ClaudeProvider();
     // Track any resources that need cleanup
     const resources: { cleanup: () => void }[] = [];
 
@@ -1214,7 +1232,27 @@ export async function extractFindings(
 ): Promise<ReviewFinding[]> {
     const provider = new ClaudeProvider();
     try {
-        // Create the prompt for findings extraction
+        // Use BAML if enabled
+        if (useBAML()) {
+            const reviewsText = reviews.join('\n\n');
+            const categoriesText = categories.map(c => `${c.name}: ${c.description}`).join('\n');
+            const modelsText = models.map(m => m.name || m.id).join(', ');
+            const bamlResponse = await extractFindingsWithBAML(
+                reviewsText,
+                categoriesText,
+                modelsText
+            );
+            // BAML wrapper already logs the API call
+            // Map BAML findings to local FindingItem type (convert null to undefined)
+            const mappedFindings = bamlResponse.data.findings.map(f => ({
+                ...f,
+                recommendation: f.recommendation ?? undefined,
+                codeExample: f.codeExample ?? undefined,
+            }));
+            return mapExtractedFindingsToRequiredFormat(mappedFindings, categories, models);
+        }
+
+        // Legacy: Create the prompt for findings extraction
         const prompt = createFindingsExtractionPrompt(reviews, categories, models);
 
         // Define the schema for the structured output
@@ -1512,7 +1550,27 @@ async function extractModelInsights(
 ): Promise<ModelInsight[]> {
     const provider = new ClaudeProvider();
     try {
-        // Create prompt for extracting model-specific insights
+        // Use BAML if enabled
+        if (useBAML()) {
+            const reviewsText = reviews
+                .map(
+                    (review, index) =>
+                        `MODEL ${index + 1} (${models[index]?.name || 'Unknown'}): ${review.slice(0, 3000)}`
+                )
+                .join('\n\n');
+            const modelsText = models.map(m => m.name || m.id).join(', ');
+            const bamlResponse = await generateInsightsWithBAML(reviewsText, modelsText);
+            // BAML wrapper already logs the API call
+            // Map BAML insights to local format (BAML has different structure)
+            const mappedInsights = bamlResponse.data.modelInsights.map(i => ({
+                modelId: i.modelId,
+                insight: i.strengths[0] || i.uniqueContributions[0] || '',
+                details: i.uniqueContributions.join('; ') || i.strengths.join('; '),
+            }));
+            return mapModelInsightsToRequiredFormat(mappedInsights, models);
+        }
+
+        // Legacy: Create prompt for extracting model-specific insights
         const prompt = `
 I need you to identify unique insights or perspectives that each model contributes to the code reviews.
 
@@ -1667,7 +1725,19 @@ export async function generatePrioritizedRecommendations(
             });
         }
 
-        // Create prompt for prioritizing recommendations
+        // Use BAML if enabled
+        if (useBAML()) {
+            const findingsText = recommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n');
+            const bamlResponse = await extractPrioritiesWithBAML(findingsText);
+            // BAML wrapper already logs the API call
+            return {
+                [Priority.HIGH]: bamlResponse.data.highPriority || [],
+                [Priority.MEDIUM]: bamlResponse.data.mediumPriority || [],
+                [Priority.LOW]: bamlResponse.data.lowPriority || [],
+            };
+        }
+
+        // Legacy: Create prompt for prioritizing recommendations
         const prompt = `
 I need you to prioritize these recommendations from a code review:
 

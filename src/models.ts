@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 // Import only the types and utilities we still need
 import type { ModelUsage } from './types/usage';
 import { MODEL_API_KEYS } from './utils/api-keys';
+import { reviewCodeWithBAML, useBAML } from './utils/baml-providers.js';
 import { MAX_API_RETRIES } from './utils/constants';
 import { enhancedLogger } from './utils/enhanced-logger.js';
 import { ClaudeProvider, GeminiProvider, OpenAIProvider } from './utils/llm-providers';
@@ -102,15 +103,24 @@ export async function runModelReview(
     const prompt = `Please review the following codebase for bugs, design flaws, and potential improvements:\n\n${code}`;
 
     try {
+        // Use BAML if enabled
+        if (useBAML()) {
+            const response = await reviewCodeWithBAML(code);
+            return {
+                text: response.data,
+                usage: response.usage,
+            };
+        }
+
+        // Legacy: Use provider-specific implementation
         const { provider, model } = parseModelSpec(modelName);
         let modelProvider: OpenAIProvider | ClaudeProvider | GeminiProvider;
-
         if (provider === 'openai' || provider === 'openrouter' || provider === 'azure') {
             modelProvider = new OpenAIProvider(model || 'gpt-4.1');
         } else if (provider === 'claude' || provider === 'anthropic') {
-            modelProvider = new ClaudeProvider(model || 'claude-3-7-sonnet-20250219');
+            modelProvider = new ClaudeProvider(model || 'claude-opus-4-6');
         } else if (provider === 'gemini' || provider === 'google') {
-            modelProvider = new GeminiProvider(model || 'gemini-2.5-pro-exp-03-25');
+            modelProvider = new GeminiProvider(model || 'gemini-3-pro-preview');
         } else {
             // Default to OpenAI-compatible provider
             modelProvider = new OpenAIProvider(model || provider);

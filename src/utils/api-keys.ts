@@ -25,7 +25,7 @@ export const MODEL_API_KEYS: ApiKeyRequirements[] = [
     },
     {
         model: 'gemini',
-        envVar: 'GOOGLE_API_KEY',
+        envVar: 'GEMINI_API_KEY',
         format: /^[A-Za-z0-9_-]{33,}$/,
         minLength: 33,
     },
@@ -145,12 +145,12 @@ To set up API keys:
 2. Add your API keys to the .env file:
    OPENAI_API_KEY=your-openai-key (starts with 'sk-')
    ANTHROPIC_API_KEY=your-anthropic-key (starts with 'sk-ant-')
-   GOOGLE_API_KEY=your-google-key
+   GEMINI_API_KEY=your-google-key
 
 3. Alternatively, set them as environment variables:
    export OPENAI_API_KEY=your-openai-key
    export ANTHROPIC_API_KEY=your-anthropic-key
-   export GOOGLE_API_KEY=your-google-key
+   export GEMINI_API_KEY=your-google-key
 
 You only need to set the API keys for the models you plan to use.
 

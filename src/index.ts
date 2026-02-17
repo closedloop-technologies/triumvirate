@@ -1,17 +1,21 @@
-// Modify src/index.ts
-
-import * as fs from 'fs';
+import * as fsPromises from 'fs/promises'; // Use promises API for async file operations
+import * as path from 'path'; // Import path module
 
 import pc from 'picocolors';
 
 import { Spinner } from './cli/utils/spinner';
 import { runModelReview } from './models';
 import { runRepomix } from './repomix';
+import type { RepomixResult } from './repomix'; // Import RepomixResult type
 import type { CliOptions, CodeReviewReport, ModelReviewResult } from './types/report';
 import { normalizeUsage } from './types/usage';
-import { DEFAULT_REVIEW_OPTIONS, getDynamicTokenLimit } from './utils/constants';
-import { estimateCost } from './utils/llm-providers';
+import { DEFAULT_REVIEW_OPTIONS } from './utils/constants';
+import { TriumvirateError, ErrorCategory } from './utils/error-handling'; // Use consolidated error handling
+import type { LLMProvider } from './utils/llm-providers'; // Import provider type
+import { estimateCost } from './utils/llm-providers'; // Import cost estimator
+import { ClaudeProvider, OpenAIProvider, GeminiProvider } from './utils/llm-providers'; // Import provider classes
 import { generateCodeReviewReport, formatReportAsMarkdown } from './utils/report-utils';
+import { resolveDocs, createSystemPrompt } from './utils/system-prompt';
 
 export interface TriumvirateReviewOptions {
     models?: string[];
@@ -23,356 +27,37 @@ export interface TriumvirateReviewOptions {
     tokenLimit?: number;
     reviewType?: string;
     repomixOptions?: Record<string, unknown>;
+    agentModel?: string; // DoD: Add agent model
+    passThreshold?: 'strict' | 'lenient' | 'none'; // DoD: Add pass threshold
     enhancedReport?: boolean;
-    systemPrompt?: string;
-    options?: CliOptions;
+    options?: CliOptions; // Keep original options for spinner control etc.
 }
 
-/**
- * Run a triumvirate review across multiple LLMs
- * @param options - Options for the review
- * @returns Array of review results from each model
- */
-export async function runTriumvirateReview({
-    models = DEFAULT_REVIEW_OPTIONS.MODELS,
-    exclude = DEFAULT_REVIEW_OPTIONS.EXCLUDE,
-    diffOnly = DEFAULT_REVIEW_OPTIONS.DIFF_ONLY,
-    outputPath = DEFAULT_REVIEW_OPTIONS.OUTPUT_PATH,
-    failOnError = DEFAULT_REVIEW_OPTIONS.FAIL_ON_ERROR,
-    summaryOnly = DEFAULT_REVIEW_OPTIONS.SUMMARY_ONLY, // eslint-disable-line @typescript-eslint/no-unused-vars
-    tokenLimit,
-    reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
-    repomixOptions = {},
-    enhancedReport = true, // Enable enhanced reporting by default
-    systemPrompt,
-    options = {},
-}: TriumvirateReviewOptions = {}) {
-    // Initialize results array
-    const results = [];
-    // Determine the effective token limit based on selected models if not provided
-    const effectiveTokenLimit =
-        typeof tokenLimit === 'number' && !Number.isNaN(tokenLimit)
-            ? tokenLimit
-            : getDynamicTokenLimit(models);
-
+// --- Helper Function: Prepare Codebase ---
+async function prepareCodebase(
+    options: TriumvirateReviewOptions
+): Promise<{ repomixResult: RepomixResult; codebase: string }> {
     console.log('Packaging codebase with repomix...');
-
-    // Merge options for repomix
     const mergedRepomixOptions = {
-        exclude,
-        diffOnly,
-        tokenLimit: effectiveTokenLimit,
-        ...repomixOptions,
+        exclude: options.exclude,
+        diffOnly: options.diffOnly,
+        tokenLimit: options.tokenLimit,
+        ...options.repomixOptions,
     };
 
-    // Step 2: Call repomix to package the codebase
-    let repomixResult;
-    try {
-        repomixResult = await runRepomix(mergedRepomixOptions);
-        console.log(`Codebase packaged with ${repomixResult.tokenCount} tokens`);
-    } catch (error) {
-        console.error('Error running repomix:', error);
-        return models.map(model => ({
-            model,
-            review: `ERROR: Failed to package codebase: ${(error as Error).message}`,
-            metrics: {
-                latency: '0ms',
-                cost: '$0.00',
-                error: (error as Error).message,
-            },
-        }));
-    }
-
-    // Read the packaged codebase
-    const codebase = fs.readFileSync(repomixResult.filePath, 'utf8');
-
-    // Step 3: Generate prompt template based on review type or custom system prompt
-    const promptTemplate = systemPrompt
-        ? `${systemPrompt}\n\n{{CODEBASE}}`
-        : generatePromptTemplate(reviewType, repomixResult);
-
-    // Step 4: Generate prompt and send to LLMs
-    const prompt = promptTemplate.replace('{{CODEBASE}}', codebase);
-
-    console.log(`Using review type: ${reviewType}`);
-
-    // Step 5: Send to all models in parallel and collect responses
-    const startTime = Date.now();
-
-    // Create an async function to process each model
-    const processModel = async (model: string) => {
-        try {
-            const modelStartTime = Date.now();
-
-            const { text: review, usage } = await runModelReview(prompt, model);
-            const normalizedUsage = normalizeUsage(usage);
-            const modelEndTime = Date.now();
-
-            // Calculate latency
-            const latency = modelEndTime - modelStartTime;
-            const latencyStr = `${latency}ms`;
-            console.log(`${model} review completed in ${latencyStr}`);
-
-            // Estimate cost based on model and token count
-            const cost = estimateCost(
-                model,
-                normalizedUsage.input_tokens,
-                normalizedUsage.output_tokens
-            );
-
-            return {
-                model,
-                summary: summarizeReview(typeof review === 'string' ? review : String(review)),
-                review: review,
-                metrics: {
-                    latency: latency,
-                    tokenInput: normalizedUsage.input_tokens,
-                    tokenOutput: normalizedUsage.output_tokens,
-                    tokenTotal: normalizedUsage.total_tokens,
-                    cost: `${cost.toFixed(8)}`,
-                },
-                error: false,
-            };
-        } catch (error) {
-            console.error(`Error with model ${model}:`, error);
-            return {
-                model,
-                summary: `ERROR: ${(error as Error).message}`,
-                review: `ERROR: ${(error as Error).message}`,
-                metrics: {
-                    latency: 0,
-                    tokenInput: 0,
-                    tokenOutput: 0,
-                    tokenTotal: 0,
-                    cost: '$0.00',
-                    error: (error as Error).message,
-                },
-                error: true,
-            };
-        }
-    };
-
-    // Process all models in parallel with improved error handling
-    const spinner = new Spinner('Preparing codebase for review...', {
-        quiet: options?.quiet,
-        verbose: options?.verbose,
-    });
-    spinner.start();
-    // Track model status for spinner updates
-    const model_status: Record<string, string> = {};
-    models.forEach(model => {
-        model_status[model] = 'pending';
-    });
-
-    console.log(`Running a review gauntlet across ${models.length} models:`);
-
-    // Process models with individual promises that update the spinner
-    const updateSpinner = () => {
-        // Lets assume the spinner is at the bottom row so lets update it without adding a new ling
-        spinner.update(
-            ` [${models
-                .map(model => {
-                    if (model_status[model] === 'fulfilled') {
-                        return pc.green(model); // Successful
-                    } else if (model_status[model] === 'failed') {
-                        return pc.red(model); // Failed
-                    } else {
-                        return pc.blue(model); // Pending
-                    }
-                })
-                .join(', ')}]`
-        );
-    };
-    updateSpinner();
-
-    const modelResults: ModelReviewResult[] = [];
-
-    // Process each model and update spinner when it completes
-    await Promise.all(
-        models.map(async model => {
-            try {
-                const result = await processModel(model);
-                model_status[model] = 'fulfilled';
-                modelResults.push(result);
-                updateSpinner();
-            } catch (error) {
-                model_status[model] = 'failed';
-                console.error(`Error with model ${model}:`, error);
-                modelResults.push({
-                    model,
-                    summary: `ERROR: ${error instanceof Error ? error.message : String(error)}`,
-                    review: `ERROR: ${error instanceof Error ? error.message : String(error)}`,
-                    metrics: {
-                        latency: 0,
-                        tokenInput: 0,
-                        tokenOutput: 0,
-                        tokenTotal: 0,
-                        cost: '$0.00',
-                        error: error instanceof Error ? error.message : String(error),
-                    },
-                    error: true,
-                });
-                updateSpinner();
-            }
-        })
-    );
-
-    // Check if any model failed and we should fail on error
-    const hasError = modelResults.some(result => result.error);
-
-    if (hasError) {
-        spinner.fail(
-            `Failed to complete review across all models: [${models
-                .map(model => {
-                    if (model_status[model] === 'fulfilled') {
-                        return pc.green(model); // Successful
-                    } else if (model_status[model] === 'failed') {
-                        return pc.red(model); // Failed
-                    } else {
-                        return pc.blue(model); // Pending
-                    }
-                })
-                .join(', ')}]`
-        );
-    } else {
-        spinner.succeed(
-            `Completed review across models: [${models
-                .map(model => {
-                    if (model_status[model] === 'fulfilled') {
-                        return pc.green(model); // Successful
-                    } else if (model_status[model] === 'failed') {
-                        return pc.red(model); // Failed
-                    } else {
-                        return pc.blue(model); // Pending
-                    }
-                })
-                .join(', ')}]`
-        );
-    }
-
-    if (hasError && failOnError) {
-        // Filter out successful results if we're failing on error
-        for (const result of modelResults.filter(result => result.error)) {
-            const { ...rest } = result;
-            results.push(rest);
-        }
-    } else {
-        // Add all results (removing the temporary error flag)
-        for (const result of modelResults) {
-            const { ...rest } = result;
-            results.push(rest);
-        }
-    }
-
-    const totalTime = Date.now() - startTime;
-    console.log(`Review completed in ${totalTime}ms`);
-
-    // Step 6: Write results to output file if specified
-    if (outputPath) {
-        try {
-            // Check if outputPath is a directory
-            let isDirectory = false;
-            try {
-                const fs_stat = fs.statSync(outputPath);
-                isDirectory = fs_stat.isDirectory();
-            } catch {
-                // Path doesn't exist yet - not a directory
-                isDirectory = false;
-            }
-
-            let jsonOutputPath = outputPath;
-            let mdOutputPath = outputPath.replace(/\.json$/, '.md');
-
-            if (isDirectory) {
-                // If it's a directory, create files with default names
-                const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-                jsonOutputPath = `${outputPath}/tri-review-${timestamp}.json`;
-                mdOutputPath = `${outputPath}/tri-review-${timestamp}.md`;
-                console.log(
-                    `Output path is a directory. Writing to ${jsonOutputPath} and ${mdOutputPath}`
-                );
-            }
-
-            // Generate regular JSON output (backward compatible)
-            fs.writeFileSync(jsonOutputPath, JSON.stringify(results, null, 2));
-
-            // Generate enhanced report if enabled
-            if (enhancedReport) {
-                // Generate structured report
-                const report: CodeReviewReport = await generateCodeReviewReport(results);
-
-                // Save as JSON
-                fs.writeFileSync(
-                    jsonOutputPath.replace(/\.json$/, '-enhanced.json'),
-                    JSON.stringify(report, null, 2)
-                );
-
-                // Format as Markdown and save
-                const markdown = formatReportAsMarkdown(report);
-                fs.writeFileSync(mdOutputPath, markdown);
-                console.log(`Enhanced report written to ${mdOutputPath}`);
-            } else {
-                // Generate simple Markdown (backward compatible)
-                let mdResults = '# Triumvirate Code Review\n\n';
-                mdResults += '## Overview\n\n';
-                mdResults += '| Model | Status | Latency | Cost | Total Tokens |\n';
-                mdResults += '|-------|--------|---------|------|-------------|\n';
-
-                results.forEach(result => {
-                    const status = result.metrics.error ? '❌ Failed' : '✅ Passed';
-                    const latency = result.metrics.latency ? `${result.metrics.latency}ms` : 'N/A';
-                    const cost = result.metrics.cost || 'N/A';
-                    const tokens = result.metrics.tokenTotal || 'N/A';
-
-                    mdResults += `| ${result.model} | ${status} | ${latency} | $${cost} | ${tokens} |\n`;
-                });
-
-                mdResults += '\n';
-
-                mdResults += '## Summaries\n\n';
-                mdResults += results
-                    .map(result => {
-                        return `### ${result.model}\n\n${result.summary}`;
-                    })
-                    .join('\n\n');
-                mdResults += '## Results\n\n';
-
-                mdResults += results
-                    .map(result => {
-                        return `### ${result.model}\n\n${result.review}`;
-                    })
-                    .join('\n\n');
-
-                fs.writeFileSync(mdOutputPath, mdResults);
-            }
-
-            console.log(`Results written to ${jsonOutputPath}`);
-        } catch (error) {
-            console.error(`Failed to write results to file: ${(error as Error).message}`);
-            console.error('Please ensure the output path is valid and you have write permissions.');
-        }
-    }
-
-    // Clean up temporary file
-    try {
-        await fs.promises.unlink(repomixResult.filePath);
-    } catch (error) {
-        console.warn('Could not delete temporary file:', error);
-    }
-
-    spinner.succeed('Code review completed successfully!');
-    return results;
+    const repomixResult = await runRepomix(mergedRepomixOptions);
+    console.log(`Codebase packaged with ${repomixResult.tokenCount} tokens`);
+    // DoD: Use async file read
+    const codebase = await fsPromises.readFile(repomixResult.filePath, 'utf8');
+    return { repomixResult, codebase };
 }
 
-// Rest of the file remains unchanged
-// ...
-
-/**
- * Generate prompt template based on review type
- */
-function generatePromptTemplate(
+// --- Helper Function: Generate Prompt ---
+function generateReviewPrompt(
     reviewType: string,
-    repomixResult: { directoryStructure: string; summary: string }
+    repomixResult: RepomixResult,
+    codebase: string,
+    systemPrompt?: string
 ): string {
     // Base template with structure info
     const baseTemplate = `You are an expert code reviewer. I'm going to share a codebase with you for review.
@@ -388,82 +73,133 @@ Please review the following codebase and provide feedback:
 {{CODEBASE}}`;
 
     // Specific templates for different review types
-    const templates = {
-        general: `${baseTemplate}
-
-Provide a general review focusing on:
-1. Code quality and readability
-2. Potential bugs or issues
-3. Architecture and design
-4. Performance concerns
-5. Security considerations
-
-Format your response with these sections and provide specific examples where possible.`,
-
-        security: `${baseTemplate}
-
-Conduct a thorough security review focusing on:
-1. Authentication and authorization vulnerabilities
-2. Input validation and sanitization
-3. Injection vulnerabilities (SQL, XSS, etc.)
-4. Sensitive data exposure
-5. Security misconfiguration
-6. Hard-coded secrets or credentials
-7. Insecure cryptographic storage
-8. Insufficient logging and monitoring
-
-Categorize issues by severity (Critical, High, Medium, Low) and provide specific recommendations for each.`,
-
-        performance: `${baseTemplate}
-
-Conduct a detailed performance review focusing on:
-1. Computational complexity analysis
-2. Memory usage and potential leaks
-3. Asynchronous operations and concurrency
-4. Database queries and data access patterns
-5. Network requests and API usage
-6. Resource-intensive operations
-7. Caching opportunities
-8. Bundle size considerations
-
-For each issue, estimate the performance impact and provide specific recommendations for improvement.`,
-
-        architecture: `${baseTemplate}
-
-Provide an in-depth architecture review focusing on:
-1. Overall system design and component organization
-2. Separation of concerns and modularity
-3. Design patterns used (and opportunities for better patterns)
-4. Dependency management and coupling
-5. API design and consistency
-6. Error handling strategy
-7. Testability of the codebase
-8. Scalability considerations
-
-Identify architectural strengths and weaknesses, with specific recommendations for improvement.`,
-
-        docs: `${baseTemplate}
-
-Review the codebase documentation focusing on:
-1. Code comments quality and coverage
-2. API documentation completeness
-3. README files and usage instructions
-4. Inline documentation of complex logic
-5. Type definitions and interfaces
-6. Examples and usage patterns
-7. Missing documentation areas
-
-Suggest specific documentation improvements with examples.`,
-    };
-
-    // Use type assertion to handle the string index access
-    return (templates as Record<string, string>)[reviewType] || templates.general;
+    let specificTemplate = '';
+    if (systemPrompt) {
+        specificTemplate = `${baseTemplate}\n\n${systemPrompt}`;
+    } else {
+        const templates: Record<string, string> = {
+            general: `${baseTemplate}\n\nProvide a general review focusing on:\n1. Code quality and readability\n2. Potential bugs or issues\n3. Architecture and design\n4. Performance concerns\n5. Security considerations\n\nFormat your response with these sections and provide specific examples where possible.`,
+            security: `${baseTemplate}\n\nConduct a thorough security review focusing on:\n1. Authentication and authorization vulnerabilities\n2. Input validation and sanitization\n3. Injection vulnerabilities (SQL, XSS, etc.)\n4. Sensitive data exposure\n5. Security misconfiguration\n6. Hard-coded secrets or credentials\n7. Insecure cryptographic storage\n8. Insufficient logging and monitoring\n\nCategorize issues by severity (Critical, High, Medium, Low) and provide specific recommendations for each.`,
+            performance: `${baseTemplate}\n\nConduct a detailed performance review focusing on:\n1. Computational complexity analysis\n2. Memory usage and potential leaks\n3. Asynchronous operations and concurrency\n4. Database queries and data access patterns\n5. Network requests and API usage\n6. Resource-intensive operations\n7. Caching opportunities\n8. Bundle size considerations\n\nFor each issue, estimate the performance impact and provide specific recommendations for improvement.`,
+            architecture: `${baseTemplate}\n\nProvide an in-depth architecture review focusing on:\n1. Overall system design and component organization\n2. Separation of concerns and modularity\n3. Design patterns used (and opportunities for better patterns)\n4. Dependency management and coupling\n5. API design and consistency\n6. Error handling strategy\n7. Testability of the codebase\n8. Scalability considerations\n\nIdentify architectural strengths and weaknesses, with specific recommendations for improvement.`,
+            docs: `${baseTemplate}\n\nReview the codebase documentation focusing on:\n1. Code comments quality and coverage\n2. API documentation completeness\n3. README files and usage instructions\n4. Inline documentation of complex logic\n5. Type definitions and interfaces\n6. Examples and usage patterns\n7. Missing documentation areas\n\nSuggest specific documentation improvements with examples.`,
+        };
+        specificTemplate = templates[reviewType] || templates['general'] || '';
+    }
+    return specificTemplate.replace('{{CODEBASE}}', codebase);
 }
 
-/**
- * Extract a meaningful summary from a longer review
- * This implementation looks for section headings and key points rather than just the first few sentences
- */
+// --- Helper Function: Execute Reviews ---
+async function executeReviews(
+    prompt: string,
+    models: string[],
+    spinner: Spinner
+): Promise<ModelReviewResult[]> {
+    const startTime = Date.now();
+    console.log(`Running a review gauntlet across ${models.length} models:`);
+
+    // Track model status for spinner updates
+    const modelStatus: Record<string, string> = {};
+    models.forEach(model => {
+        modelStatus[model] = 'pending';
+    });
+
+    const updateSpinner = () => {
+        spinner.update(
+            ` [${models
+                .map(model => {
+                    const status = modelStatus[model];
+                    if (status === 'fulfilled') return pc.green(model);
+                    if (status === 'failed') return pc.red(model);
+                    return pc.blue(model); // pending
+                })
+                .join(', ')}]`
+        );
+    };
+    updateSpinner(); // Initial update
+
+    // Process each model and update spinner when it completes
+    const results = await Promise.all(
+        models.map(async model => {
+            let result: ModelReviewResult;
+            try {
+                const modelStartTime = Date.now();
+                const { text: review, usage } = await runModelReview(prompt, model); // Assuming runModelReview handles its own errors and logging
+                const normalizedUsage = normalizeUsage(usage);
+                const modelEndTime = Date.now();
+                const latency = modelEndTime - modelStartTime;
+                const cost = estimateCost(
+                    model,
+                    normalizedUsage.input_tokens,
+                    normalizedUsage.output_tokens
+                );
+
+                result = {
+                    model,
+                    summary: summarizeReview(typeof review === 'string' ? review : String(review)),
+                    review: review,
+                    metrics: {
+                        latency: latency,
+                        tokenInput: normalizedUsage.input_tokens,
+                        tokenOutput: normalizedUsage.output_tokens,
+                        tokenTotal: normalizedUsage.total_tokens,
+                        cost: `${cost.toFixed(8)}`,
+                        error: undefined, // Explicitly set error to undefined on success
+                    },
+                    error: false,
+                };
+                modelStatus[model] = 'fulfilled';
+            } catch (error) {
+                const triumvirateError =
+                    error instanceof TriumvirateError
+                        ? error
+                        : new TriumvirateError(
+                              error instanceof Error ? error.message : String(error),
+                              ErrorCategory.UNKNOWN,
+                              model, // Use model name as component
+                              false,
+                              error
+                          );
+                // Error is already logged by withErrorHandlingAndRetry or handleModelError
+                // console.error(`Error with model ${model}:`, triumvirateError); // Already logged
+                result = {
+                    model,
+                    summary: `ERROR: ${triumvirateError.message}`,
+                    review: `ERROR: ${triumvirateError.message}`,
+                    metrics: {
+                        latency: 0,
+                        tokenInput: 0,
+                        tokenOutput: 0,
+                        tokenTotal: 0,
+                        cost: '$0.00',
+                        error: triumvirateError.message, // Store the error message
+                    },
+                    error: true,
+                };
+                modelStatus[model] = 'failed';
+            }
+            updateSpinner(); // Update spinner after each model finishes
+            return result;
+        })
+    );
+
+    const totalTime = Date.now() - startTime;
+    const hasError = results.some(result => result.error);
+
+    if (hasError) {
+        spinner.fail(
+            `Failed to complete review across all models (${totalTime}ms): [${models.map(m => (modelStatus[m] === 'fulfilled' ? pc.green(m) : pc.red(m))).join(', ')}]`
+        );
+    } else {
+        spinner.succeed(
+            `Completed review across models (${totalTime}ms): [${models.map(m => pc.green(m)).join(', ')}]`
+        );
+    }
+
+    return results;
+}
+
+// --- Helper Function: Summarize Review ---
 function summarizeReview(review: string): string {
     // Remove ERROR prefix if present
     if (review.startsWith('ERROR:')) {
@@ -490,11 +226,227 @@ function summarizeReview(review: string): string {
     const paragraphs = review.split(/\n\s*\n/);
     for (const paragraph of paragraphs) {
         if (paragraph.length > 100 && !paragraph.startsWith('#')) {
-            return paragraph.trim().substring(0, 300) + (paragraph.length > 300 ? '...' : '');
+            return paragraph.trim().substring(0, 3000) + (paragraph.length > 3000 ? '...' : '');
         }
     }
 
     // Fall back to first few sentences if no better option found
     const sentences = review.split(/\.\s+/);
     return sentences.slice(0, 3).join('. ') + '.';
+}
+
+// --- Helper Function: Generate Report ---
+async function generateReport(
+    results: ModelReviewResult[],
+    agentModelName: string, // DoD: Pass agent model name
+    isEnhanced: boolean,
+    spinner: Spinner
+): Promise<{ jsonReport: CodeReviewReport | ModelReviewResult[]; mdReport: string }> {
+    if (isEnhanced) {
+        spinner.update('Generating enhanced report...');
+
+        // DoD: Instantiate the correct agent provider
+        let agentProvider: LLMProvider;
+        switch (agentModelName.toLowerCase()) {
+            case 'openai':
+                agentProvider = new OpenAIProvider();
+                break;
+            case 'gemini':
+                agentProvider = new GeminiProvider();
+                break;
+            case 'claude':
+            default:
+                agentProvider = new ClaudeProvider();
+                break;
+        }
+        const report = await generateCodeReviewReport(results, agentProvider, spinner); // Pass provider and spinner
+        const markdown = formatReportAsMarkdown(report);
+        spinner.succeed(`Enhanced report generated using ${agentModelName}.`);
+        return { jsonReport: report, mdReport: markdown };
+    } else {
+        spinner.update('Generating simple report...');
+        let mdResults = '# Triumvirate Code Review\n\n';
+        mdResults += '## Overview\n\n';
+        mdResults += '| Model | Status | Latency | Cost | Total Tokens |\n';
+        mdResults += '|-------|--------|---------|------|-------------|\n';
+
+        results.forEach(result => {
+            const status = result.metrics.error ? '❌ Failed' : '✅ Completed'; // Updated status
+            const latency = result.metrics.latency ? `${result.metrics.latency}ms` : 'N/A';
+            const cost = result.metrics.cost || 'N/A';
+            const tokens = result.metrics.tokenTotal || 'N/A';
+            mdResults += `| ${result.model} | ${status} | ${latency} | ${cost} | ${tokens} |\n`; // Adjusted cost format
+        });
+        mdResults += '\n';
+        mdResults += '## Summaries\n\n';
+        mdResults += results.map(r => `### ${r.model}\n\n${r.summary}`).join('\n\n');
+        mdResults += '\n\n## Results\n\n';
+        mdResults += results.map(r => `### ${r.model}\n\n${r.review}`).join('\n\n');
+        spinner.succeed('Simple report generated.');
+        return { jsonReport: results, mdReport: mdResults }; // Return raw results as JSON for simple report
+    }
+}
+
+// --- Helper Function: Write Output ---
+async function writeOutput(
+    outputPath: string,
+    jsonReport: CodeReviewReport | ModelReviewResult[],
+    mdReport: string,
+    isEnhanced: boolean
+): Promise<void> {
+    // Make async
+    try {
+        // Resolve the output path
+        const resolvedPath = path.resolve(outputPath);
+        // We no longer restrict to the project directory to allow arbitrary output paths
+
+        let isDirectory = false;
+        try {
+            isDirectory = (await fsPromises.stat(resolvedPath)).isDirectory();
+        } catch {
+            isDirectory = false;
+        }
+
+        let baseOutputPath = outputPath;
+        if (isDirectory) {
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            baseOutputPath = path.join(outputPath, `tri-review-${timestamp}`); // Use path.join
+            // DoD: Ensure output directory exists
+            await fsPromises.mkdir(outputPath, { recursive: true });
+            console.log(
+                `Output path is a directory. Writing reports with base name: ${baseOutputPath}`
+            );
+        } else {
+            // Remove .json or .md extension if present to create base path
+            baseOutputPath = baseOutputPath.replace(/\.(json|md)$/i, '');
+        }
+
+        const jsonFilePath = isEnhanced
+            ? `${baseOutputPath}-enhanced.json`
+            : `${baseOutputPath}.json`;
+        const mdFilePath = `${baseOutputPath}.md`;
+
+        console.log(`Writing JSON report to: ${jsonFilePath}`);
+        await fsPromises.writeFile(jsonFilePath, JSON.stringify(jsonReport, null, 2)); // Use async write
+
+        console.log(`Writing Markdown report to: ${mdFilePath}`);
+        await fsPromises.writeFile(mdFilePath, mdReport); // Use async write
+    } catch (error) {
+        // Throw a categorized error
+        throw new TriumvirateError(
+            `Failed to write results to file: ${error instanceof Error ? error.message : String(error)}`,
+            ErrorCategory.FILE_SYSTEM,
+            'OutputWriter',
+            false,
+            error
+        );
+    }
+}
+
+/**
+ * Main Orchestration Function: Run a triumvirate review across multiple LLMs
+ * @param options - Options for the review
+ * @returns Array of review results from each model (or processed report structure if enhanced)
+ */
+export async function runTriumvirateReview(
+    options: TriumvirateReviewOptions = {}
+): Promise<ModelReviewResult[] | CodeReviewReport> {
+    // Return type depends on enhancedReport
+
+    // Set defaults
+    const {
+        models = DEFAULT_REVIEW_OPTIONS.MODELS,
+        outputPath = DEFAULT_REVIEW_OPTIONS.OUTPUT_PATH,
+        // passThreshold is used in the runCliAction function, not here
+        failOnError = DEFAULT_REVIEW_OPTIONS.FAIL_ON_ERROR,
+        agentModel = 'claude', // DoD: Get agent model
+        reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
+        enhancedReport = true, // Keep default as true
+        options: cliOpts = {}, // Use passed CLI options for spinner control
+    } = options;
+
+    const spinner = new Spinner('Starting Triumvirate review...', {
+        quiet: cliOpts.quiet,
+        verbose: cliOpts.verbose,
+    });
+    spinner.start();
+
+    let repomixResult: RepomixResult | null = null;
+
+    try {
+        // 1. Prepare Codebase
+        spinner.update('Preparing codebase with Repomix...');
+        const { repomixResult: rmResult, codebase } = await prepareCodebase(options);
+        repomixResult = rmResult; // Store for cleanup
+
+        // Resolve documentation and build system prompt
+        const { doc, task } = options?.options || {};
+        const docs = Array.isArray(doc) ? doc : [doc].filter(Boolean);
+        const resolvedDocs = await resolveDocs(docs as string[]);
+        const systemPrompt = await createSystemPrompt(task, resolvedDocs);
+
+        // 2. Generate Prompt
+        spinner.update('Generating review prompt...');
+        const prompt = generateReviewPrompt(reviewType, repomixResult, codebase, systemPrompt);
+
+        // 3. Execute Reviews
+        spinner.update('Executing reviews across models...');
+        const modelResults = await executeReviews(prompt, models, spinner); // Spinner passed here
+
+        // Check for errors if failOnError is enabled
+        const failedModels = modelResults.filter(r => r.error);
+        if (failOnError && failedModels.length > 0) {
+            const errorMessages = failedModels
+                .map(r => `${r.model}: ${r.metrics.error}`)
+                .join('; ');
+            throw new TriumvirateError(
+                `One or more models failed: ${errorMessages}`,
+                ErrorCategory.UNKNOWN,
+                'ReviewExecution'
+            );
+        }
+
+        // 4. Generate Report
+        // Spinner updates happen within generateReport
+        const { jsonReport, mdReport } = await generateReport(
+            modelResults,
+            agentModel, // DoD: Pass agent model
+            enhancedReport,
+            spinner
+        );
+
+        // 5. Write Output
+        if (outputPath) {
+            spinner.update(`Writing output files to ${outputPath}...`);
+            await writeOutput(outputPath, jsonReport, mdReport, enhancedReport);
+            spinner.succeed('Output files written successfully.');
+        }
+
+        spinner.succeed('Triumvirate review completed successfully!');
+        return jsonReport; // Return the generated report (raw results or CodeReviewReport)
+    } catch (error) {
+        const triumvirateError =
+            error instanceof TriumvirateError
+                ? error
+                : new TriumvirateError(
+                      error instanceof Error ? error.message : String(error),
+                      ErrorCategory.UNKNOWN,
+                      'runTriumvirateReview',
+                      false,
+                      error
+                  );
+        spinner.fail(`Triumvirate review failed: ${triumvirateError.message}`);
+        triumvirateError.logError(); // Log the categorized error
+        throw triumvirateError; // Re-throw the categorized error
+    } finally {
+        // 6. Cleanup
+        if (repomixResult?.filePath) {
+            try {
+                await fsPromises.unlink(repomixResult.filePath); // Use promises API
+                console.log('Cleaned up temporary repomix file.');
+            } catch (cleanupError) {
+                console.warn('Could not delete temporary file:', cleanupError);
+            }
+        }
+    }
 }

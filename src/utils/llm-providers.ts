@@ -6,13 +6,27 @@
  * the rest of the application to use LLMs in a provider-agnostic way.
  */
 
+// Add necessary imports for Gemini structured output
+import type {
+    FunctionDeclaration,
+    FunctionDeclarationSchema,
+    FunctionCallingMode,
+    Tool,
+    GenerateContentResponse, // Import the response type
+} from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai'; // Ensure this is imported
 import OpenAI from 'openai';
 
-import { COST_RATES } from './constants';
+import { COST_RATES, DEFAULT_MODELS } from './constants';
 import { enhancedLogger } from './enhanced-logger.js';
-import { withErrorHandlingAndRetry } from './error-handling';
-import { createModelError, handleModelError, ErrorCategory } from './model-utils';
-import llmCosts from '../../llm_costs.json';
+// Import directly from the consolidated error-handling module
+import {
+    withErrorHandlingAndRetry,
+    createModelError,
+    ErrorCategory,
+    TriumvirateError, // Import base error if needed
+} from './error-handling';
+// No longer need model-utils.ts
 import type { OpenAIUsage } from '../types/usage';
 
 // Constants
@@ -51,10 +65,7 @@ export interface LLMProvider {
  */
 export function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
     // Try to look up exact model in the costs file
-    const costs = llmCosts as Record<
-        string,
-        { input_cost_per_token?: number; output_cost_per_token?: number }
-    >;
+    const costs = COST_RATES;
 
     let info = costs[model];
     if (!info) {
@@ -64,21 +75,24 @@ export function estimateCost(model: string, inputTokens: number, outputTokens: n
         }
     }
 
-    if (info && info.input_cost_per_token && info.output_cost_per_token) {
-        return inputTokens * info.input_cost_per_token + outputTokens * info.output_cost_per_token;
+    if (info && info.input && info.output) {
+        return inputTokens * info.input + outputTokens * info.output;
     }
 
     // Fallback to provider level rates
     const provider = model.split('/')[0] ?? '';
     if (provider in COST_RATES) {
         return (
-            inputTokens * COST_RATES[provider as keyof typeof COST_RATES].input +
-            outputTokens * COST_RATES[provider as keyof typeof COST_RATES].output
+            inputTokens * (COST_RATES[provider as keyof typeof COST_RATES]?.input || 0) +
+            outputTokens * (COST_RATES[provider as keyof typeof COST_RATES]?.output || 0)
         );
     }
 
     // Default to OpenAI rates if everything else fails
-    return inputTokens * COST_RATES.openai.input + outputTokens * COST_RATES.openai.output;
+    return (
+        inputTokens * (COST_RATES['openai']?.input || 0) +
+        outputTokens * (COST_RATES['openai']?.output || 0)
+    );
 }
 
 /**
@@ -101,12 +115,21 @@ export class ClaudeProvider implements LLMProvider {
         maxRetries = MAX_API_RETRIES
     ): Promise<LLMResponse<string>> {
         if (!this.isAvailable()) {
-            throw new Error('ANTHROPIC_API_KEY is not set');
+            // Use TriumvirateError directly or a helper if preferred
+            throw new TriumvirateError(
+                'ANTHROPIC_API_KEY is not set',
+                ErrorCategory.AUTHENTICATION,
+                this.name
+            );
         }
 
         const apiKey = process.env['ANTHROPIC_API_KEY'];
         if (!apiKey) {
-            throw new Error('ANTHROPIC_API_KEY is not set');
+            throw new TriumvirateError(
+                'ANTHROPIC_API_KEY is not set (checked again)',
+                ErrorCategory.AUTHENTICATION,
+                this.name
+            );
         }
 
         return withErrorHandlingAndRetry(
@@ -135,6 +158,7 @@ export class ClaudeProvider implements LLMProvider {
 
                 if (!response.ok) {
                     const errorText = await response.text();
+                    // Throw a generic error here, let withErrorHandlingAndRetry categorize it
                     throw new Error(`Claude API error (${response.status}): ${errorText}`);
                 }
 
@@ -147,7 +171,7 @@ export class ClaudeProvider implements LLMProvider {
                     usage: {
                         input_tokens: number;
                         output_tokens: number;
-                        total_tokens: number;
+                        total_tokens: number; // Note: Claude sometimes returns total_tokens
                     };
                 }
 
@@ -156,9 +180,16 @@ export class ClaudeProvider implements LLMProvider {
                 if (
                     !result.content ||
                     !Array.isArray(result.content) ||
-                    result.content.length === 0
+                    result.content.length === 0 ||
+                    !result.usage // Add usage check
                 ) {
-                    throw new Error('Claude API returned an unexpected response format');
+                    throw new TriumvirateError(
+                        'Claude API returned an unexpected response format',
+                        ErrorCategory.INVALID_RESPONSE,
+                        this.name,
+                        false,
+                        result
+                    );
                 }
 
                 // Extract the text content from the response
@@ -169,11 +200,14 @@ export class ClaudeProvider implements LLMProvider {
 
                 // Extract usage information
                 const usage: LLMUsage = {
-                    input_tokens: result.usage?.input_tokens || 0,
-                    output_tokens: result.usage?.output_tokens || 0,
-                    total_tokens: result.usage?.total_tokens || 0,
+                    input_tokens: result.usage.input_tokens || 0,
+                    output_tokens: result.usage.output_tokens || 0,
+                    total_tokens:
+                        result.usage.total_tokens ||
+                        (result.usage.input_tokens || 0) + (result.usage.output_tokens || 0), // Calculate if missing
                 };
-                usage.total_tokens = usage.total_tokens || usage.input_tokens | usage.output_tokens;
+                // Ensure total_tokens is correct
+                usage.total_tokens = usage.input_tokens + usage.output_tokens;
 
                 const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
 
@@ -195,7 +229,7 @@ export class ClaudeProvider implements LLMProvider {
                     cost,
                 };
             },
-            'Claude',
+            this.name, // Use provider name as component
             maxRetries,
             API_TIMEOUT_MS
         );
@@ -210,12 +244,20 @@ export class ClaudeProvider implements LLMProvider {
         maxTokens = 4096
     ): Promise<LLMResponse<T>> {
         if (!this.isAvailable()) {
-            throw new Error('ANTHROPIC_API_KEY is not set');
+            throw new TriumvirateError(
+                'ANTHROPIC_API_KEY is not set',
+                ErrorCategory.AUTHENTICATION,
+                this.name
+            );
         }
 
         const apiKey = process.env['ANTHROPIC_API_KEY'];
         if (!apiKey) {
-            throw new Error('ANTHROPIC_API_KEY is not set');
+            throw new TriumvirateError(
+                'ANTHROPIC_API_KEY is not set (checked again)',
+                ErrorCategory.AUTHENTICATION,
+                this.name
+            );
         }
         const baseURL = 'https://api.anthropic.com/v1';
 
@@ -254,7 +296,8 @@ export class ClaudeProvider implements LLMProvider {
                 }
 
                 const json_result = await response.json();
-                const result = json_result as {
+                // More specific type for structured response
+                interface ClaudeStructuredApiResult {
                     id: string;
                     type: string;
                     role: string;
@@ -263,30 +306,132 @@ export class ClaudeProvider implements LLMProvider {
                         type: string;
                         name?: string;
                         input?: Record<string, unknown>;
+                        text?: string; // Can contain text even with tool use
                     }>;
                     stop_reason: string;
                     stop_sequence: string | null;
-                    usage: LLMUsage;
-                };
+                    usage: LLMUsage & {
+                        // Include specific Claude usage fields
+                        cache_creation_input_tokens?: number;
+                        cache_read_input_tokens?: number;
+                    };
+                }
+
+                const result = json_result as ClaudeStructuredApiResult;
+
+                if (!result.usage) {
+                    console.error(
+                        'Claude structured response missing usage:',
+                        JSON.stringify(result, null, 2)
+                    );
+                    throw new TriumvirateError(
+                        'Claude structured response missing usage data',
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        result
+                    );
+                }
 
                 // Extract the tool call from the response
                 const toolCallContent = result.content.find(
                     item => item.type === 'tool_use' && item.name === toolName
                 );
 
-                if (!toolCallContent) {
-                    throw new Error('Claude did not return expected tool use response');
+                // Check if the model refused to use the tool but provided text instead
+                if (!toolCallContent && result.stop_reason === 'tool_use') {
+                    console.warn(
+                        `Claude indicated tool use but no tool call content found for tool '${toolName}'. Checking for text fallback.`
+                    );
+                    // Attempt to find text content as fallback
+                    const textContent = result.content.find(item => item.type === 'text')?.text;
+                    if (textContent) {
+                        console.warn(
+                            `Falling back to text content due to missing tool call: ${textContent.slice(0, 100)}...`
+                        );
+                        // Try to parse the text content as JSON - this is a common fallback pattern
+                        try {
+                            const parsedText = JSON.parse(textContent) as T;
+                            console.warn('Successfully parsed fallback text content as JSON.');
+
+                            const usage: LLMUsage = {
+                                input_tokens: result.usage.input_tokens || 0,
+                                output_tokens: result.usage.output_tokens || 0,
+                                total_tokens:
+                                    (result.usage.input_tokens || 0) +
+                                    (result.usage.output_tokens || 0),
+                            };
+                            const cost = estimateCost(
+                                this.model,
+                                usage.input_tokens,
+                                usage.output_tokens
+                            );
+
+                            enhancedLogger.logApiCall({
+                                timestamp: new Date().toISOString(),
+                                model: this.model,
+                                operation: 'structured_output (text fallback)',
+                                inputTokens: usage.input_tokens,
+                                outputTokens: usage.output_tokens,
+                                totalTokens: usage.total_tokens,
+                                success: true, // Considered successful if we got parsable data
+                                cost: cost,
+                            });
+
+                            return { data: parsedText, usage, cost };
+                        } catch (parseError) {
+                            console.error(
+                                'Failed to parse fallback text content as JSON:',
+                                parseError
+                            );
+                            throw new TriumvirateError(
+                                `Claude did not return expected tool use input for '${toolName}' and fallback text parsing failed.`,
+                                ErrorCategory.INVALID_RESPONSE,
+                                `${this.name} Structured`,
+                                false,
+                                result
+                            );
+                        }
+                    }
                 }
 
+                if (!toolCallContent || !toolCallContent.input) {
+                    // Check if input exists
+                    console.error(
+                        'Claude response missing expected tool use input:',
+                        JSON.stringify(result, null, 2)
+                    );
+                    throw new TriumvirateError(
+                        `Claude did not return expected tool use input for '${toolName}'`,
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        result
+                    );
+                }
+
+                // Use usage directly from result
                 const usage: LLMUsage = {
-                    input_tokens: result.usage?.input_tokens || 0,
-                    output_tokens: result.usage?.output_tokens || 0,
+                    input_tokens: result.usage.input_tokens || 0,
+                    output_tokens: result.usage.output_tokens || 0,
                     total_tokens:
-                        (result.usage?.input_tokens || 0) + (result.usage?.output_tokens || 0),
-                    cache_creation_input_tokens: result.usage?.cache_creation_input_tokens,
-                    cache_read_input_tokens: result.usage?.cache_read_input_tokens,
+                        (result.usage.input_tokens || 0) + (result.usage.output_tokens || 0),
+                    cache_creation_input_tokens: result.usage.cache_creation_input_tokens,
+                    cache_read_input_tokens: result.usage.cache_read_input_tokens,
                 };
                 const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
+
+                enhancedLogger.logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: this.model,
+                    operation: 'structured_output',
+                    inputTokens: usage.input_tokens,
+                    outputTokens: usage.output_tokens,
+                    totalTokens: usage.total_tokens,
+                    success: true,
+                    cost: cost,
+                });
+
                 // Return the properly extracted data and usage
                 return {
                     data: toolCallContent.input as T,
@@ -294,7 +439,7 @@ export class ClaudeProvider implements LLMProvider {
                     cost,
                 };
             },
-            'Claude Structured',
+            `${this.name} Structured`, // Use specific component name
             maxRetries,
             API_TIMEOUT_MS * 2 // Double timeout for structured responses
         );
@@ -325,7 +470,7 @@ export class OpenAIProvider implements LLMProvider {
             throw createModelError(
                 'OPENAI_API_KEY is not set',
                 ErrorCategory.AUTHENTICATION,
-                'OpenAI',
+                this.name,
                 false,
                 new Error('OPENAI_API_KEY is not set')
             );
@@ -336,7 +481,7 @@ export class OpenAIProvider implements LLMProvider {
             throw createModelError(
                 'Invalid prompt: must be a non-empty string',
                 ErrorCategory.INVALID_RESPONSE,
-                'OpenAI',
+                this.name,
                 false,
                 new Error('Invalid prompt')
             );
@@ -346,75 +491,79 @@ export class OpenAIProvider implements LLMProvider {
 
         return withErrorHandlingAndRetry(
             async (signal: AbortSignal) => {
-                try {
-                    const response = await openai.chat.completions.create(
-                        {
-                            model: this.model,
-                            messages: [{ role: 'user', content: prompt }],
-                            temperature: 0.2,
-                        },
-                        { signal }
+                // Keep try...catch within the apiCall function
+                const response = await openai.chat.completions.create(
+                    {
+                        model: this.model,
+                        messages: [{ role: 'user', content: prompt }],
+                        temperature: this.model === 'o3' ? 1.0 : 0.2,
+                    },
+                    { signal }
+                );
+
+                // Validate response structure
+                if (!response) {
+                    throw new TriumvirateError(
+                        'OpenAI returned an empty response',
+                        ErrorCategory.INVALID_RESPONSE,
+                        this.name,
+                        false,
+                        response
                     );
-
-                    // Validate response structure
-                    if (!response) {
-                        throw new Error('OpenAI returned an empty response');
-                    }
-
-                    if (!response.choices || !response.choices[0] || !response.choices[0].message) {
-                        throw new Error('OpenAI response is missing choices');
-                    }
-
-                    const messageContent = response.choices[0].message.content || '';
-
-                    // Validate usage data
-                    if (!response.usage) {
-                        throw new Error('OpenAI response is missing usage data');
-                    }
-
-                    // Extract usage information
-                    const usage: LLMUsage = {
-                        input_tokens: response.usage.prompt_tokens || 0,
-                        output_tokens: response.usage.completion_tokens || 0,
-                        total_tokens: response.usage.total_tokens || 0,
-                    };
-                    usage.total_tokens =
-                        usage.total_tokens || usage.input_tokens + usage.output_tokens;
-                    const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
-
-                    // Log the successful API call
-                    enhancedLogger.logApiCall({
-                        timestamp: new Date().toISOString(),
-                        model: this.model,
-                        operation: 'completion',
-                        inputTokens: usage.input_tokens,
-                        outputTokens: usage.output_tokens,
-                        totalTokens: usage.total_tokens,
-                        success: true,
-                        cost: cost,
-                    });
-
-                    return {
-                        data: messageContent,
-                        usage,
-                        cost,
-                    };
-                } catch (error) {
-                    // Log the failed API call
-                    enhancedLogger.logApiCall({
-                        timestamp: new Date().toISOString(),
-                        model: this.model,
-                        operation: 'completion',
-                        success: false,
-                        error: error instanceof Error ? error.message : String(error),
-                        cost: 0,
-                    });
-
-                    // Convert to a ModelError with appropriate category
-                    throw handleModelError(error, 'OpenAI', maxRetries);
                 }
+
+                if (!response.choices?.[0]?.message?.content) {
+                    // Simplified check
+                    throw new TriumvirateError(
+                        'OpenAI response is missing expected content',
+                        ErrorCategory.INVALID_RESPONSE,
+                        this.name,
+                        false,
+                        response
+                    );
+                }
+
+                const messageContent = response.choices[0].message.content;
+
+                // Validate usage data
+                if (!response.usage) {
+                    throw new TriumvirateError(
+                        'OpenAI response is missing usage data',
+                        ErrorCategory.INVALID_RESPONSE,
+                        this.name,
+                        false,
+                        response
+                    );
+                }
+
+                // Extract usage information
+                const usage: LLMUsage = {
+                    input_tokens: response.usage.prompt_tokens || 0,
+                    output_tokens: response.usage.completion_tokens || 0,
+                    total_tokens: response.usage.total_tokens || 0,
+                };
+                usage.total_tokens = usage.total_tokens || usage.input_tokens + usage.output_tokens;
+                const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
+
+                // Log the successful API call
+                enhancedLogger.logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: this.model,
+                    operation: 'completion',
+                    inputTokens: usage.input_tokens,
+                    outputTokens: usage.output_tokens,
+                    totalTokens: usage.total_tokens,
+                    success: true,
+                    cost: cost,
+                });
+
+                return {
+                    data: messageContent,
+                    usage,
+                    cost,
+                };
             },
-            'OpenAI',
+            this.name,
             maxRetries,
             API_TIMEOUT_MS
         );
@@ -426,7 +575,26 @@ export class OpenAIProvider implements LLMProvider {
         maxRetries = MAX_API_RETRIES
     ): Promise<LLMResponse<T>> {
         if (!this.isAvailable()) {
-            throw new Error('OPENAI_API_KEY is not set');
+            throw createModelError(
+                'OPENAI_API_KEY is not set',
+                ErrorCategory.AUTHENTICATION,
+                this.name,
+                false
+            );
+        }
+        // Basic schema validation
+        if (
+            !schema ||
+            typeof schema !== 'object' ||
+            !schema['properties'] ||
+            typeof schema['properties'] !== 'object'
+        ) {
+            throw createModelError(
+                'Invalid schema: must be an object with a properties field.',
+                ErrorCategory.INVALID_RESPONSE,
+                `${this.name} Structured`,
+                false
+            );
         }
 
         const apiKey = process.env['OPENAI_API_KEY'];
@@ -463,49 +631,98 @@ export class OpenAIProvider implements LLMProvider {
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    throw new Error(`OpenAI API error (${response.status}): ${errorText}`);
+                    throw new Error(`OpenAI API error (${response.status}): ${errorText}`); // Let HOF categorize
                 }
 
+                // Use OpenAI's specific type if available, otherwise a generic structure
                 const result = (await response.json()) as {
-                    choices: Array<{
-                        message: {
-                            function_call: {
-                                arguments: string;
+                    choices?: Array<{
+                        message?: {
+                            function_call?: {
+                                arguments?: string;
                             };
+                            tool_calls?: Array<{
+                                // Also check tool_calls for newer API versions
+                                function?: {
+                                    arguments?: string;
+                                };
+                            }>;
                         };
                     }>;
-                    usage: OpenAIUsage;
+                    usage?: OpenAIUsage; // Use specific usage type
                 };
 
-                if (
-                    !result.choices ||
-                    !result.choices[0] ||
-                    !result.choices[0].message ||
-                    !result.choices[0].message.function_call
-                ) {
-                    console.error('OpenAI response structure:', JSON.stringify(result, null, 2));
-                    throw new Error('OpenAI did not return expected function call response');
+                // Find the function call arguments, checking both structures
+                let functionCallArguments: string | undefined;
+                const message = result.choices?.[0]?.message;
+
+                if (message?.function_call?.arguments) {
+                    functionCallArguments = message.function_call.arguments;
+                } else if (message?.tool_calls?.[0]?.function?.arguments) {
+                    functionCallArguments = message.tool_calls[0].function.arguments;
                 }
 
-                const functionCallArguments = result.choices[0].message.function_call.arguments;
+                if (!functionCallArguments) {
+                    console.error('OpenAI response structure:', JSON.stringify(result, null, 2));
+                    throw new TriumvirateError(
+                        'OpenAI did not return expected function call arguments in response',
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        result
+                    );
+                }
+
                 let parsedData: T;
 
                 try {
                     parsedData = JSON.parse(functionCallArguments) as T;
-                } catch {
+                } catch (parseError) {
                     console.error(
                         'Failed to parse OpenAI function call arguments:',
                         functionCallArguments
                     );
-                    throw new Error('Failed to parse OpenAI function call response');
+                    // Use createModelError for consistency
+                    throw createModelError(
+                        `Failed to parse OpenAI function call response: ${(parseError as Error).message}`,
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false, // Not retryable if parsing fails consistently
+                        parseError
+                    );
+                }
+
+                if (!result.usage) {
+                    throw new TriumvirateError(
+                        'OpenAI structured response missing usage data',
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        result
+                    );
                 }
 
                 const usage: LLMUsage = {
-                    input_tokens: result.usage?.input_tokens || 0,
-                    output_tokens: result.usage?.output_tokens || 0,
-                    total_tokens: result.usage?.total_tokens || 0,
+                    input_tokens: result.usage.input_tokens || 0,
+                    output_tokens: result.usage.output_tokens || 0,
+                    total_tokens: result.usage.total_tokens || 0,
                 };
+                // Recalculate total_tokens for safety
+                usage.total_tokens = usage.input_tokens + usage.output_tokens;
+
                 const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
+
+                // Log the successful API call for structured output
+                enhancedLogger.logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: this.model,
+                    operation: 'structured_output', // Use a specific operation name
+                    inputTokens: usage.input_tokens,
+                    outputTokens: usage.output_tokens,
+                    totalTokens: usage.total_tokens,
+                    success: true,
+                    cost: cost,
+                });
 
                 return {
                     data: parsedData,
@@ -513,7 +730,7 @@ export class OpenAIProvider implements LLMProvider {
                     cost,
                 };
             },
-            'OpenAI Structured',
+            `${this.name} Structured`, // Specific component name
             maxRetries,
             API_TIMEOUT_MS * 2 // Double timeout for structured responses
         );
@@ -527,12 +744,25 @@ export class GeminiProvider implements LLMProvider {
     name = 'Gemini';
     model: string;
 
-    constructor(model = 'gemini-2.5-pro-exp-03-25') {
-        this.model = model;
+    constructor(model?: string) {
+        if (!model) {
+            const geminiModel = DEFAULT_MODELS.find(model => model.includes('gemini'));
+            if (!geminiModel) {
+                throw new TriumvirateError(
+                    'No Gemini model found in DEFAULT_MODELS',
+                    ErrorCategory.INVALID_RESPONSE,
+                    'GeminiProvider',
+                    false,
+                    new Error('No Gemini model found in DEFAULT_MODELS')
+                );
+            }
+            this.model = geminiModel;
+        } else {
+            this.model = model;
+        }
     }
-
     isAvailable(): boolean {
-        return !!process.env['GOOGLE_API_KEY'];
+        return !!process.env['GEMINI_API_KEY'];
     }
 
     async runCompletion(
@@ -542,11 +772,11 @@ export class GeminiProvider implements LLMProvider {
         // Validate input and API key
         if (!this.isAvailable()) {
             throw createModelError(
-                'GOOGLE_API_KEY is not set',
+                'GEMINI_API_KEY is not set',
                 ErrorCategory.AUTHENTICATION,
-                'Gemini',
+                this.name, // Use this.name
                 false,
-                new Error('GOOGLE_API_KEY is not set')
+                new Error('GEMINI_API_KEY is not set')
             );
         }
 
@@ -555,87 +785,117 @@ export class GeminiProvider implements LLMProvider {
             throw createModelError(
                 'Invalid prompt: must be a non-empty string',
                 ErrorCategory.INVALID_RESPONSE,
-                'Gemini',
+                this.name, // Use this.name
                 false,
                 new Error('Invalid prompt')
             );
         }
 
-        const apiKey = process.env['GOOGLE_API_KEY'];
+        const apiKey = process.env['GEMINI_API_KEY'];
         if (!apiKey) {
             throw createModelError(
-                'GOOGLE_API_KEY is not set',
+                'GEMINI_API_KEY is not set (checked again)', // More specific error
                 ErrorCategory.AUTHENTICATION,
-                'Gemini',
+                this.name,
                 false,
-                new Error('GOOGLE_API_KEY is not set')
+                new Error('GEMINI_API_KEY is not set')
             );
         }
 
         // Use the GoogleGenAI library
-        const { GoogleGenerativeAI } = await import('@google/generative-ai');
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: this.model });
+        const modelInstance = genAI.getGenerativeModel({ model: this.model }); // Renamed to avoid conflict
 
         return withErrorHandlingAndRetry(
             async (_signal: AbortSignal) => {
-                try {
-                    // Note: Gemini API might not directly support AbortSignal
-                    // We're using the signal in our HOF, but the actual API call might not use it
-                    const response = await model.generateContent(prompt);
-                    const result = response.response;
+                // Gemini SDK might not use signal directly
+                const result = await modelInstance.generateContent(prompt); // Use modelInstance
+                const response: GenerateContentResponse = result.response; // Access the response object, explicitly type it
 
-                    // Validate response structure
-                    if (!result) {
-                        throw new Error('Gemini returned an empty response');
-                    }
-
-                    // Extract text from the response
-                    const text = result.text();
-
-                    const usage: LLMUsage = {
-                        input_tokens: result.usageMetadata?.promptTokenCount || 0,
-                        output_tokens: result.usageMetadata?.candidatesTokenCount || 0,
-                        total_tokens: result.usageMetadata?.totalTokenCount || 0,
-                    };
-                    usage.total_tokens =
-                        usage.total_tokens || usage.input_tokens + usage.output_tokens;
-
-                    const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
-
-                    // Log the successful API call
-                    enhancedLogger.logApiCall({
-                        timestamp: new Date().toISOString(),
-                        model: this.model,
-                        operation: 'completion',
-                        inputTokens: usage.input_tokens,
-                        outputTokens: usage.output_tokens,
-                        totalTokens: usage.total_tokens,
-                        success: true,
-                        cost: cost,
-                    });
-
-                    return {
-                        data: text,
-                        usage,
-                        cost,
-                    };
-                } catch (error) {
-                    // Log the failed API call
-                    enhancedLogger.logApiCall({
-                        timestamp: new Date().toISOString(),
-                        model: this.model,
-                        operation: 'completion',
-                        success: false,
-                        error: error instanceof Error ? error.message : String(error),
-                        cost: 0,
-                    });
-
-                    // Convert to a ModelError with appropriate category
-                    throw handleModelError(error, 'Gemini', maxRetries);
+                // Validate response structure
+                if (!response) {
+                    throw new TriumvirateError(
+                        'Gemini returned an empty response object',
+                        ErrorCategory.INVALID_RESPONSE,
+                        this.name,
+                        false,
+                        result
+                    );
                 }
+
+                // Check for safety blocks
+                if (response.promptFeedback?.blockReason) {
+                    throw createModelError(
+                        `Gemini request blocked due to safety settings: ${response.promptFeedback.blockReason}`,
+                        ErrorCategory.INVALID_RESPONSE, // Or a specific category for safety blocks
+                        this.name,
+                        false, // Usually not retryable
+                        response.promptFeedback
+                    );
+                }
+                if (!response.candidates?.length || !response.candidates[0]?.content) {
+                    throw new TriumvirateError(
+                        'Gemini response missing expected candidate content',
+                        ErrorCategory.INVALID_RESPONSE,
+                        this.name,
+                        false,
+                        response
+                    );
+                }
+
+                // FIXED: Extract text from the response object asynchronously
+                if (
+                    !response.candidates?.length ||
+                    !response.candidates[0]?.content?.parts?.length
+                ) {
+                    throw new TriumvirateError(
+                        'Gemini response missing expected candidate content',
+                        ErrorCategory.INVALID_RESPONSE,
+                        this.name,
+                        false,
+                        response
+                    );
+                }
+
+                // Extract text from response
+                const textContent = response.candidates[0]?.content?.parts[0]?.text || '';
+                const text = textContent;
+
+                // FIXED: Extract usage from the response object
+                const usage: LLMUsage = {
+                    input_tokens: response.usageMetadata?.promptTokenCount || 0,
+                    output_tokens: response.usageMetadata?.candidatesTokenCount || 0,
+                    total_tokens: response.usageMetadata?.totalTokenCount || 0,
+                };
+                // Ensure total_tokens is calculated if missing
+                if (
+                    usage.total_tokens === 0 &&
+                    (usage.input_tokens > 0 || usage.output_tokens > 0)
+                ) {
+                    usage.total_tokens = usage.input_tokens + usage.output_tokens;
+                }
+
+                const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
+
+                // Log the successful API call
+                enhancedLogger.logApiCall({
+                    timestamp: new Date().toISOString(),
+                    model: this.model,
+                    operation: 'completion',
+                    inputTokens: usage.input_tokens,
+                    outputTokens: usage.output_tokens,
+                    totalTokens: usage.total_tokens,
+                    success: true,
+                    cost: cost,
+                });
+
+                return {
+                    data: text,
+                    usage,
+                    cost,
+                };
             },
-            'Gemini',
+            this.name, // Use this.name
             maxRetries,
             API_TIMEOUT_MS
         );
@@ -647,83 +907,183 @@ export class GeminiProvider implements LLMProvider {
         maxRetries = MAX_API_RETRIES
     ): Promise<LLMResponse<T>> {
         if (!this.isAvailable()) {
-            throw new Error('GOOGLE_API_KEY is not set');
+            throw createModelError(
+                'GEMINI_API_KEY is not set',
+                ErrorCategory.AUTHENTICATION,
+                this.name,
+                false,
+                new Error('GEMINI_API_KEY is not set')
+            );
+        }
+        if (!prompt || typeof prompt !== 'string') {
+            throw createModelError(
+                'Invalid prompt: must be a non-empty string',
+                ErrorCategory.INVALID_RESPONSE,
+                this.name,
+                false,
+                new Error('Invalid prompt')
+            );
+        }
+        // Add basic schema validation for Gemini
+        if (
+            !schema ||
+            typeof schema !== 'object' ||
+            !schema['properties'] ||
+            typeof schema['properties'] !== 'object'
+        ) {
+            throw createModelError(
+                'Invalid schema for Gemini: must be an object with a properties field.',
+                ErrorCategory.INVALID_RESPONSE,
+                `${this.name} Structured`,
+                false
+            );
         }
 
-        const apiKey = process.env['GOOGLE_API_KEY'];
+        const apiKey = process.env['GEMINI_API_KEY'];
         if (!apiKey) {
-            throw new Error('GOOGLE_API_KEY is not set');
+            throw createModelError(
+                'GEMINI_API_KEY is not set (checked again)',
+                ErrorCategory.AUTHENTICATION,
+                this.name,
+                false,
+                new Error('GEMINI_API_KEY is not set')
+            );
         }
 
-        const { GoogleGenerativeAI, FunctionCallingMode } = await import('@google/generative-ai');
         const genAI = new GoogleGenerativeAI(apiKey);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const tools: any = [
-            {
-                functionDeclarations: [
-                    {
-                        name: 'generate_structured_data',
-                        description: 'Generate structured data based on the provided information',
-                        parameters: schema,
-                    },
-                ],
-            },
-        ];
+        // Define the tool for Gemini based on the provided schema
+        const functionDeclaration: FunctionDeclaration = {
+            name: 'generate_structured_data', // Consistent name
+            description: 'Generate structured data based on the provided information and schema.',
+            parameters: schema as unknown as FunctionDeclarationSchema, // Cast the generic schema
+        };
 
-        const model = genAI.getGenerativeModel({
-            model: this.model,
-            tools,
-            toolConfig: { functionCallingConfig: { mode: FunctionCallingMode.ANY } },
-            generationConfig: {
-                responseMimeType: 'application/json',
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                responseSchema: schema as any,
-                maxOutputTokens: 4096,
+        const tools: Tool[] = [{ functionDeclarations: [functionDeclaration] }];
+
+        // Force the model to use the tool
+        const toolConfig = {
+            functionCallingConfig: {
+                mode: 'ANY' as FunctionCallingMode, // Use 'ANY' or 'AUTO', 'NONE' would disable it
+                // Optionally force a specific function if multiple were provided
+                allowedFunctionNames: ['generate_structured_data'],
             },
+        };
+
+        const modelInstance = genAI.getGenerativeModel({
+            model: this.model,
+            tools, // Pass tools here
+            toolConfig, // Pass tool config here
         });
 
         return withErrorHandlingAndRetry(
             async (_signal: AbortSignal) => {
-                const response = await model.generateContent(prompt);
-                const result = response.response;
+                // Gemini SDK might not use signal directly
 
-                if (!result) {
-                    throw new Error('Gemini returned an empty response');
+                const result = await modelInstance.generateContent(prompt);
+                const response = result.response;
+
+                if (!response) {
+                    throw new TriumvirateError(
+                        'Gemini returned an empty response object for structured call',
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        result
+                    );
                 }
 
-                let parsedData: T;
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const calls = result.functionCalls ? result.functionCalls() : undefined;
-                if (Array.isArray(calls) && calls.length > 0) {
-                    parsedData = (calls[0] as { args: unknown }).args as T;
-                } else {
-                    const text = result.text();
-                    try {
-                        parsedData = JSON.parse(text) as T;
-                    } catch {
-                        throw new Error('Gemini did not return valid structured data');
-                    }
+                // Check for safety blocks before checking function calls
+                if (response.promptFeedback?.blockReason) {
+                    throw createModelError(
+                        `Gemini structured request blocked due to safety settings: ${response.promptFeedback.blockReason}`,
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        response.promptFeedback
+                    );
+                }
+                if (!response.candidates?.length || !response.candidates[0]?.content) {
+                    throw new TriumvirateError(
+                        'Gemini structured response missing expected candidate content',
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        response
+                    );
                 }
 
+                // Check for function calls in the response
+                const functionCalls = response.functionCalls();
+                if (!functionCalls || functionCalls.length === 0) {
+                    console.error(
+                        'Gemini response content (no function call):',
+                        await response.text()
+                    ); // Log text content if no function call
+                    throw new TriumvirateError(
+                        'Gemini did not return the expected function call.',
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        response
+                    );
+                }
+
+                // Assuming the first function call is the one we want
+                const functionCall = functionCalls[0];
+                if (functionCall?.name !== 'generate_structured_data') {
+                    throw new TriumvirateError(
+                        `Gemini returned an unexpected function call name: ${functionCall?.name}`,
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        response
+                    );
+                }
+
+                // The arguments are already parsed into an object by the SDK
+                const parsedData = functionCall.args as T;
+
+                if (!parsedData) {
+                    throw new TriumvirateError(
+                        'Gemini function call arguments are missing or empty.',
+                        ErrorCategory.INVALID_RESPONSE,
+                        `${this.name} Structured`,
+                        false,
+                        response
+                    );
+                }
+
+                // Extract usage from the response object
+                if (!response.usageMetadata) {
+                    console.warn(
+                        'Gemini structured response missing usageMetadata. Tokens/Cost will be zero.'
+                    );
+                }
                 const usage: LLMUsage = {
-                    input_tokens: result.usageMetadata?.promptTokenCount || 0,
-                    output_tokens: result.usageMetadata?.candidatesTokenCount || 0,
-                    total_tokens: result.usageMetadata?.totalTokenCount || 0,
+                    input_tokens: response.usageMetadata?.promptTokenCount || 0,
+                    output_tokens: response.usageMetadata?.candidatesTokenCount || 0,
+                    total_tokens: response.usageMetadata?.totalTokenCount || 0,
                 };
-                usage.total_tokens = usage.total_tokens || usage.input_tokens + usage.output_tokens;
+                if (
+                    usage.total_tokens === 0 &&
+                    (usage.input_tokens > 0 || usage.output_tokens > 0)
+                ) {
+                    usage.total_tokens = usage.input_tokens + usage.output_tokens;
+                }
 
                 const cost = estimateCost(this.model, usage.input_tokens, usage.output_tokens);
 
+                // Log the successful API call
                 enhancedLogger.logApiCall({
                     timestamp: new Date().toISOString(),
                     model: this.model,
-                    operation: 'structured_output',
+                    operation: 'structured_output', // Specific operation
                     inputTokens: usage.input_tokens,
                     outputTokens: usage.output_tokens,
                     totalTokens: usage.total_tokens,
                     success: true,
-                    cost,
+                    cost: cost,
                 });
 
                 return {
@@ -732,9 +1092,9 @@ export class GeminiProvider implements LLMProvider {
                     cost,
                 };
             },
-            'Gemini Structured',
+            `${this.name} Structured`, // Unique component name
             maxRetries,
-            API_TIMEOUT_MS * 2
+            API_TIMEOUT_MS * 2 // Longer timeout for potentially complex structured calls
         );
     }
 }

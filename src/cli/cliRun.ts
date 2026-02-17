@@ -1,13 +1,19 @@
 import { Command } from 'commander';
 
 import { runInstallAction } from './actions/installAction.js';
+import { runModelsAction } from './actions/modelsAction.js';
 import { runNextAction } from './actions/nextAction.js';
 import { runPlanAction } from './actions/planAction.js';
 import { runCliAction } from './actions/runAction.js';
 import { runSummarizeAction } from './actions/summarizeAction.js';
 import { runUninstallAction } from './actions/uninstallAction.js';
-import { handleError } from '../utils/error.js';
-import { logger } from '../utils/logger.js';
+import { version as packageVersion } from '../../package.json';
+// Import consolidated error handling
+import { TriumvirateError, ErrorCategory } from '../utils/error-handling.js';
+import { logger } from '../utils/logger.js'; // Use the existing logger
+
+// Constants for support links (moved from error.ts)
+const TRIUMVIRATE_ISSUES_URL = 'https://github.com/closedloop-technologies/triumvirate/issues';
 
 // Semantic mapping for CLI suggestions
 const semanticSuggestionMap: Record<string, string[]> = {
@@ -32,30 +38,122 @@ const semanticSuggestionMap: Record<string, string[]> = {
 // Create the commander program
 const program = new Command();
 
+// Centralized CLI Error Handler
+function handleCliError(error: unknown): void {
+    logger.log(''); // Add a newline for better formatting
+
+    let displayError: TriumvirateError;
+
+    if (error instanceof TriumvirateError) {
+        displayError = error;
+        logger.error(`❌ ${displayError.getDetailedMessage()}`); // Use detailed message
+    } else if (error instanceof Error) {
+        // Wrap unexpected errors
+        displayError = new TriumvirateError(
+            `Unexpected error: ${error.message}`,
+            ErrorCategory.UNKNOWN,
+            'CLI',
+            false,
+            error
+        );
+        logger.error(`❌ ${displayError.message}`);
+        // Log stack trace for unexpected errors by default or if verbose
+        logger.note('Stack trace:', error.stack);
+    } else {
+        // Handle non-Error objects thrown
+        displayError = new TriumvirateError(
+            'An unknown error occurred',
+            ErrorCategory.UNKNOWN,
+            'CLI',
+            false,
+            error
+        );
+        logger.error(`❌ ${displayError.message}`);
+    }
+
+    // Log original error stack trace in debug mode
+    if (displayError.originalError instanceof Error && displayError.originalError.stack) {
+        logger.debug('Original error stack:', displayError.originalError.stack);
+    }
+
+    // Provide helpful context based on error category or message
+    if (displayError.category === ErrorCategory.AUTHENTICATION) {
+        logger.info(
+            'Please check your API key configuration (environment variables or .env file).'
+        );
+        // Consider adding getApiKeySetupInstructions() here if relevant
+    } else if (
+        displayError.message.includes('command not found') ||
+        displayError.message.includes('ENOENT')
+    ) {
+        logger.info(
+            'Ensure required external tools (like git or Node.js) are installed and in your PATH.'
+        );
+    }
+
+    // Show verbose hint only if not already in debug mode
+    if (logger.getLogLevel() < 5) {
+        // 5 corresponds to debug level in logger.ts
+        logger.log('');
+        logger.note('For detailed debug information, use the --verbose flag');
+    }
+
+    // Community support information
+    logger.log('');
+    logger.info('Need help?');
+    logger.info(`• File an issue on GitHub: ${TRIUMVIRATE_ISSUES_URL}`);
+
+    // Exit with error code
+    process.exit(1);
+}
+
 export const run = async () => {
     try {
         program
+            .name('triumvirate')
             .description(
                 'Triumvirate - Run codebase reviews across OpenAI, Claude, and Gemini models'
             )
+            .version(packageVersion, '-v, --version', 'show version information')
+            // Add global options to the root command
+            .option(
+                '--agent-model <model>',
+                'Specify the LLM model to use (default: claude)',
+                'claude'
+            )
+            .option(
+                '--output-dir <dir>',
+                'Specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
+            )
+            .option(
+                '--pass-threshold <threshold>',
+                'Set review pass/fail threshold (strict, lenient, none)',
+                'lenient'
+            )
+            .option(
+                '--task <description>',
+                'Specify a task description for LLM-driven task generation'
+            )
             .option('--verbose', 'enable verbose logging for detailed output')
-            .option('--quiet', 'disable all output to stdout')
-            .option('-v, --version', 'show version information');
+            .option('--quiet', 'disable all output to stdout');
 
         // Review command (previously the report command)
         const reviewCommand = program
             .command('review')
             .description('Run a code review with default settings and creates the summary')
             .argument('[directories...]', 'list of directories to process', ['.'])
-
-            // Triumvirate-specific options
+            // Model tier selection options
+            .option(
+                '--tier <tier>',
+                'model tier: cheap, standard, or premium (default: standard)',
+                'standard'
+            )
+            .option('--context <size>', 'context size: 100k, 1m, or auto (default: auto)', 'auto')
+            // Triumvirate-specific options (legacy - use --tier instead)
             .option(
                 '-m, --models <models>',
-                'comma-separated list of models (default: openai/gpt-4.1,anthropic/claude-3-7-sonnet-20250219,google/gemini-2.5-pro-exp-03-25)'
-            )
-            .option(
-                '--review-type <type>',
-                'DEPRECATED: use --task instead. Suggested types: general, security, performance, architecture, docs'
+                '[DEPRECATED] comma-separated list of models - use --tier instead'
             )
             .option('--task <task>', 'task description to focus the review')
             .option(
@@ -86,10 +184,11 @@ export const run = async () => {
             .option(
                 '--instruction-file-path <path>',
                 'path to a file containing detailed custom instructions'
+                // DoD: Implement --docs functionality here or pass down
+                // Option: Could reuse --instruction-file-path or add explicit --docs
             )
 
             // Output options
-            .option('-o, --output <file>', 'specify the output file name')
             .option('--style <type>', 'specify the output style (xml, markdown, plain)')
             .option('--output-show-line-numbers', 'add line numbers to each line in the output')
 
@@ -97,6 +196,23 @@ export const run = async () => {
             .option('--include <patterns>', 'list of include patterns (comma-separated)')
             .option('-i, --ignore <patterns>', 'additional ignore patterns (comma-separated)')
             .option('--diff', 'only review files changed in git diff')
+
+            // Inherit global options for context
+            .option(
+                '--agent-model <model>',
+                'specify the LLM for report analysis (default: claude)',
+                'claude'
+            )
+            .option(
+                '--output-dir <dir>',
+                'specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
+            )
+            .option(
+                '--pass-threshold <level>',
+                'set review pass/fail threshold (strict, lenient, none)',
+                'none'
+            )
             .action(runCliAction);
 
         // Add custom help text for the review command
@@ -105,15 +221,19 @@ export const run = async () => {
             `
 Option Groups:
 
+  Model Selection:
+    --tier <tier>                  Model tier: cheap, standard, or premium (default: standard)
+    --context <size>               Context size: 100k, 1m, or auto (default: auto)
+    -m, --models                   [DEPRECATED] Use --tier instead
+
   Triumvirate Options:
-    -m, --models                    Models to use for code review
-    --review-type                  DEPRECATED: use --task instead
     --task                         Task description for the review (e.g. security, performance, architecture, docs)
-    --doc                          Documentation file or URL
+    --doc                          Documentation file or URL (supports multiple)
     --fail-on-error                Exit with error if any model fails
     --skip-api-key-validation      Skip API key validation
     --enhanced-report              Generate enhanced report with model agreement
     --summary-only                 Only include summary in results
+    --agent-model                  LLM model for report analysis/planning
 
   Repomix Options:
     --token-limit                  Maximum tokens to send to the model
@@ -126,7 +246,7 @@ Option Groups:
     --instruction-file-path        Path to custom instructions file
 
   Output Options:
-    -o, --output                   Output file path
+    --output-dir                   Output directory (default: ./.triumvirate)
     --style                        Output style format
     --output-show-line-numbers     Show line numbers in output
 
@@ -134,6 +254,10 @@ Option Groups:
     --include                      Patterns to include
     -i, --ignore                   Patterns to ignore
     --diff                         Only review files in git diff
+
+  Threshold Options:
+    --pass-threshold               Set review pass/fail threshold (strict, lenient, none)
+
 `
         );
 
@@ -141,24 +265,51 @@ Option Groups:
         program
             .command('summarize')
             .description('Generate a summary from existing raw reports')
-            .option('-i, --input <file>', 'input file containing raw reports')
-            .option('-o, --output <file>', 'output file for the summary')
+            .option('-i, --input <file>', 'Input file containing raw JSON reports')
+            .option('-o, --output <file>', 'Output file for the summary (Markdown)')
+            .option(
+                '--agent-model <model>',
+                'Specify the LLM for summary analysis (default: claude)',
+                'claude'
+            ) // Inherit/Allow override
+            .option(
+                '--output-dir <dir>',
+                'Specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
+            ) // Inherit/Allow override
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
             .action(runSummarizeAction);
 
         // Plan command - Decompose the review into a set of tasks with dependencies
         program
             .command('plan')
-            .description('Decompose a review into a set of tasks with dependencies')
-            .option('-i, --input <file>', 'input file containing the summary')
-            .option('-o, --output <file>', 'output file for the plan')
+            .description('Decompose a review summary into a set of tasks with dependencies')
+            .option('-i, --input <file>', 'Input Markdown file containing the summary')
+            .option('-o, --output <file>', 'Output JSON file for the plan')
+            .option(
+                '--agent-model <model>',
+                'Specify the LLM for planning (default: claude)',
+                'claude'
+            ) // Inherit/Allow override
+            .option(
+                '--output-dir <dir>',
+                'Specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
+            ) // Inherit/Allow override
             .action(runPlanAction);
 
         // Next command - Emits the next available task
         program
             .command('next')
             .description('Read the plan and emit the next available task')
-            .option('-i, --input <file>', 'input file containing the plan')
+            .option('-i, --input <file>', 'Input JSON file containing the plan')
+            .option(
+                '--output-dir <dir>',
+                'Specify the output directory (default: ./.triumvirate)',
+                './.triumvirate'
+            ) // Inherit/Allow override
+            .option('--mark-complete <taskId>', 'Mark a specific task as completed')
+            .option('--branch', 'Create a git branch for the next task')
             .action(runNextAction);
 
         // Add install and uninstall commands
@@ -171,6 +322,18 @@ Option Groups:
             .command('uninstall')
             .description('Uninstall Triumvirate CLI completion')
             .action(runUninstallAction);
+
+        // Models command to list available models
+        program
+            .command('models')
+            .description('List all available LLM models with cost information')
+            .option(
+                '--provider <provider>',
+                'Filter models by provider (e.g., openai, anthropic, google)'
+            )
+            .option('--all', 'Show all models without limiting the display')
+            .option('--sort <sort>', 'Sort models by cost or name', /^(cost|name)$/i, 'cost')
+            .action(options => runModelsAction(options));
 
         // Custom error handling with semantic suggestions
         const configOutput = program.configureOutput();
@@ -203,6 +366,6 @@ Option Groups:
 
         await program.parseAsync(process.argv);
     } catch (error) {
-        handleError(error);
+        handleCliError(error); // Use the new central CLI error handler
     }
 };
