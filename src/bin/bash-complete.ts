@@ -6,7 +6,7 @@
  * This script provides bash completion for the Triumvirate CLI commands and options.
  */
 
-import { Command } from 'commander';
+import { type Command as _Command } from 'commander';
 
 // Get the current command line being completed
 const line = process.env['COMP_LINE'] || '';

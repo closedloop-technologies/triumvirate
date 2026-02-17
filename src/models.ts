@@ -105,11 +105,11 @@ export async function runModelReview(
         const { provider, model } = parseModelSpec(modelName);
         let modelProvider: OpenAIProvider | ClaudeProvider | GeminiProvider;
         if (provider === 'openai' || provider === 'openrouter' || provider === 'azure') {
-            modelProvider = new OpenAIProvider(model || 'o3');
+            modelProvider = new OpenAIProvider(model || 'gpt-4.1');
         } else if (provider === 'claude' || provider === 'anthropic') {
-            modelProvider = new ClaudeProvider(model || 'claude-opus-4-20250514');
+            modelProvider = new ClaudeProvider(model || 'claude-opus-4-6');
         } else if (provider === 'gemini' || provider === 'google') {
-            modelProvider = new GeminiProvider(model || 'gemini-2.5-pro-preview-06-05');
+            modelProvider = new GeminiProvider(model || 'gemini-3-pro-preview');
         } else {
             // Default to OpenAI-compatible provider
             modelProvider = new OpenAIProvider(model || provider);

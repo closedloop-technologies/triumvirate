@@ -1,756 +1,738 @@
 {
-  "projectName": "Triumvirate",
-  "reviewDate": "2025-06-14T19:14:54.078Z",
-  "categories": [
-    {
-      "name": "Code Quality and Readability",
-      "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
-    },
-    {
-      "name": "Error Handling",
-      "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
-    },
-    {
-      "name": "Architecture and Design",
-      "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
-    },
-    {
-      "name": "Performance Optimization",
-      "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
-    },
-    {
-      "name": "Security Vulnerabilities",
-      "description": "Security concerns such as command injection risks, path traversal vulnerabilities, exposure of sensitive information, and other security best practices that should be implemented."
-    },
-    {
-      "name": "Functional Bugs",
-      "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
-    },
-    {
-      "name": "Testing and Reliability",
-      "description": "Concerns about test coverage, test quality, and overall reliability of the codebase, including suggestions for additional testing approaches and reliability improvements."
-    },
-    {
-      "name": "Unknown Category",
-      "description": "Findings that could not be mapped to a specific category"
-    }
-  ],
-  "models": [
-    {
-      "id": "openai/o3",
-      "name": "openai/o3"
-    },
-    {
-      "id": "anthropic/claude-opus-4-20250514",
-      "name": "anthropic/claude-opus-4-20250514"
-    },
-    {
-      "id": "gemini/gemini-2.5-pro-preview-06-05",
-      "name": "gemini/gemini-2.5-pro-preview-06-05"
-    }
-  ],
-  "modelMetrics": [
-    {
-      "model": {
-        "name": "openai/o3",
-        "id": "openai/o3"
-      },
-      "status": "✅ Completed",
-      "latencyMs": 40996,
-      "cost": 0.111722,
-      "totalTokens": 47281,
-      "costPer1kTokens": 0.00236293648611493
-    },
-    {
-      "model": {
-        "name": "anthropic/claude-opus-4-20250514",
-        "id": "anthropic/claude-opus-4-20250514"
-      },
-      "status": "✅ Completed",
-      "latencyMs": 55313,
-      "cost": 0.92817,
-      "totalTokens": 56098,
-      "costPer1kTokens": 0.01654550964383757
-    },
-    {
-      "model": {
-        "name": "gemini/gemini-2.5-pro-preview-06-05",
-        "id": "gemini/gemini-2.5-pro-preview-06-05"
-      },
-      "status": "✅ Completed",
-      "latencyMs": 69859,
-      "cost": 0,
-      "totalTokens": 54690,
-      "costPer1kTokens": 0
-    }
-  ],
-  "keyStrengths": [
-    {
-      "title": "Provider Abstraction with Strategy Pattern",
-      "description": "The codebase uses a strong abstraction for LLM providers through the `LLMProvider` interface. This design pattern cleanly separates core logic from provider-specific implementations, making it easy to add new providers in the future and switch between them at runtime.",
-      "category": {
-        "name": "Architecture and Design",
-        "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
-      },
-      "modelAgreements": {
-        "openai/o3": true,
-        "anthropic/claude-opus-4-20250514": true,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": true,
-      "codeExample": {
-        "code": "// LLMProvider interface\ninterface LLMProvider {\n  name: string;\n  model: string;\n  getSystemPrompt(): string;\n  getPrompt(input: string): string;\n  sendPrompt(prompt: string, options?: PromptOptions): Promise<string>;\n  // ...\n}",
-        "language": "typescript"
-      }
-    },
-    {
-      "title": "Well-Structured Project Architecture",
-      "description": "The project has a clear and logical directory structure with dedicated directories for CLI actions, utilities, prompts, and types. This organization makes the codebase easier to navigate and understand.",
-      "category": {
-        "name": "Architecture and Design",
-        "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
-      },
-      "modelAgreements": {
-        "openai/o3": false,
-        "anthropic/claude-opus-4-20250514": true,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": true
-    },
-    {
-      "title": "Robust Error Handling System",
-      "description": "The project implements a comprehensive error handling system with `TriumvirateError` class, error categories, retryable errors, and exponential backoff. This creates resilience against API failures, timeouts, and rate limits.",
-      "category": {
-        "name": "Error Handling",
-        "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
-      },
-      "modelAgreements": {
-        "openai/o3": false,
-        "anthropic/claude-opus-4-20250514": false,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": true,
-      "codeExample": {
-        "code": "// Error handling with categories and context\nexport class TriumvirateError extends Error {\n    constructor(\n        message: string,\n        category: ErrorCategory = ErrorCategory.UNKNOWN,\n        component: string = 'unknown',\n        retryable: boolean = false,\n        originalError: unknown = null,\n        context?: Record<string, unknown>\n    ) {\n        super(message);\n        this.name = 'TriumvirateError';\n        this.category = category;\n        this.component = component;\n        this.retryable = retryable;\n        this.originalError = originalError;\n        this.context = context;\n    }\n}",
-        "language": "typescript"
-      }
-    },
-    {
-      "title": "Parallel Execution of Model Reviews",
-      "description": "The code uses `Promise.all` in the main workflow to run reviews across multiple LLMs concurrently, significantly reducing the total wall-clock time required for the process.",
-      "category": {
-        "name": "Performance Optimization",
-        "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
-      },
-      "modelAgreements": {
-        "openai/o3": false,
-        "anthropic/claude-opus-4-20250514": false,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": true,
-      "codeExample": {
-        "code": "// In src/index.ts\nconst modelResults = await Promise.all(\n  selectedModels.map(async (model) => {\n    // Execute review with each model in parallel\n    return executeModelReview(model, options);\n  })\n);",
-        "language": "typescript"
-      }
-    }
-  ],
-  "keyAreasForImprovement": [
-    {
-      "title": "Duplicate Error Handling Modules",
-      "description": "The codebase contains multiple parallel error-handling modules (`error-handling.ts`, `error-handling-extensions.ts`, and legacy `utils/error.ts`) that implement the same helpers like `safeExecuteAsync` and `safeFileOperation*`. This creates confusion, increases the mental map required to understand the codebase, and risks implementation drift between versions.",
-      "category": {
-        "name": "Code Quality and Readability",
-        "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
-      },
-      "modelAgreements": {
-        "openai/o3": true,
-        "anthropic/claude-opus-4-20250514": true,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": false,
-      "recommendation": "Consolidate all error handling logic into a single module (preferably `src/utils/error-handling.ts`). Remove redundant implementations in `error.ts` and `error-handling-extensions.ts`. Create a unified error handling strategy that all components rely on.",
-      "codeExample": {
-        "code": "// In src/utils/error-handling.ts\nexport class TriumvirateError extends Error {\n    constructor(\n        message: string,\n        category: ErrorCategory = ErrorCategory.UNKNOWN,\n        component: string = 'unknown',\n        retryable: boolean = false,\n        originalError: unknown = null,\n        context?: Record<string, unknown>\n    )\n}\n\n// But in src/utils/error.ts - Duplicate implementation\nexport class TriumvirateError extends Error {\n    constructor(message: string)\n}",
-        "language": "typescript"
-      }
-    },
-    {
-      "title": "Large Monolithic Utility Files",
-      "description": "Several utility files are excessively large and serve multiple unrelated purposes. For example, `report-utils.ts` is over 2,000 lines of code and handles prompt building, ANSI logging, model adapters, cost estimation, schema validation, and similarity functions. This makes the code difficult to maintain, test, and understand.",
-      "category": {
-        "name": "Code Quality and Readability",
-        "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
-      },
-      "modelAgreements": {
-        "openai/o3": true,
-        "anthropic/claude-opus-4-20250514": true,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": false,
-      "recommendation": "Break large utility files into smaller, more focused modules based on their responsibilities. For example, split `report-utils.ts` into separate modules for extraction, analysis, and formatting. Similarly, split `llm-providers.ts` into a provider factory and individual provider implementation files.",
-      "codeExample": {
-        "code": "// In src/utils/report-utils.ts (>2000 LOC)\n// Functions for prompt building, logging, cost estimation, schema validation, etc.\n// all in one massive file",
-        "language": "typescript"
-      }
-    },
-    {
-      "title": "Inconsistent Naming and Casing",
-      "description": "The codebase has inconsistent naming and casing conventions, particularly for model IDs. Model identifiers alternate between formats like `Claude`, `claude`, and `claude-3-7-sonnet-20250219`. Output folder defaults are also inconsistent, using both `./.triumvirate` and `./.justbuild` (in README) and `./.triumvirate-enhanced.json` (in writer code). This inconsistency leads to bugs such as incorrect cost calculations.",
-      "category": {
-        "name": "Code Quality and Readability",
-        "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
-      },
-      "modelAgreements": {
-        "openai/o3": true,
-        "anthropic/claude-opus-4-20250514": true,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": false,
-      "recommendation": "Standardize naming conventions across the codebase. For model identifiers, use a consistent format like `{provider}/{model}` and normalize at the point of entry. For output paths, decide on a single convention and document it clearly in the README and code comments."
-    },
-    {
-      "title": "Cost Calculation Bug",
-      "description": "The cost calculation functionality always returns $0.0000. This occurs because `estimateCost()` looks up rates by exact model key, but providers often pass in general model names like `Claude` or plain provider names that don't exist in the cost rates JSON. Additionally, in `EnhancedLogger.printApiSummary()`, cost is treated as a number but stored as a string (`$0.0000`), causing mathematical totals to remain 0.",
-      "category": {
-        "name": "Functional Bugs",
-        "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
-      },
-      "modelAgreements": {
-        "openai/o3": true,
-        "anthropic/claude-opus-4-20250514": true,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": false,
-      "recommendation": "Normalize model names when looking up cost rates, ensuring consistency between the keys in the COST_RATES object and the model identifiers used throughout the codebase. Also, ensure that cost values are consistently treated as numbers during calculations and only formatted as strings for display purposes.",
-      "codeExample": {
-        "code": "// In src/utils/llm-providers.ts\nexport function estimateCost(model: string, inputTokens: number, outputTokens: number): number {\n    // Looks up COST_RATES by exact model key, falling back to 0 when not found\n}\n\n// In logging code\nenhancedLogger.logApiCall({\n    model: provider.name, // Uses \"Claude\" instead of \"claude-3-7-sonnet-20250219\"\n    // ...\n});",
-        "language": "typescript"
-      }
-    },
-    {
-      "title": "Output Directory Confusion",
-      "description": "There's confusion in how output paths are handled. `runCliAction` defaults to `./.triumvirate` as the output directory, but `writeOutput()` receives a file argument `outputPath` and always appends a timestamp subfolder. This results in artifacts being placed in `./.triumvirate-enhanced.json` (at the root) even when users specify a custom `--output-dir`. The README also refers to `-o, --output <file>` which doesn't match the actual implementation.",
-      "category": {
-        "name": "Functional Bugs",
-        "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
-      },
-      "modelAgreements": {
-        "openai/o3": true,
-        "anthropic/claude-opus-4-20250514": true,
-        "gemini/gemini-2.5-pro-preview-06-05": true
-      },
-      "isStrength": false,
-      "recommendation": "Clarify the contract for output paths: decide whether the parameter should be a directory or a file stem, and implement consistent handling throughout the codebase. Update the README to accurately reflect the expected parameter type and format. Make the `writeOutput` function more robust to handle both directory and file path inputs."
-    }
-  ],
-  "findingsByCategory": {
-    "Code Quality and Readability": [
-      {
-        "title": "Duplicate Error Handling Modules",
-        "description": "The codebase contains multiple parallel error-handling modules (`error-handling.ts`, `error-handling-extensions.ts`, and legacy `utils/error.ts`) that implement the same helpers like `safeExecuteAsync` and `safeFileOperation*`. This creates confusion, increases the mental map required to understand the codebase, and risks implementation drift between versions.",
-        "category": {
-          "name": "Code Quality and Readability",
-          "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
+    "projectName": "Triumvirate",
+    "reviewDate": "2025-06-14T19:14:54.078Z",
+    "categories": [
+        {
+            "name": "Code Quality and Readability",
+            "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
         },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
+        {
+            "name": "Error Handling",
+            "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
         },
-        "isStrength": false,
-        "recommendation": "Consolidate all error handling logic into a single module (preferably `src/utils/error-handling.ts`). Remove redundant implementations in `error.ts` and `error-handling-extensions.ts`. Create a unified error handling strategy that all components rely on.",
-        "codeExample": {
-          "code": "// In src/utils/error-handling.ts\nexport class TriumvirateError extends Error {\n    constructor(\n        message: string,\n        category: ErrorCategory = ErrorCategory.UNKNOWN,\n        component: string = 'unknown',\n        retryable: boolean = false,\n        originalError: unknown = null,\n        context?: Record<string, unknown>\n    )\n}\n\n// But in src/utils/error.ts - Duplicate implementation\nexport class TriumvirateError extends Error {\n    constructor(message: string)\n}",
-          "language": "typescript"
+        {
+            "name": "Architecture and Design",
+            "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
+        },
+        {
+            "name": "Performance Optimization",
+            "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
+        },
+        {
+            "name": "Security Vulnerabilities",
+            "description": "Security concerns such as command injection risks, path traversal vulnerabilities, exposure of sensitive information, and other security best practices that should be implemented."
+        },
+        {
+            "name": "Functional Bugs",
+            "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
+        },
+        {
+            "name": "Testing and Reliability",
+            "description": "Concerns about test coverage, test quality, and overall reliability of the codebase, including suggestions for additional testing approaches and reliability improvements."
+        },
+        {
+            "name": "Unknown Category",
+            "description": "Findings that could not be mapped to a specific category"
         }
-      },
-      {
-        "title": "Large Monolithic Utility Files",
-        "description": "Several utility files are excessively large and serve multiple unrelated purposes. For example, `report-utils.ts` is over 2,000 lines of code and handles prompt building, ANSI logging, model adapters, cost estimation, schema validation, and similarity functions. This makes the code difficult to maintain, test, and understand.",
-        "category": {
-          "name": "Code Quality and Readability",
-          "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
-        },
-        "isStrength": false,
-        "recommendation": "Break large utility files into smaller, more focused modules based on their responsibilities. For example, split `report-utils.ts` into separate modules for extraction, analysis, and formatting. Similarly, split `llm-providers.ts` into a provider factory and individual provider implementation files.",
-        "codeExample": {
-          "code": "// In src/utils/report-utils.ts (>2000 LOC)\n// Functions for prompt building, logging, cost estimation, schema validation, etc.\n// all in one massive file",
-          "language": "typescript"
-        }
-      },
-      {
-        "title": "Inconsistent Naming and Casing",
-        "description": "The codebase has inconsistent naming and casing conventions, particularly for model IDs. Model identifiers alternate between formats like `Claude`, `claude`, and `claude-3-7-sonnet-20250219`. Output folder defaults are also inconsistent, using both `./.triumvirate` and `./.justbuild` (in README) and `./.triumvirate-enhanced.json` (in writer code). This inconsistency leads to bugs such as incorrect cost calculations.",
-        "category": {
-          "name": "Code Quality and Readability",
-          "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
-        },
-        "isStrength": false,
-        "recommendation": "Standardize naming conventions across the codebase. For model identifiers, use a consistent format like `{provider}/{model}` and normalize at the point of entry. For output paths, decide on a single convention and document it clearly in the README and code comments."
-      },
-      {
-        "title": "TODO Comments and Dead Code",
-        "description": "The codebase contains numerous TODO comments, commented-out code blocks, and markers like \"FIXED VERSION\" or \"DoD:\" in production paths. These clutter the codebase and can lead to confusion about what is actually implemented.",
-        "category": {
-          "name": "Code Quality and Readability",
-          "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": false
-        },
-        "isStrength": false,
-        "recommendation": "Remove commented-out code and convert TODOs to actual issues in your issue tracker. This keeps the codebase clean while ensuring that improvement ideas aren't lost. For planned features, document them in a roadmap file rather than scattered TODO comments.",
-        "codeExample": {
-          "code": "// In test/e2e.test.ts\n// TODO: Add more comprehensive e2e tests\n\n// In src/cli/actions/planAction.ts\n// Future fields from TASKS.md: affected_components, acceptance_criteria, effort, git_prefix",
-          "language": "typescript"
-        }
-      }
     ],
-    "Error Handling": [
-      {
-        "title": "Robust Error Handling System",
-        "description": "The project implements a comprehensive error handling system with `TriumvirateError` class, error categories, retryable errors, and exponential backoff. This creates resilience against API failures, timeouts, and rate limits.",
-        "category": {
-          "name": "Error Handling",
-          "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
+    "models": [
+        {
+            "id": "openai/o3",
+            "name": "openai/o3"
         },
-        "modelAgreements": {
-          "openai/o3": false,
-          "anthropic/claude-opus-4-20250514": false,
-          "gemini/gemini-2.5-pro-preview-06-05": true
+        {
+            "id": "anthropic/claude-opus-4-20250514",
+            "name": "anthropic/claude-opus-4-20250514"
         },
-        "isStrength": true,
-        "codeExample": {
-          "code": "// Error handling with categories and context\nexport class TriumvirateError extends Error {\n    constructor(\n        message: string,\n        category: ErrorCategory = ErrorCategory.UNKNOWN,\n        component: string = 'unknown',\n        retryable: boolean = false,\n        originalError: unknown = null,\n        context?: Record<string, unknown>\n    ) {\n        super(message);\n        this.name = 'TriumvirateError';\n        this.category = category;\n        this.component = component;\n        this.retryable = retryable;\n        this.originalError = originalError;\n        this.context = context;\n    }\n}",
-          "language": "typescript"
+        {
+            "id": "gemini/gemini-2.5-pro-preview-06-05",
+            "name": "gemini/gemini-2.5-pro-preview-06-05"
         }
-      },
-      {
-        "title": "Spinner Update Race Condition",
-        "description": "The `executeReviews()` function mutates a shared `status` array from concurrent promises and immediately renders it. If a promise is rejected before `updateSpinner()` runs, the UI can become stuck, leading to a poor user experience.",
-        "category": {
-          "name": "Error Handling",
-          "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": false,
-          "gemini/gemini-2.5-pro-preview-06-05": false
-        },
-        "isStrength": false,
-        "recommendation": "Wrap each promise in try/catch and update the status inside a `finally` block to ensure the spinner is always updated, regardless of whether the promise is fulfilled or rejected. This will prevent the UI from becoming stuck when errors occur."
-      },
-      {
-        "title": "Unhandled Promises",
-        "description": "Several `safeReportGenerationAsync(fn...)` calls don't await the returned promise, potentially leading to lost errors (which will cause Node.js to emit `UnhandledPromiseRejection` warnings in the future).",
-        "category": {
-          "name": "Error Handling",
-          "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": false,
-          "gemini/gemini-2.5-pro-preview-06-05": false
-        },
-        "isStrength": false,
-        "recommendation": "Ensure all promises are properly awaited or have proper error handling attached. Update async functions to handle errors appropriately, and use `Promise.all` with error handling when executing multiple promises concurrently."
-      }
     ],
-    "Architecture and Design": [
-      {
-        "title": "Provider Abstraction with Strategy Pattern",
-        "description": "The codebase uses a strong abstraction for LLM providers through the `LLMProvider` interface. This design pattern cleanly separates core logic from provider-specific implementations, making it easy to add new providers in the future and switch between them at runtime.",
-        "category": {
-          "name": "Architecture and Design",
-          "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
+    "modelMetrics": [
+        {
+            "model": {
+                "name": "openai/o3",
+                "id": "openai/o3"
+            },
+            "status": "✅ Completed",
+            "latencyMs": 40996,
+            "cost": 0.111722,
+            "totalTokens": 47281,
+            "costPer1kTokens": 0.00236293648611493
         },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
+        {
+            "model": {
+                "name": "anthropic/claude-opus-4-20250514",
+                "id": "anthropic/claude-opus-4-20250514"
+            },
+            "status": "✅ Completed",
+            "latencyMs": 55313,
+            "cost": 0.92817,
+            "totalTokens": 56098,
+            "costPer1kTokens": 0.01654550964383757
         },
-        "isStrength": true,
-        "codeExample": {
-          "code": "// LLMProvider interface\ninterface LLMProvider {\n  name: string;\n  model: string;\n  getSystemPrompt(): string;\n  getPrompt(input: string): string;\n  sendPrompt(prompt: string, options?: PromptOptions): Promise<string>;\n  // ...\n}",
-          "language": "typescript"
+        {
+            "model": {
+                "name": "gemini/gemini-2.5-pro-preview-06-05",
+                "id": "gemini/gemini-2.5-pro-preview-06-05"
+            },
+            "status": "✅ Completed",
+            "latencyMs": 69859,
+            "cost": 0,
+            "totalTokens": 54690,
+            "costPer1kTokens": 0
         }
-      },
-      {
-        "title": "Insufficient Provider Separation",
-        "description": "While the LLM provider abstraction is well-designed, all provider implementations (`ClaudeProvider`, `OpenAIProvider`, `GeminiProvider`) are defined in a single monolithic file. This creates tight coupling, requires importing provider-specific types within unrelated providers, and makes the codebase harder to maintain.",
-        "category": {
-          "name": "Architecture and Design",
-          "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": false,
-          "gemini/gemini-2.5-pro-preview-06-05": false
-        },
-        "isStrength": false,
-        "recommendation": "Extract each provider implementation into its own file. Create a simple factory pattern to instantiate the appropriate provider based on configuration. This would improve maintainability, allow for provider-specific optimizations, and simplify testing."
-      },
-      {
-        "title": "Tight Coupling Between CLI and Core Library",
-        "description": "Core functions like `runTriumvirateReview` accept CLI-specific options (e.g., `--pass-threshold`) and produce CLI-specific fancy logs, creating tight coupling between the CLI interface and the core library functionality. This makes it difficult to use the core logic in other contexts, such as programmatic usage or different UIs.",
-        "category": {
-          "name": "Architecture and Design",
-          "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": false,
-          "gemini/gemini-2.5-pro-preview-06-05": false
-        },
-        "isStrength": false,
-        "recommendation": "Create a pure library layer that only receives parsed parameters, returns data, and never interacts directly with stdout. Let the CLI layer decide how to present the information to users. This separation would make the core functionality more reusable across different contexts."
-      },
-      {
-        "title": "Well-Structured Project Architecture",
-        "description": "The project has a clear and logical directory structure with dedicated directories for CLI actions, utilities, prompts, and types. This organization makes the codebase easier to navigate and understand.",
-        "category": {
-          "name": "Architecture and Design",
-          "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
-        },
-        "modelAgreements": {
-          "openai/o3": false,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
-        },
-        "isStrength": true
-      }
     ],
-    "Performance Optimization": [
-      {
-        "title": "Synchronous File Operations",
-        "description": "The codebase uses synchronous file operations and `execSync` calls in several places, which can block the Node.js event loop and reduce performance, especially in user-facing CLI code. This affects application responsiveness and scalability.",
-        "category": {
-          "name": "Performance Optimization",
-          "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
+    "keyStrengths": [
+        {
+            "title": "Provider Abstraction with Strategy Pattern",
+            "description": "The codebase uses a strong abstraction for LLM providers through the `LLMProvider` interface. This design pattern cleanly separates core logic from provider-specific implementations, making it easy to add new providers in the future and switch between them at runtime.",
+            "category": {
+                "name": "Architecture and Design",
+                "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
+            },
+            "modelAgreements": {
+                "openai/o3": true,
+                "anthropic/claude-opus-4-20250514": true,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": true,
+            "codeExample": {
+                "code": "// LLMProvider interface\ninterface LLMProvider {\n  name: string;\n  model: string;\n  getSystemPrompt(): string;\n  getPrompt(input: string): string;\n  sendPrompt(prompt: string, options?: PromptOptions): Promise<string>;\n  // ...\n}",
+                "language": "typescript"
+            }
         },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
+        {
+            "title": "Well-Structured Project Architecture",
+            "description": "The project has a clear and logical directory structure with dedicated directories for CLI actions, utilities, prompts, and types. This organization makes the codebase easier to navigate and understand.",
+            "category": {
+                "name": "Architecture and Design",
+                "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
+            },
+            "modelAgreements": {
+                "openai/o3": false,
+                "anthropic/claude-opus-4-20250514": true,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": true
         },
-        "isStrength": false,
-        "recommendation": "Replace synchronous operations with their asynchronous counterparts. Use `fs/promises` instead of synchronous `fs` methods, and replace `execSync` with `exec` or `spawn` from the `child_process` module. For git operations specifically, consider using a library like `simple-git`.",
-        "codeExample": {
-          "code": "// In scripts/check-coverage.js\nconst output = execSync('npx vitest run --coverage', {\n    encoding: 'utf8',\n    stdio: 'pipe'\n});",
-          "language": "javascript"
+        {
+            "title": "Robust Error Handling System",
+            "description": "The project implements a comprehensive error handling system with `TriumvirateError` class, error categories, retryable errors, and exponential backoff. This creates resilience against API failures, timeouts, and rate limits.",
+            "category": {
+                "name": "Error Handling",
+                "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
+            },
+            "modelAgreements": {
+                "openai/o3": false,
+                "anthropic/claude-opus-4-20250514": false,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": true,
+            "codeExample": {
+                "code": "// Error handling with categories and context\nexport class TriumvirateError extends Error {\n    constructor(\n        message: string,\n        category: ErrorCategory = ErrorCategory.UNKNOWN,\n        component: string = 'unknown',\n        retryable: boolean = false,\n        originalError: unknown = null,\n        context?: Record<string, unknown>\n    ) {\n        super(message);\n        this.name = 'TriumvirateError';\n        this.category = category;\n        this.component = component;\n        this.retryable = retryable;\n        this.originalError = originalError;\n        this.context = context;\n    }\n}",
+                "language": "typescript"
+            }
+        },
+        {
+            "title": "Parallel Execution of Model Reviews",
+            "description": "The code uses `Promise.all` in the main workflow to run reviews across multiple LLMs concurrently, significantly reducing the total wall-clock time required for the process.",
+            "category": {
+                "name": "Performance Optimization",
+                "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
+            },
+            "modelAgreements": {
+                "openai/o3": false,
+                "anthropic/claude-opus-4-20250514": false,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": true,
+            "codeExample": {
+                "code": "// In src/index.ts\nconst modelResults = await Promise.all(\n  selectedModels.map(async (model) => {\n    // Execute review with each model in parallel\n    return executeModelReview(model, options);\n  })\n);",
+                "language": "typescript"
+            }
         }
-      },
-      {
-        "title": "Memory-Intensive Report Generation",
-        "description": "Report generation is synchronous and memory-intensive, building the full Markdown string in memory before writing to disk. For large reviews with 128k-200k tokens, this approach may exhaust available memory.",
-        "category": {
-          "name": "Performance Optimization",
-          "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": false
-        },
-        "isStrength": false,
-        "recommendation": "Implement streaming for large outputs. Use `fs.createWriteStream()` to write report sections incrementally rather than building the entire report in memory. Alternatively, split large reports into separate files that can be processed individually."
-      },
-      {
-        "title": "Parallel Execution of Model Reviews",
-        "description": "The code uses `Promise.all` in the main workflow to run reviews across multiple LLMs concurrently, significantly reducing the total wall-clock time required for the process.",
-        "category": {
-          "name": "Performance Optimization",
-          "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
-        },
-        "modelAgreements": {
-          "openai/o3": false,
-          "anthropic/claude-opus-4-20250514": false,
-          "gemini/gemini-2.5-pro-preview-06-05": true
-        },
-        "isStrength": true,
-        "codeExample": {
-          "code": "// In src/index.ts\nconst modelResults = await Promise.all(\n  selectedModels.map(async (model) => {\n    // Execute review with each model in parallel\n    return executeModelReview(model, options);\n  })\n);",
-          "language": "typescript"
-        }
-      },
-      {
-        "title": "Repomix Token Optimization",
-        "description": "The `repomix.pack()` function is called twice when the token limit is exceeded, which doubles processing time on large repositories. Additionally, `optimizeRepomix()` reads every file into memory to count characters, which is inefficient for large monorepos.",
-        "category": {
-          "name": "Performance Optimization",
-          "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": false,
-          "gemini/gemini-2.5-pro-preview-06-05": true
-        },
-        "isStrength": false,
-        "recommendation": "Compute metrics first, then pack once with the final settings to avoid duplicate packing operations. For file size estimation, use `stat.size` instead of reading the entire file content when only approximate ranking is needed."
-      }
     ],
-    "Security Vulnerabilities": [
-      {
-        "title": "Command Injection Vulnerability",
-        "description": "Several functions construct shell commands by directly concatenating user or LLM-provided input, creating potential command injection vulnerabilities. For example, `createGitBranchForTask()` and scripts that call `execSync('git checkout -b ' + branchName)` build commands from task titles. If a malicious task title were crafted (such as from an edited plan file), it could potentially inject arbitrary shell commands.",
-        "category": {
-          "name": "Security Vulnerabilities",
-          "description": "Security concerns such as command injection risks, path traversal vulnerabilities, exposure of sensitive information, and other security best practices that should be implemented."
+    "keyAreasForImprovement": [
+        {
+            "title": "Duplicate Error Handling Modules",
+            "description": "The codebase contains multiple parallel error-handling modules (`error-handling.ts`, `error-handling-extensions.ts`, and legacy `utils/error.ts`) that implement the same helpers like `safeExecuteAsync` and `safeFileOperation*`. This creates confusion, increases the mental map required to understand the codebase, and risks implementation drift between versions.",
+            "category": {
+                "name": "Code Quality and Readability",
+                "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
+            },
+            "modelAgreements": {
+                "openai/o3": true,
+                "anthropic/claude-opus-4-20250514": true,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": false,
+            "recommendation": "Consolidate all error handling logic into a single module (preferably `src/utils/error-handling.ts`). Remove redundant implementations in `error.ts` and `error-handling-extensions.ts`. Create a unified error handling strategy that all components rely on.",
+            "codeExample": {
+                "code": "// In src/utils/error-handling.ts\nexport class TriumvirateError extends Error {\n    constructor(\n        message: string,\n        category: ErrorCategory = ErrorCategory.UNKNOWN,\n        component: string = 'unknown',\n        retryable: boolean = false,\n        originalError: unknown = null,\n        context?: Record<string, unknown>\n    )\n}\n\n// But in src/utils/error.ts - Duplicate implementation\nexport class TriumvirateError extends Error {\n    constructor(message: string)\n}",
+                "language": "typescript"
+            }
         },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
+        {
+            "title": "Large Monolithic Utility Files",
+            "description": "Several utility files are excessively large and serve multiple unrelated purposes. For example, `report-utils.ts` is over 2,000 lines of code and handles prompt building, ANSI logging, model adapters, cost estimation, schema validation, and similarity functions. This makes the code difficult to maintain, test, and understand.",
+            "category": {
+                "name": "Code Quality and Readability",
+                "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
+            },
+            "modelAgreements": {
+                "openai/o3": true,
+                "anthropic/claude-opus-4-20250514": true,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": false,
+            "recommendation": "Break large utility files into smaller, more focused modules based on their responsibilities. For example, split `report-utils.ts` into separate modules for extraction, analysis, and formatting. Similarly, split `llm-providers.ts` into a provider factory and individual provider implementation files.",
+            "codeExample": {
+                "code": "// In src/utils/report-utils.ts (>2000 LOC)\n// Functions for prompt building, logging, cost estimation, schema validation, etc.\n// all in one massive file",
+                "language": "typescript"
+            }
         },
-        "isStrength": false,
-        "recommendation": "Replace string concatenation in shell commands with safer alternatives. Use `spawnSync('git', ['checkout', '-b', branchName], {shell: false})` or a library like `simple-git` that handles arguments safely. When sanitization is necessary, use allowlists rather than blocklists and validate inputs strictly.",
-        "codeExample": {
-          "code": "// In src/cli/actions/nextAction.ts\nconst sanitizedTitle = task.title\n    .toLowerCase()\n    .replace(/\\s+/g, '-')\n    .replace(/[^a-z0-9-]/g, '');\nconst branchName = `feature/${task.type}/${sanitizedTitle}`;\n// ...\nexecSync(`git checkout -b ${branchName}`, { stdio: 'pipe' });",
-          "language": "typescript"
+        {
+            "title": "Inconsistent Naming and Casing",
+            "description": "The codebase has inconsistent naming and casing conventions, particularly for model IDs. Model identifiers alternate between formats like `Claude`, `claude`, and `claude-3-7-sonnet-20250219`. Output folder defaults are also inconsistent, using both `./.triumvirate` and `./.justbuild` (in README) and `./.triumvirate-enhanced.json` (in writer code). This inconsistency leads to bugs such as incorrect cost calculations.",
+            "category": {
+                "name": "Code Quality and Readability",
+                "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
+            },
+            "modelAgreements": {
+                "openai/o3": true,
+                "anthropic/claude-opus-4-20250514": true,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": false,
+            "recommendation": "Standardize naming conventions across the codebase. For model identifiers, use a consistent format like `{provider}/{model}` and normalize at the point of entry. For output paths, decide on a single convention and document it clearly in the README and code comments."
+        },
+        {
+            "title": "Cost Calculation Bug",
+            "description": "The cost calculation functionality always returns $0.0000. This occurs because `estimateCost()` looks up rates by exact model key, but providers often pass in general model names like `Claude` or plain provider names that don't exist in the cost rates JSON. Additionally, in `EnhancedLogger.printApiSummary()`, cost is treated as a number but stored as a string (`$0.0000`), causing mathematical totals to remain 0.",
+            "category": {
+                "name": "Functional Bugs",
+                "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
+            },
+            "modelAgreements": {
+                "openai/o3": true,
+                "anthropic/claude-opus-4-20250514": true,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": false,
+            "recommendation": "Normalize model names when looking up cost rates, ensuring consistency between the keys in the COST_RATES object and the model identifiers used throughout the codebase. Also, ensure that cost values are consistently treated as numbers during calculations and only formatted as strings for display purposes.",
+            "codeExample": {
+                "code": "// In src/utils/llm-providers.ts\nexport function estimateCost(model: string, inputTokens: number, outputTokens: number): number {\n    // Looks up COST_RATES by exact model key, falling back to 0 when not found\n}\n\n// In logging code\nenhancedLogger.logApiCall({\n    model: provider.name, // Uses \"Claude\" instead of \"claude-3-7-sonnet-20250219\"\n    // ...\n});",
+                "language": "typescript"
+            }
+        },
+        {
+            "title": "Output Directory Confusion",
+            "description": "There's confusion in how output paths are handled. `runCliAction` defaults to `./.triumvirate` as the output directory, but `writeOutput()` receives a file argument `outputPath` and always appends a timestamp subfolder. This results in artifacts being placed in `./.triumvirate-enhanced.json` (at the root) even when users specify a custom `--output-dir`. The README also refers to `-o, --output <file>` which doesn't match the actual implementation.",
+            "category": {
+                "name": "Functional Bugs",
+                "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
+            },
+            "modelAgreements": {
+                "openai/o3": true,
+                "anthropic/claude-opus-4-20250514": true,
+                "gemini/gemini-2.5-pro-preview-06-05": true
+            },
+            "isStrength": false,
+            "recommendation": "Clarify the contract for output paths: decide whether the parameter should be a directory or a file stem, and implement consistent handling throughout the codebase. Update the README to accurately reflect the expected parameter type and format. Make the `writeOutput` function more robust to handle both directory and file path inputs."
         }
-      },
-      {
-        "title": "Path Traversal Vulnerability",
-        "description": "File operations don't properly validate or sanitize paths, creating potential path traversal vulnerabilities. `writeOutput()` joins user-supplied `outputPath` without sufficient validation, potentially allowing `../../` path traversal that could overwrite files outside the repository when used programmatically.",
-        "category": {
-          "name": "Security Vulnerabilities",
-          "description": "Security concerns such as command injection risks, path traversal vulnerabilities, exposure of sensitive information, and other security best practices that should be implemented."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
-        },
-        "isStrength": false,
-        "recommendation": "Implement path sanitization using `path.resolve()` and validate that the resulting path is within the expected directory. Create a utility function to safely validate and sanitize all file paths before operations."
-      },
-      {
-        "title": "Secrets Exposure in Logs",
-        "description": "While API keys are generally handled securely, the `validateApiKeys()` function prints invalid key values when a regex validation fails, potentially leaking secrets in CI logs or other shared environments.",
-        "category": {
-          "name": "Security Vulnerabilities",
-          "description": "Security concerns such as command injection risks, path traversal vulnerabilities, exposure of sensitive information, and other security best practices that should be implemented."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": false,
-          "gemini/gemini-2.5-pro-preview-06-05": false
-        },
-        "isStrength": false,
-        "recommendation": "Never print raw API keys in logs, even when validation fails. Instead, mask sensitive values by showing only the first few and last few characters (e.g., `sk_test_1234...abcd`). This prevents accidental exposure of secrets in logs and CI outputs."
-      }
     ],
-    "Functional Bugs": [
-      {
-        "title": "Cost Calculation Bug",
-        "description": "The cost calculation functionality always returns $0.0000. This occurs because `estimateCost()` looks up rates by exact model key, but providers often pass in general model names like `Claude` or plain provider names that don't exist in the cost rates JSON. Additionally, in `EnhancedLogger.printApiSummary()`, cost is treated as a number but stored as a string (`$0.0000`), causing mathematical totals to remain 0.",
-        "category": {
-          "name": "Functional Bugs",
-          "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
+    "findingsByCategory": {
+        "Code Quality and Readability": [
+            {
+                "title": "Duplicate Error Handling Modules",
+                "description": "The codebase contains multiple parallel error-handling modules (`error-handling.ts`, `error-handling-extensions.ts`, and legacy `utils/error.ts`) that implement the same helpers like `safeExecuteAsync` and `safeFileOperation*`. This creates confusion, increases the mental map required to understand the codebase, and risks implementation drift between versions.",
+                "category": {
+                    "name": "Code Quality and Readability",
+                    "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Consolidate all error handling logic into a single module (preferably `src/utils/error-handling.ts`). Remove redundant implementations in `error.ts` and `error-handling-extensions.ts`. Create a unified error handling strategy that all components rely on.",
+                "codeExample": {
+                    "code": "// In src/utils/error-handling.ts\nexport class TriumvirateError extends Error {\n    constructor(\n        message: string,\n        category: ErrorCategory = ErrorCategory.UNKNOWN,\n        component: string = 'unknown',\n        retryable: boolean = false,\n        originalError: unknown = null,\n        context?: Record<string, unknown>\n    )\n}\n\n// But in src/utils/error.ts - Duplicate implementation\nexport class TriumvirateError extends Error {\n    constructor(message: string)\n}",
+                    "language": "typescript"
+                }
+            },
+            {
+                "title": "Large Monolithic Utility Files",
+                "description": "Several utility files are excessively large and serve multiple unrelated purposes. For example, `report-utils.ts` is over 2,000 lines of code and handles prompt building, ANSI logging, model adapters, cost estimation, schema validation, and similarity functions. This makes the code difficult to maintain, test, and understand.",
+                "category": {
+                    "name": "Code Quality and Readability",
+                    "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Break large utility files into smaller, more focused modules based on their responsibilities. For example, split `report-utils.ts` into separate modules for extraction, analysis, and formatting. Similarly, split `llm-providers.ts` into a provider factory and individual provider implementation files.",
+                "codeExample": {
+                    "code": "// In src/utils/report-utils.ts (>2000 LOC)\n// Functions for prompt building, logging, cost estimation, schema validation, etc.\n// all in one massive file",
+                    "language": "typescript"
+                }
+            },
+            {
+                "title": "Inconsistent Naming and Casing",
+                "description": "The codebase has inconsistent naming and casing conventions, particularly for model IDs. Model identifiers alternate between formats like `Claude`, `claude`, and `claude-3-7-sonnet-20250219`. Output folder defaults are also inconsistent, using both `./.triumvirate` and `./.justbuild` (in README) and `./.triumvirate-enhanced.json` (in writer code). This inconsistency leads to bugs such as incorrect cost calculations.",
+                "category": {
+                    "name": "Code Quality and Readability",
+                    "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Standardize naming conventions across the codebase. For model identifiers, use a consistent format like `{provider}/{model}` and normalize at the point of entry. For output paths, decide on a single convention and document it clearly in the README and code comments."
+            },
+            {
+                "title": "TODO Comments and Dead Code",
+                "description": "The codebase contains numerous TODO comments, commented-out code blocks, and markers like \"FIXED VERSION\" or \"DoD:\" in production paths. These clutter the codebase and can lead to confusion about what is actually implemented.",
+                "category": {
+                    "name": "Code Quality and Readability",
+                    "description": "Issues related to code organization, naming conventions, file structure, documentation, and overall readability. Includes concerns about duplication, inconsistent naming, and large monolithic files."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": false
+                },
+                "isStrength": false,
+                "recommendation": "Remove commented-out code and convert TODOs to actual issues in your issue tracker. This keeps the codebase clean while ensuring that improvement ideas aren't lost. For planned features, document them in a roadmap file rather than scattered TODO comments.",
+                "codeExample": {
+                    "code": "// In test/e2e.test.ts\n// TODO: Add more comprehensive e2e tests\n\n// In src/cli/actions/planAction.ts\n// Future fields from TASKS.md: affected_components, acceptance_criteria, effort, git_prefix",
+                    "language": "typescript"
+                }
+            }
+        ],
+        "Error Handling": [
+            {
+                "title": "Robust Error Handling System",
+                "description": "The project implements a comprehensive error handling system with `TriumvirateError` class, error categories, retryable errors, and exponential backoff. This creates resilience against API failures, timeouts, and rate limits.",
+                "category": {
+                    "name": "Error Handling",
+                    "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
+                },
+                "modelAgreements": {
+                    "openai/o3": false,
+                    "anthropic/claude-opus-4-20250514": false,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": true,
+                "codeExample": {
+                    "code": "// Error handling with categories and context\nexport class TriumvirateError extends Error {\n    constructor(\n        message: string,\n        category: ErrorCategory = ErrorCategory.UNKNOWN,\n        component: string = 'unknown',\n        retryable: boolean = false,\n        originalError: unknown = null,\n        context?: Record<string, unknown>\n    ) {\n        super(message);\n        this.name = 'TriumvirateError';\n        this.category = category;\n        this.component = component;\n        this.retryable = retryable;\n        this.originalError = originalError;\n        this.context = context;\n    }\n}",
+                    "language": "typescript"
+                }
+            },
+            {
+                "title": "Spinner Update Race Condition",
+                "description": "The `executeReviews()` function mutates a shared `status` array from concurrent promises and immediately renders it. If a promise is rejected before `updateSpinner()` runs, the UI can become stuck, leading to a poor user experience.",
+                "category": {
+                    "name": "Error Handling",
+                    "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": false,
+                    "gemini/gemini-2.5-pro-preview-06-05": false
+                },
+                "isStrength": false,
+                "recommendation": "Wrap each promise in try/catch and update the status inside a `finally` block to ensure the spinner is always updated, regardless of whether the promise is fulfilled or rejected. This will prevent the UI from becoming stuck when errors occur."
+            },
+            {
+                "title": "Unhandled Promises",
+                "description": "Several `safeReportGenerationAsync(fn...)` calls don't await the returned promise, potentially leading to lost errors (which will cause Node.js to emit `UnhandledPromiseRejection` warnings in the future).",
+                "category": {
+                    "name": "Error Handling",
+                    "description": "Approaches to handling errors, including multiple error handling systems, unhandled promises, race conditions, and strategies for robust error management across the application."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": false,
+                    "gemini/gemini-2.5-pro-preview-06-05": false
+                },
+                "isStrength": false,
+                "recommendation": "Ensure all promises are properly awaited or have proper error handling attached. Update async functions to handle errors appropriately, and use `Promise.all` with error handling when executing multiple promises concurrently."
+            }
+        ],
+        "Architecture and Design": [
+            {
+                "title": "Provider Abstraction with Strategy Pattern",
+                "description": "The codebase uses a strong abstraction for LLM providers through the `LLMProvider` interface. This design pattern cleanly separates core logic from provider-specific implementations, making it easy to add new providers in the future and switch between them at runtime.",
+                "category": {
+                    "name": "Architecture and Design",
+                    "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": true,
+                "codeExample": {
+                    "code": "// LLMProvider interface\ninterface LLMProvider {\n  name: string;\n  model: string;\n  getSystemPrompt(): string;\n  getPrompt(input: string): string;\n  sendPrompt(prompt: string, options?: PromptOptions): Promise<string>;\n  // ...\n}",
+                    "language": "typescript"
+                }
+            },
+            {
+                "title": "Insufficient Provider Separation",
+                "description": "While the LLM provider abstraction is well-designed, all provider implementations (`ClaudeProvider`, `OpenAIProvider`, `GeminiProvider`) are defined in a single monolithic file. This creates tight coupling, requires importing provider-specific types within unrelated providers, and makes the codebase harder to maintain.",
+                "category": {
+                    "name": "Architecture and Design",
+                    "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": false,
+                    "gemini/gemini-2.5-pro-preview-06-05": false
+                },
+                "isStrength": false,
+                "recommendation": "Extract each provider implementation into its own file. Create a simple factory pattern to instantiate the appropriate provider based on configuration. This would improve maintainability, allow for provider-specific optimizations, and simplify testing."
+            },
+            {
+                "title": "Tight Coupling Between CLI and Core Library",
+                "description": "Core functions like `runTriumvirateReview` accept CLI-specific options (e.g., `--pass-threshold`) and produce CLI-specific fancy logs, creating tight coupling between the CLI interface and the core library functionality. This makes it difficult to use the core logic in other contexts, such as programmatic usage or different UIs.",
+                "category": {
+                    "name": "Architecture and Design",
+                    "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": false,
+                    "gemini/gemini-2.5-pro-preview-06-05": false
+                },
+                "isStrength": false,
+                "recommendation": "Create a pure library layer that only receives parsed parameters, returns data, and never interacts directly with stdout. Let the CLI layer decide how to present the information to users. This separation would make the core functionality more reusable across different contexts."
+            },
+            {
+                "title": "Well-Structured Project Architecture",
+                "description": "The project has a clear and logical directory structure with dedicated directories for CLI actions, utilities, prompts, and types. This organization makes the codebase easier to navigate and understand.",
+                "category": {
+                    "name": "Architecture and Design",
+                    "description": "High-level structural concerns including component coupling, abstraction layers, dependency management, and overall system organization. Covers how different parts of the system interact and communicate."
+                },
+                "modelAgreements": {
+                    "openai/o3": false,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": true
+            }
+        ],
+        "Performance Optimization": [
+            {
+                "title": "Synchronous File Operations",
+                "description": "The codebase uses synchronous file operations and `execSync` calls in several places, which can block the Node.js event loop and reduce performance, especially in user-facing CLI code. This affects application responsiveness and scalability.",
+                "category": {
+                    "name": "Performance Optimization",
+                    "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Replace synchronous operations with their asynchronous counterparts. Use `fs/promises` instead of synchronous `fs` methods, and replace `execSync` with `exec` or `spawn` from the `child_process` module. For git operations specifically, consider using a library like `simple-git`.",
+                "codeExample": {
+                    "code": "// In scripts/check-coverage.js\nconst output = execSync('npx vitest run --coverage', {\n    encoding: 'utf8',\n    stdio: 'pipe'\n});",
+                    "language": "javascript"
+                }
+            },
+            {
+                "title": "Memory-Intensive Report Generation",
+                "description": "Report generation is synchronous and memory-intensive, building the full Markdown string in memory before writing to disk. For large reviews with 128k-200k tokens, this approach may exhaust available memory.",
+                "category": {
+                    "name": "Performance Optimization",
+                    "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": false
+                },
+                "isStrength": false,
+                "recommendation": "Implement streaming for large outputs. Use `fs.createWriteStream()` to write report sections incrementally rather than building the entire report in memory. Alternatively, split large reports into separate files that can be processed individually."
+            },
+            {
+                "title": "Parallel Execution of Model Reviews",
+                "description": "The code uses `Promise.all` in the main workflow to run reviews across multiple LLMs concurrently, significantly reducing the total wall-clock time required for the process.",
+                "category": {
+                    "name": "Performance Optimization",
+                    "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
+                },
+                "modelAgreements": {
+                    "openai/o3": false,
+                    "anthropic/claude-opus-4-20250514": false,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": true,
+                "codeExample": {
+                    "code": "// In src/index.ts\nconst modelResults = await Promise.all(\n  selectedModels.map(async (model) => {\n    // Execute review with each model in parallel\n    return executeModelReview(model, options);\n  })\n);",
+                    "language": "typescript"
+                }
+            },
+            {
+                "title": "Repomix Token Optimization",
+                "description": "The `repomix.pack()` function is called twice when the token limit is exceeded, which doubles processing time on large repositories. Additionally, `optimizeRepomix()` reads every file into memory to count characters, which is inefficient for large monorepos.",
+                "category": {
+                    "name": "Performance Optimization",
+                    "description": "Issues affecting application speed and resource usage, including synchronous operations, memory management, inefficient algorithms, and opportunities for performance improvements."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": false,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Compute metrics first, then pack once with the final settings to avoid duplicate packing operations. For file size estimation, use `stat.size` instead of reading the entire file content when only approximate ranking is needed."
+            }
+        ],
+        "Security Vulnerabilities": [
+            {
+                "title": "Command Injection Vulnerability",
+                "description": "Several functions construct shell commands by directly concatenating user or LLM-provided input, creating potential command injection vulnerabilities. For example, `createGitBranchForTask()` and scripts that call `execSync('git checkout -b ' + branchName)` build commands from task titles. If a malicious task title were crafted (such as from an edited plan file), it could potentially inject arbitrary shell commands.",
+                "category": {
+                    "name": "Security Vulnerabilities",
+                    "description": "Security concerns such as command injection risks, path traversal vulnerabilities, exposure of sensitive information, and other security best practices that should be implemented."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Replace string concatenation in shell commands with safer alternatives. Use `spawnSync('git', ['checkout', '-b', branchName], {shell: false})` or a library like `simple-git` that handles arguments safely. When sanitization is necessary, use allowlists rather than blocklists and validate inputs strictly.",
+                "codeExample": {
+                    "code": "// In src/cli/actions/nextAction.ts\nconst sanitizedTitle = task.title\n    .toLowerCase()\n    .replace(/\\s+/g, '-')\n    .replace(/[^a-z0-9-]/g, '');\nconst branchName = `feature/${task.type}/${sanitizedTitle}`;\n// ...\nexecSync(`git checkout -b ${branchName}`, { stdio: 'pipe' });",
+                    "language": "typescript"
+                }
+            },
+            {
+                "title": "Path Traversal Vulnerability",
+                "description": "File operations don't properly validate or sanitize paths, creating potential path traversal vulnerabilities. `writeOutput()` joins user-supplied `outputPath` without sufficient validation, potentially allowing `../../` path traversal that could overwrite files outside the repository when used programmatically.",
+                "category": {
+                    "name": "Security Vulnerabilities",
+                    "description": "Security concerns such as command injection risks, path traversal vulnerabilities, exposure of sensitive information, and other security best practices that should be implemented."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Implement path sanitization using `path.resolve()` and validate that the resulting path is within the expected directory. Create a utility function to safely validate and sanitize all file paths before operations."
+            },
+            {
+                "title": "Secrets Exposure in Logs",
+                "description": "While API keys are generally handled securely, the `validateApiKeys()` function prints invalid key values when a regex validation fails, potentially leaking secrets in CI logs or other shared environments.",
+                "category": {
+                    "name": "Security Vulnerabilities",
+                    "description": "Security concerns such as command injection risks, path traversal vulnerabilities, exposure of sensitive information, and other security best practices that should be implemented."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": false,
+                    "gemini/gemini-2.5-pro-preview-06-05": false
+                },
+                "isStrength": false,
+                "recommendation": "Never print raw API keys in logs, even when validation fails. Instead, mask sensitive values by showing only the first few and last few characters (e.g., `sk_test_1234...abcd`). This prevents accidental exposure of secrets in logs and CI outputs."
+            }
+        ],
+        "Functional Bugs": [
+            {
+                "title": "Cost Calculation Bug",
+                "description": "The cost calculation functionality always returns $0.0000. This occurs because `estimateCost()` looks up rates by exact model key, but providers often pass in general model names like `Claude` or plain provider names that don't exist in the cost rates JSON. Additionally, in `EnhancedLogger.printApiSummary()`, cost is treated as a number but stored as a string (`$0.0000`), causing mathematical totals to remain 0.",
+                "category": {
+                    "name": "Functional Bugs",
+                    "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Normalize model names when looking up cost rates, ensuring consistency between the keys in the COST_RATES object and the model identifiers used throughout the codebase. Also, ensure that cost values are consistently treated as numbers during calculations and only formatted as strings for display purposes.",
+                "codeExample": {
+                    "code": "// In src/utils/llm-providers.ts\nexport function estimateCost(model: string, inputTokens: number, outputTokens: number): number {\n    // Looks up COST_RATES by exact model key, falling back to 0 when not found\n}\n\n// In logging code\nenhancedLogger.logApiCall({\n    model: provider.name, // Uses \"Claude\" instead of \"claude-3-7-sonnet-20250219\"\n    // ...\n});",
+                    "language": "typescript"
+                }
+            },
+            {
+                "title": "Output Directory Confusion",
+                "description": "There's confusion in how output paths are handled. `runCliAction` defaults to `./.triumvirate` as the output directory, but `writeOutput()` receives a file argument `outputPath` and always appends a timestamp subfolder. This results in artifacts being placed in `./.triumvirate-enhanced.json` (at the root) even when users specify a custom `--output-dir`. The README also refers to `-o, --output <file>` which doesn't match the actual implementation.",
+                "category": {
+                    "name": "Functional Bugs",
+                    "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
+                },
+                "modelAgreements": {
+                    "openai/o3": true,
+                    "anthropic/claude-opus-4-20250514": true,
+                    "gemini/gemini-2.5-pro-preview-06-05": true
+                },
+                "isStrength": false,
+                "recommendation": "Clarify the contract for output paths: decide whether the parameter should be a directory or a file stem, and implement consistent handling throughout the codebase. Update the README to accurately reflect the expected parameter type and format. Make the `writeOutput` function more robust to handle both directory and file path inputs."
+            }
+        ],
+        "Testing and Reliability": [],
+        "Unknown Category": []
+    },
+    "modelInsights": [
+        {
+            "model": {
+                "id": "openai/o3",
+                "name": "openai/o3"
+            },
+            "insight": "Detailed focus on output directory confusion",
+            "details": "The OpenAI model uniquely highlights a specific issue with output directory paths where `runCliAction` defaults to './.triumvirate' while `writeOutput()` takes a file path and adds timestamp subfolders. This results in artifacts landing in unexpected locations even when users specify output directories. This level of implementation-specific detail isn't found in the other reviews."
         },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
+        {
+            "model": {
+                "id": "openai/o3",
+                "name": "openai/o3"
+            },
+            "insight": "Security vulnerability in git command execution",
+            "details": "The OpenAI model identifies a serious security vulnerability where git commands are being built through string concatenation (e.g., `execSync('git checkout -b '+ branchName)`), which could allow command injection attacks through malicious plan files. It specifically recommends using `spawnSync` with proper parameter passing or input validation - a security concern not caught by the other models."
         },
-        "isStrength": false,
-        "recommendation": "Normalize model names when looking up cost rates, ensuring consistency between the keys in the COST_RATES object and the model identifiers used throughout the codebase. Also, ensure that cost values are consistently treated as numbers during calculations and only formatted as strings for display purposes.",
-        "codeExample": {
-          "code": "// In src/utils/llm-providers.ts\nexport function estimateCost(model: string, inputTokens: number, outputTokens: number): number {\n    // Looks up COST_RATES by exact model key, falling back to 0 when not found\n}\n\n// In logging code\nenhancedLogger.logApiCall({\n    model: provider.name, // Uses \"Claude\" instead of \"claude-3-7-sonnet-20250219\"\n    // ...\n});",
-          "language": "typescript"
+        {
+            "model": {
+                "id": "anthropic/claude-opus-4-20250514",
+                "name": "anthropic/claude-opus-4-20250514"
+            },
+            "insight": "Clear identification of duplicate error implementations",
+            "details": "Claude provides specific code examples comparing the two error handling implementations side by side, showing exactly how `src/utils/error-handling.ts` and `src/utils/error.ts` contain duplicate `TriumvirateError` classes with different signatures. This direct code comparison approach makes the duplication issue much clearer than the other reviews."
+        },
+        {
+            "model": {
+                "id": "anthropic/claude-opus-4-20250514",
+                "name": "anthropic/claude-opus-4-20250514"
+            },
+            "insight": "Focus on TODO comments without implementation",
+            "details": "Claude uniquely highlights the presence of TODO comments that indicate incomplete features, with specific examples from test files and action implementations. This suggests a methodical review that considered not just code quality but also development completeness across the codebase."
+        },
+        {
+            "model": {
+                "id": "gemini/gemini-2.5-pro-preview-06-05",
+                "name": "gemini/gemini-2.5-pro-preview-06-05"
+            },
+            "insight": "Emphasis on architectural strengths and modularity",
+            "details": "The Gemini model provides a more positive framing by highlighting architectural strengths first, noting the project demonstrates 'strong architectural patterns' with a 'mature development setup'. It specifically praises the CLI error handling and CI/CD workflows as excellent developer experience features, showing a higher-level architectural perspective than the other models."
+        },
+        {
+            "model": {
+                "id": "gemini/gemini-2.5-pro-preview-06-05",
+                "name": "gemini/gemini-2.5-pro-preview-06-05"
+            },
+            "insight": "Specific recommendations for restructuring monolithic files",
+            "details": "While all models mention large files, Gemini provides specific recommendations for how to break up the monolithic utility files, suggesting concrete new file names and their responsibilities (e.g., 'report-extraction.ts', 'report-analysis.ts', 'report-formatter.ts'). This constructive, solution-oriented approach differs from the other models' more problem-focused reviews."
         }
-      },
-      {
-        "title": "Output Directory Confusion",
-        "description": "There's confusion in how output paths are handled. `runCliAction` defaults to `./.triumvirate` as the output directory, but `writeOutput()` receives a file argument `outputPath` and always appends a timestamp subfolder. This results in artifacts being placed in `./.triumvirate-enhanced.json` (at the root) even when users specify a custom `--output-dir`. The README also refers to `-o, --output <file>` which doesn't match the actual implementation.",
-        "category": {
-          "name": "Functional Bugs",
-          "description": "Specific logical errors and bugs that affect the correct functioning of the application, including cost calculation issues, model name inconsistencies, and other runtime problems."
-        },
-        "modelAgreements": {
-          "openai/o3": true,
-          "anthropic/claude-opus-4-20250514": true,
-          "gemini/gemini-2.5-pro-preview-06-05": true
-        },
-        "isStrength": false,
-        "recommendation": "Clarify the contract for output paths: decide whether the parameter should be a directory or a file stem, and implement consistent handling throughout the codebase. Update the README to accurately reflect the expected parameter type and format. Make the `writeOutput` function more robust to handle both directory and file path inputs."
-      }
     ],
-    "Testing and Reliability": [],
-    "Unknown Category": []
-  },
-  "modelInsights": [
-    {
-      "model": {
-        "id": "openai/o3",
-        "name": "openai/o3"
-      },
-      "insight": "Detailed focus on output directory confusion",
-      "details": "The OpenAI model uniquely highlights a specific issue with output directory paths where `runCliAction` defaults to './.triumvirate' while `writeOutput()` takes a file path and adds timestamp subfolders. This results in artifacts landing in unexpected locations even when users specify output directories. This level of implementation-specific detail isn't found in the other reviews."
-    },
-    {
-      "model": {
-        "id": "openai/o3",
-        "name": "openai/o3"
-      },
-      "insight": "Security vulnerability in git command execution",
-      "details": "The OpenAI model identifies a serious security vulnerability where git commands are being built through string concatenation (e.g., `execSync('git checkout -b '+ branchName)`), which could allow command injection attacks through malicious plan files. It specifically recommends using `spawnSync` with proper parameter passing or input validation - a security concern not caught by the other models."
-    },
-    {
-      "model": {
-        "id": "anthropic/claude-opus-4-20250514",
-        "name": "anthropic/claude-opus-4-20250514"
-      },
-      "insight": "Clear identification of duplicate error implementations",
-      "details": "Claude provides specific code examples comparing the two error handling implementations side by side, showing exactly how `src/utils/error-handling.ts` and `src/utils/error.ts` contain duplicate `TriumvirateError` classes with different signatures. This direct code comparison approach makes the duplication issue much clearer than the other reviews."
-    },
-    {
-      "model": {
-        "id": "anthropic/claude-opus-4-20250514",
-        "name": "anthropic/claude-opus-4-20250514"
-      },
-      "insight": "Focus on TODO comments without implementation",
-      "details": "Claude uniquely highlights the presence of TODO comments that indicate incomplete features, with specific examples from test files and action implementations. This suggests a methodical review that considered not just code quality but also development completeness across the codebase."
-    },
-    {
-      "model": {
-        "id": "gemini/gemini-2.5-pro-preview-06-05",
-        "name": "gemini/gemini-2.5-pro-preview-06-05"
-      },
-      "insight": "Emphasis on architectural strengths and modularity",
-      "details": "The Gemini model provides a more positive framing by highlighting architectural strengths first, noting the project demonstrates 'strong architectural patterns' with a 'mature development setup'. It specifically praises the CLI error handling and CI/CD workflows as excellent developer experience features, showing a higher-level architectural perspective than the other models."
-    },
-    {
-      "model": {
-        "id": "gemini/gemini-2.5-pro-preview-06-05",
-        "name": "gemini/gemini-2.5-pro-preview-06-05"
-      },
-      "insight": "Specific recommendations for restructuring monolithic files",
-      "details": "While all models mention large files, Gemini provides specific recommendations for how to break up the monolithic utility files, suggesting concrete new file names and their responsibilities (e.g., 'report-extraction.ts', 'report-analysis.ts', 'report-formatter.ts'). This constructive, solution-oriented approach differs from the other models' more problem-focused reviews."
-    }
-  ],
-  "agreementAnalysis": [
-    {
-      "area": "Code Quality",
-      "highAgreement": [],
-      "partialAgreement": [
-        "Code Quality and Readability"
-      ],
-      "disagreement": [
-        "Coverage",
-        "Providers",
-        "No Streaming Support"
-      ]
-    },
-    {
-      "area": "Potential Bugs",
-      "highAgreement": [],
-      "partialAgreement": [
-        "Potential Bugs or Issues"
-      ],
-      "disagreement": [
-        "Handling",
-        "API Keys in Environment",
-        "Duplicate implementation"
-      ]
-    },
-    {
-      "area": "Architecture",
-      "highAgreement": [],
-      "partialAgreement": [
-        "Architecture and Design"
-      ],
-      "disagreement": [
-        "Handling system",
-        "Tight Coupling in CLI Actions",
-        "Design Flaws and Improvements:"
-      ]
-    },
-    {
-      "area": "Performance",
-      "highAgreement": [],
-      "partialAgreement": [
-        "Performance Concerns"
-      ],
-      "disagreement": [
-        "Level)",
-        "Parallel Execution: `Promise",
-        "Comprehensive integration tests"
-      ]
-    },
-    {
-      "area": "Security",
-      "highAgreement": [],
-      "partialAgreement": [
-        "Security Considerations"
-      ],
-      "disagreement": [
-        "Critical Security Issues",
-        "Command Injection Vulnerability",
-        "Conscious, but there is one area of notable risk"
-      ]
-    }
-  ],
-  "agreementStatistics": [
-    {
-      "category": "Code Quality and Readability",
-      "allThreeModels": 3,
-      "twoModels": 1,
-      "oneModel": 0
-    },
-    {
-      "category": "Error Handling",
-      "allThreeModels": 0,
-      "twoModels": 0,
-      "oneModel": 3
-    },
-    {
-      "category": "Architecture and Design",
-      "allThreeModels": 1,
-      "twoModels": 1,
-      "oneModel": 2
-    },
-    {
-      "category": "Performance Optimization",
-      "allThreeModels": 1,
-      "twoModels": 2,
-      "oneModel": 1
-    },
-    {
-      "category": "Security Vulnerabilities",
-      "allThreeModels": 2,
-      "twoModels": 0,
-      "oneModel": 1
-    },
-    {
-      "category": "Functional Bugs",
-      "allThreeModels": 2,
-      "twoModels": 0,
-      "oneModel": 0
-    },
-    {
-      "category": "Testing and Reliability",
-      "allThreeModels": 0,
-      "twoModels": 0,
-      "oneModel": 0
-    },
-    {
-      "category": "Unknown Category",
-      "allThreeModels": 0,
-      "twoModels": 0,
-      "oneModel": 0
-    }
-  ]
+    "agreementAnalysis": [
+        {
+            "area": "Code Quality",
+            "highAgreement": [],
+            "partialAgreement": ["Code Quality and Readability"],
+            "disagreement": ["Coverage", "Providers", "No Streaming Support"]
+        },
+        {
+            "area": "Potential Bugs",
+            "highAgreement": [],
+            "partialAgreement": ["Potential Bugs or Issues"],
+            "disagreement": ["Handling", "API Keys in Environment", "Duplicate implementation"]
+        },
+        {
+            "area": "Architecture",
+            "highAgreement": [],
+            "partialAgreement": ["Architecture and Design"],
+            "disagreement": [
+                "Handling system",
+                "Tight Coupling in CLI Actions",
+                "Design Flaws and Improvements:"
+            ]
+        },
+        {
+            "area": "Performance",
+            "highAgreement": [],
+            "partialAgreement": ["Performance Concerns"],
+            "disagreement": [
+                "Level)",
+                "Parallel Execution: `Promise",
+                "Comprehensive integration tests"
+            ]
+        },
+        {
+            "area": "Security",
+            "highAgreement": [],
+            "partialAgreement": ["Security Considerations"],
+            "disagreement": [
+                "Critical Security Issues",
+                "Command Injection Vulnerability",
+                "Conscious, but there is one area of notable risk"
+            ]
+        }
+    ],
+    "agreementStatistics": [
+        {
+            "category": "Code Quality and Readability",
+            "allThreeModels": 3,
+            "twoModels": 1,
+            "oneModel": 0
+        },
+        {
+            "category": "Error Handling",
+            "allThreeModels": 0,
+            "twoModels": 0,
+            "oneModel": 3
+        },
+        {
+            "category": "Architecture and Design",
+            "allThreeModels": 1,
+            "twoModels": 1,
+            "oneModel": 2
+        },
+        {
+            "category": "Performance Optimization",
+            "allThreeModels": 1,
+            "twoModels": 2,
+            "oneModel": 1
+        },
+        {
+            "category": "Security Vulnerabilities",
+            "allThreeModels": 2,
+            "twoModels": 0,
+            "oneModel": 1
+        },
+        {
+            "category": "Functional Bugs",
+            "allThreeModels": 2,
+            "twoModels": 0,
+            "oneModel": 0
+        },
+        {
+            "category": "Testing and Reliability",
+            "allThreeModels": 0,
+            "twoModels": 0,
+            "oneModel": 0
+        },
+        {
+            "category": "Unknown Category",
+            "allThreeModels": 0,
+            "twoModels": 0,
+            "oneModel": 0
+        }
+    ]
 }

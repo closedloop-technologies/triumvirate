@@ -44,8 +44,8 @@ function checkCSpellInstalled() {
     try {
         execSync('npx cspell --version', { stdio: 'pipe' });
         return true;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_) {
+        // eslint-disable-next-line no-unused-vars
+    } catch (_err) {
         return false;
     }
 }

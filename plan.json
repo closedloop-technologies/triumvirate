@@ -1,0 +1,17 @@
+{
+    "tasks": [
+        {
+            "id": "task-1",
+            "title": "Fix authentication bug",
+            "description": "There is an issue with the auth module",
+            "priority": "high",
+            "dependencies": [],
+            "type": "bug",
+            "completed": false
+        }
+    ],
+    "metadata": {
+        "createdAt": "2026-02-17T13:58:39.175Z",
+        "sourceFile": "/home/gizmo/Documents/repos/my_oss/triumvirate/summary.md"
+    }
+}

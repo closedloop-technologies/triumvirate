@@ -7,3 +7,9 @@
 {"timestamp":"2025-06-14T19:14:39.126Z","model":"claude-3-7-sonnet-20250219","operation":"findings","inputTokens":7510,"outputTokens":5462,"totalTokens":12972,"success":true,"cost":0}
 {"timestamp":"2025-06-14T19:14:54.076Z","model":"claude-3-7-sonnet-20250219","operation":"structured_output","inputTokens":2851,"outputTokens":734,"totalTokens":3585,"success":true,"cost":0}
 {"timestamp":"2025-06-14T19:14:54.076Z","model":"claude-3-7-sonnet-20250219","operation":"insights","inputTokens":2851,"outputTokens":734,"totalTokens":3585,"success":true,"cost":0}
+{"timestamp":"2026-02-17T13:55:06.461Z","model":"claude-3-7-sonnet-20250219","operation":"completion","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
+{"timestamp":"2026-02-17T13:55:06.518Z","model":"gpt-4.1","operation":"structured_output","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
+{"timestamp":"2026-02-17T13:57:05.693Z","model":"claude-3-7-sonnet-20250219","operation":"completion","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
+{"timestamp":"2026-02-17T13:57:05.742Z","model":"gpt-4.1","operation":"structured_output","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
+{"timestamp":"2026-02-17T13:58:39.162Z","model":"claude-3-7-sonnet-20250219","operation":"completion","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
+{"timestamp":"2026-02-17T13:58:39.219Z","model":"gpt-4.1","operation":"structured_output","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
