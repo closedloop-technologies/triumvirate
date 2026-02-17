@@ -51,3 +51,13 @@
 {"timestamp":"2026-02-17T14:33:06.706Z","model":"baml-fallback","operation":"categories","inputTokens":3854,"outputTokens":390,"totalTokens":4244,"success":true,"cost":0.017412}
 {"timestamp":"2026-02-17T14:33:37.193Z","model":"baml-fallback","operation":"findings","inputTokens":4193,"outputTokens":1788,"totalTokens":5981,"success":true,"cost":0.039399}
 {"timestamp":"2026-02-17T14:33:52.401Z","model":"baml-fallback","operation":"insights","inputTokens":2295,"outputTokens":812,"totalTokens":3107,"success":true,"cost":0.019065}
+{"timestamp":"2026-02-17T15:39:25.360Z","model":"baml-fallback","operation":"completion","inputTokens":1980,"outputTokens":2792,"totalTokens":4772,"success":true,"cost":0.047819999999999994}
+{"timestamp":"2026-02-17T15:39:26.812Z","model":"baml-fallback","operation":"completion","inputTokens":1980,"outputTokens":3511,"totalTokens":5491,"success":true,"cost":0.058605}
+{"timestamp":"2026-02-17T15:39:27.965Z","model":"baml-fallback","operation":"completion","inputTokens":1980,"outputTokens":3022,"totalTokens":5002,"success":true,"cost":0.051269999999999996}
+{"timestamp":"2026-02-17T15:39:40.176Z","model":"baml-fallback","operation":"categories","inputTokens":9325,"outputTokens":627,"totalTokens":9952,"success":true,"cost":0.037380000000000004}
+{"timestamp":"2026-02-17T15:40:32.946Z","model":"baml-fallback","operation":"findings","inputTokens":9868,"outputTokens":4,"totalTokens":9872,"success":true,"cost":0.029664}
+{"timestamp":"2026-02-17T15:43:21.913Z","model":"claude-3-7-sonnet-20250219","operation":"completion","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
+{"timestamp":"2026-02-17T15:43:21.918Z","model":"claude-3-7-sonnet-20250219","operation":"structured_output","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
+{"timestamp":"2026-02-17T15:43:21.920Z","model":"gpt-4.1","operation":"completion","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}
+{"timestamp":"2026-02-17T15:43:21.921Z","model":"gpt-4.1","operation":"structured_output","inputTokens":0,"outputTokens":0,"totalTokens":0,"success":true,"cost":0}
+{"timestamp":"2026-02-17T15:43:21.923Z","model":"gemini/gemini-3-pro-preview","operation":"completion","inputTokens":10,"outputTokens":15,"totalTokens":25,"success":true,"cost":0}

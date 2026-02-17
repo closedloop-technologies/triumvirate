@@ -276,10 +276,9 @@ export const runPlanAction = async (options: PlanOptions): Promise<void> => {
             logger.log('\n' + JSON.stringify(plan, null, 2));
         }
         // Don't return anything for void return type
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_) {
+    } catch (error) {
         spinner.fail('Error generating task plan');
-        // Error should be logged by safe wrappers or TriumvirateError handler
+        logger.error('Details:', error instanceof Error ? error.message : String(error));
         process.exit(1);
     }
 };

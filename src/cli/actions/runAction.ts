@@ -7,6 +7,65 @@ import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { DEFAULT_MODELS } from '../../utils/constants.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
 
+const VALID_PASS_THRESHOLDS = ['strict', 'lenient', 'none'] as const;
+const VALID_REVIEW_TYPES = ['general', 'security', 'performance', 'architecture', 'docs'] as const;
+const VALID_AGENT_MODELS = ['claude', 'openai', 'gemini'] as const;
+
+/**
+ * Validates CLI options and returns normalized values
+ * @param options - The CLI options to validate
+ * @returns Object with validation result and any error messages
+ */
+function validateCliOptions(options: CliOptions): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    // Validate passThreshold
+    if (
+        options.passThreshold &&
+        !VALID_PASS_THRESHOLDS.includes(
+            options.passThreshold as (typeof VALID_PASS_THRESHOLDS)[number]
+        )
+    ) {
+        errors.push(
+            `Invalid --pass-threshold value: '${options.passThreshold}'. Valid values are: ${VALID_PASS_THRESHOLDS.join(', ')}`
+        );
+    }
+
+    // Validate reviewType
+    if (
+        options.reviewType &&
+        !VALID_REVIEW_TYPES.includes(options.reviewType as (typeof VALID_REVIEW_TYPES)[number])
+    ) {
+        errors.push(
+            `Invalid --review-type value: '${options.reviewType}'. Valid values are: ${VALID_REVIEW_TYPES.join(', ')}`
+        );
+    }
+
+    // Validate agentModel
+    if (
+        options.agentModel &&
+        !VALID_AGENT_MODELS.includes(
+            options.agentModel.toLowerCase() as (typeof VALID_AGENT_MODELS)[number]
+        )
+    ) {
+        errors.push(
+            `Invalid --agent-model value: '${options.agentModel}'. Valid values are: ${VALID_AGENT_MODELS.join(', ')}`
+        );
+    }
+
+    // Validate tokenLimit is a positive number if provided
+    if (
+        options.tokenLimit !== undefined &&
+        (isNaN(Number(options.tokenLimit)) || Number(options.tokenLimit) <= 0)
+    ) {
+        errors.push(
+            `Invalid --token-limit value: '${options.tokenLimit}'. Must be a positive number.`
+        );
+    }
+
+    return { valid: errors.length === 0, errors };
+}
+
 export const runCliAction = async (directories: string[], options: CliOptions) => {
     // Set log level based on verbose and quiet flags
     if (options.quiet) {
@@ -19,6 +78,13 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 
     // Initialize the API logger
     enhancedLogger.initApiLogger();
+
+    // Validate CLI options before proceeding
+    const validation = validateCliOptions(options);
+    if (!validation.valid) {
+        validation.errors.forEach(error => enhancedLogger.error(error));
+        process.exit(1);
+    }
 
     enhancedLogger.log('directories:', directories);
     enhancedLogger.log('options:', options);

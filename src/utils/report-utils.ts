@@ -237,6 +237,12 @@ function isValidCategoryResponse(response: unknown): boolean {
 
 /**
  * Create a standardized structure for the model metrics
+ *
+ * Transforms raw model results into a consistent metrics format that includes
+ * status, latency, cost, and token usage information for each model.
+ *
+ * @param modelResults - Array of raw results from each model's review
+ * @returns Array of standardized ModelMetrics objects with computed cost-per-token values
  */
 export function createModelMetrics(modelResults: ModelResult[]): ModelMetrics[] {
     return modelResults.map(result => {
@@ -261,6 +267,14 @@ export function createModelMetrics(modelResults: ModelResult[]): ModelMetrics[] 
 
 /**
  * Analyze agreement between models on various findings
+ *
+ * Compares review outputs from multiple models to identify areas of consensus
+ * and disagreement across predefined categories (Code Quality, Bugs, Architecture,
+ * Performance, Security).
+ *
+ * @param reviews - Array of review text outputs from each model
+ * @param modelIds - Array of model identifiers corresponding to each review
+ * @returns Array of CategoryAgreementAnalysis objects showing agreement levels per category
  */
 export function analyzeModelAgreement(
     reviews: string[],
@@ -801,8 +815,15 @@ function calculateSimilarity(str1: string, str2: string): number {
 }
 
 /**
- * Calculate agreement statistics
- * FIXED VERSION - Handles model agreement structure correctly
+ * Calculate agreement statistics across categories
+ *
+ * Analyzes findings to determine how many models agree on each finding,
+ * categorizing them into three tiers: all three models agree, two models agree,
+ * or only one model mentions the finding.
+ *
+ * @param findings - Record mapping category names to arrays of ReviewFinding objects
+ * @param categories - Array of ReviewCategory objects to analyze
+ * @returns Array of AgreementStatistics with counts for each agreement level per category
  */
 export function calculateAgreementStats(
     findings: Record<string, ReviewFinding[]>,

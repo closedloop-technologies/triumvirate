@@ -35,6 +35,16 @@ interface Plan {
     };
 }
 
+/**
+ * Validates the task ID format
+ * @param taskId - The task ID to validate
+ * @returns True if the task ID is valid, false otherwise
+ */
+function isValidTaskId(taskId: string): boolean {
+    // Task IDs should be non-empty strings matching pattern like 'task-1', 'task-123', etc.
+    return /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(taskId);
+}
+
 export const runNextAction = async (options: NextOptions) => {
     // Set log level based on verbose and quiet flags
     if (options.quiet) {
@@ -51,6 +61,14 @@ export const runNextAction = async (options: NextOptions) => {
 
     if (!input) {
         logger.error('Error: Input file is required. Use --input to specify the plan file.');
+        process.exit(1);
+    }
+
+    // Validate markComplete task ID format if provided
+    if (markComplete && !isValidTaskId(markComplete)) {
+        logger.error(
+            `Error: Invalid task ID format: '${markComplete}'. Task IDs should contain only alphanumeric characters, hyphens, and underscores.`
+        );
         process.exit(1);
     }
 
@@ -159,10 +177,9 @@ export const runNextAction = async (options: NextOptions) => {
                 'No available tasks found. All tasks are either completed or blocked by dependencies.'
             );
         }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_) {
+    } catch (error) {
         spinner.fail('Error finding next task');
-        // Error is already logged by safe wrappers or thrown TriumvirateError
+        logger.error('Details:', error instanceof Error ? error.message : String(error));
         process.exit(1);
     }
 };
