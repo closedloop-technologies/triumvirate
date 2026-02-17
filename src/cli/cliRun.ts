@@ -170,6 +170,12 @@ export const run = async () => {
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
             .option('--summary-only', 'only include summary in results')
 
+            // Input options
+            .option(
+                '--input <file>',
+                'use pre-existing context file instead of running repomix (use "-" for STDIN)'
+            )
+
             // Repomix-specific options
             .option('--token-limit <number>', 'maximum tokens to send to the model')
             .option(
@@ -234,6 +240,9 @@ Option Groups:
     --enhanced-report              Generate enhanced report with model agreement
     --summary-only                 Only include summary in results
     --agent-model                  LLM model for report analysis/planning
+
+  Input Options:
+    --input <file>                 Use pre-existing context file instead of repomix (use "-" for STDIN)
 
   Repomix Options:
     --token-limit                  Maximum tokens to send to the model

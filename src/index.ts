@@ -31,6 +31,7 @@ export interface TriumvirateReviewOptions {
     passThreshold?: 'strict' | 'lenient' | 'none'; // DoD: Add pass threshold
     enhancedReport?: boolean;
     options?: CliOptions; // Keep original options for spinner control etc.
+    inputContent?: string; // Pre-existing context content (skips repomix)
 }
 
 // --- Helper Function: Prepare Codebase ---
@@ -50,6 +51,21 @@ async function prepareCodebase(
     // DoD: Use async file read
     const codebase = await fsPromises.readFile(repomixResult.filePath, 'utf8');
     return { repomixResult, codebase };
+}
+
+// --- Helper Function: Generate Prompt from Raw Input ---
+function generateReviewPromptFromInput(
+    reviewType: string,
+    codebase: string,
+    systemPrompt?: string
+): string {
+    const baseTemplate = `You are an expert code reviewer. I'm going to share content with you for review.
+
+Please review the following and provide feedback:
+
+{{CODEBASE}}`;
+
+    return generateReviewPromptWithTemplate(reviewType, codebase, baseTemplate, systemPrompt);
 }
 
 // --- Helper Function: Generate Prompt ---
@@ -72,6 +88,16 @@ Please review the following codebase and provide feedback:
 
 {{CODEBASE}}`;
 
+    return generateReviewPromptWithTemplate(reviewType, codebase, baseTemplate, systemPrompt);
+}
+
+// --- Helper Function: Generate Prompt with Template ---
+function generateReviewPromptWithTemplate(
+    reviewType: string,
+    codebase: string,
+    baseTemplate: string,
+    systemPrompt?: string
+): string {
     // Specific templates for different review types
     let specificTemplate = '';
     if (systemPrompt) {
@@ -87,6 +113,47 @@ Please review the following codebase and provide feedback:
         specificTemplate = templates[reviewType] || templates['general'] || '';
     }
     return specificTemplate.replace('{{CODEBASE}}', codebase);
+}
+
+// --- Helper Function: Read Input from File or STDIN ---
+async function _readInputContent(inputPath: string): Promise<string> {
+    if (inputPath === '-') {
+        // Read from STDIN
+        return new Promise((resolve, reject) => {
+            let data = '';
+            process.stdin.setEncoding('utf8');
+            process.stdin.on('data', chunk => {
+                data += chunk;
+            });
+            process.stdin.on('end', () => {
+                resolve(data);
+            });
+            process.stdin.on('error', err => {
+                reject(
+                    new TriumvirateError(
+                        `Failed to read from STDIN: ${err.message}`,
+                        ErrorCategory.FILE_SYSTEM,
+                        'InputReader',
+                        false,
+                        err
+                    )
+                );
+            });
+        });
+    } else {
+        // Read from file
+        try {
+            return await fsPromises.readFile(inputPath, 'utf8');
+        } catch (error) {
+            throw new TriumvirateError(
+                `Failed to read input file '${inputPath}': ${error instanceof Error ? error.message : String(error)}`,
+                ErrorCategory.FILE_SYSTEM,
+                'InputReader',
+                false,
+                error
+            );
+        }
+    }
 }
 
 // --- Helper Function: Execute Reviews ---
@@ -372,12 +439,11 @@ export async function runTriumvirateReview(
     spinner.start();
 
     let repomixResult: RepomixResult | null = null;
+    const useInputContent = !!options.inputContent;
 
     try {
-        // 1. Prepare Codebase
-        spinner.update('Preparing codebase with Repomix...');
-        const { repomixResult: rmResult, codebase } = await prepareCodebase(options);
-        repomixResult = rmResult; // Store for cleanup
+        let codebase: string;
+        let prompt: string;
 
         // Resolve documentation and build system prompt
         const { doc, task } = options?.options || {};
@@ -385,9 +451,27 @@ export async function runTriumvirateReview(
         const resolvedDocs = await resolveDocs(docs as string[]);
         const systemPrompt = await createSystemPrompt(task, resolvedDocs);
 
-        // 2. Generate Prompt
-        spinner.update('Generating review prompt...');
-        const prompt = generateReviewPrompt(reviewType, repomixResult, codebase, systemPrompt);
+        if (useInputContent) {
+            // Use pre-existing content (skip repomix)
+            spinner.update('Using provided input content...');
+            codebase = options.inputContent!;
+            console.log(`Using provided input content (${codebase.length} characters)`);
+
+            // Generate prompt without repomix metadata
+            spinner.update('Generating review prompt...');
+            prompt = generateReviewPromptFromInput(reviewType, codebase, systemPrompt);
+        } else {
+            // 1. Prepare Codebase with Repomix
+            spinner.update('Preparing codebase with Repomix...');
+            const { repomixResult: rmResult, codebase: rmCodebase } =
+                await prepareCodebase(options);
+            repomixResult = rmResult; // Store for cleanup
+            codebase = rmCodebase;
+
+            // 2. Generate Prompt with repomix metadata
+            spinner.update('Generating review prompt...');
+            prompt = generateReviewPrompt(reviewType, repomixResult, codebase, systemPrompt);
+        }
 
         // 3. Execute Reviews
         spinner.update('Executing reviews across models...');

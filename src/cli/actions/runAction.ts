@@ -1,3 +1,5 @@
+import * as fsPromises from 'fs/promises';
+
 import { runVersionAction } from './versionAction.js';
 import { runTriumvirateReview } from '../../index.js';
 import type { TriumvirateReviewOptions } from '../../index.js';
@@ -6,10 +8,56 @@ import type { CodeReviewReport } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { DEFAULT_MODELS } from '../../utils/constants.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
+import { TriumvirateError, ErrorCategory } from '../../utils/error-handling.js';
 
 const VALID_PASS_THRESHOLDS = ['strict', 'lenient', 'none'] as const;
 const VALID_REVIEW_TYPES = ['general', 'security', 'performance', 'architecture', 'docs'] as const;
 const VALID_AGENT_MODELS = ['claude', 'openai', 'gemini'] as const;
+
+/**
+ * Read input content from file or STDIN
+ * @param inputPath - Path to file or '-' for STDIN
+ * @returns The content read from the input source
+ */
+async function readInputContent(inputPath: string): Promise<string> {
+    if (inputPath === '-') {
+        // Read from STDIN
+        return new Promise((resolve, reject) => {
+            let data = '';
+            process.stdin.setEncoding('utf8');
+            process.stdin.on('data', chunk => {
+                data += chunk;
+            });
+            process.stdin.on('end', () => {
+                resolve(data);
+            });
+            process.stdin.on('error', err => {
+                reject(
+                    new TriumvirateError(
+                        `Failed to read from STDIN: ${err.message}`,
+                        ErrorCategory.FILE_SYSTEM,
+                        'InputReader',
+                        false,
+                        err
+                    )
+                );
+            });
+        });
+    } else {
+        // Read from file
+        try {
+            return await fsPromises.readFile(inputPath, 'utf8');
+        } catch (error) {
+            throw new TriumvirateError(
+                `Failed to read input file '${inputPath}': ${error instanceof Error ? error.message : String(error)}`,
+                ErrorCategory.FILE_SYSTEM,
+                'InputReader',
+                false,
+                error
+            );
+        }
+    }
+}
 
 /**
  * Validates CLI options and returns normalized values
@@ -127,7 +175,16 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         instructionFilePath,
         topFilesLen = 20,
         tokenCountEncoding = 'o200k_base',
+        input,
     } = options;
+
+    // Read input content if --input is provided
+    let inputContent: string | undefined;
+    if (input) {
+        enhancedLogger.log(`Reading input from: ${input === '-' ? 'STDIN' : input}`);
+        inputContent = await readInputContent(input);
+        enhancedLogger.log(`Input content loaded (${inputContent!.length} characters)`);
+    }
 
     // Convert string options to arrays
     let modelList = models.split(',');
@@ -179,6 +236,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             repomixOptions, // Pass repomix specific flags
             enhancedReport,
             agentModel, // Pass agent model
+            inputContent, // Pre-existing context (skips repomix if provided)
             // Pass other options if needed by runTriumvirateReview
             options: options, // Pass original options for context
         };

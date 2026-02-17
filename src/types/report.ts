@@ -28,6 +28,7 @@ export interface CliOptions {
     verbose?: boolean;
     quiet?: boolean;
     version?: boolean;
+    input?: string; // Path to pre-existing context file (or '-' for STDIN)
     // DoD: Add placeholder for --docs if needed down the line
 }
 

@@ -140,4 +140,47 @@ describe('runTriumvirateReview', () => {
         // The error might be in metrics.error or the review might indicate failure
         expect(claudeResult?.metrics?.error || claudeResult?.review === '').toBeTruthy();
     });
+
+    it('uses inputContent and skips repomix when provided', async () => {
+        const { runTriumvirateReview } = await import('../src/index');
+        const models = await import('../src/models');
+        const repomix = await import('../src/repomix');
+
+        // Mock runModelReview
+        vi.spyOn(models, 'runModelReview').mockImplementation(async (_prompt, model) => {
+            return {
+                text: `review for ${model}`,
+                usage: { input_tokens: 5, output_tokens: 5, total_tokens: 10 },
+            };
+        });
+
+        // Spy on runRepomix to ensure it's NOT called
+        const runRepomixSpy = vi.spyOn(repomix, 'runRepomix');
+
+        const customContent = 'This is my pre-existing repomix output or custom context';
+        const results = await runTriumvirateReview({
+            models: mockModels,
+            exclude: [],
+            diffOnly: false,
+            failOnError: false,
+            summaryOnly: false,
+            outputPath: '.',
+            tokenLimit: 1000,
+            enhancedReport: false,
+            inputContent: customContent, // Use pre-existing content
+        });
+
+        // Assert repomix was NOT called
+        expect(runRepomixSpy).not.toHaveBeenCalled();
+
+        // Assert that results is an array
+        expect(Array.isArray(results)).toBe(true);
+        const resultsArray = results as any[];
+        expect(resultsArray).toHaveLength(mockModels.length);
+        for (const result of resultsArray) {
+            expect(result.model).toBeDefined();
+            expect(result.review).toContain('review for');
+            expect(result.metrics.error).toBeFalsy();
+        }
+    });
 });
