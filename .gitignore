@@ -32,8 +32,12 @@ Thumbs.db
 
 # Repomix
 repomix-output.*
+
+# Triumvirate generated files
 tri-review-*.json
 tri-review-*.md
+tri-review-api-calls.jsonl
+.triumvirate-enhanced.json
 
 # Default output directory
 .justbuild/

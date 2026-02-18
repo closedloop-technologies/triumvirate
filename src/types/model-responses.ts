@@ -89,6 +89,9 @@ export interface FindingItem {
         language: string;
     };
     modelAgreement: Record<string, boolean>; // Maps model ID to boolean agreement status
+    filePath?: string; // File path where the finding was identified
+    startLine?: number; // Starting line number of the finding
+    endLine?: number; // Ending line number of the finding (same as startLine if single line)
 }
 
 /**

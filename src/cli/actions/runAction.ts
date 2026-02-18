@@ -6,7 +6,8 @@ import type { TriumvirateReviewOptions } from '../../index.js';
 import type { CliOptions } from '../../types/report.js';
 import type { CodeReviewReport } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
-import { DEFAULT_MODELS } from '../../utils/constants.js';
+import { embedBadgeInReadme } from '../../utils/badge-utils.js';
+import { DEFAULT_MODELS, getMinContextWindow } from '../../utils/constants.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
 import { TriumvirateError, ErrorCategory } from '../../utils/error-handling.js';
 
@@ -201,8 +202,13 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         modelList = validatedModels;
     }
 
-    // Get absolute paths for directories - we'll use these in the future when needed
-    // const targetPaths = directories.map(directory => path.resolve(process.cwd(), directory));
+    // Auto-calculate token limit based on minimum context window of selected models
+    // Only if user didn't explicitly set a token limit
+    const effectiveTokenLimit = tokenLimit
+        ? Number(tokenLimit)
+        : getMinContextWindow(modelList);
+    
+    enhancedLogger.log(`Token limit: ${effectiveTokenLimit} (based on min context window of selected models)`);
 
     // Create a spinner for progress reporting
     try {
@@ -210,7 +216,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         const repomixOptions = {
             exclude: excludeList,
             diffOnly: diff,
-            tokenLimit,
+            tokenLimit: effectiveTokenLimit,
             include: include ? include.split(',') : undefined,
             ignorePatterns: ignorePatterns ? ignorePatterns.split(',') : undefined,
             style,
@@ -222,6 +228,10 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             instructionFilePath,
             topFilesLen,
             tokenCountEncoding,
+            // Smart compression options
+            task: options.task,
+            agentModel,
+            enableSmartCompress: true,
         };
 
         // Run the review with our configured options
@@ -231,7 +241,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             outputPath: outputDir, // Use outputDir
             failOnError,
             summaryOnly,
-            tokenLimit,
+            tokenLimit: effectiveTokenLimit,
             reviewType,
             repomixOptions, // Pass repomix specific flags
             enhancedReport,
@@ -281,6 +291,13 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
                     process.exit(1);
                 }
             }
+        }
+
+        // Handle badge embedding if requested
+        if (options.badge !== undefined && enhancedReport && !Array.isArray(results)) {
+            const report = results as CodeReviewReport;
+            const badgePath = typeof options.badge === 'string' ? options.badge : undefined;
+            embedBadgeInReadme(report, { readmePath: badgePath });
         }
 
         // Print API usage summary

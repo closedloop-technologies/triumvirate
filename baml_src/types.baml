@@ -31,6 +31,9 @@ class FindingItem {
   recommendation string? @description("Suggested fix or improvement")
   codeExample CodeExample? @description("Optional code example illustrating the finding")
   modelAgreement map<string, bool> @description("Maps model ID to whether it agrees with this finding")
+  filePath string? @description("File path where the finding was identified, e.g. 'src/utils/auth.ts'")
+  startLine int? @description("Starting line number of the finding (1-indexed)")
+  endLine int? @description("Ending line number of the finding (1-indexed, same as startLine if single line)")
 }
 
 class FindingsResponse {
@@ -91,4 +94,16 @@ class PrioritizedResponse {
   highPriority string[] @description("Findings that need immediate attention")
   mediumPriority string[] @description("Important findings to address soon")
   lowPriority string[] @description("Nice-to-have improvements")
+}
+
+// =============================================================================
+// Smart Compression Types
+// =============================================================================
+
+class CompressionRecommendation {
+  includePatterns string[] @description("Glob patterns to include (empty = include all)")
+  excludePatterns string[] @description("Glob patterns to exclude")
+  useCompression bool @description("Enable tree-sitter compression")
+  removeComments bool @description("Remove comments to save tokens")
+  reasoning string @description("Brief explanation of the choices")
 }

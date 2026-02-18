@@ -1,10 +1,22 @@
 name: 'Triumvirate Review'
-description: 'Run Triumvirate code review'
+description: 'Run Triumvirate code review with optional PR comments'
 inputs:
   mode:
     description: 'Execution mode: normal or strict'
     required: false
     default: 'normal'
+  post_summary:
+    description: 'Post a summary comment on the PR'
+    required: false
+    default: 'true'
+  post_inline_comments:
+    description: 'Post inline comments on specific lines'
+    required: false
+    default: 'true'
+  github_token:
+    description: 'GitHub token for posting comments (defaults to GITHUB_TOKEN)'
+    required: false
+    default: '${{ github.token }}'
 runs:
   using: 'node20'
   main: '../../scripts/github-action.js'

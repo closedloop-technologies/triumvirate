@@ -1,17 +1,29 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { estimateCost } from '../src/utils/llm-providers';
 
 describe('estimateCost', () => {
-    it('calculates cost using model specific rates', () => {
+    it('calculates cost using model specific rates with provider prefix', () => {
         const cost = estimateCost('openai/gpt-4.1', 1000, 500);
         expect(cost).toBeCloseTo(0.002 + 0.004, 6);
     });
 
-    it('returns 0 when model is unknown and no fallback exists', () => {
-        // When model is unknown and there's no matching provider or 'openai' key in COST_RATES,
-        // the function returns 0 (since COST_RATES['openai'] doesn't exist - only 'openai/model' keys)
+    it('calculates cost using model specific rates without provider prefix', () => {
+        // This tests the fix for model lookup without provider prefix
+        const cost = estimateCost('gpt-4.1', 1000, 500);
+        expect(cost).toBeCloseTo(0.002 + 0.004, 6);
+    });
+
+    it('returns default cost when model is unknown', () => {
+        // When model is unknown, the function now returns a default cost (Claude Sonnet rates)
+        // and logs a warning
+        const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         const cost = estimateCost('unknown/provider', 1000, 1000);
-        expect(cost).toBe(0);
+        
+        // Default: input=$3/1M, output=$15/1M
+        // 1000 * 0.000003 + 1000 * 0.000015 = 0.003 + 0.015 = 0.018
+        expect(cost).toBeCloseTo(0.018, 5);
+        expect(consoleSpy).toHaveBeenCalled();
+        consoleSpy.mockRestore();
     });
 });

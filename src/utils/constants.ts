@@ -199,6 +199,41 @@ export const [COST_RATES, PROVIDERS] = getLLMCosts();
 // Maximum number of retries for API calls
 export const MAX_API_RETRIES = 3;
 
+// Headroom to reserve for prompts and responses (tokens)
+export const PROMPT_HEADROOM_TOKENS = 10000;
+
+/**
+ * Get the minimum context window size for a list of models.
+ * Returns the smallest max_input_tokens among the selected models,
+ * minus headroom for prompts and responses.
+ * @param modelIds - Array of model IDs in "provider/model" format
+ * @returns The minimum context window size minus headroom, or a default if not found
+ */
+export function getMinContextWindow(modelIds: string[]): number {
+    const DEFAULT_CONTEXT_WINDOW = 128000; // Fallback if model not found
+    
+    let minContext = Infinity;
+    
+    for (const modelId of modelIds) {
+        const modelCosts = COST_RATES[modelId];
+        if (modelCosts?.max_input_tokens) {
+            minContext = Math.min(minContext, modelCosts.max_input_tokens);
+        } else {
+            // Model not found in costs, use default
+            console.warn(`Model ${modelId} not found in cost rates, using default context window`);
+            minContext = Math.min(minContext, DEFAULT_CONTEXT_WINDOW);
+        }
+    }
+    
+    // If no models found, use default
+    if (minContext === Infinity) {
+        minContext = DEFAULT_CONTEXT_WINDOW;
+    }
+    
+    // Subtract headroom for prompts and responses
+    return Math.max(minContext - PROMPT_HEADROOM_TOKENS, 50000); // Minimum 50k tokens
+}
+
 /**
  * Maximum number of files to exclude during repomix optimization
  */

@@ -12,6 +12,8 @@ This file outlines planned features and areas of improvement.
 - GitHub Actions integration
 - Cost transparency and token usage reporting
 - Shell completion (`tri install`)
+- **PR Summary Comments** - Automatic summary comments on pull requests
+- **Inline PR Comments** - File-specific comments with line numbers
 
 ## In Progress 🚧
 

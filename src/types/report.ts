@@ -29,6 +29,7 @@ export interface CliOptions {
     quiet?: boolean;
     version?: boolean;
     input?: string; // Path to pre-existing context file (or '-' for STDIN)
+    badge?: boolean | string; // Embed badge in README.md (optionally specify path)
     // DoD: Add placeholder for --docs if needed down the line
 }
 
@@ -66,6 +67,9 @@ export interface ReviewFinding {
     codeExample?: CodeExample;
     recommendation?: string;
     isStrength: boolean;
+    filePath?: string; // File path where the finding was identified
+    startLine?: number; // Starting line number of the finding
+    endLine?: number; // Ending line number of the finding
 }
 
 export interface ModelInsight {

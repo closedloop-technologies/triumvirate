@@ -51,6 +51,7 @@ export interface LLMResponse<T> {
 // Provider interfaces
 export interface LLMProvider {
     name: string;
+    model: string;
     runStructured<T>(
         prompt: string,
         schema: Record<string, unknown>,
@@ -64,39 +65,48 @@ export interface LLMProvider {
  * Estimate the cost of a model run based on input and output tokens
  */
 export function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
-    // Try to look up exact model in the costs file
     const costs = COST_RATES;
 
+    // Try exact match first (e.g., "anthropic/claude-3-7-sonnet-20250219")
     let info = costs[model];
+    
     if (!info) {
+        // If model has provider prefix, try without it
         const parts = model.split('/');
         if (parts.length > 1) {
-            info = costs[parts.slice(1).join('/')];
+            const modelOnly = parts.slice(1).join('/');
+            // Search for the model in all entries
+            for (const key of Object.keys(costs)) {
+                if (key.endsWith('/' + modelOnly)) {
+                    info = costs[key];
+                    break;
+                }
+            }
+        } else {
+            // Model doesn't have provider prefix, search for it
+            for (const key of Object.keys(costs)) {
+                if (key.endsWith('/' + model)) {
+                    info = costs[key];
+                    break;
+                }
+            }
         }
     }
 
-    if (info && info.input && info.output) {
+    if (info && info.input !== undefined && info.output !== undefined) {
         return inputTokens * info.input + outputTokens * info.output;
     }
 
-    // Fallback to provider level rates
-    const provider = model.split('/')[0] ?? '';
-    if (provider in COST_RATES) {
-        return (
-            inputTokens * (COST_RATES[provider as keyof typeof COST_RATES]?.input || 0) +
-            outputTokens * (COST_RATES[provider as keyof typeof COST_RATES]?.output || 0)
-        );
-    }
-
-    // Default to OpenAI rates if everything else fails
-    return (
-        inputTokens * (COST_RATES['openai']?.input || 0) +
-        outputTokens * (COST_RATES['openai']?.output || 0)
-    );
+    // Default fallback rates (Claude Sonnet pricing as reasonable default)
+    const defaultInputRate = 0.000003;  // $3 per 1M tokens
+    const defaultOutputRate = 0.000015; // $15 per 1M tokens
+    console.warn(`Cost rates not found for model: ${model}, using default rates`);
+    return inputTokens * defaultInputRate + outputTokens * defaultOutputRate;
 }
 
 /**
  * Claude Provider Implementation
+ * @deprecated Use BAML functions from baml-providers.ts instead (e.g., reviewCodeWithClaude)
  */
 export class ClaudeProvider implements LLMProvider {
     name = 'Claude';
@@ -104,6 +114,7 @@ export class ClaudeProvider implements LLMProvider {
 
     constructor(model = 'claude-3-7-sonnet-20250219') {
         this.model = model;
+        console.warn('ClaudeProvider is deprecated. Use BAML functions from baml-providers.ts instead.');
     }
 
     isAvailable(): boolean {
@@ -448,6 +459,7 @@ export class ClaudeProvider implements LLMProvider {
 
 /**
  * OpenAI Provider Implementation
+ * @deprecated Use BAML functions from baml-providers.ts instead (e.g., reviewCodeWithGPT)
  */
 export class OpenAIProvider implements LLMProvider {
     name = 'OpenAI';
@@ -455,6 +467,7 @@ export class OpenAIProvider implements LLMProvider {
 
     constructor(model = 'gpt-4.1') {
         this.model = model;
+        console.warn('OpenAIProvider is deprecated. Use BAML functions from baml-providers.ts instead.');
     }
 
     isAvailable(): boolean {
@@ -739,12 +752,14 @@ export class OpenAIProvider implements LLMProvider {
 
 /**
  * Gemini Provider Implementation
+ * @deprecated Use BAML functions from baml-providers.ts instead (e.g., reviewCodeWithGemini)
  */
 export class GeminiProvider implements LLMProvider {
     name = 'Gemini';
     model: string;
 
     constructor(model?: string) {
+        console.warn('GeminiProvider is deprecated. Use BAML functions from baml-providers.ts instead.');
         if (!model) {
             const geminiModel = DEFAULT_MODELS.find(model => model.includes('gemini'));
             if (!geminiModel) {

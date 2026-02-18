@@ -169,6 +169,10 @@ export const run = async () => {
             .option('--skip-api-key-validation', 'skip API key validation check')
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
             .option('--summary-only', 'only include summary in results')
+            .option(
+                '--badge [path]',
+                'embed a review status badge in README.md (optionally specify path)'
+            )
 
             // Input options
             .option(
@@ -239,6 +243,7 @@ Option Groups:
     --skip-api-key-validation      Skip API key validation
     --enhanced-report              Generate enhanced report with model agreement
     --summary-only                 Only include summary in results
+    --badge [path]                 Embed review status badge in README.md
     --agent-model                  LLM model for report analysis/planning
 
   Input Options:

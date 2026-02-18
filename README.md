@@ -3,8 +3,14 @@
 ![Triumvirate Logo](https://raw.githubusercontent.com/closedloop-technologies/triumvirate/refs/heads/main/assets/triumvirate-banner.png)
 
 [![npm version](https://img.shields.io/npm/v/@justbuild/triumvirate.svg)](https://www.npmjs.com/package/@justbuild/triumvirate)
-<!-- TODO: Add Build Status Badge -->
+
+
+[![CI](https://github.com/closedloop-technologies/triumvirate/actions/workflows/ci.yml/badge.svg)](https://github.com/closedloop-technologies/triumvirate/actions/workflows/ci.yml)
+
+<!-- triumvirate-badge-start -->
 ![Triumvirate](https://img.shields.io/badge/Triumvirate-Passed-brightgreen)
+<!-- triumvirate-badge-end -->
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## Multi-model AI code reviews with consensus detection
@@ -19,6 +25,64 @@ Triumvirate is a CLI tool and GitHub Action that runs your codebase through mult
 - **Solo developers** – Professional-grade code reviews without a team
 - **Lean teams** – Automated quality gates that scale with your codebase
 - **CI/CD pipelines** – Integrate multi-model reviews into pull request workflows
+
+## How It Works
+
+```mermaid
+flowchart TB
+    subgraph Entry["🚀 Entry Points"]
+        CLI["💻 CLI<br/><code>tri review</code>"]
+        PR["🔀 Pull Request<br/>GitHub Action"]
+        CI["⚙️ CI/CD Pipeline<br/>Scheduled/Manual"]
+    end
+
+    subgraph Prepare["📦 Preparation"]
+        Repomix["Repomix<br/>Package Codebase"]
+        Diff["Git Diff<br/>(--diff mode)"]
+    end
+
+    subgraph Review["🤖 Multi-Model Review"]
+        OpenAI["OpenAI<br/>GPT-4 / O3"]
+        Claude["Anthropic<br/>Claude"]
+        Gemini["Google<br/>Gemini"]
+    end
+
+    subgraph Analyze["🔍 Analysis"]
+        Consensus["Cross-Model<br/>Consensus Detection"]
+        Categorize["Categorize<br/>Findings"]
+    end
+
+    subgraph Output["📊 Output"]
+        Report["Enhanced Report<br/>JSON + Markdown"]
+        Badge["README Badge<br/>(--badge)"]
+        PRComment["PR Comments<br/>Summary + Inline"]
+        Plan["Task Plan<br/><code>tri plan</code>"]
+    end
+
+    CLI --> Repomix
+    CLI --> Diff
+    PR --> Diff
+    CI --> Repomix
+
+    Repomix --> OpenAI & Claude & Gemini
+    Diff --> OpenAI & Claude & Gemini
+
+    OpenAI & Claude & Gemini --> Consensus
+    Consensus --> Categorize
+
+    Categorize --> Report
+    Report --> Badge
+    Report --> PRComment
+    Report --> Plan
+
+    style CLI fill:#4CAF50,color:#fff
+    style PR fill:#2196F3,color:#fff
+    style CI fill:#9C27B0,color:#fff
+    style OpenAI fill:#10a37f,color:#fff
+    style Claude fill:#d97706,color:#fff
+    style Gemini fill:#4285F4,color:#fff
+    style Consensus fill:#FF5722,color:#fff
+```
 
 ## Features
 
@@ -277,32 +341,75 @@ tri next --input plan.json
 
 ## GitHub Actions Integration
 
-Add this step to your CI workflow (e.g., in `.github/workflows/ci.yml`):
+Triumvirate can automatically post **PR summary comments** and **inline review comments** on your pull requests.
+
+### Basic Setup with PR Comments
 
 ```yaml
-- uses: actions/checkout@v3
-- uses: actions/setup-node@v3
-  with:
-    node-version: '20'
-- run: npm install
-- run: |
-    export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-    export ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
-    export GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
-    # Run on changed files, fail if any model errors, set pass threshold
-    npx triumvirate review --models openai,claude,gemini \
-      --diff \
-      --output-dir .triumvirate \
-      --fail-on-error \
-      --pass-threshold lenient \
-      --agent-model claude
+name: Code Review
 
-- name: Upload Review Output
-  uses: actions/upload-artifact@v3
-  with:
-    name: triumvirate-results
-    path: .triumvirate/triumvirate-review.json
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # Required for posting comments
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm install -g @justbuild/triumvirate
+      - run: |
+          tri review --models openai,claude,gemini \
+            --diff \
+            --output-dir .triumvirate \
+            --fail-on-error \
+            --pass-threshold lenient
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 ```
+
+### Using the Triumvirate Action (with PR Comments)
+
+For automatic PR comments, use the built-in action:
+
+```yaml
+- uses: closedloop-technologies/triumvirate/.github/actions/triumvirate-review@main
+  with:
+    mode: strict                    # 'normal' or 'strict'
+    post_summary: 'true'            # Post summary comment on PR
+    post_inline_comments: 'true'    # Post inline comments on specific lines
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+  env:
+    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+```
+
+### PR Comment Features
+
+| Feature | Description |
+|---------|-------------|
+| **Summary Comment** | Posts a summary of findings with agreement levels, top issues, and cost breakdown |
+| **Inline Comments** | Posts comments directly on the lines where issues were found |
+| **Agreement Indicators** | 🚨 High (all models), ❗ Partial (2 models), ⚠️ Low (1 model) |
+| **Auto-update** | Re-running the action updates existing comments instead of creating duplicates |
+
+### Action Inputs
+
+| Input | Description | Default |
+|-------|-------------|---------|
+| `mode` | Execution mode: `normal` or `strict` | `normal` |
+| `post_summary` | Post a summary comment on the PR | `true` |
+| `post_inline_comments` | Post inline comments on specific lines | `true` |
+| `github_token` | GitHub token for posting comments | `${{ github.token }}` |
 
 ## Roadmap
 

@@ -11,8 +11,8 @@ import { pack } from 'repomix';
 import {
     DEFAULT_REPOMIX_OPTIONS,
     DEFAULT_REVIEW_OPTIONS,
-    MAX_FILES_TO_EXCLUDE,
 } from './utils/constants';
+import { getCompressionRecommendation, type RepoOverview } from './utils/smart-compress.js';
 
 export interface RepomixResult {
     filePath: string;
@@ -41,6 +41,10 @@ export interface RepomixOptions {
     instructionFilePath?: string;
     topFilesLen?: number;
     tokenCountEncoding?: string;
+    // Smart compression options
+    task?: string;           // Review task to help agent prioritize files
+    agentModel?: string;     // Model to use for smart compression decisions
+    enableSmartCompress?: boolean;  // Enable agent-driven compression when over limit
 }
 
 // We're not defining a RepomixConfig interface since we're using type assertions
@@ -66,6 +70,9 @@ export async function runRepomix({
     instructionFilePath,
     topFilesLen = DEFAULT_REPOMIX_OPTIONS.TOP_FILES_LEN,
     tokenCountEncoding = DEFAULT_REPOMIX_OPTIONS.TOKEN_COUNT_ENCODING,
+    task,
+    agentModel = 'claude',
+    enableSmartCompress = true,
 }: RepomixOptions): Promise<RepomixResult> {
     try {
         // Create a temporary directory for Repomix output
@@ -92,6 +99,7 @@ export async function runRepomix({
                 directoryStructure: true,
                 includeEmptyDirectories: false,
                 copyToClipboard: false,
+                files: true, // CRITICAL: Include file contents in output
                 git: {
                     enabled: false,
                 },
@@ -200,25 +208,77 @@ export async function runRepomix({
         // Finalize the log display
         logUpdate.done();
 
-        // Check if we need to optimize
-        if (packResult.totalTokens > tokenLimit) {
+        // If token count exceeds limit and smart compression is enabled, use agent to optimize
+        if (packResult.totalTokens > tokenLimit && enableSmartCompress) {
             console.log(
-                `Token count (${packResult.totalTokens}) exceeds limit (${tokenLimit}), optimizing...`
+                `⚠️  Token count (${packResult.totalTokens}) exceeds limit (${tokenLimit}).`
             );
-            return optimizeRepomix({
-                exclude,
+            console.log(`    Using smart compression to optimize file selection...`);
+
+            // Build repo overview for the agent
+            const overview: RepoOverview = {
+                directoryStructure: '', // Will extract from file
+                fileSummary: '',
+                totalTokens: packResult.totalTokens,
+                fileTokenCounts: packResult.fileTokenCounts || {},
+            };
+
+            // Extract directory structure from the output file
+            const previewContent = fs.readFileSync(tempFilePath, 'utf8');
+            const dirMatch = previewContent.match(
+                /<directory_structure>([\s\S]*?)<\/directory_structure>/
+            );
+            if (dirMatch && dirMatch[1]) {
+                overview.directoryStructure = dirMatch[1].trim();
+            }
+
+            // Get agent recommendation
+            const recommendation = await getCompressionRecommendation(
+                overview,
+                task || '',
+                tokenLimit,
+                agentModel
+            );
+
+            console.log(`    Agent recommendation: ${recommendation.reasoning}`);
+
+            // Clean up the preview file
+            fs.unlinkSync(tempFilePath);
+            fs.rmdirSync(tempDir);
+
+            // Re-run with agent's recommended settings
+            return runRepomix({
+                exclude: [...(exclude || []), ...recommendation.excludePatterns],
                 diffOnly,
                 tokenLimit,
-                include,
+                include: recommendation.includePatterns.length > 0 
+                    ? recommendation.includePatterns 
+                    : include,
                 ignorePatterns,
                 style,
-                fileCharCounts: packResult.fileCharCounts,
+                compress: recommendation.useCompression,
+                removeComments: recommendation.removeComments,
+                removeEmptyLines,
                 showLineNumbers,
                 headerText,
                 instructionFilePath,
                 topFilesLen,
                 tokenCountEncoding,
+                task,
+                agentModel,
+                enableSmartCompress: false, // Prevent infinite recursion
             });
+        } else if (packResult.totalTokens > tokenLimit) {
+            // Smart compress disabled, just warn
+            console.warn(
+                `⚠️  Token count (${packResult.totalTokens}) exceeds limit (${tokenLimit}).`
+            );
+            console.warn(
+                `    Consider using --compress, --remove-comments, or --ignore to reduce size.`
+            );
+            console.warn(
+                `    Proceeding with full codebase - some models may truncate input.`
+            );
         }
 
         // Read the generated file to extract summary and structure
@@ -260,80 +320,3 @@ export async function runRepomix({
     }
 }
 
-/**
- * Optimize repomix command if token count exceeds limit
- */
-async function optimizeRepomix({
-    exclude,
-    diffOnly,
-    tokenLimit,
-    include,
-    ignorePatterns,
-    style,
-    fileCharCounts,
-    showLineNumbers,
-    headerText,
-    instructionFilePath,
-    topFilesLen,
-    tokenCountEncoding,
-}: RepomixOptions & {
-    fileCharCounts: Record<string, number>;
-}): Promise<RepomixResult> {
-    // Automatic optimization strategy:
-    // 1. Always enable compression, comment removal, and empty line removal
-    // 2. Exclude large files based on character count if needed
-
-    const updatedOptions: RepomixOptions = {
-        exclude: [...(exclude || [])],
-        diffOnly,
-        tokenLimit,
-        include,
-        ignorePatterns,
-        style,
-        compress: true, // Always enable compression for optimization
-        removeComments: true, // Always remove comments for optimization
-        removeEmptyLines: true, // Always remove empty lines for optimization
-        showLineNumbers,
-        headerText,
-        instructionFilePath,
-        topFilesLen,
-        tokenCountEncoding,
-    };
-
-    // If we have file character counts, use them to exclude large files
-    if (fileCharCounts && Object.keys(fileCharCounts).length > 0) {
-        // Create array of files with their sizes
-        const topFiles = Object.entries(fileCharCounts).map(([path, size]) => ({
-            path,
-            size,
-        }));
-
-        // Sort by size (largest first)
-        topFiles.sort((a, b) => b.size - a.size);
-
-        // Exclude the largest files until we get under token limit
-        let filesExcluded = 0;
-        for (const file of topFiles) {
-            if (filesExcluded >= MAX_FILES_TO_EXCLUDE) {
-                break; // Don't exclude too many files at once
-            }
-
-            // Skip if file is already excluded
-            if (updatedOptions.exclude?.includes(file.path)) {
-                continue;
-            }
-
-            // Add to exclude list
-            updatedOptions.exclude?.push(file.path);
-            filesExcluded++;
-
-            console.log(`Excluding large file: ${file.path} (${file.size} chars)`);
-        }
-    } else {
-        console.warn('No file character counts available for optimization');
-    }
-
-    // Re-run repomix with optimized settings
-    console.log('Re-running Repomix with optimized settings...');
-    return runRepomix(updatedOptions);
-}

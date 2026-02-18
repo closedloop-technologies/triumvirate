@@ -3,10 +3,14 @@ import * as dotenv from 'dotenv';
 // Import only the types and utilities we still need
 import type { ModelUsage } from './types/usage';
 import { MODEL_API_KEYS } from './utils/api-keys';
-import { reviewCodeWithBAML, useBAML } from './utils/baml-providers.js';
+import {
+    reviewCodeWithBAML,
+    reviewCodeWithClaude,
+    reviewCodeWithGPT,
+    reviewCodeWithGemini,
+} from './utils/baml-providers.js';
 import { MAX_API_RETRIES } from './utils/constants';
 import { enhancedLogger } from './utils/enhanced-logger.js';
-import { ClaudeProvider, GeminiProvider, OpenAIProvider } from './utils/llm-providers';
 import { handleModelError, ErrorCategory, createModelError } from './utils/model-utils';
 
 // Load environment variables from .env file
@@ -103,31 +107,23 @@ export async function runModelReview(
     const prompt = `Please review the following codebase for bugs, design flaws, and potential improvements:\n\n${code}`;
 
     try {
-        // Use BAML if enabled
-        if (useBAML()) {
-            const response = await reviewCodeWithBAML(code);
-            return {
-                text: response.data,
-                usage: response.usage,
-            };
-        }
-
-        // Legacy: Use provider-specific implementation
-        const { provider, model } = parseModelSpec(modelName);
-        let modelProvider: OpenAIProvider | ClaudeProvider | GeminiProvider;
+        // Route to the appropriate BAML function based on provider
+        const { provider } = parseModelSpec(modelName);
+        
+        let response;
         if (provider === 'openai' || provider === 'openrouter' || provider === 'azure') {
-            modelProvider = new OpenAIProvider(model || 'gpt-4.1');
+            validateModelInput(prompt, provider);
+            response = await reviewCodeWithGPT(code);
         } else if (provider === 'claude' || provider === 'anthropic') {
-            modelProvider = new ClaudeProvider(model || 'claude-opus-4-6');
+            validateModelInput(prompt, provider);
+            response = await reviewCodeWithClaude(code);
         } else if (provider === 'gemini' || provider === 'google') {
-            modelProvider = new GeminiProvider(model || 'gemini-3-pro-preview');
+            validateModelInput(prompt, provider);
+            response = await reviewCodeWithGemini(code);
         } else {
-            // Default to OpenAI-compatible provider
-            modelProvider = new OpenAIProvider(model || provider);
+            // Fallback to generic BAML review
+            response = await reviewCodeWithBAML(code);
         }
-
-        validateModelInput(prompt, provider);
-        const response = await modelProvider.runCompletion(prompt);
 
         return {
             text: response.data,

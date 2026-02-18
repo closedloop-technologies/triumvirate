@@ -2,9 +2,49 @@
 // These functions replace the manual LLM calls in llm-providers.ts
 
 // =============================================================================
-// Code Review - Free-form completion
+// Code Review - Per-model functions for parallel execution
 // =============================================================================
 
+function ReviewCodeWithClaude(code: string) -> string {
+  client Claude
+  prompt #"
+    {{ _.role("system") }}
+    You are an expert code reviewer with deep knowledge of software engineering best practices, security, performance, and maintainability.
+
+    {{ _.role("user") }}
+    Please review the following codebase for bugs, design flaws, and potential improvements:
+
+    {{ code }}
+  "#
+}
+
+function ReviewCodeWithGPT(code: string) -> string {
+  client GPT4
+  prompt #"
+    {{ _.role("system") }}
+    You are an expert code reviewer with deep knowledge of software engineering best practices, security, performance, and maintainability.
+
+    {{ _.role("user") }}
+    Please review the following codebase for bugs, design flaws, and potential improvements:
+
+    {{ code }}
+  "#
+}
+
+function ReviewCodeWithGemini(code: string) -> string {
+  client Gemini
+  prompt #"
+    {{ _.role("system") }}
+    You are an expert code reviewer with deep knowledge of software engineering best practices, security, performance, and maintainability.
+
+    {{ _.role("user") }}
+    Please review the following codebase for bugs, design flaws, and potential improvements:
+
+    {{ code }}
+  "#
+}
+
+// Fallback version for general use
 function ReviewCode(code: string) -> string {
   client TriumvirateFallback
   prompt #"
@@ -140,6 +180,50 @@ function GeneratePlan(summary: string, task: string?) -> PlanResponse {
 
     Ensure that the tasks are concrete, actionable, and directly related to the code review findings.
     Prioritize tasks that address critical issues or have the highest impact.
+
+    {{ ctx.output_format }}
+  "#
+}
+
+// =============================================================================
+// Smart Compression - Structured output for file selection
+// =============================================================================
+
+function RecommendCompression(
+  directoryStructure: string,
+  fileTokenCounts: string,
+  totalTokens: int,
+  tokenLimit: int,
+  task: string
+) -> CompressionRecommendation {
+  client TriumvirateFallback
+  prompt #"
+    {{ _.role("system") }}
+    You are a code review preparation assistant. Your job is to help select the most relevant files from a codebase for a specific review task.
+
+    {{ _.role("user") }}
+    Given the repository structure and file token counts, recommend which files to INCLUDE or EXCLUDE to fit within the token limit while maximizing relevance to the task.
+
+    IMPORTANT GUIDELINES:
+    - Prioritize files most relevant to the task
+    - Always include core source files (src/, lib/) over generated files
+    - Exclude test files, documentation, and config files if space is tight (unless the task is about those)
+    - Exclude large generated files (dist/, build/, node_modules/)
+    - Exclude lock files (package-lock.json, yarn.lock)
+    - Consider file token counts when making decisions
+
+    ## Repository Structure
+    {{ directoryStructure }}
+
+    ## Top Files by Token Count
+    {{ fileTokenCounts }}
+
+    ## Total Tokens: {{ totalTokens }}
+    ## Target Token Limit: {{ tokenLimit }}
+    ## Tokens to Reduce: {{ totalTokens - tokenLimit }}
+
+    ## Review Task
+    {{ task }}
 
     {{ ctx.output_format }}
   "#

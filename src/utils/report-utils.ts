@@ -80,7 +80,7 @@ export async function extractCategories(
         const categoriesResponse = await provider.runStructured<CategoryResponse>(prompt, schema);
         const apilog: ApiCallLog = {
             timestamp: new Date().toISOString(),
-            model: provider.name, // Use provider name instead of model
+            model: provider.model,
             operation: 'categories',
             inputTokens: categoriesResponse.usage.input_tokens,
             outputTokens: categoriesResponse.usage.output_tokens,
@@ -101,7 +101,7 @@ export async function extractCategories(
         // Use the new error handling utilities for consistent error handling
         const apilog: ApiCallLog = {
             timestamp: new Date().toISOString(),
-            model: provider.name, // Use provider name instead of model
+            model: provider.model,
             operation: 'structured',
             inputTokens: 0,
             outputTokens: 0,
@@ -1269,6 +1269,9 @@ export async function extractFindings(
                 ...f,
                 recommendation: f.recommendation ?? undefined,
                 codeExample: f.codeExample ?? undefined,
+                filePath: f.filePath ?? undefined,
+                startLine: f.startLine ?? undefined,
+                endLine: f.endLine ?? undefined,
             }));
             return mapExtractedFindingsToRequiredFormat(mappedFindings, categories, models);
         }
@@ -1363,6 +1366,14 @@ For each finding, determine:
 5. Which models mentioned it (model agreement)
 6. Any code examples that illustrate the finding
 7. Specific recommendations for addressing it (if it's an area for improvement)
+8. The file path where the finding was identified (if mentioned in the review, e.g., "src/utils/auth.ts")
+9. The line number(s) where the finding occurs (if mentioned, provide startLine and optionally endLine)
+
+IMPORTANT: When extracting file paths and line numbers:
+- Look for file references like "in src/utils/auth.ts" or "file: auth.ts" or code blocks with file annotations
+- Look for line references like "line 42", "lines 10-20", "L15", etc.
+- If a finding references multiple locations, use the primary/most relevant one
+- If no specific file/line is mentioned, omit these fields
 
 Please be thorough in extracting distinct findings from all reviews.
 `;
@@ -1431,6 +1442,20 @@ function createFindingsSchema(
                         recommendation: {
                             type: 'string',
                             description: 'Specific recommendation for addressing the finding',
+                        },
+                        filePath: {
+                            type: 'string',
+                            description:
+                                'File path where the finding was identified (e.g., src/utils/auth.ts)',
+                        },
+                        startLine: {
+                            type: 'integer',
+                            description: 'Starting line number of the finding (1-indexed)',
+                        },
+                        endLine: {
+                            type: 'integer',
+                            description:
+                                'Ending line number of the finding (1-indexed, same as startLine if single line)',
                         },
                     },
                     required: ['title', 'description', 'category', 'isStrength', 'modelAgreement'],
@@ -1556,6 +1581,9 @@ function mapExtractedFindingsToRequiredFormat(
             isStrength: finding.isStrength ?? false, // Use isStrength flag, default to false
             recommendation: finding.recommendation, // Optional field
             codeExample, // Optional field
+            filePath: finding.filePath, // File path for inline PR comments
+            startLine: finding.startLine, // Starting line number
+            endLine: finding.endLine, // Ending line number
         };
 
         return reviewFinding;

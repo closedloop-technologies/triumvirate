@@ -11,6 +11,7 @@ import type { LLMResponse, LLMUsage } from './llm-providers.js';
 import { b } from '../../baml_client/index.js';
 import type {
     CategoryResponse,
+    CompressionRecommendation,
     FindingsResponse,
     InsightsResponse,
     PlanResponse,
@@ -30,12 +31,24 @@ function estimateTokens(text: string): number {
  * Get cost rate for a model
  */
 function getCostRate(model: string): { input: number; output: number } {
-    const rates = COST_RATES[model];
-    if (rates) {
+    // Try exact match first
+    let rates = COST_RATES[model];
+    
+    if (!rates) {
+        // Search for the model in all entries (handles provider/model format)
+        for (const key of Object.keys(COST_RATES)) {
+            if (key.endsWith('/' + model)) {
+                rates = COST_RATES[key];
+                break;
+            }
+        }
+    }
+    
+    if (rates && rates.input !== undefined && rates.output !== undefined) {
         return { input: rates.input, output: rates.output };
     }
-    // Default rates if model not found
-    return { input: 0.003, output: 0.015 };
+    // Default rates if model not found (Claude Sonnet pricing)
+    return { input: 0.000003, output: 0.000015 };
 }
 
 /**
@@ -234,7 +247,115 @@ export async function generatePlanWithBAML(
 
 /**
  * Check if BAML should be used instead of direct SDK calls
+ * @deprecated BAML is now the default - this flag will be removed in a future version
  */
 export function useBAML(): boolean {
-    return process.env['USE_BAML'] === 'true';
+    // BAML is now always enabled - the flag is kept for backward compatibility
+    return process.env['USE_BAML'] !== 'false';
+}
+
+// =============================================================================
+// Per-Model Review Functions (for parallel triumvirate execution)
+// =============================================================================
+
+/**
+ * Review code using Claude via BAML
+ */
+export async function reviewCodeWithClaude(code: string): Promise<LLMResponse<string>> {
+    const model = 'claude-3-7-sonnet-20250219';
+    try {
+        const result = await b.ReviewCodeWithClaude(code);
+        const usage = createMockUsage(code, result);
+        const rates = getCostRate(model);
+        const cost = (usage.input_tokens * rates.input + usage.output_tokens * rates.output);
+
+        logApiCall(model, 'completion', usage, true, cost);
+
+        return { data: result, usage, cost };
+    } catch (error) {
+        const usage = createMockUsage(code, '');
+        logApiCall(model, 'completion', usage, false, 0, String(error));
+        throw error;
+    }
+}
+
+/**
+ * Review code using GPT via BAML
+ */
+export async function reviewCodeWithGPT(code: string): Promise<LLMResponse<string>> {
+    const model = 'gpt-4.1';
+    try {
+        const result = await b.ReviewCodeWithGPT(code);
+        const usage = createMockUsage(code, result);
+        const rates = getCostRate(model);
+        const cost = (usage.input_tokens * rates.input + usage.output_tokens * rates.output);
+
+        logApiCall(model, 'completion', usage, true, cost);
+
+        return { data: result, usage, cost };
+    } catch (error) {
+        const usage = createMockUsage(code, '');
+        logApiCall(model, 'completion', usage, false, 0, String(error));
+        throw error;
+    }
+}
+
+/**
+ * Review code using Gemini via BAML
+ */
+export async function reviewCodeWithGemini(code: string): Promise<LLMResponse<string>> {
+    const model = 'gemini-2.5-pro-preview-06-05';
+    try {
+        const result = await b.ReviewCodeWithGemini(code);
+        const usage = createMockUsage(code, result);
+        const rates = getCostRate(model);
+        const cost = (usage.input_tokens * rates.input + usage.output_tokens * rates.output);
+
+        logApiCall(model, 'completion', usage, true, cost);
+
+        return { data: result, usage, cost };
+    } catch (error) {
+        const usage = createMockUsage(code, '');
+        logApiCall(model, 'completion', usage, false, 0, String(error));
+        throw error;
+    }
+}
+
+// =============================================================================
+// Smart Compression Function
+// =============================================================================
+
+/**
+ * Get compression recommendation using BAML
+ */
+export async function recommendCompressionWithBAML(
+    directoryStructure: string,
+    fileTokenCounts: string,
+    totalTokens: number,
+    tokenLimit: number,
+    task: string
+): Promise<LLMResponse<CompressionRecommendation>> {
+    const model = 'baml-fallback';
+    const inputText = `${directoryStructure}\n${fileTokenCounts}\n${task}`;
+    try {
+        const result = await b.RecommendCompression(
+            directoryStructure,
+            fileTokenCounts,
+            totalTokens,
+            tokenLimit,
+            task || 'General code review'
+        );
+        const outputStr = JSON.stringify(result);
+        const usage = createMockUsage(inputText, outputStr);
+        const rates = getCostRate('claude-3-7-sonnet-20250219');
+        const cost = (usage.input_tokens * rates.input + usage.output_tokens * rates.output);
+
+        logApiCall(model, 'compression', usage, true, cost);
+
+        return { data: result, usage, cost };
+    } catch (error) {
+        const usage = createMockUsage(inputText, '');
+        logApiCall(model, 'compression', usage, false, 0, String(error));
+        throw error;
+    }
 }
