@@ -856,6 +856,14 @@
     "max_output_tokens": 16384
   },
   {
+    "model": "azure/gpt-audio-1.5-2026-02-23",
+    "provider": "azure",
+    "input": 0.0000025,
+    "output": 0.00001,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "azure/gpt-audio-mini-2025-10-06",
     "provider": "azure",
     "input": 6E-7,
@@ -1105,6 +1113,14 @@
   },
   {
     "model": "azure/gpt-5.2-codex",
+    "provider": "azure",
+    "input": 0.00000175,
+    "output": 0.000014,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.3-codex",
     "provider": "azure",
     "input": 0.00000175,
     "output": 0.000014,
@@ -1738,8 +1754,8 @@
   {
     "model": "azure_ai/mistral-small-2503",
     "provider": "azure_ai",
-    "input": 0.000001,
-    "output": 0.000003,
+    "input": 1E-7,
+    "output": 3E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
@@ -2504,14 +2520,6 @@
     "max_output_tokens": 64000
   },
   {
-    "model": "us/claude-sonnet-4-6",
-    "provider": "anthropic",
-    "input": 0.0000033,
-    "output": 0.0000165,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 64000
-  },
-  {
     "model": "claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
     "input": 0.000003,
@@ -2568,51 +2576,11 @@
     "max_output_tokens": 128000
   },
   {
-    "model": "fast/claude-opus-4-6",
-    "provider": "anthropic",
-    "input": 0.00003,
-    "output": 0.00015,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 128000
-  },
-  {
-    "model": "us/claude-opus-4-6",
-    "provider": "anthropic",
-    "input": 0.0000055,
-    "output": 0.0000275,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 128000
-  },
-  {
-    "model": "fast/us/claude-opus-4-6",
-    "provider": "anthropic",
-    "input": 0.00003,
-    "output": 0.00015,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 128000
-  },
-  {
     "model": "claude-opus-4-6-20260205",
     "provider": "anthropic",
     "input": 0.000005,
     "output": 0.000025,
     "max_input_tokens": 1000000,
-    "max_output_tokens": 128000
-  },
-  {
-    "model": "fast/claude-opus-4-6-20260205",
-    "provider": "anthropic",
-    "input": 0.00003,
-    "output": 0.00015,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 128000
-  },
-  {
-    "model": "us/claude-opus-4-6-20260205",
-    "provider": "anthropic",
-    "input": 0.0000055,
-    "output": 0.0000275,
-    "max_input_tokens": 200000,
     "max_output_tokens": 128000
   },
   {
@@ -5040,6 +5008,14 @@
     "max_output_tokens": 16384
   },
   {
+    "model": "gpt-audio-1.5",
+    "provider": "openai",
+    "input": 0.0000025,
+    "output": 0.00001,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "gpt-audio-2025-08-28",
     "provider": "openai",
     "input": 0.0000025,
@@ -5336,6 +5312,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "gpt-5.3-codex",
+    "provider": "openai",
+    "input": 0.00000175,
+    "output": 0.000014,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "gpt-5-mini",
     "provider": "openai",
     "input": 2.5E-7,
@@ -5502,6 +5486,14 @@
     "output": 3E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 32768
+  },
+  {
+    "model": "groq/openai/gpt-oss-safeguard-20b",
+    "provider": "groq",
+    "input": 7.5E-8,
+    "output": 3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
   },
   {
     "model": "groq/qwen/qwen3-32b",
@@ -6704,6 +6696,14 @@
     "max_output_tokens": 32000
   },
   {
+    "model": "openrouter/anthropic/claude-opus-4.6",
+    "provider": "openrouter",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "openrouter/anthropic/claude-sonnet-4.5",
     "provider": "openrouter",
     "input": 0.000003,
@@ -7086,6 +7086,38 @@
     "output": 0.0000012,
     "max_input_tokens": 204000,
     "max_output_tokens": 64000
+  },
+  {
+    "model": "openrouter/minimax/minimax-m2.5",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 0.0000011,
+    "max_input_tokens": 196608,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/openrouter/auto",
+    "provider": "openrouter",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 2000000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "openrouter/openrouter/free",
+    "provider": "openrouter",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 200000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "openrouter/openrouter/bodybuilder",
+    "provider": "openrouter",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": null
   },
   {
     "model": "ovhcloud/DeepSeek-R1-Distill-Llama-70B",
