@@ -1120,6 +1120,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/gpt-5.3-chat",
+    "provider": "azure",
+    "input": 0.00000175,
+    "output": 0.000014,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "azure/gpt-5.3-codex",
     "provider": "azure",
     "input": 0.00000175,
@@ -1141,6 +1149,38 @@
     "input": 0.000021,
     "output": 0.000168,
     "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.4",
+    "provider": "azure",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.4-2026-03-05",
+    "provider": "azure",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.4-pro",
+    "provider": "azure",
+    "input": 0.00003,
+    "output": 0.00018,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.4-pro-2026-03-05",
+    "provider": "azure",
+    "input": 0.00003,
+    "output": 0.00018,
+    "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
   {
@@ -1681,6 +1721,22 @@
   },
   {
     "model": "azure_ai/grok-4-fast-reasoning",
+    "provider": "azure_ai",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "azure_ai/grok-4-1-fast-non-reasoning",
+    "provider": "azure_ai",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "azure_ai/grok-4-1-fast-reasoning",
     "provider": "azure_ai",
     "input": 2E-7,
     "output": 5E-7,
@@ -2384,22 +2440,6 @@
     "max_output_tokens": 4096
   },
   {
-    "model": "claude-3-5-haiku-20241022",
-    "provider": "anthropic",
-    "input": 8E-7,
-    "output": 0.000004,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "claude-3-5-haiku-latest",
-    "provider": "anthropic",
-    "input": 0.000001,
-    "output": 0.000005,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 8192
-  },
-  {
     "model": "claude-haiku-4-5-20251001",
     "provider": "anthropic",
     "input": 0.000001,
@@ -2416,39 +2456,7 @@
     "max_output_tokens": 64000
   },
   {
-    "model": "claude-3-5-sonnet-20240620",
-    "provider": "anthropic",
-    "input": 0.000003,
-    "output": 0.000015,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "claude-3-5-sonnet-20241022",
-    "provider": "anthropic",
-    "input": 0.000003,
-    "output": 0.000015,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "claude-3-5-sonnet-latest",
-    "provider": "anthropic",
-    "input": 0.000003,
-    "output": 0.000015,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 8192
-  },
-  {
     "model": "claude-3-7-sonnet-20250219",
-    "provider": "anthropic",
-    "input": 0.000003,
-    "output": 0.000015,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 64000
-  },
-  {
-    "model": "claude-3-7-sonnet-latest",
     "provider": "anthropic",
     "input": 0.000003,
     "output": 0.000015,
@@ -2465,14 +2473,6 @@
   },
   {
     "model": "claude-3-opus-20240229",
-    "provider": "anthropic",
-    "input": 0.000015,
-    "output": 0.000075,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "claude-3-opus-latest",
     "provider": "anthropic",
     "input": 0.000015,
     "output": 0.000075,
@@ -3864,94 +3864,6 @@
     "max_output_tokens": 100000
   },
   {
-    "model": "gemini-1.5-flash",
-    "provider": "vertex_ai-language-models",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-flash-001",
-    "provider": "vertex_ai-language-models",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-flash-002",
-    "provider": "vertex_ai-language-models",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-flash-exp-0827",
-    "provider": "vertex_ai-language-models",
-    "input": 4.688E-9,
-    "output": 4.6875E-9,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-flash-preview-0514",
-    "provider": "vertex_ai-language-models",
-    "input": 7.5E-8,
-    "output": 4.6875E-9,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-pro",
-    "provider": "vertex_ai-language-models",
-    "input": 0.00000125,
-    "output": 0.000005,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-pro-001",
-    "provider": "vertex_ai-language-models",
-    "input": 0.00000125,
-    "output": 0.000005,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-pro-002",
-    "provider": "vertex_ai-language-models",
-    "input": 0.00000125,
-    "output": 0.000005,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-pro-preview-0215",
-    "provider": "vertex_ai-language-models",
-    "input": 7.8125E-8,
-    "output": 3.125E-7,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-pro-preview-0409",
-    "provider": "vertex_ai-language-models",
-    "input": 7.8125E-8,
-    "output": 3.125E-7,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-1.5-pro-preview-0514",
-    "provider": "vertex_ai-language-models",
-    "input": 7.8125E-8,
-    "output": 3.125E-7,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
     "model": "gemini-2.0-flash",
     "provider": "vertex_ai-language-models",
     "input": 1E-7,
@@ -3961,14 +3873,6 @@
   },
   {
     "model": "gemini-2.0-flash-001",
-    "provider": "vertex_ai-language-models",
-    "input": 1.5E-7,
-    "output": 6E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-2.0-flash-exp",
     "provider": "vertex_ai-language-models",
     "input": 1.5E-7,
     "output": 6E-7,
@@ -3992,58 +3896,10 @@
     "max_output_tokens": 8192
   },
   {
-    "model": "gemini-2.0-flash-live-preview-04-09",
-    "provider": "vertex_ai-language-models",
-    "input": 5E-7,
-    "output": 0.000002,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini-2.0-flash-preview-image-generation",
-    "provider": "vertex_ai-language-models",
-    "input": 1E-7,
-    "output": 4E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-2.0-flash-thinking-exp",
-    "provider": "vertex_ai-language-models",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini-2.0-flash-thinking-exp-01-21",
-    "provider": "vertex_ai-language-models",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65536
-  },
-  {
-    "model": "gemini-2.0-pro-exp-02-05",
-    "provider": "vertex_ai-language-models",
-    "input": 0.00000125,
-    "output": 0.00001,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
     "model": "gemini-2.5-flash",
     "provider": "vertex_ai-language-models",
     "input": 3E-7,
     "output": 0.0000025,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini-2.5-flash-image-preview",
-    "provider": "vertex_ai-language-models",
-    "input": 3E-7,
-    "output": 0.00003,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
   },
@@ -4100,22 +3956,6 @@
     "provider": "vertex_ai-language-models",
     "input": 1E-7,
     "output": 4E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini-2.5-flash-preview-04-17",
-    "provider": "vertex_ai-language-models",
-    "input": 1.5E-7,
-    "output": 6E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini-2.5-flash-preview-05-20",
-    "provider": "vertex_ai-language-models",
-    "input": 3E-7,
-    "output": 0.0000025,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
   },
@@ -4184,38 +4024,6 @@
     "max_output_tokens": 65536
   },
   {
-    "model": "gemini-2.5-pro-exp-03-25",
-    "provider": "vertex_ai-language-models",
-    "input": 0.00000125,
-    "output": 0.00001,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini-2.5-pro-preview-03-25",
-    "provider": "vertex_ai-language-models",
-    "input": 0.00000125,
-    "output": 0.00001,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini-2.5-pro-preview-05-06",
-    "provider": "vertex_ai-language-models",
-    "input": 0.00000125,
-    "output": 0.00001,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini-2.5-pro-preview-06-05",
-    "provider": "vertex_ai-language-models",
-    "input": 0.00000125,
-    "output": 0.00001,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
     "model": "gemini-2.5-pro-preview-tts",
     "provider": "vertex_ai-language-models",
     "input": 0.00000125,
@@ -4256,126 +4064,6 @@
     "max_output_tokens": 8192
   },
   {
-    "model": "gemini-pro-experimental",
-    "provider": "vertex_ai-language-models",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-flash",
-    "provider": "gemini",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-flash-001",
-    "provider": "gemini",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-flash-002",
-    "provider": "gemini",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-flash-8b",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-flash-8b-exp-0827",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-flash-8b-exp-0924",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-flash-exp-0827",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-flash-latest",
-    "provider": "gemini",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-pro",
-    "provider": "gemini",
-    "input": 0.0000035,
-    "output": 0.0000105,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-pro-001",
-    "provider": "gemini",
-    "input": 0.0000035,
-    "output": 0.0000105,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-pro-002",
-    "provider": "gemini",
-    "input": 0.0000035,
-    "output": 0.0000105,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-pro-exp-0801",
-    "provider": "gemini",
-    "input": 0.0000035,
-    "output": 0.0000105,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-pro-exp-0827",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-1.5-pro-latest",
-    "provider": "gemini",
-    "input": 0.0000035,
-    "output": 0.00000105,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
     "model": "gemini/gemini-2.0-flash",
     "provider": "gemini",
     "input": 1E-7,
@@ -4392,14 +4080,6 @@
     "max_output_tokens": 8192
   },
   {
-    "model": "gemini/gemini-2.0-flash-exp",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
     "model": "gemini/gemini-2.0-flash-lite",
     "provider": "gemini",
     "input": 7.5E-8,
@@ -4408,66 +4088,10 @@
     "max_output_tokens": 8192
   },
   {
-    "model": "gemini/gemini-2.0-flash-lite-preview-02-05",
-    "provider": "gemini",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-2.0-flash-live-001",
-    "provider": "gemini",
-    "input": 3.5E-7,
-    "output": 0.0000015,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini/gemini-2.0-flash-preview-image-generation",
-    "provider": "gemini",
-    "input": 1E-7,
-    "output": 4E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "gemini/gemini-2.0-flash-thinking-exp",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65536
-  },
-  {
-    "model": "gemini/gemini-2.0-flash-thinking-exp-01-21",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65536
-  },
-  {
-    "model": "gemini/gemini-2.0-pro-exp-02-05",
-    "provider": "gemini",
-    "input": 0,
-    "output": 0,
-    "max_input_tokens": 2097152,
-    "max_output_tokens": 8192
-  },
-  {
     "model": "gemini/gemini-2.5-flash",
     "provider": "gemini",
     "input": 3E-7,
     "output": 0.0000025,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini/gemini-2.5-flash-image-preview",
-    "provider": "gemini",
-    "input": 3E-7,
-    "output": 0.00003,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
   },
@@ -4516,22 +4140,6 @@
     "provider": "gemini",
     "input": 1E-7,
     "output": 4E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini/gemini-2.5-flash-preview-04-17",
-    "provider": "gemini",
-    "input": 1.5E-7,
-    "output": 6E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini/gemini-2.5-flash-preview-05-20",
-    "provider": "gemini",
-    "input": 3E-7,
-    "output": 0.0000025,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
   },
@@ -4596,38 +4204,6 @@
     "provider": "vertex_ai-language-models",
     "input": 5E-7,
     "output": 0.000003,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini/gemini-2.5-pro-exp-03-25",
-    "provider": "gemini",
-    "input": 0.0,
-    "output": 0.0,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini/gemini-2.5-pro-preview-03-25",
-    "provider": "gemini",
-    "input": 0.00000125,
-    "output": 0.00001,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini/gemini-2.5-pro-preview-05-06",
-    "provider": "gemini",
-    "input": 0.00000125,
-    "output": 0.00001,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
-  },
-  {
-    "model": "gemini/gemini-2.5-pro-preview-06-05",
-    "provider": "gemini",
-    "input": 0.00000125,
-    "output": 0.00001,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
   },
@@ -4896,14 +4472,6 @@
     "max_output_tokens": 4096
   },
   {
-    "model": "gpt-4-1106-vision-preview",
-    "provider": "openai",
-    "input": 0.00001,
-    "output": 0.00003,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
     "model": "gpt-4-turbo",
     "provider": "openai",
     "input": 0.00001,
@@ -4921,14 +4489,6 @@
   },
   {
     "model": "gpt-4-turbo-preview",
-    "provider": "openai",
-    "input": 0.00001,
-    "output": 0.00003,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "gpt-4-vision-preview",
     "provider": "openai",
     "input": 0.00001,
     "output": 0.00003,
@@ -4984,22 +4544,6 @@
     "max_output_tokens": 32768
   },
   {
-    "model": "gpt-4.5-preview",
-    "provider": "openai",
-    "input": 0.000075,
-    "output": 0.00015,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 16384
-  },
-  {
-    "model": "gpt-4.5-preview-2025-02-27",
-    "provider": "openai",
-    "input": 0.000075,
-    "output": 0.00015,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 16384
-  },
-  {
     "model": "gpt-4o",
     "provider": "openai",
     "input": 0.0000025,
@@ -5033,14 +4577,6 @@
   },
   {
     "model": "gpt-4o-audio-preview",
-    "provider": "openai",
-    "input": 0.0000025,
-    "output": 0.00001,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 16384
-  },
-  {
-    "model": "gpt-4o-audio-preview-2024-10-01",
     "provider": "openai",
     "input": 0.0000025,
     "output": 0.00001,
@@ -5177,14 +4713,6 @@
   },
   {
     "model": "gpt-4o-realtime-preview",
-    "provider": "openai",
-    "input": 0.000005,
-    "output": 0.00002,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "gpt-4o-realtime-preview-2024-10-01",
     "provider": "openai",
     "input": 0.000005,
     "output": 0.00002,
@@ -6672,38 +6200,6 @@
     "max_output_tokens": 100000
   },
   {
-    "model": "o1-mini",
-    "provider": "openai",
-    "input": 0.0000011,
-    "output": 0.0000044,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 65536
-  },
-  {
-    "model": "o1-mini-2024-09-12",
-    "provider": "openai",
-    "input": 0.000003,
-    "output": 0.000012,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 65536
-  },
-  {
-    "model": "o1-preview",
-    "provider": "openai",
-    "input": 0.000015,
-    "output": 0.00006,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 32768
-  },
-  {
-    "model": "o1-preview-2024-09-12",
-    "provider": "openai",
-    "input": 0.000015,
-    "output": 0.00006,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 32768
-  },
-  {
     "model": "o1-pro",
     "provider": "openai",
     "input": 0.00015,
@@ -7392,6 +6888,54 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "openrouter/qwen/qwen3.5-35b-a3b",
+    "provider": "openrouter",
+    "input": 2.5E-7,
+    "output": 0.000002,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.5-27b",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.5-122b-a10b",
+    "provider": "openrouter",
+    "input": 4E-7,
+    "output": 0.000002,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.5-flash-02-23",
+    "provider": "openrouter",
+    "input": 1E-7,
+    "output": 4E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.5-plus-02-15",
+    "provider": "openrouter",
+    "input": 4E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.5-397b-a17b",
+    "provider": "openrouter",
+    "input": 6E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "openrouter/switchpoint/router",
     "provider": "openrouter",
     "input": 8.5E-7,
@@ -7590,46 +7134,6 @@
     "output": 2E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
-  },
-  {
-    "model": "perplexity/llama-3.1-sonar-huge-128k-online",
-    "provider": "perplexity",
-    "input": 0.000005,
-    "output": 0.000005,
-    "max_input_tokens": 127072,
-    "max_output_tokens": 127072
-  },
-  {
-    "model": "perplexity/llama-3.1-sonar-large-128k-chat",
-    "provider": "perplexity",
-    "input": 0.000001,
-    "output": 0.000001,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
-  },
-  {
-    "model": "perplexity/llama-3.1-sonar-large-128k-online",
-    "provider": "perplexity",
-    "input": 0.000001,
-    "output": 0.000001,
-    "max_input_tokens": 127072,
-    "max_output_tokens": 127072
-  },
-  {
-    "model": "perplexity/llama-3.1-sonar-small-128k-chat",
-    "provider": "perplexity",
-    "input": 2E-7,
-    "output": 2E-7,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
-  },
-  {
-    "model": "perplexity/llama-3.1-sonar-small-128k-online",
-    "provider": "perplexity",
-    "input": 2E-7,
-    "output": 2E-7,
-    "max_input_tokens": 127072,
-    "max_output_tokens": 127072
   },
   {
     "model": "perplexity/sonar",
@@ -8801,22 +8305,6 @@
   },
   {
     "model": "vertex_ai/claude-3-5-sonnet",
-    "provider": "vertex_ai-anthropic_models",
-    "input": 0.000003,
-    "output": 0.000015,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "vertex_ai/claude-3-5-sonnet-v2",
-    "provider": "vertex_ai-anthropic_models",
-    "input": 0.000003,
-    "output": 0.000015,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 8192
-  },
-  {
-    "model": "vertex_ai/claude-3-5-sonnet-v2@20241022",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000003,
     "output": 0.000015,
