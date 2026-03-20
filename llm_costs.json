@@ -1184,6 +1184,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/gpt-5.4-mini",
+    "provider": "azure",
+    "input": 7.5E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.4-nano",
+    "provider": "azure",
+    "input": 2E-7,
+    "output": 0.00000125,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure/o1",
     "provider": "azure",
     "input": 0.000015,
@@ -9214,6 +9230,30 @@
     "output": 5E-7,
     "max_input_tokens": 2000000.0,
     "max_output_tokens": 2000000.0
+  },
+  {
+    "model": "xai/grok-4.20-multi-agent-beta-0309",
+    "provider": "xai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 2000000,
+    "max_output_tokens": 2000000
+  },
+  {
+    "model": "xai/grok-4.20-beta-0309-reasoning",
+    "provider": "xai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 2000000,
+    "max_output_tokens": 2000000
+  },
+  {
+    "model": "xai/grok-4.20-beta-0309-non-reasoning",
+    "provider": "xai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 2000000,
+    "max_output_tokens": 2000000
   },
   {
     "model": "xai/grok-beta",
