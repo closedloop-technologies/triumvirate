@@ -292,7 +292,7 @@
     "provider": "bedrock_converse",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
@@ -300,7 +300,7 @@
     "provider": "bedrock_converse",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
@@ -308,7 +308,7 @@
     "provider": "bedrock_converse",
     "input": 0.0000033,
     "output": 0.0000165,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
@@ -316,7 +316,7 @@
     "provider": "bedrock_converse",
     "input": 0.0000033,
     "output": 0.0000165,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
@@ -324,7 +324,7 @@
     "provider": "bedrock_converse",
     "input": 0.0000033,
     "output": 0.0000165,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
@@ -500,7 +500,7 @@
     "provider": "azure_ai",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
@@ -2532,7 +2532,7 @@
     "provider": "anthropic",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
@@ -4256,6 +4256,22 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "gemini/lyria-3-clip-preview",
+    "provider": "gemini",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "gemini/lyria-3-pro-preview",
+    "provider": "gemini",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "gigachat/GigaChat-2-Lite",
     "provider": "gigachat",
     "input": 0.0,
@@ -4877,6 +4893,22 @@
     "input": 0.00003,
     "output": 0.00018,
     "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-5.4-mini",
+    "provider": "openai",
+    "input": 7.5E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-5.4-nano",
+    "provider": "openai",
+    "input": 2E-7,
+    "output": 0.00000125,
+    "max_input_tokens": 272000,
     "max_output_tokens": 128000
   },
   {
@@ -8460,7 +8492,7 @@
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
@@ -10472,6 +10504,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "gemini-3.1-flash-live-preview",
+    "provider": "gemini",
+    "input": 7.5E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "gemini/gemini-2.5-flash-native-audio-latest",
     "provider": "gemini",
     "input": 3E-7,
@@ -10494,6 +10534,14 @@
     "output": 0.0000025,
     "max_input_tokens": 1048576,
     "max_output_tokens": 8192
+  },
+  {
+    "model": "gemini/gemini-3.1-flash-live-preview",
+    "provider": "gemini",
+    "input": 7.5E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini-flash-latest",
@@ -10540,7 +10588,7 @@
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
