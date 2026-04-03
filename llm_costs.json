@@ -1872,6 +1872,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "bedrock/ap-northeast-1/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/ap-northeast-1/moonshotai.kimi-k2-thinking",
     "provider": "bedrock",
     "input": 7.3E-7,
@@ -1928,6 +1936,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "bedrock/ap-south-1/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/ap-south-1/moonshotai.kimi-k2-thinking",
     "provider": "bedrock",
     "input": 7.1E-7,
@@ -1952,6 +1968,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "bedrock/ap-southeast-2/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.09E-7,
+    "output": 0.000001236,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/ap-southeast-3/deepseek.v3.2",
     "provider": "bedrock",
     "input": 7.4E-7,
@@ -1965,6 +1989,14 @@
     "input": 3.6E-7,
     "output": 0.00000144,
     "max_input_tokens": 196000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/ap-southeast-3/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 8192
   },
   {
@@ -1997,6 +2029,14 @@
     "input": 3.6E-7,
     "output": 0.00000144,
     "max_input_tokens": 196000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/eu-north-1/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 8192
   },
   {
@@ -2040,6 +2080,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "bedrock/eu-central-1/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/eu-central-1/qwen.qwen3-coder-next",
     "provider": "bedrock",
     "input": 6E-7,
@@ -2053,6 +2101,14 @@
     "input": 3.6E-7,
     "output": 0.00000144,
     "max_input_tokens": 196000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/eu-west-1/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 8192
   },
   {
@@ -2072,6 +2128,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "bedrock/eu-west-2/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 4.7E-7,
+    "output": 0.00000186,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/eu-west-2/qwen.qwen3-coder-next",
     "provider": "bedrock",
     "input": 7.8E-7,
@@ -2085,6 +2149,14 @@
     "input": 3.6E-7,
     "output": 0.00000144,
     "max_input_tokens": 196000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/eu-south-1/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 8192
   },
   {
@@ -2117,6 +2189,14 @@
     "input": 3.6E-7,
     "output": 0.00000144,
     "max_input_tokens": 196000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/sa-east-1/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 8192
   },
   {
@@ -2184,6 +2264,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "bedrock/us-east-1/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/us-east-1/moonshotai.kimi-k2-thinking",
     "provider": "bedrock",
     "input": 6E-7,
@@ -2221,6 +2309,14 @@
     "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 196000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/us-east-2/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 8192
   },
   {
@@ -2274,8 +2370,8 @@
   {
     "model": "bedrock/us-gov-east-1/claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
-    "input": 0.0000033,
-    "output": 0.0000165,
+    "input": 0.0000036,
+    "output": 0.000018,
     "max_input_tokens": 200000,
     "max_output_tokens": 4096
   },
@@ -2314,8 +2410,8 @@
   {
     "model": "bedrock/us-gov-west-1/claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
-    "input": 0.0000033,
-    "output": 0.0000165,
+    "input": 0.0000036,
+    "output": 0.000018,
     "max_input_tokens": 200000,
     "max_output_tokens": 4096
   },
@@ -2357,6 +2453,14 @@
     "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 196000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/us-west-2/minimax.minimax-m2.5",
+    "provider": "bedrock",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 8192
   },
   {
@@ -5576,6 +5680,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "minimax.minimax-m2.5",
+    "provider": "bedrock_converse",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "minimax/MiniMax-M2.1",
     "provider": "minimax",
     "input": 3E-7,
@@ -6230,6 +6342,14 @@
     "output": 2.4E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 8192
+  },
+  {
+    "model": "nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.5E-7,
+    "output": 6.5E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32768
   },
   {
     "model": "o1",
@@ -9336,6 +9456,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.000001,
+    "output": 0.0000032,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "zai/glm-5",
     "provider": "zai",
     "input": 0.000001,
@@ -10622,5 +10750,21 @@
     "output": 3E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 65536
+  },
+  {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-haiku-4-5-20251001-v1:0",
+    "provider": "bedrock",
+    "input": 0.0000012,
+    "output": 0.000006,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-haiku-4-5-20251001-v1:0",
+    "provider": "bedrock",
+    "input": 0.0000012,
+    "output": 0.000006,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
   }
 ]
