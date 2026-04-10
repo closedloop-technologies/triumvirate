@@ -2368,12 +2368,20 @@
     "max_output_tokens": 4096
   },
   {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "provider": "bedrock",
+    "input": 0.0000033,
+    "output": 0.0000165,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/us-gov-east-1/claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
-    "input": 0.0000036,
-    "output": 0.000018,
+    "input": 0.0000033,
+    "output": 0.0000165,
     "max_input_tokens": 200000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 8192
   },
   {
     "model": "bedrock/us-gov-west-1/amazon.nova-pro-v1:0",
@@ -2408,12 +2416,20 @@
     "max_output_tokens": 4096
   },
   {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "provider": "bedrock",
+    "input": 0.0000033,
+    "output": 0.0000165,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/us-gov-west-1/claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
-    "input": 0.0000036,
-    "output": 0.000018,
+    "input": 0.0000033,
+    "output": 0.0000165,
     "max_input_tokens": 200000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 8192
   },
   {
     "model": "bedrock/us-west-2/anthropic.claude-instant-v1",
@@ -6584,6 +6600,142 @@
     "max_output_tokens": 4000
   },
   {
+    "model": "oci/cohere.command-a-reasoning-08-2025",
+    "provider": "oci",
+    "input": 0.00000156,
+    "output": 0.00000156,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/cohere.command-a-vision-07-2025",
+    "provider": "oci",
+    "input": 0.00000156,
+    "output": 0.00000156,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/cohere.command-a-translate-08-2025",
+    "provider": "oci",
+    "input": 9E-8,
+    "output": 9E-8,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/cohere.command-r-08-2024",
+    "provider": "oci",
+    "input": 1.5E-7,
+    "output": 1.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/cohere.command-r-plus-08-2024",
+    "provider": "oci",
+    "input": 0.00000156,
+    "output": 0.00000156,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/meta.llama-3.2-11b-vision-instruct",
+    "provider": "oci",
+    "input": 0.000002,
+    "output": 0.000002,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/meta.llama-3.1-70b-instruct",
+    "provider": "oci",
+    "input": 7.2E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/meta.llama-3.3-70b-instruct-fp8-dynamic",
+    "provider": "oci",
+    "input": 7.2E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/xai.grok-4-fast",
+    "provider": "oci",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "oci/xai.grok-4.1-fast",
+    "provider": "oci",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "oci/xai.grok-4.20",
+    "provider": "oci",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "oci/xai.grok-4.20-multi-agent",
+    "provider": "oci",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "oci/xai.grok-code-fast-1",
+    "provider": "oci",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "oci/google.gemini-2.5-pro",
+    "provider": "oci",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "oci/google.gemini-2.5-flash",
+    "provider": "oci",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "oci/google.gemini-2.5-flash-lite",
+    "provider": "oci",
+    "input": 7.5E-8,
+    "output": 3E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "oci/cohere.embed-v4.0",
+    "provider": "oci",
+    "input": 1.2E-7,
+    "output": 0.0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": null
+  },
+  {
     "model": "ollama/deepseek-v3.1:671b-cloud",
     "provider": "ollama",
     "input": 0.0,
@@ -7672,6 +7824,14 @@
     "max_output_tokens": 64000
   },
   {
+    "model": "us-gov.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.0000033,
+    "output": 0.0000165,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
+  },
+  {
     "model": "au.anthropic.claude-haiku-4-5-20251001-v1:0",
     "provider": "bedrock_converse",
     "input": 0.0000011,
@@ -8457,6 +8617,14 @@
   },
   {
     "model": "vertex_ai/claude-3-5-haiku@20241022",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "vertex_ai/claude-haiku-4-5",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000001,
     "output": 0.000005,
