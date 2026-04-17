@@ -288,6 +288,46 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "anthropic.claude-opus-4-7",
+    "provider": "bedrock_converse",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.anthropic.claude-opus-4-7",
+    "provider": "bedrock_converse",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.anthropic.claude-opus-4-7",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "eu.anthropic.claude-opus-4-7",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "au.anthropic.claude-opus-4-7",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "anthropic.claude-sonnet-4-6",
     "provider": "bedrock_converse",
     "input": 0.000003,
@@ -473,6 +513,14 @@
   },
   {
     "model": "azure_ai/claude-opus-4-6",
+    "provider": "azure_ai",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-opus-4-7",
     "provider": "azure_ai",
     "input": 0.000005,
     "output": 0.000025,
@@ -2713,6 +2761,22 @@
   },
   {
     "model": "claude-opus-4-6-20260205",
+    "provider": "anthropic",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "claude-opus-4-7",
+    "provider": "anthropic",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "claude-opus-4-7-20260416",
     "provider": "anthropic",
     "input": 0.000005,
     "output": 0.000025,
@@ -6952,6 +7016,14 @@
     "max_output_tokens": 65535
   },
   {
+    "model": "openrouter/google/gemini-3.1-flash-lite-preview",
+    "provider": "openrouter",
+    "input": 2.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "openrouter/google/gemini-3.1-pro-preview",
     "provider": "openrouter",
     "input": 0.000002,
@@ -7636,8 +7708,8 @@
     "provider": "together_ai",
     "input": 1.5E-7,
     "output": 6E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": null
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/openai/gpt-oss-20b",
@@ -8768,6 +8840,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "vertex_ai/claude-opus-4-7",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-opus-4-7@default",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "vertex_ai/claude-sonnet-4-5",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000003,
@@ -9230,6 +9318,22 @@
     "output": 0.0000025,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "wandb/moonshotai/Kimi-K2.5",
+    "provider": "wandb",
+    "input": 6E-7,
+    "output": 0.000003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "wandb/MiniMaxAI/MiniMax-M2.5",
+    "provider": "wandb",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 197000,
+    "max_output_tokens": 197000
   },
   {
     "model": "wandb/meta-llama/Llama-3.1-8B-Instruct",
