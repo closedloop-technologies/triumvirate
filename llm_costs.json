@@ -7552,6 +7552,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "openrouter/qwen/qwen3.6-plus",
+    "provider": "openrouter",
+    "input": 3.25E-7,
+    "output": 0.00000195,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "openrouter/qwen/qwen3.5-35b-a3b",
     "provider": "openrouter",
     "input": 2.5E-7,
