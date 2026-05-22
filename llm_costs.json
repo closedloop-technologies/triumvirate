@@ -376,6 +376,14 @@
     "max_output_tokens": 64000
   },
   {
+    "model": "jp.anthropic.claude-sonnet-4-6",
+    "provider": "bedrock_converse",
+    "input": 0.0000033,
+    "output": 0.0000165,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
     "model": "anthropic.claude-sonnet-4-20250514-v1:0",
     "provider": "bedrock_converse",
     "input": 0.000003,
@@ -566,6 +574,70 @@
     "output": 6E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
+  },
+  {
+    "model": "azure_ai/gpt-5.4",
+    "provider": "azure_ai",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/gpt-5.4-2026-03-05",
+    "provider": "azure_ai",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/gpt-5.4-pro",
+    "provider": "azure_ai",
+    "input": 0.00003,
+    "output": 0.00018,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/gpt-5.4-pro-2026-03-05",
+    "provider": "azure_ai",
+    "input": 0.00003,
+    "output": 0.00018,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/gpt-5.4-mini",
+    "provider": "azure_ai",
+    "input": 7.5E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/gpt-5.4-mini-2026-03-17",
+    "provider": "azure_ai",
+    "input": 7.5E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/gpt-5.4-nano",
+    "provider": "azure_ai",
+    "input": 2E-7,
+    "output": 0.00000125,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/gpt-5.4-nano-2026-03-17",
+    "provider": "azure_ai",
+    "input": 2E-7,
+    "output": 0.00000125,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000
   },
   {
     "model": "azure/eu/gpt-4o-2024-08-06",
@@ -4264,6 +4336,14 @@
     "max_output_tokens": 65535
   },
   {
+    "model": "vertex_ai/gemini-3.5-flash",
+    "provider": "vertex_ai",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
     "model": "vertex_ai/gemini-3.1-pro-preview",
     "provider": "vertex_ai",
     "input": 0.000002,
@@ -4440,6 +4520,14 @@
     "max_output_tokens": 65535
   },
   {
+    "model": "gemini/gemini-3.5-flash",
+    "provider": "gemini",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
     "model": "gemini/gemini-3.1-pro-preview",
     "provider": "gemini",
     "input": 0.000002,
@@ -4460,6 +4548,14 @@
     "provider": "vertex_ai-language-models",
     "input": 5E-7,
     "output": 0.000003,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
+    "model": "gemini-3.5-flash",
+    "provider": "vertex_ai-language-models",
+    "input": 0.0000015,
+    "output": 0.000009,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
   },
