@@ -336,6 +336,46 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "anthropic.claude-opus-4-8",
+    "provider": "bedrock_converse",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.anthropic.claude-opus-4-8",
+    "provider": "bedrock_converse",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.anthropic.claude-opus-4-8",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "eu.anthropic.claude-opus-4-8",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "au.anthropic.claude-opus-4-8",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "anthropic.claude-sonnet-4-6",
     "provider": "bedrock_converse",
     "input": 0.000003,
@@ -537,6 +577,14 @@
   },
   {
     "model": "azure_ai/claude-opus-4-7",
+    "provider": "azure_ai",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-opus-4-8",
     "provider": "azure_ai",
     "input": 0.000005,
     "output": 0.000025,
@@ -2912,6 +2960,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "claude-opus-4-8",
+    "provider": "anthropic",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "claude-sonnet-4-20250514",
     "provider": "anthropic",
     "input": 0.000003,
@@ -4032,6 +4088,14 @@
     "max_output_tokens": 202800
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/models/glm-5p1",
+    "provider": "fireworks_ai",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 202800,
+    "max_output_tokens": 202800
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/models/gpt-oss-120b",
     "provider": "fireworks_ai",
     "input": 1.5E-7,
@@ -4116,6 +4180,14 @@
     "provider": "fireworks_ai",
     "input": 6E-7,
     "output": 0.0000022,
+    "max_input_tokens": 202800,
+    "max_output_tokens": 202800
+  },
+  {
+    "model": "fireworks_ai/glm-5p1",
+    "provider": "fireworks_ai",
+    "input": 0.0000014,
+    "output": 0.0000044,
     "max_input_tokens": 202800,
     "max_output_tokens": 202800
   },
@@ -4233,6 +4305,14 @@
   },
   {
     "model": "gemini-3.1-flash-lite-preview",
+    "provider": "vertex_ai-language-models",
+    "input": 2.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "gemini-3.1-flash-lite",
     "provider": "vertex_ai-language-models",
     "input": 2.5E-7,
     "output": 0.0000015,
@@ -4505,6 +4585,14 @@
   },
   {
     "model": "gemini/gemini-3.1-flash-lite-preview",
+    "provider": "gemini",
+    "input": 2.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "gemini/gemini-3.1-flash-lite",
     "provider": "gemini",
     "input": 2.5E-7,
     "output": 0.0000015,
@@ -6384,6 +6472,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "mistral/ministral-8b-2512",
+    "provider": "mistral",
+    "input": 1.5E-7,
+    "output": 1.5E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
     "model": "mistral/open-codestral-mamba",
     "provider": "mistral",
     "input": 2.5E-7,
@@ -6888,6 +6984,22 @@
     "max_output_tokens": 100000
   },
   {
+    "model": "oci/meta.llama-3.1-8b-instruct",
+    "provider": "oci",
+    "input": 7.2E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
+  },
+  {
+    "model": "oci/meta.llama-3.1-70b-instruct",
+    "provider": "oci",
+    "input": 7.2E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
+  },
+  {
     "model": "oci/meta.llama-3.1-405b-instruct",
     "provider": "oci",
     "input": 0.00001068,
@@ -6916,16 +7028,16 @@
     "provider": "oci",
     "input": 7.2E-7,
     "output": 7.2E-7,
-    "max_input_tokens": 512000,
-    "max_output_tokens": 4000
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 8192
   },
   {
     "model": "oci/meta.llama-4-scout-17b-16e-instruct",
     "provider": "oci",
     "input": 7.2E-7,
     "output": 7.2E-7,
-    "max_input_tokens": 192000,
-    "max_output_tokens": 4000
+    "max_input_tokens": 10485760,
+    "max_output_tokens": 8192
   },
   {
     "model": "oci/xai.grok-3",
@@ -6992,6 +7104,46 @@
     "max_output_tokens": 4000
   },
   {
+    "model": "oci/google.gemini-2.5-flash",
+    "provider": "oci",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "oci/google.gemini-2.5-pro",
+    "provider": "oci",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "oci/google.gemini-2.5-flash-lite",
+    "provider": "oci",
+    "input": 7.5E-8,
+    "output": 3E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "oci/cohere.command-a-vision",
+    "provider": "oci",
+    "input": 0.00000156,
+    "output": 0.00000156,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "oci/cohere.command-a-reasoning",
+    "provider": "oci",
+    "input": 0.00000156,
+    "output": 0.00000156,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "oci/cohere.command-a-reasoning-08-2025",
     "provider": "oci",
     "input": 0.00000156,
@@ -7036,14 +7188,6 @@
     "provider": "oci",
     "input": 0.000002,
     "output": 0.000002,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4000
-  },
-  {
-    "model": "oci/meta.llama-3.1-70b-instruct",
-    "provider": "oci",
-    "input": 7.2E-7,
-    "output": 7.2E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 4000
   },
@@ -7096,28 +7240,28 @@
     "max_output_tokens": 131072
   },
   {
-    "model": "oci/google.gemini-2.5-pro",
+    "model": "oci/openai.gpt-5",
     "provider": "oci",
     "input": 0.00000125,
     "output": 0.00001,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65536
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
   },
   {
-    "model": "oci/google.gemini-2.5-flash",
+    "model": "oci/openai.gpt-5-mini",
     "provider": "oci",
-    "input": 1.5E-7,
-    "output": 6E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65536
+    "input": 2.5E-7,
+    "output": 0.000002,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
   },
   {
-    "model": "oci/google.gemini-2.5-flash-lite",
+    "model": "oci/openai.gpt-5-nano",
     "provider": "oci",
-    "input": 7.5E-8,
-    "output": 3E-7,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65536
+    "input": 5E-8,
+    "output": 4E-7,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
   },
   {
     "model": "oci/cohere.embed-v4.0",
@@ -7361,6 +7505,14 @@
   },
   {
     "model": "openrouter/google/gemini-3.1-flash-lite-preview",
+    "provider": "openrouter",
+    "input": 2.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/google/gemini-3.1-flash-lite",
     "provider": "openrouter",
     "input": 2.5E-7,
     "output": 0.0000015,
@@ -7738,10 +7890,26 @@
   {
     "model": "openrouter/xiaomi/mimo-v2-flash",
     "provider": "openrouter",
-    "input": 9E-8,
-    "output": 2.9E-7,
+    "input": 1E-7,
+    "output": 3E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/xiaomi/mimo-v2.5-pro",
+    "provider": "openrouter",
+    "input": 0.000001,
+    "output": 0.000003,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/xiaomi/mimo-v2.5",
+    "provider": "openrouter",
+    "input": 4E-7,
+    "output": 0.000002,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
   },
   {
     "model": "openrouter/z-ai/glm-4.7",
@@ -9248,6 +9416,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "vertex_ai/claude-opus-4-8",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-opus-4-8@default",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "vertex_ai/claude-sonnet-4-5",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000003,
@@ -9369,6 +9553,14 @@
   },
   {
     "model": "vertex_ai/gemini-3.1-flash-lite-preview",
+    "provider": "vertex_ai-language-models",
+    "input": 2.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "vertex_ai/gemini-3.1-flash-lite",
     "provider": "vertex_ai-language-models",
     "input": 2.5E-7,
     "output": 0.0000015,
