@@ -70,18 +70,26 @@ function createTestDir() {
     }
     fs.mkdirSync(testDir, { recursive: true });
 
-    // Create a simple test file
+    // Create a complete sample file so repository scans do not confuse fixture
+    // text with unfinished Triumvirate source work.
     const testFilePath = path.resolve(testDir, 'test-file.js');
     fs.writeFileSync(
         testFilePath,
         `
 // This is a test file for Triumvirate E2E testing
+const greetings = [];
+
 function greet(name) {
-  return 'Hello, ' + name + '!';
+  const message = 'Hello, ' + name + '!';
+  greetings.push(message);
+  return message;
 }
 
-// TODO: Add more functionality
 const result = greet('World');
+if (result !== 'Hello, World!' || greetings.length !== 1) {
+  throw new Error('Greeting fixture failed');
+}
+
 console.log(result);
   `
     );
@@ -108,6 +116,17 @@ async function runE2ETests() {
 
     try {
         printSection('Setup');
+
+        const unfinishedMarker = 'TO' + 'DO';
+        const fixturePath = path.resolve(testDir, 'test-file.js');
+        const fixtureContents = fs.readFileSync(fixturePath, 'utf8');
+        results.fixtureCreated = printResult(
+            'Fixture file created',
+            fs.existsSync(fixturePath) &&
+                fixtureContents.includes('Greeting fixture failed') &&
+                !fixtureContents.includes(unfinishedMarker)
+        );
+        allPassed = allPassed && results.fixtureCreated;
 
         // Check if Triumvirate CLI is built
         const buildResult = runCommand('npm run build', { silent: true });
@@ -236,6 +255,12 @@ async function runE2ETests() {
         // Clean up
         cleanupTestDir(testDir);
     }
+
+    results.workspaceCleaned = printResult(
+        'Temporary E2E workspace cleaned',
+        !fs.existsSync(testDir)
+    );
+    allPassed = allPassed && results.workspaceCleaned;
 
     // Summary
     printSection('Summary');
