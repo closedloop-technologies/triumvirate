@@ -20,6 +20,21 @@ This file outlines planned features and areas of improvement.
 - BAML integration for structured outputs
 - Automatic model cost updates via workflow
 
+## Roadmap Prework Status
+
+Status: Pending human, prework completed
+
+The planned features below have been converted into implementation-ready
+prework packets in [docs/roadmap-prework.md](docs/roadmap-prework.md). The
+features are not claimed as shipped until the listed validation and human-review
+boundaries are satisfied.
+
+Validation:
+
+```bash
+node scripts/validate-roadmap-prework.js
+```
+
 ## Planned Features
 
 ### CLI Enhancements
