@@ -33,6 +33,7 @@ Validation:
 
 ```bash
 node scripts/validate-roadmap-prework.js
+node scripts/validate-issue-export-prework.js
 ```
 
 ## Planned Features

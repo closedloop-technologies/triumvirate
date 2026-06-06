@@ -43,6 +43,7 @@ collaboration.
 
 ```bash
 node scripts/validate-roadmap-prework.js
+node scripts/validate-issue-export-prework.js
 npm test
 npm run type-check
 ```
@@ -57,3 +58,10 @@ workflow, issue-tracker, web UI, history, and collaboration features into
 bounded implementation packets with validation, side-effect gates, and human
 review boundaries before claiming any of the roadmap features are shipped.
 
+## Implemented Local Packets
+
+- Issue tracker export prework:
+  `docs/issue-tracker-export-prework.md`, `src/utils/issue-export.ts`, and
+  `test/issue-export.test.ts` create local GitHub/Jira-shaped JSON only.
+  Remote issue creation remains blocked until human approval and a future
+  side-effect packet exist.

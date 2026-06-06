@@ -41,6 +41,7 @@
         "check:coverage": "node scripts/check-coverage.js",
         "validate:roadmap-prework": "node scripts/validate-roadmap-prework.js",
         "validate:e2e-harness-prework": "node scripts/validate-e2e-harness-prework.js",
+        "validate:issue-export-prework": "node scripts/validate-issue-export-prework.js",
         "verify:deployment": "node scripts/verify-deployment.js",
         "release:prepare": "npm run verify && npm run test && npm run test:e2e && npm run check:spelling && npm run check:coverage && npm run verify:deployment"
     },
