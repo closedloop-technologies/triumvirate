@@ -336,6 +336,38 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "anthropic.claude-fable-5",
+    "provider": "bedrock_converse",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.anthropic.claude-fable-5",
+    "provider": "bedrock_converse",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.anthropic.claude-fable-5",
+    "provider": "bedrock_converse",
+    "input": 0.000011,
+    "output": 0.000055,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "eu.anthropic.claude-fable-5",
+    "provider": "bedrock_converse",
+    "input": 0.000011,
+    "output": 0.000055,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "anthropic.claude-opus-4-8",
     "provider": "bedrock_converse",
     "input": 0.000005,
@@ -369,6 +401,14 @@
   },
   {
     "model": "au.anthropic.claude-opus-4-8",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "jp.anthropic.claude-opus-4-7",
     "provider": "bedrock_converse",
     "input": 0.0000055,
     "output": 0.0000275,
@@ -581,6 +621,14 @@
     "input": 0.000005,
     "output": 0.000025,
     "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-fable-5",
+    "provider": "azure_ai",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
   {
@@ -2000,6 +2048,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "azure_ai/kimi-k2.6",
+    "provider": "azure_ai",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
     "model": "azure_ai/ministral-3b",
     "provider": "azure_ai",
     "input": 4E-8,
@@ -2594,16 +2650,16 @@
   {
     "model": "bedrock/us-gov-east-1/anthropic.claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
-    "input": 0.0000033,
-    "output": 0.0000165,
+    "input": 0.0000036,
+    "output": 0.000018,
     "max_input_tokens": 200000,
     "max_output_tokens": 8192
   },
   {
     "model": "bedrock/us-gov-east-1/claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
-    "input": 0.0000033,
-    "output": 0.0000165,
+    "input": 0.0000036,
+    "output": 0.000018,
     "max_input_tokens": 200000,
     "max_output_tokens": 8192
   },
@@ -2642,16 +2698,16 @@
   {
     "model": "bedrock/us-gov-west-1/anthropic.claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
-    "input": 0.0000033,
-    "output": 0.0000165,
+    "input": 0.0000036,
+    "output": 0.000018,
     "max_input_tokens": 200000,
     "max_output_tokens": 8192
   },
   {
     "model": "bedrock/us-gov-west-1/claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
-    "input": 0.0000033,
-    "output": 0.0000165,
+    "input": 0.0000036,
+    "output": 0.000018,
     "max_input_tokens": 200000,
     "max_output_tokens": 8192
   },
@@ -2956,6 +3012,14 @@
     "provider": "anthropic",
     "input": 0.000005,
     "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "claude-fable-5",
+    "provider": "anthropic",
+    "input": 0.00001,
+    "output": 0.00005,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
@@ -5920,6 +5984,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "inception/mercury-2",
+    "provider": "inception",
+    "input": 2.5E-7,
+    "output": 7.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 50000
+  },
+  {
     "model": "lambda_ai/deepseek-llama3.3-70b",
     "provider": "lambda_ai",
     "input": 2E-7,
@@ -6216,6 +6288,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "minimax/MiniMax-M3",
+    "provider": "minimax",
+    "input": 6E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 512000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "mistral.devstral-2-123b",
     "provider": "bedrock_converse",
     "input": 4E-7,
@@ -6473,6 +6553,14 @@
   },
   {
     "model": "mistral/ministral-8b-2512",
+    "provider": "mistral",
+    "input": 1.5E-7,
+    "output": 1.5E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "mistral/ministral-8b-latest",
     "provider": "mistral",
     "input": 1.5E-7,
     "output": 1.5E-7,
@@ -8216,6 +8304,70 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "snowflake/claude-3-5-sonnet",
+    "provider": "snowflake",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/deepseek-r1",
+    "provider": "snowflake",
+    "input": 0.00000135,
+    "output": 0.0000054,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/llama3.1-405b",
+    "provider": "snowflake",
+    "input": 0.0000012,
+    "output": 0.0000012,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/llama3.1-70b",
+    "provider": "snowflake",
+    "input": 7.2E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/llama3.1-8b",
+    "provider": "snowflake",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/llama3.3-70b",
+    "provider": "snowflake",
+    "input": 7.2E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/mistral-large2",
+    "provider": "snowflake",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/snowflake-llama-3.3-70b",
+    "provider": "snowflake",
+    "input": 7.2E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "together_ai/Qwen/Qwen3-235B-A22B-Instruct-2507-tput",
     "provider": "together_ai",
     "input": 2E-7,
@@ -8458,8 +8610,8 @@
   {
     "model": "us-gov.anthropic.claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock_converse",
-    "input": 0.0000033,
-    "output": 0.0000165,
+    "input": 0.0000036,
+    "output": 0.000018,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
   },
@@ -9416,6 +9568,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "vertex_ai/claude-fable-5",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-fable-5@default",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "vertex_ai/claude-opus-4-8",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000005,
@@ -9789,6 +9957,14 @@
     "input": 0.000001,
     "output": 0.000003,
     "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/google/gemma-4-26b-a4b-it-maas",
+    "provider": "vertex_ai-openai_models",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 256000,
     "max_output_tokens": 128000
   },
   {
@@ -11664,6 +11840,22 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "bedrock_mantle/openai.gpt-5.5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-5.4",
+    "provider": "bedrock_mantle",
+    "input": 0.00000275,
+    "output": 0.0000165,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "bedrock/us-east-1/zai.glm-5",
     "provider": "bedrock",
     "input": 0.000001,
@@ -11694,5 +11886,93 @@
     "output": 0.000006,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
+  },
+  {
+    "model": "snowflake/claude-sonnet-4-5",
+    "provider": "snowflake",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/claude-sonnet-4-6",
+    "provider": "snowflake",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/claude-4-sonnet",
+    "provider": "snowflake",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/claude-4-opus",
+    "provider": "snowflake",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/claude-haiku-4-5",
+    "provider": "snowflake",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/claude-3-7-sonnet",
+    "provider": "snowflake",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/openai-gpt-4.1",
+    "provider": "snowflake",
+    "input": 0.000002,
+    "output": 0.000008,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/openai-gpt-5",
+    "provider": "snowflake",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/openai-gpt-5-mini",
+    "provider": "snowflake",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/openai-gpt-5-nano",
+    "provider": "snowflake",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 5000000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/llama4-maverick",
+    "provider": "snowflake",
+    "input": 2.4E-7,
+    "output": 9.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
   }
 ]
