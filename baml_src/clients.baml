@@ -2,36 +2,36 @@
 // Learn more at https://docs.boundaryml.com/docs/snippets/clients/overview
 
 // =============================================================================
-// Primary Providers - Match existing triumvirate models
+// Primary Providers - Match current triumvirate model defaults
 // =============================================================================
 
-// Claude (Anthropic) - Primary provider
+// Claude (Anthropic) - latest Opus-tier model for complex reasoning and agentic coding
 client<llm> Claude {
   provider anthropic
   retry_policy Exponential
   options {
-    model "claude-3-7-sonnet-20250219"
+    model "claude-opus-4-8"
     api_key env.ANTHROPIC_API_KEY
     max_tokens 4096
   }
 }
 
-// OpenAI GPT-4.1
+// OpenAI flagship coding/reasoning model
 client<llm> GPT4 {
   provider openai
   retry_policy Exponential
   options {
-    model "gpt-4.1"
+    model "gpt-5.5"
     api_key env.OPENAI_API_KEY
   }
 }
 
-// Google Gemini
+// Google Gemini premium coding/reasoning model
 client<llm> Gemini {
   provider google-ai
   retry_policy Exponential
   options {
-    model "gemini-2.5-pro-preview-06-05"
+    model "gemini-3.1-pro-preview"
     api_key env.GEMINI_API_KEY
   }
 }

@@ -8,13 +8,13 @@ import * as path from 'path';
 export const API_TIMEOUT_MS = 30000; // 30 seconds timeout
 
 export const DEFAULT_MODELS = [
-    'openai/gpt-4.1',
-    'anthropic/claude-opus-4-6',
-    'gemini/gemini-3-pro-preview',
+    'openai/gpt-5.5',
+    'anthropic/claude-opus-4-8',
+    'gemini/gemini-3.1-pro-preview',
 ];
 
 // Lower-cost agent model for repo structuring and prompt generation
-export const DEFAULT_AGENT_MODEL = 'anthropic/claude-sonnet-4-5';
+export const DEFAULT_AGENT_MODEL = 'anthropic/claude-sonnet-4-6';
 
 // =============================================================================
 // Model Tier Selection System
@@ -41,44 +41,45 @@ export interface ProviderModels {
 
 /**
  * Model matrix defining which models to use for each provider/tier/context combination.
- * When a model doesn't support the required context size, it falls back to premium.
+ * Prefer stable models for the cheap/standard paths and frontier preview models for premium
+ * code review paths where model churn is an acceptable trade-off.
  */
 export const MODEL_MATRIX: Record<string, ProviderModels> = {
     openai: {
         '100k': {
-            cheap: { model: 'gpt-4.1-nano' },
-            standard: { model: 'gpt-4.1-mini' },
-            premium: { model: 'gpt-5.2' },
+            cheap: { model: 'gpt-5.4-nano' },
+            standard: { model: 'gpt-5.4-mini' },
+            premium: { model: 'gpt-5.5' },
         },
         '1m': {
-            cheap: { model: 'gpt-4.1-nano' },
-            standard: { model: 'gpt-4.1-mini' },
-            premium: { model: 'gpt-4.1' },
+            cheap: { model: 'gpt-5.4', fallbackFrom: 'cheap' },
+            standard: { model: 'gpt-5.4' },
+            premium: { model: 'gpt-5.5' },
         },
     },
     anthropic: {
         '100k': {
-            cheap: { model: 'claude-haiku-4-5' },
-            standard: { model: 'claude-sonnet-4-5' },
-            premium: { model: 'claude-opus-4-6' },
+            cheap: { model: 'claude-haiku-4-5-20251001' },
+            standard: { model: 'claude-sonnet-4-6' },
+            premium: { model: 'claude-opus-4-8' },
         },
         '1m': {
-            // Haiku and Sonnet don't support 1M, fallback to Opus
-            cheap: { model: 'claude-opus-4-6', fallbackFrom: 'cheap' },
-            standard: { model: 'claude-opus-4-6', fallbackFrom: 'standard' },
-            premium: { model: 'claude-opus-4-6' },
+            // Haiku is capped below 1M; fall back to Sonnet for the cheap 1M path.
+            cheap: { model: 'claude-sonnet-4-6', fallbackFrom: 'cheap' },
+            standard: { model: 'claude-sonnet-4-6' },
+            premium: { model: 'claude-opus-4-8' },
         },
     },
     gemini: {
         '100k': {
-            cheap: { model: 'gemini-2.0-flash' },
-            standard: { model: 'gemini-2.5-pro' },
-            premium: { model: 'gemini-3-pro-preview' },
+            cheap: { model: 'gemini-3.1-flash-lite' },
+            standard: { model: 'gemini-3.5-flash' },
+            premium: { model: 'gemini-3.1-pro-preview' },
         },
         '1m': {
-            cheap: { model: 'gemini-2.0-flash' },
-            standard: { model: 'gemini-2.5-pro' },
-            premium: { model: 'gemini-3-pro-preview' },
+            cheap: { model: 'gemini-3.1-flash-lite' },
+            standard: { model: 'gemini-3.5-flash' },
+            premium: { model: 'gemini-3.1-pro-preview' },
         },
     },
 };
@@ -144,6 +145,96 @@ export interface ModelCosts {
     max_output_tokens: number;
 }
 
+const CURRENT_MODEL_COSTS: Array<Omit<ModelCosts, 'blended_per_million_tokens'>> = [
+    {
+        provider: 'openai',
+        model: 'gpt-5.5',
+        input: 0.000005,
+        output: 0.00003,
+        max_input_tokens: 1000000,
+        max_output_tokens: 128000,
+    },
+    {
+        provider: 'openai',
+        model: 'gpt-5.4',
+        input: 0.0000025,
+        output: 0.000015,
+        max_input_tokens: 1000000,
+        max_output_tokens: 128000,
+    },
+    {
+        provider: 'openai',
+        model: 'gpt-5.4-mini',
+        input: 0.00000075,
+        output: 0.0000045,
+        max_input_tokens: 400000,
+        max_output_tokens: 128000,
+    },
+    {
+        provider: 'openai',
+        model: 'gpt-5.4-nano',
+        input: 0.00000025,
+        output: 0.0000015,
+        max_input_tokens: 400000,
+        max_output_tokens: 128000,
+    },
+    {
+        provider: 'anthropic',
+        model: 'claude-opus-4-8',
+        input: 0.000005,
+        output: 0.000025,
+        max_input_tokens: 1000000,
+        max_output_tokens: 128000,
+    },
+    {
+        provider: 'anthropic',
+        model: 'claude-sonnet-4-6',
+        input: 0.000003,
+        output: 0.000015,
+        max_input_tokens: 1000000,
+        max_output_tokens: 64000,
+    },
+    {
+        provider: 'anthropic',
+        model: 'claude-haiku-4-5-20251001',
+        input: 0.000001,
+        output: 0.000005,
+        max_input_tokens: 200000,
+        max_output_tokens: 64000,
+    },
+    {
+        provider: 'gemini',
+        model: 'gemini-3.1-pro-preview',
+        input: 0.000002,
+        output: 0.000012,
+        max_input_tokens: 1048576,
+        max_output_tokens: 65536,
+    },
+    {
+        provider: 'gemini',
+        model: 'gemini-3.5-flash',
+        input: 0.0000015,
+        output: 0.000009,
+        max_input_tokens: 1048576,
+        max_output_tokens: 65536,
+    },
+    {
+        provider: 'gemini',
+        model: 'gemini-3.1-flash-lite',
+        input: 0.00000025,
+        output: 0.0000015,
+        max_input_tokens: 1048576,
+        max_output_tokens: 65536,
+    },
+];
+
+function toModelCosts(cost: Omit<ModelCosts, 'blended_per_million_tokens'>): ModelCosts {
+    return {
+        ...cost,
+        blended_per_million_tokens: (cost.input * 0.9 + cost.output * 0.1) * 1000000,
+    };
+}
+
 // Get costs from the JSON file, using a relative path that works regardless of where the code is executed from
 const getLLMCosts = (): [Record<string, ModelCosts>, Set<string>] => {
     try {
@@ -172,19 +263,12 @@ const getLLMCosts = (): [Record<string, ModelCosts>, Set<string>] => {
             );
             return [{}, new Set<string>()];
         }
-        const costs = JSON.parse(costsData);
+        const costs = JSON.parse(costsData) as Array<Omit<ModelCosts, 'blended_per_million_tokens'>>;
         const models: Record<string, ModelCosts> = {};
         const providers = new Set<string>();
-        costs.forEach((cost: ModelCosts) => {
-            models[cost.provider + '/' + cost.model] = {
-                provider: cost.provider,
-                model: cost.model,
-                input: cost.input,
-                output: cost.output,
-                blended_per_million_tokens: (cost.input * 0.9 + cost.output * 0.1) * 1000000,
-                max_input_tokens: cost.max_input_tokens,
-                max_output_tokens: cost.max_output_tokens,
-            };
+        [...costs, ...CURRENT_MODEL_COSTS].forEach(cost => {
+            const normalizedCost = toModelCosts(cost);
+            models[cost.provider + '/' + cost.model] = normalizedCost;
             providers.add(cost.provider);
         });
         return [models, providers];
@@ -211,9 +295,9 @@ export const PROMPT_HEADROOM_TOKENS = 10000;
  */
 export function getMinContextWindow(modelIds: string[]): number {
     const DEFAULT_CONTEXT_WINDOW = 128000; // Fallback if model not found
-    
+
     let minContext = Infinity;
-    
+
     for (const modelId of modelIds) {
         const modelCosts = COST_RATES[modelId];
         if (modelCosts?.max_input_tokens) {
@@ -224,12 +308,12 @@ export function getMinContextWindow(modelIds: string[]): number {
             minContext = Math.min(minContext, DEFAULT_CONTEXT_WINDOW);
         }
     }
-    
+
     // If no models found, use default
     if (minContext === Infinity) {
         minContext = DEFAULT_CONTEXT_WINDOW;
     }
-    
+
     // Subtract headroom for prompts and responses
     return Math.max(minContext - PROMPT_HEADROOM_TOKENS, 50000); // Minimum 50k tokens
 }

@@ -1,5 +1,7 @@
 export interface CliOptions {
     models?: string;
+    tier?: 'cheap' | 'standard' | 'premium';
+    context?: '100k' | '1m' | 'auto';
     ignore?: string;
     diff?: boolean;
     // output?: string; // Deprecated for outputDir
