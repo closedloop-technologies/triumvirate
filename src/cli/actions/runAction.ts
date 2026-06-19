@@ -7,13 +7,22 @@ import type { CliOptions } from '../../types/report.js';
 import type { CodeReviewReport } from '../../types/report.js';
 import { processApiKeyValidation } from '../../utils/api-keys.js';
 import { embedBadgeInReadme } from '../../utils/badge-utils.js';
-import { DEFAULT_MODELS, getMinContextWindow } from '../../utils/constants.js';
+import {
+    DEFAULT_CONTEXT,
+    DEFAULT_TIER,
+    getMinContextWindow,
+    getModelsForTier,
+    type ContextSize,
+    type ModelTier,
+} from '../../utils/constants.js';
 import { enhancedLogger } from '../../utils/enhanced-logger.js';
 import { TriumvirateError, ErrorCategory } from '../../utils/error-handling.js';
 
 const VALID_PASS_THRESHOLDS = ['strict', 'lenient', 'none'] as const;
 const VALID_REVIEW_TYPES = ['general', 'security', 'performance', 'architecture', 'docs'] as const;
 const VALID_AGENT_MODELS = ['claude', 'openai', 'gemini'] as const;
+const VALID_MODEL_TIERS = ['cheap', 'standard', 'premium'] as const;
+const VALID_CONTEXT_SIZES = ['100k', '1m', 'auto'] as const;
 
 /**
  * Read input content from file or STDIN
@@ -22,7 +31,6 @@ const VALID_AGENT_MODELS = ['claude', 'openai', 'gemini'] as const;
  */
 async function readInputContent(inputPath: string): Promise<string> {
     if (inputPath === '-') {
-        // Read from STDIN
         return new Promise((resolve, reject) => {
             let data = '';
             process.stdin.setEncoding('utf8');
@@ -44,20 +52,65 @@ async function readInputContent(inputPath: string): Promise<string> {
                 );
             });
         });
-    } else {
-        // Read from file
-        try {
-            return await fsPromises.readFile(inputPath, 'utf8');
-        } catch (error) {
-            throw new TriumvirateError(
-                `Failed to read input file '${inputPath}': ${error instanceof Error ? error.message : String(error)}`,
-                ErrorCategory.FILE_SYSTEM,
-                'InputReader',
-                false,
-                error
-            );
-        }
     }
+
+    try {
+        return await fsPromises.readFile(inputPath, 'utf8');
+    } catch (error) {
+        throw new TriumvirateError(
+            `Failed to read input file '${inputPath}': ${error instanceof Error ? error.message : String(error)}`,
+            ErrorCategory.FILE_SYSTEM,
+            'InputReader',
+            false,
+            error
+        );
+    }
+}
+
+function parseCommaSeparatedList(value?: string): string[] {
+    if (!value) return [];
+    return value
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean);
+}
+
+function normalizeTier(value?: string): ModelTier {
+    const tier = (value ?? DEFAULT_TIER).toLowerCase();
+    if (VALID_MODEL_TIERS.includes(tier as ModelTier)) {
+        return tier as ModelTier;
+    }
+    return DEFAULT_TIER;
+}
+
+function normalizeContext(value?: string): ContextSize {
+    const context = (value ?? DEFAULT_CONTEXT).toLowerCase();
+    if (VALID_CONTEXT_SIZES.includes(context as ContextSize)) {
+        return context as ContextSize;
+    }
+    return DEFAULT_CONTEXT;
+}
+
+function resolveReviewModels(options: CliOptions): string[] {
+    const explicitModels = parseCommaSeparatedList(options.models);
+    if (explicitModels.length > 0) {
+        return explicitModels;
+    }
+
+    const tier = normalizeTier(options.tier);
+    const requestedContext = normalizeContext(options.context);
+    const selectionContext = requestedContext === 'auto' ? '100k' : requestedContext;
+    const { models, fallbacks } = getModelsForTier(tier, selectionContext);
+
+    if (fallbacks.length > 0) {
+        enhancedLogger.note(
+            `Model tier fallback(s): ${fallbacks
+                .map(fallback => `${fallback.provider} ${fallback.from}->${fallback.to}`)
+                .join(', ')}`
+        );
+    }
+
+    return models;
 }
 
 /**
@@ -68,7 +121,6 @@ async function readInputContent(inputPath: string): Promise<string> {
 function validateCliOptions(options: CliOptions): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
 
-    // Validate passThreshold
     if (
         options.passThreshold &&
         !VALID_PASS_THRESHOLDS.includes(
@@ -80,7 +132,6 @@ function validateCliOptions(options: CliOptions): { valid: boolean; errors: stri
         );
     }
 
-    // Validate reviewType
     if (
         options.reviewType &&
         !VALID_REVIEW_TYPES.includes(options.reviewType as (typeof VALID_REVIEW_TYPES)[number])
@@ -90,7 +141,6 @@ function validateCliOptions(options: CliOptions): { valid: boolean; errors: stri
         );
     }
 
-    // Validate agentModel
     if (
         options.agentModel &&
         !VALID_AGENT_MODELS.includes(
@@ -102,7 +152,18 @@ function validateCliOptions(options: CliOptions): { valid: boolean; errors: stri
         );
     }
 
-    // Validate tokenLimit is a positive number if provided
+    if (options.tier && !VALID_MODEL_TIERS.includes(options.tier as ModelTier)) {
+        errors.push(
+            `Invalid --tier value: '${options.tier}'. Valid values are: ${VALID_MODEL_TIERS.join(', ')}`
+        );
+    }
+
+    if (options.context && !VALID_CONTEXT_SIZES.includes(options.context as ContextSize)) {
+        errors.push(
+            `Invalid --context value: '${options.context}'. Valid values are: ${VALID_CONTEXT_SIZES.join(', ')}`
+        );
+    }
+
     if (
         options.tokenLimit !== undefined &&
         (isNaN(Number(options.tokenLimit)) || Number(options.tokenLimit) <= 0)
@@ -116,7 +177,6 @@ function validateCliOptions(options: CliOptions): { valid: boolean; errors: stri
 }
 
 export const runCliAction = async (directories: string[], options: CliOptions) => {
-    // Set log level based on verbose and quiet flags
     if (options.quiet) {
         enhancedLogger.setLogLevel('silent');
     } else if (options.verbose) {
@@ -125,10 +185,8 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         enhancedLogger.setLogLevel('info');
     }
 
-    // Initialize the API logger
     enhancedLogger.initApiLogger();
 
-    // Validate CLI options before proceeding
     const validation = validateCliOptions(options);
     if (!validation.valid) {
         validation.errors.forEach(error => enhancedLogger.error(error));
@@ -148,23 +206,18 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 📦 Triumvirate v${version}
 `);
 
-    // Process the CLI options
     const {
-        models = DEFAULT_MODELS.join(','),
         ignore = '',
         diff = false,
-        // output, // Deprecated in favor of outputDir
-        outputDir = './.triumvirate', // DoD: Default output dir
+        outputDir = './.triumvirate',
         failOnError = false,
         summaryOnly = false,
         tokenLimit,
         reviewType = 'general',
-        passThreshold = 'none', // DoD: Add pass threshold
-        agentModel = 'claude', // DoD: Add agent model
+        passThreshold = 'none',
+        agentModel = 'claude',
         skipApiKeyValidation = false,
         enhancedReport = true,
-
-        // Repomix flags
         include = '',
         ignorePatterns = '',
         style = 'xml',
@@ -179,21 +232,17 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         input,
     } = options;
 
-    // Read input content if --input is provided
     let inputContent: string | undefined;
     if (input) {
         enhancedLogger.log(`Reading input from: ${input === '-' ? 'STDIN' : input}`);
         inputContent = await readInputContent(input);
-        enhancedLogger.log(`Input content loaded (${inputContent!.length} characters)`);
+        enhancedLogger.log(`Input content loaded (${inputContent.length} characters)`);
     }
 
-    // Convert string options to arrays
-    let modelList = models.split(',');
-    const excludeList = ignore ? ignore.split(',') : [];
+    let modelList = resolveReviewModels(options);
+    const excludeList = parseCommaSeparatedList(ignore);
 
-    // Check API keys if validation is not skipped
     if (!skipApiKeyValidation) {
-        // Use the centralized API key validation function
         const validatedModels = await processApiKeyValidation(
             modelList,
             failOnError,
@@ -202,23 +251,25 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         modelList = validatedModels;
     }
 
-    // Auto-calculate token limit based on minimum context window of selected models
-    // Only if user didn't explicitly set a token limit
     const effectiveTokenLimit = tokenLimit
         ? Number(tokenLimit)
         : getMinContextWindow(modelList);
-    
-    enhancedLogger.log(`Token limit: ${effectiveTokenLimit} (based on min context window of selected models)`);
 
-    // Create a spinner for progress reporting
+    enhancedLogger.log(
+        `Token limit: ${effectiveTokenLimit} (based on min context window of selected models)`
+    );
+
     try {
-        // Assemble repomix options
         const repomixOptions = {
             exclude: excludeList,
             diffOnly: diff,
             tokenLimit: effectiveTokenLimit,
-            include: include ? include.split(',') : undefined,
-            ignorePatterns: ignorePatterns ? ignorePatterns.split(',') : undefined,
+            include: parseCommaSeparatedList(include).length
+                ? parseCommaSeparatedList(include)
+                : undefined,
+            ignorePatterns: parseCommaSeparatedList(ignorePatterns).length
+                ? parseCommaSeparatedList(ignorePatterns)
+                : undefined,
             style,
             compress,
             removeComments,
@@ -228,32 +279,28 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             instructionFilePath,
             topFilesLen,
             tokenCountEncoding,
-            // Smart compression options
             task: options.task,
             agentModel,
             enableSmartCompress: true,
         };
 
-        // Run the review with our configured options
         const reviewOptions: TriumvirateReviewOptions = {
             models: modelList,
             diffOnly: diff,
-            outputPath: outputDir, // Use outputDir
+            outputPath: outputDir,
             failOnError,
             summaryOnly,
             tokenLimit: effectiveTokenLimit,
             reviewType,
-            repomixOptions, // Pass repomix specific flags
+            repomixOptions,
             enhancedReport,
-            agentModel, // Pass agent model
-            inputContent, // Pre-existing context (skips repomix if provided)
-            // Pass other options if needed by runTriumvirateReview
-            options: options, // Pass original options for context
+            agentModel,
+            inputContent,
+            options,
         };
 
         const results = await runTriumvirateReview(reviewOptions);
 
-        // --- DoD: Pass/Fail Threshold Logic ---
         let reviewPassed = true;
         if (passThreshold !== 'none' && enhancedReport && !Array.isArray(results)) {
             const report = results as CodeReviewReport;
@@ -262,19 +309,16 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
                 .filter(f => !f.isStrength);
 
             if (passThreshold === 'strict') {
-                // Fail if >= 2 models agree on any improvement
                 reviewPassed = !improvementFindings.some(
                     f => Object.values(f.modelAgreements).filter(Boolean).length >= 2
                 );
             } else if (passThreshold === 'lenient') {
-                // Fail if >= 3 models agree on any improvement
                 reviewPassed = !improvementFindings.some(
                     f => Object.values(f.modelAgreements).filter(Boolean).length >= 3
                 );
             }
         }
 
-        // Check if any reviews had errors OR if the threshold failed
         if (failOnError || !reviewPassed) {
             if (Array.isArray(results)) {
                 if (results.some(r => r.metrics?.error)) {
@@ -283,7 +327,6 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
                 }
             } else {
                 const report = results as CodeReviewReport;
-                // Check if any models in the report contain errors
                 if (report.modelMetrics && report.modelMetrics.some(m => m?.error)) {
                     process.exit(1);
                 } else if (!reviewPassed) {
@@ -293,23 +336,16 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             }
         }
 
-        // Handle badge embedding if requested
         if (options.badge !== undefined && enhancedReport && !Array.isArray(results)) {
             const report = results as CodeReviewReport;
             const badgePath = typeof options.badge === 'string' ? options.badge : undefined;
             embedBadgeInReadme(report, { readmePath: badgePath });
         }
 
-        // Print API usage summary
         enhancedLogger.printApiSummary();
     } catch (error) {
         enhancedLogger.error('Error during code review');
-
-        // Print API usage summary even if there was an error
         enhancedLogger.printApiSummary();
-
         throw error;
     }
 };
-
-// Removed internal runVersionAction, imported from versionAction.ts
