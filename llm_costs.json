@@ -416,6 +416,54 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "anthropic.claude-sonnet-5",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.anthropic.claude-sonnet-5",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.anthropic.claude-sonnet-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "eu.anthropic.claude-sonnet-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "au.anthropic.claude-sonnet-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "jp.anthropic.claude-sonnet-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "anthropic.claude-sonnet-4-6",
     "provider": "bedrock_converse",
     "input": 0.000003,
@@ -654,6 +702,14 @@
     "output": 0.000015,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
+  },
+  {
+    "model": "azure_ai/claude-sonnet-5",
+    "provider": "azure_ai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
   },
   {
     "model": "azure_ai/claude-sonnet-4-6",
@@ -2966,6 +3022,14 @@
     "output": 0.000015,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
+  },
+  {
+    "model": "claude-sonnet-5",
+    "provider": "anthropic",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
   },
   {
     "model": "claude-sonnet-4-6",
@@ -9984,6 +10048,14 @@
     "max_output_tokens": 64000
   },
   {
+    "model": "vertex_ai/claude-sonnet-5",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "vertex_ai/claude-sonnet-4-6",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000003,
@@ -12392,6 +12464,14 @@
     "max_output_tokens": 65535
   },
   {
+    "model": "vertex_ai/claude-sonnet-5@default",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "vertex_ai/claude-sonnet-4-6@default",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000003,
@@ -12470,6 +12550,14 @@
     "output": 8E-8,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/xai.grok-4.3",
+    "provider": "bedrock_mantle",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
   },
   {
     "model": "bedrock/us-east-1/zai.glm-5",
@@ -12678,6 +12766,22 @@
     "output": 8.7E-7,
     "max_input_tokens": 1000000,
     "max_output_tokens": 8192
+  },
+  {
+    "model": "tencent/deepseek-v4-pro",
+    "provider": "tencent",
+    "input": 4.35E-7,
+    "output": 8.7E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "tencent/deepseek-v4-flash",
+    "provider": "tencent",
+    "input": 1.4E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
   },
   {
     "model": "pinstripes/ps/glm-4.5-air",
