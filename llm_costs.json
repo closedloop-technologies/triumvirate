@@ -1456,10 +1456,42 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/us/gpt-5.4",
+    "provider": "azure",
+    "input": 0.00000275,
+    "output": 0.0000165,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-5.4",
+    "provider": "azure",
+    "input": 0.00000275,
+    "output": 0.0000165,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure/gpt-5.4-2026-03-05",
     "provider": "azure",
     "input": 0.0000025,
     "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-5.4-2026-03-05",
+    "provider": "azure",
+    "input": 0.00000275,
+    "output": 0.0000165,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-5.4-2026-03-05",
+    "provider": "azure",
+    "input": 0.00000275,
+    "output": 0.0000165,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
@@ -1488,10 +1520,42 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/us/gpt-5.5",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-5.5",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure/gpt-5.5-2026-04-23",
     "provider": "azure",
     "input": 0.000005,
     "output": 0.00003,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-5.5-2026-04-23",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-5.5-2026-04-23",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.000033,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
@@ -5744,6 +5808,38 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "gpt-5.6",
+    "provider": "openai",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-5.6-sol",
+    "provider": "openai",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-5.6-terra",
+    "provider": "openai",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-5.6-luna",
+    "provider": "openai",
+    "input": 0.000001,
+    "output": 0.000006,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "gpt-5.5",
     "provider": "openai",
     "input": 0.000005,
@@ -5958,6 +6054,22 @@
     "output": 4E-7,
     "max_input_tokens": 272000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-realtime-2.1",
+    "provider": "openai",
+    "input": 0.000004,
+    "output": 0.000024,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "gpt-realtime-2.1-mini",
+    "provider": "openai",
+    "input": 6E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
   },
   {
     "model": "gpt-realtime-mini",
@@ -10942,6 +11054,22 @@
     "output": 0.0000025,
     "max_input_tokens": 1000000,
     "max_output_tokens": 1000000
+  },
+  {
+    "model": "xai/grok-4.5",
+    "provider": "xai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "xai/grok-4.5-latest",
+    "provider": "xai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
   },
   {
     "model": "xai/grok-beta",
