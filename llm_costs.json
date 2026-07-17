@@ -408,6 +408,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "jp.anthropic.claude-opus-4-8",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "jp.anthropic.claude-opus-4-7",
     "provider": "bedrock_converse",
     "input": 0.0000055,
@@ -1508,6 +1516,102 @@
     "provider": "azure",
     "input": 0.00003,
     "output": 0.00018,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.6",
+    "provider": "azure",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.6-sol",
+    "provider": "azure",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.6-terra",
+    "provider": "azure",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-5.6-luna",
+    "provider": "azure",
+    "input": 0.000001,
+    "output": 0.000006,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-5.6",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-5.6-sol",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-5.6-terra",
+    "provider": "azure",
+    "input": 0.00000275,
+    "output": 0.0000165,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-5.6-luna",
+    "provider": "azure",
+    "input": 0.0000011,
+    "output": 0.0000066,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-5.6",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-5.6-sol",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-5.6-terra",
+    "provider": "azure",
+    "input": 0.00000275,
+    "output": 0.0000165,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-5.6-luna",
+    "provider": "azure",
+    "input": 0.0000011,
+    "output": 0.0000066,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
@@ -5120,6 +5224,14 @@
     "max_output_tokens": 65535
   },
   {
+    "model": "gemini/gemini-omni-flash-preview",
+    "provider": "gemini",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
     "model": "gemini/gemini-3.1-pro-preview",
     "provider": "gemini",
     "input": 0.000002,
@@ -5140,6 +5252,14 @@
     "provider": "vertex_ai-language-models",
     "input": 5E-7,
     "output": 0.000003,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
+    "model": "gemini-omni-flash-preview",
+    "provider": "vertex_ai-language-models",
+    "input": 0.0000015,
+    "output": 0.000009,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
   },
@@ -6726,6 +6846,14 @@
     "output": 6.6E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
+  },
+  {
+    "model": "meta/muse-spark-1.1",
+    "provider": "meta",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
   },
   {
     "model": "minimax.minimax-m2",
@@ -12638,6 +12766,30 @@
     "output": 3E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 65536
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-5.6-sol",
+    "provider": "bedrock_mantle",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-5.6-terra",
+    "provider": "bedrock_mantle",
+    "input": 0.00000275,
+    "output": 0.0000165,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-5.6-luna",
+    "provider": "bedrock_mantle",
+    "input": 0.0000011,
+    "output": 0.0000066,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
   },
   {
     "model": "bedrock_mantle/openai.gpt-5.5",
