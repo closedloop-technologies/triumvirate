@@ -368,6 +368,54 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "anthropic.claude-opus-5",
+    "provider": "bedrock_converse",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.anthropic.claude-opus-5",
+    "provider": "bedrock_converse",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.anthropic.claude-opus-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "eu.anthropic.claude-opus-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "au.anthropic.claude-opus-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "jp.anthropic.claude-opus-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "anthropic.claude-opus-4-8",
     "provider": "bedrock_converse",
     "input": 0.000005,
@@ -684,6 +732,14 @@
     "provider": "azure_ai",
     "input": 0.00001,
     "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-opus-5",
+    "provider": "azure_ai",
+    "input": 0.000005,
+    "output": 0.000025,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
@@ -3296,6 +3352,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "claude-opus-4-8",
     "provider": "anthropic",
     "input": 0.000005,
@@ -4928,6 +4992,14 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "gemini-3.5-flash-lite",
+    "provider": "vertex_ai-language-models",
+    "input": 3E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "gemini-2.5-flash-lite",
     "provider": "vertex_ai-language-models",
     "input": 1E-7,
@@ -5030,6 +5102,14 @@
     "output": 0.000009,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
+  },
+  {
+    "model": "vertex_ai/gemini-3.6-flash",
+    "provider": "vertex_ai",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
   },
   {
     "model": "vertex_ai/gemini-3.1-pro-preview",
@@ -5208,6 +5288,14 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "gemini/gemini-3.5-flash-lite",
+    "provider": "gemini",
+    "input": 3E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "gemini/gemini-3-flash-preview",
     "provider": "gemini",
     "input": 5E-7,
@@ -5222,6 +5310,14 @@
     "output": 0.000009,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
+  },
+  {
+    "model": "gemini/gemini-3.6-flash",
+    "provider": "gemini",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini/gemini-omni-flash-preview",
@@ -5270,6 +5366,14 @@
     "output": 0.000009,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
+  },
+  {
+    "model": "gemini-3.6-flash",
+    "provider": "vertex_ai-language-models",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini/gemini-2.5-pro-preview-tts",
@@ -10264,6 +10368,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "vertex_ai/claude-opus-5",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-opus-5@default",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "vertex_ai/claude-opus-4-8",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000005,
@@ -10420,6 +10540,14 @@
     "provider": "vertex_ai-language-models",
     "input": 2.5E-7,
     "output": 0.0000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "vertex_ai/gemini-3.5-flash-lite",
+    "provider": "vertex_ai-language-models",
+    "input": 3E-7,
+    "output": 0.0000025,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65536
   },
