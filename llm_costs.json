@@ -1594,16 +1594,16 @@
   {
     "model": "azure/gpt-5.6-terra",
     "provider": "azure",
-    "input": 0.0000025,
-    "output": 0.000015,
+    "input": 0.000002,
+    "output": 0.000012,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
   {
     "model": "azure/gpt-5.6-luna",
     "provider": "azure",
-    "input": 0.000001,
-    "output": 0.000006,
+    "input": 2E-7,
+    "output": 0.0000012,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
@@ -1626,16 +1626,16 @@
   {
     "model": "azure/us/gpt-5.6-terra",
     "provider": "azure",
-    "input": 0.00000275,
-    "output": 0.0000165,
+    "input": 0.0000022,
+    "output": 0.0000132,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
   {
     "model": "azure/us/gpt-5.6-luna",
     "provider": "azure",
-    "input": 0.0000011,
-    "output": 0.0000066,
+    "input": 2.2E-7,
+    "output": 0.00000132,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
@@ -1658,16 +1658,16 @@
   {
     "model": "azure/eu/gpt-5.6-terra",
     "provider": "azure",
-    "input": 0.00000275,
-    "output": 0.0000165,
+    "input": 0.0000022,
+    "output": 0.0000132,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
   {
     "model": "azure/eu/gpt-5.6-luna",
     "provider": "azure",
-    "input": 0.0000011,
-    "output": 0.0000066,
+    "input": 2.2E-7,
+    "output": 0.00000132,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
@@ -5158,6 +5158,22 @@
     "output": 0.0000025,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65535
+  },
+  {
+    "model": "gemini/gemini-robotics-er-2-preview",
+    "provider": "gemini",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "gemini/gemini-robotics-er-1.6-preview",
+    "provider": "gemini",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini-2.5-computer-use-preview-10-2025",
