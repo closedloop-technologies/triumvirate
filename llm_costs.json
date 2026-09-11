@@ -832,12 +832,36 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "azure_ai/gpt-6-astra",
+    "provider": "azure_ai",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure_ai/gpt-5.5",
     "provider": "azure_ai",
     "input": 0.000005,
     "output": 0.00003,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/gpt-chat-latest",
+    "provider": "azure_ai",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/codex-mini",
+    "provider": "azure_ai",
+    "input": 0.0000015,
+    "output": 0.000006,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
   },
   {
     "model": "azure_ai/gpt-5.5-2026-04-23",
@@ -910,6 +934,22 @@
     "output": 0.00000125,
     "max_input_tokens": 272000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/model_router",
+    "provider": "azure_ai",
+    "input": 1.4E-7,
+    "output": 0,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "azure_ai/model-router",
+    "provider": "azure_ai",
+    "input": 1.4E-7,
+    "output": 0,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 32768
   },
   {
     "model": "azure/eu/gpt-4o-2024-08-06",
@@ -1656,6 +1696,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/gpt-6-astra",
+    "provider": "azure",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure/us/gpt-5.6",
     "provider": "azure",
     "input": 0.0000055,
@@ -1684,6 +1732,14 @@
     "provider": "azure",
     "input": 2.2E-7,
     "output": 0.00000132,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-6-astra",
+    "provider": "azure",
+    "input": 0.000011,
+    "output": 0.000055,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -2112,6 +2168,14 @@
     "max_output_tokens": 100000
   },
   {
+    "model": "azure_ai/Codestral-2501",
+    "provider": "azure_ai",
+    "input": 3E-7,
+    "output": 9E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 4096
+  },
+  {
     "model": "azure_ai/FW-DeepSeek-V3.2",
     "provider": "azure_ai",
     "input": 6.2E-7,
@@ -2216,12 +2280,28 @@
     "max_output_tokens": 512000
   },
   {
+    "model": "azure_ai/FW-Nemotron-Lightning-3.5-30B-A3B",
+    "provider": "azure_ai",
+    "input": 6E-8,
+    "output": 2.2E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
     "model": "azure_ai/FW-Nemotron-3-Ultra-NVFP4",
     "provider": "azure_ai",
     "input": 6E-7,
     "output": 0.0000024,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
+  },
+  {
+    "model": "azure_ai/MAI-Thinking-1",
+    "provider": "azure_ai",
+    "input": 0.000002,
+    "output": 0.000008,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 64000
   },
   {
     "model": "azure_ai/Llama-3.2-11B-Vision-Instruct",
@@ -2360,6 +2440,14 @@
     "max_output_tokens": 4096
   },
   {
+    "model": "azure_ai/cohere-command-a",
+    "provider": "azure_ai",
+    "input": 0.0000025,
+    "output": 0.00001,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8182
+  },
+  {
     "model": "azure_ai/MAI-DS-R1",
     "provider": "azure_ai",
     "input": 0.00000135,
@@ -2494,6 +2582,30 @@
     "output": 0.0000025,
     "max_input_tokens": 200000,
     "max_output_tokens": 200000
+  },
+  {
+    "model": "azure_ai/grok-4.6",
+    "provider": "azure_ai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/grok-4-20-reasoning",
+    "provider": "azure_ai",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 262000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "azure_ai/grok-4-20-non-reasoning",
+    "provider": "azure_ai",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 262000,
+    "max_output_tokens": 8192
   },
   {
     "model": "azure_ai/grok-4-fast-non-reasoning",
@@ -3160,6 +3272,22 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "bedrock/us-gov-west-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-gov-west-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock",
+    "input": 4.2E-8,
+    "output": 1.68E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
     "model": "bedrock/us-gov-west-1/amazon.nova-pro-v1:0",
     "provider": "bedrock",
     "input": 9.6E-7,
@@ -3697,6 +3825,22 @@
   },
   {
     "model": "cohere.embed-v4:0",
+    "provider": "bedrock",
+    "input": 1.2E-7,
+    "output": 0.0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "us.cohere.embed-v4:0",
+    "provider": "bedrock",
+    "input": 1.2E-7,
+    "output": 0.0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "global.cohere.embed-v4:0",
     "provider": "bedrock",
     "input": 1.2E-7,
     "output": 0.0,
@@ -4344,6 +4488,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "databricks/databricks-claude-fable-5-1",
+    "provider": "databricks",
+    "input": 0.00001000006,
+    "output": 0.00005000002,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "databricks/databricks-claude-haiku-4-5",
     "provider": "databricks",
     "input": 0.00000100002,
@@ -4512,6 +4664,30 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "databricks/databricks-gemini-3-6-flash",
+    "provider": "databricks",
+    "input": 0.00000187502,
+    "output": 0.00000937503,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "databricks/databricks-gemini-3-5-flash",
+    "provider": "databricks",
+    "input": 0.00000187502,
+    "output": 0.00001124998,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "databricks/databricks-gemini-3-5-flash-lite",
+    "provider": "databricks",
+    "input": 3.7499E-7,
+    "output": 0.00000312501,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "databricks/databricks-gemma-3-12b",
     "provider": "databricks",
     "input": 1.5000999999999998E-7,
@@ -4525,6 +4701,22 @@
     "input": 0.0000014,
     "output": 0.00000439999,
     "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "databricks/databricks-glm-5-3",
+    "provider": "databricks",
+    "input": 0.0000014,
+    "output": 0.00000439999,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "databricks/databricks-glm-5-3-flash",
+    "provider": "databricks",
+    "input": 1.5001E-7,
+    "output": 5.0001E-7,
+    "max_input_tokens": 1048576,
     "max_output_tokens": 131072
   },
   {
@@ -4588,7 +4780,7 @@
     "provider": "databricks",
     "input": 0.00000249998,
     "output": 0.000015000020000000002,
-    "max_input_tokens": 272000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -4605,6 +4797,46 @@
     "input": 1.9999E-7,
     "output": 0.00000124999,
     "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-5-6-sol",
+    "provider": "databricks",
+    "input": 0.00000400001,
+    "output": 0.00001999998,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-5-6-terra",
+    "provider": "databricks",
+    "input": 0.00000249998,
+    "output": 0.00001500002,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-5-6-luna",
+    "provider": "databricks",
+    "input": 0.00000100002,
+    "output": 0.00000599998,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-5-5",
+    "provider": "databricks",
+    "input": 0.00000500003,
+    "output": 0.00002999997,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-5-5-pro",
+    "provider": "databricks",
+    "input": 0.00002999997,
+    "output": 0.00018000003,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -4638,6 +4870,22 @@
     "output": 3.0001999999999996E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
+  },
+  {
+    "model": "databricks/databricks-grok-4-6",
+    "provider": "databricks",
+    "input": 0.00000249998,
+    "output": 0.00000750001,
+    "max_input_tokens": 500000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "databricks/databricks-inkling",
+    "provider": "databricks",
+    "input": 0.00000100002,
+    "output": 0.00000404999,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": null
   },
   {
     "model": "databricks/databricks-kimi-k3",
@@ -4686,6 +4934,14 @@
     "output": 0.0000029999900000000002,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-qwen35-122b-a10b",
+    "provider": "databricks",
+    "input": 2.2001E-7,
+    "output": 0.00000220003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 25000
   },
   {
     "model": "deepinfra/NousResearch/Hermes-3-Llama-3.1-405B",
@@ -5194,8 +5450,8 @@
   {
     "model": "eu.anthropic.claude-3-5-haiku-20241022-v1:0",
     "provider": "bedrock",
-    "input": 2.5E-7,
-    "output": 0.00000125,
+    "input": 8E-7,
+    "output": 0.000004,
     "max_input_tokens": 200000,
     "max_output_tokens": 8192
   },
@@ -5860,8 +6116,8 @@
     "provider": "vertex_ai-language-models",
     "input": 5E-7,
     "output": 0.000002,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini-live-2.5-flash-preview-native-audio-09-2025",
@@ -7016,7 +7272,23 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "gpt-daybreak-red-latest",
+    "provider": "openai",
+    "input": 0.0000125,
+    "output": 0.000075,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "daybreak-blue-latest",
+    "provider": "openai",
+    "input": 0.000004,
+    "output": 0.00002,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-daybreak-blue-latest",
     "provider": "openai",
     "input": 0.000004,
     "output": 0.00002,
@@ -8658,18 +8930,18 @@
   {
     "model": "nebius/google/gemma-3-27b-it",
     "provider": "nebius",
-    "input": 6E-8,
-    "output": 2E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 128000
+    "input": 1E-7,
+    "output": 3E-7,
+    "max_input_tokens": 110000,
+    "max_output_tokens": 110000
   },
   {
     "model": "nebius/meta-llama/Llama-3.3-70B-Instruct",
     "provider": "nebius",
     "input": 1.3E-7,
     "output": 4E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 128000
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
   },
   {
     "model": "nebius/meta-llama/Llama-Guard-3-8B",
@@ -8760,14 +9032,6 @@
     "max_output_tokens": 128000
   },
   {
-    "model": "nebius/Qwen/Qwen2.5-VL-72B-Instruct",
-    "provider": "nebius",
-    "input": 1.3E-7,
-    "output": 4E-7,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
-  },
-  {
     "model": "nebius/Qwen/Qwen2-VL-72B-Instruct",
     "provider": "nebius",
     "input": 1.3E-7,
@@ -8782,6 +9046,206 @@
     "output": 6E-8,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
+  },
+  {
+    "model": "nebius/deepseek-ai/DeepSeek-V4-Flash",
+    "provider": "nebius",
+    "input": 1.4E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "nebius/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "provider": "nebius",
+    "input": 1.4E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 1024000,
+    "max_output_tokens": 1024000
+  },
+  {
+    "model": "nebius/deepseek-ai/DeepSeek-V4-Pro",
+    "provider": "nebius",
+    "input": 0.00000175,
+    "output": 0.0000035,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "nebius/MiniMaxAI/MiniMax-M2.5",
+    "provider": "nebius",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 196608,
+    "max_output_tokens": 196608
+  },
+  {
+    "model": "nebius/MiniMaxAI/MiniMax-M3",
+    "provider": "nebius",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "nebius/moonshotai/Kimi-K2.6",
+    "provider": "nebius",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/moonshotai/Kimi-K2.7-Code",
+    "provider": "nebius",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/moonshotai/Kimi-K3",
+    "provider": "nebius",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1024000,
+    "max_output_tokens": 1024000
+  },
+  {
+    "model": "nebius/NousResearch/Hermes-4-405B",
+    "provider": "nebius",
+    "input": 0.000001,
+    "output": 0.000003,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "nebius/NousResearch/Hermes-4-70B",
+    "provider": "nebius",
+    "input": 1.3E-7,
+    "output": 4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "nebius/nvidia/Cosmos3-Super-Reasoner",
+    "provider": "nebius",
+    "input": 1E-7,
+    "output": 3E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1",
+    "provider": "nebius",
+    "input": 6E-7,
+    "output": 0.0000018,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "nebius/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+    "provider": "nebius",
+    "input": 6E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/nvidia/Nemotron-3-Nano-Omni",
+    "provider": "nebius",
+    "input": 6E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/nvidia/nemotron-3-super-120b-a12b",
+    "provider": "nebius",
+    "input": 3E-7,
+    "output": 9E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/nvidia/Nemotron-3-Ultra-550b-a55b",
+    "provider": "nebius",
+    "input": 0.000001,
+    "output": 0.000003,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "nebius/nvidia/Nemotron-3_5-Lightning",
+    "provider": "nebius",
+    "input": 6E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "nebius/openai/gpt-oss-120b",
+    "provider": "nebius",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "nebius/Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "provider": "nebius",
+    "input": 2E-7,
+    "output": 6E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/Qwen/Qwen3-30B-A3B-Instruct-2507",
+    "provider": "nebius",
+    "input": 1E-7,
+    "output": 3E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/Qwen/Qwen3-Next-80B-A3B-Thinking",
+    "provider": "nebius",
+    "input": 1.5E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "nebius/Qwen/Qwen3.5-397B-A17B",
+    "provider": "nebius",
+    "input": 6E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "nebius/zai-org/GLM-5.1",
+    "provider": "nebius",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 202752,
+    "max_output_tokens": 202752
+  },
+  {
+    "model": "nebius/zai-org/GLM-5.2",
+    "provider": "nebius",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "nebius/zai-org/GLM-5.3-Flash",
+    "provider": "nebius",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1024000,
+    "max_output_tokens": 1024000
   },
   {
     "model": "nvidia.nemotron-nano-12b-v2",
@@ -9357,7 +9821,7 @@
     "input": 0.000005,
     "output": 0.000025,
     "max_input_tokens": 200000,
-    "max_output_tokens": 32000
+    "max_output_tokens": 64000
   },
   {
     "model": "openrouter/anthropic/claude-opus-4.6",
@@ -9372,8 +9836,8 @@
     "provider": "openrouter",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 1000000,
-    "max_output_tokens": 1000000
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
   },
   {
     "model": "openrouter/anthropic/claude-haiku-4.5",
@@ -9381,7 +9845,7 @@
     "input": 0.000001,
     "output": 0.000005,
     "max_input_tokens": 200000,
-    "max_output_tokens": 200000
+    "max_output_tokens": 64000
   },
   {
     "model": "openrouter/anthropic/claude-opus-4.7",
@@ -9418,7 +9882,7 @@
   {
     "model": "openrouter/deepseek/deepseek-v3.2",
     "provider": "openrouter",
-    "input": 2.8E-7,
+    "input": 2.69E-7,
     "output": 4E-7,
     "max_input_tokens": 163840,
     "max_output_tokens": 163840
@@ -9426,8 +9890,8 @@
   {
     "model": "openrouter/deepseek/deepseek-v3.2-exp",
     "provider": "openrouter",
-    "input": 2E-7,
-    "output": 4E-7,
+    "input": 2.7E-7,
+    "output": 4.1E-7,
     "max_input_tokens": 163840,
     "max_output_tokens": 163840
   },
@@ -9461,7 +9925,7 @@
     "input": 3E-7,
     "output": 0.0000025,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
+    "max_output_tokens": 65535
   },
   {
     "model": "openrouter/google/gemini-2.5-pro",
@@ -9469,7 +9933,7 @@
     "input": 0.00000125,
     "output": 0.00001,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 8192
+    "max_output_tokens": 65535
   },
   {
     "model": "openrouter/google/gemini-3-pro-preview",
@@ -9522,8 +9986,8 @@
   {
     "model": "openrouter/mistralai/devstral-2512",
     "provider": "openrouter",
-    "input": 1.5E-7,
-    "output": 6E-7,
+    "input": 4E-7,
+    "output": 0.000002,
     "max_input_tokens": 262144,
     "max_output_tokens": 65536
   },
@@ -9562,39 +10026,39 @@
   {
     "model": "openrouter/mistralai/mistral-large",
     "provider": "openrouter",
-    "input": 0.000008,
-    "output": 0.000024,
+    "input": 0.000002,
+    "output": 0.000006,
     "max_input_tokens": 128000,
     "max_output_tokens": 8191
   },
   {
     "model": "openrouter/mistralai/mistral-small-3.1-24b-instruct",
     "provider": "openrouter",
-    "input": 1E-7,
-    "output": 3E-7,
+    "input": 3.51E-7,
+    "output": 5.55E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
   },
   {
     "model": "openrouter/mistralai/mistral-small-3.2-24b-instruct",
     "provider": "openrouter",
-    "input": 1E-7,
-    "output": 3E-7,
+    "input": 7.5E-8,
+    "output": 2E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
     "model": "openrouter/moonshotai/kimi-k2.5",
     "provider": "openrouter",
-    "input": 6E-7,
-    "output": 0.000003,
+    "input": 4.5E-7,
+    "output": 0.00000225,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
   },
   {
     "model": "openrouter/nvidia/nemotron-3.5-lightning",
     "provider": "openrouter",
-    "input": 5E-8,
+    "input": 8E-8,
     "output": 2E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": null
@@ -9629,7 +10093,7 @@
     "input": 0.0000025,
     "output": 0.00001,
     "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 16384
   },
   {
     "model": "openrouter/openai/gpt-4o-2024-05-13",
@@ -9720,18 +10184,26 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "openrouter/openai/gpt-5.6-sol",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "openrouter/openai/gpt-oss-120b",
     "provider": "openrouter",
-    "input": 1.8E-7,
-    "output": 8E-7,
+    "input": 3.7E-8,
+    "output": 1.7E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 32768
   },
   {
     "model": "openrouter/openai/gpt-oss-20b",
     "provider": "openrouter",
-    "input": 2E-8,
-    "output": 1E-7,
+    "input": 3E-8,
+    "output": 1.3E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 32768
   },
@@ -9748,46 +10220,46 @@
     "provider": "openrouter",
     "input": 0.0000011,
     "output": 0.0000044,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 65536
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
   },
   {
     "model": "openrouter/openai/o3-mini-high",
     "provider": "openrouter",
     "input": 0.0000011,
     "output": 0.0000044,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 65536
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
   },
   {
     "model": "openrouter/qwen/qwen3-coder",
     "provider": "openrouter",
-    "input": 2.2E-7,
-    "output": 9.5E-7,
+    "input": 3E-7,
+    "output": 0.000001,
     "max_input_tokens": 262100,
     "max_output_tokens": 262100
   },
   {
     "model": "openrouter/qwen/qwen3-coder-plus",
     "provider": "openrouter",
-    "input": 0.000001,
-    "output": 0.000005,
+    "input": 6.5E-7,
+    "output": 0.00000325,
     "max_input_tokens": 997952,
     "max_output_tokens": 65536
   },
   {
     "model": "openrouter/qwen/qwen3-235b-a22b-2507",
     "provider": "openrouter",
-    "input": 7.1E-8,
-    "output": 1E-7,
+    "input": 8.75E-8,
+    "output": 3.5E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
   },
   {
     "model": "openrouter/qwen/qwen3-235b-a22b-thinking-2507",
     "provider": "openrouter",
-    "input": 1.1E-7,
-    "output": 6E-7,
+    "input": 2.3E-7,
+    "output": 0.0000023,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
   },
@@ -9803,47 +10275,47 @@
     "model": "openrouter/qwen/qwen3.5-35b-a3b",
     "provider": "openrouter",
     "input": 2.5E-7,
-    "output": 0.000002,
+    "output": 0.00000125,
     "max_input_tokens": 262144,
     "max_output_tokens": 65536
   },
   {
     "model": "openrouter/qwen/qwen3.5-27b",
     "provider": "openrouter",
-    "input": 3E-7,
-    "output": 0.0000024,
+    "input": 1.95E-7,
+    "output": 0.00000156,
     "max_input_tokens": 262144,
     "max_output_tokens": 65536
   },
   {
     "model": "openrouter/qwen/qwen3.5-122b-a10b",
     "provider": "openrouter",
-    "input": 4E-7,
-    "output": 0.000002,
+    "input": 2.9E-7,
+    "output": 0.0000024,
     "max_input_tokens": 262144,
     "max_output_tokens": 65536
   },
   {
     "model": "openrouter/qwen/qwen3.5-flash-02-23",
     "provider": "openrouter",
-    "input": 1E-7,
-    "output": 4E-7,
+    "input": 6.5E-8,
+    "output": 2.6E-7,
     "max_input_tokens": 1000000,
     "max_output_tokens": 65536
   },
   {
     "model": "openrouter/qwen/qwen3.5-plus-02-15",
     "provider": "openrouter",
-    "input": 4E-7,
-    "output": 0.0000024,
+    "input": 2.6E-7,
+    "output": 0.00000156,
     "max_input_tokens": 1000000,
     "max_output_tokens": 65536
   },
   {
     "model": "openrouter/qwen/qwen3.5-397b-a17b",
     "provider": "openrouter",
-    "input": 6E-7,
-    "output": 0.0000036,
+    "input": 5.5E-7,
+    "output": 0.0000035,
     "max_input_tokens": 262144,
     "max_output_tokens": 65536
   },
@@ -9866,8 +10338,8 @@
   {
     "model": "openrouter/z-ai/glm-4.6",
     "provider": "openrouter",
-    "input": 4E-7,
-    "output": 0.00000175,
+    "input": 5.5E-7,
+    "output": 0.0000022,
     "max_input_tokens": 202800,
     "max_output_tokens": 131000
   },
@@ -9890,16 +10362,16 @@
   {
     "model": "openrouter/xiaomi/mimo-v2.5-pro",
     "provider": "openrouter",
-    "input": 0.000001,
-    "output": 0.000003,
+    "input": 4.35E-7,
+    "output": 8.7E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 16384
   },
   {
     "model": "openrouter/xiaomi/mimo-v2.5",
     "provider": "openrouter",
-    "input": 4E-7,
-    "output": 0.000002,
+    "input": 1.4E-7,
+    "output": 2.8E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 131072
   },
@@ -9907,14 +10379,14 @@
     "model": "openrouter/z-ai/glm-4.7",
     "provider": "openrouter",
     "input": 4E-7,
-    "output": 0.0000015,
+    "output": 0.00000175,
     "max_input_tokens": 202752,
     "max_output_tokens": 64000
   },
   {
     "model": "openrouter/z-ai/glm-4.7-flash",
     "provider": "openrouter",
-    "input": 7E-8,
+    "input": 6E-8,
     "output": 4E-7,
     "max_input_tokens": 200000,
     "max_output_tokens": 32000
@@ -9922,23 +10394,23 @@
   {
     "model": "openrouter/z-ai/glm-5",
     "provider": "openrouter",
-    "input": 8E-7,
-    "output": 0.00000256,
+    "input": 6E-7,
+    "output": 0.00000192,
     "max_input_tokens": 202752,
     "max_output_tokens": 128000
   },
   {
     "model": "openrouter/z-ai/glm-5.1",
     "provider": "openrouter",
-    "input": 0.00000105,
-    "output": 0.0000035,
+    "input": 9.66E-7,
+    "output": 0.000003036,
     "max_input_tokens": 202752,
     "max_output_tokens": 65535
   },
   {
     "model": "openrouter/minimax/minimax-m2.1",
     "provider": "openrouter",
-    "input": 2.7E-7,
+    "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 204000,
     "max_output_tokens": 64000
@@ -9946,8 +10418,8 @@
   {
     "model": "openrouter/minimax/minimax-m2.5",
     "provider": "openrouter",
-    "input": 3E-7,
-    "output": 0.0000011,
+    "input": 2.7E-7,
+    "output": 0.00000108,
     "max_input_tokens": 196608,
     "max_output_tokens": 65536
   },
@@ -10114,7 +10586,7 @@
   {
     "model": "qwen.qwen3-coder-480b-a35b-v1:0",
     "provider": "bedrock_converse",
-    "input": 2.2E-7,
+    "input": 4.5E-7,
     "output": 0.0000018,
     "max_input_tokens": 262000,
     "max_output_tokens": 65536
@@ -10736,6 +11208,14 @@
     "max_output_tokens": 64000
   },
   {
+    "model": "us-gov.anthropic.claude-3-haiku-20240307-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 4096
+  },
+  {
     "model": "us-gov.anthropic.claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock_converse",
     "input": 0.0000036,
@@ -10758,6 +11238,78 @@
     "output": 0.00003,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.anthropic.claude-opus-5",
+    "provider": "bedrock_converse",
+    "input": 0.000006,
+    "output": 0.00003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.anthropic.claude-fable-5-1",
+    "provider": "bedrock_converse",
+    "input": 0.000012,
+    "output": 0.00006,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_converse",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "us-gov.nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_converse",
+    "input": 2.4E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "us-gov.nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_converse",
+    "input": 7.2E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "us-gov.nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "us-gov.openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 8.4E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.xai.grok-4.6",
+    "provider": "bedrock_converse",
+    "input": 0.00000264,
+    "output": 0.00000792,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
   },
   {
     "model": "au.anthropic.claude-haiku-4-5-20251001-v1:0",
@@ -11557,7 +12109,7 @@
     "input": 0.000001,
     "output": 0.000005,
     "max_input_tokens": 200000,
-    "max_output_tokens": 8192
+    "max_output_tokens": 64000
   },
   {
     "model": "vertex_ai/claude-haiku-4-5@20251001",
@@ -11565,7 +12117,7 @@
     "input": 0.000001,
     "output": 0.000005,
     "max_input_tokens": 200000,
-    "max_output_tokens": 8192
+    "max_output_tokens": 64000
   },
   {
     "model": "vertex_ai/claude-3-5-sonnet",
@@ -11968,6 +12520,22 @@
     "max_output_tokens": 256000
   },
   {
+    "model": "vertex_ai/lyria-3-clip-preview",
+    "provider": "vertex_ai",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "vertex_ai/lyria-3-pro-preview",
+    "provider": "vertex_ai",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "vertex_ai/meta/llama-3.1-405b-instruct-maas",
     "provider": "vertex_ai-llama_models",
     "input": 0.000005,
@@ -12180,32 +12748,48 @@
     "provider": "vertex_ai",
     "input": 2E-7,
     "output": 5E-7,
-    "max_input_tokens": 2000000,
-    "max_output_tokens": 2000000
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
   },
   {
     "model": "vertex_ai/xai/grok-4.1-fast-reasoning",
     "provider": "vertex_ai",
     "input": 2E-7,
     "output": 5E-7,
-    "max_input_tokens": 2000000,
-    "max_output_tokens": 2000000
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
   },
   {
     "model": "vertex_ai/xai/grok-4.20-non-reasoning",
     "provider": "vertex_ai",
-    "input": 0.000002,
-    "output": 0.000006,
+    "input": 0.00000125,
+    "output": 0.0000025,
     "max_input_tokens": 2000000,
     "max_output_tokens": 2000000
   },
   {
     "model": "vertex_ai/xai/grok-4.20-reasoning",
     "provider": "vertex_ai",
-    "input": 0.000002,
-    "output": 0.000006,
+    "input": 0.00000125,
+    "output": 0.0000025,
     "max_input_tokens": 2000000,
     "max_output_tokens": 2000000
+  },
+  {
+    "model": "vertex_ai/xai/grok-4.3",
+    "provider": "vertex_ai",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 200000
+  },
+  {
+    "model": "vertex_ai/xai/grok-4.6",
+    "provider": "vertex_ai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 524288,
+    "max_output_tokens": 524288
   },
   {
     "model": "vertex_ai/qwen/qwen3-235b-a22b-instruct-2507-maas",
@@ -12274,8 +12858,8 @@
   {
     "model": "wandb/Qwen/Qwen3-235B-A22B-Instruct-2507",
     "provider": "wandb",
-    "input": 0.01,
-    "output": 0.01,
+    "input": 1E-7,
+    "output": 1E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
   },
@@ -12290,8 +12874,8 @@
   {
     "model": "wandb/Qwen/Qwen3-235B-A22B-Thinking-2507",
     "provider": "wandb",
-    "input": 0.01,
-    "output": 0.01,
+    "input": 1E-7,
+    "output": 1E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
   },
@@ -12338,16 +12922,16 @@
   {
     "model": "wandb/deepseek-ai/DeepSeek-R1-0528",
     "provider": "wandb",
-    "input": 0.135,
-    "output": 0.54,
+    "input": 0.00000135,
+    "output": 0.0000054,
     "max_input_tokens": 161000,
     "max_output_tokens": 161000
   },
   {
     "model": "wandb/deepseek-ai/DeepSeek-V3-0324",
     "provider": "wandb",
-    "input": 0.114,
-    "output": 0.275,
+    "input": 0.00000114,
+    "output": 0.00000275,
     "max_input_tokens": 161000,
     "max_output_tokens": 161000
   },
@@ -12374,6 +12958,14 @@
     "output": 0.00001,
     "max_input_tokens": 131072,
     "max_output_tokens": 16384
+  },
+  {
+    "model": "watsonx/ibm/granite-4-h-small",
+    "provider": "watsonx",
+    "input": 6.36E-8,
+    "output": 2.65E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
   },
   {
     "model": "watsonx/meta-llama/llama-3-2-11b-vision-instruct",
@@ -12410,18 +13002,26 @@
   {
     "model": "watsonx/meta-llama/llama-3-3-70b-instruct",
     "provider": "watsonx",
-    "input": 7.1E-7,
-    "output": 7.1E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 128000
+    "input": 7.526E-7,
+    "output": 7.526E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
   },
   {
     "model": "watsonx/meta-llama/llama-4-maverick-17b",
     "provider": "watsonx",
-    "input": 3.5E-7,
-    "output": 0.0000014,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 128000
+    "input": 3.71E-7,
+    "output": 0.000001484,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "watsonx/meta-llama/llama-4-maverick-17b-128e-instruct-fp8",
+    "provider": "watsonx",
+    "input": 3.71E-7,
+    "output": 0.000001484,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
   },
   {
     "model": "watsonx/meta-llama/llama-guard-3-11b-vision",
@@ -12440,12 +13040,28 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "watsonx/mistralai/mistral-small-3-1-24b-instruct-2503",
+    "provider": "watsonx",
+    "input": 1.06E-7,
+    "output": 3.18E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "watsonx/mistralai/pixtral-12b-2409",
     "provider": "watsonx",
     "input": 3.5E-7,
     "output": 3.5E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "watsonx/openai/gpt-oss-120b",
+    "provider": "watsonx",
+    "input": 1.59E-7,
+    "output": 6.36E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
   },
   {
     "model": "xai/grok-3",
@@ -14242,7 +14858,7 @@
   {
     "model": "bedrock_mantle/openai.gpt-oss-20b",
     "provider": "bedrock_mantle",
-    "input": 7.5E-8,
+    "input": 7E-8,
     "output": 3E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 32768
@@ -14258,8 +14874,8 @@
   {
     "model": "bedrock_mantle/openai.gpt-oss-safeguard-20b",
     "provider": "bedrock_mantle",
-    "input": 7.5E-8,
-    "output": 3E-7,
+    "input": 7E-8,
+    "output": 2E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 65536
   },
@@ -14285,6 +14901,14 @@
     "input": 0.00001375,
     "output": 0.0000825,
     "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-daybreak-blue-5.6-sol",
+    "provider": "bedrock_mantle",
+    "input": 0.0000055,
+    "output": 0.000033,
+    "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
   {
@@ -14341,6 +14965,30 @@
     "input": 2E-7,
     "output": 0.0000012,
     "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-6-astra",
+    "provider": "bedrock_mantle",
+    "input": 0.000011,
+    "output": 0.000055,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.openai.gpt-6-astra",
+    "provider": "bedrock_converse",
+    "input": 0.000011,
+    "output": 0.000055,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.openai.gpt-6-astra",
+    "provider": "bedrock_converse",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
   {
@@ -14760,6 +15408,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "claude-mythos-5-1",
+    "provider": "anthropic",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "claude-mythos-preview",
     "provider": "anthropic",
     "input": 0.00001,
@@ -14792,6 +15448,14 @@
     "max_output_tokens": null
   },
   {
+    "model": "gemini/gemini-3.5-live-translate-preview",
+    "provider": "gemini",
+    "input": 0.0000035,
+    "output": 0.000021,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "voyage/voyage-context-4",
     "provider": "voyage",
     "input": 1.2E-7,
@@ -14808,6 +15472,14 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+    "provider": "fireworks_ai",
+    "input": 2.2E-7,
+    "output": 6.6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/models/kimi-k3",
     "provider": "fireworks_ai",
     "input": 0.000003,
@@ -14822,6 +15494,14 @@
     "output": 6.6E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 131072
+  },
+  {
+    "model": "fireworks_ai/deepseek-v4-flash-vision-exp",
+    "provider": "fireworks_ai",
+    "input": 2.2E-7,
+    "output": 6.6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
   },
   {
     "model": "fireworks_ai/glm-5p2-fast",
@@ -16216,6 +16896,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "bedrock/us-gov-west-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock",
+    "input": 7.2E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
     "model": "bedrock/us-gov-west-1/nvidia.nemotron-super-3-120b",
     "provider": "bedrock",
     "input": 1.8E-7,
@@ -16256,6 +16944,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-opus-5",
+    "provider": "bedrock",
+    "input": 0.000006,
+    "output": 0.00003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-fable-5-1",
+    "provider": "bedrock",
+    "input": 0.000012,
+    "output": 0.00006,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "bedrock/us-gov-east-1/nvidia.nemotron-nano-3-30b",
     "provider": "bedrock",
     "input": 7.2E-8,
@@ -16268,6 +16972,14 @@
     "provider": "bedrock",
     "input": 2.4E-7,
     "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/us-gov-east-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock",
+    "input": 7.2E-8,
+    "output": 2.76E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 8192
   },
@@ -16312,6 +17024,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-opus-5",
+    "provider": "bedrock",
+    "input": 0.000006,
+    "output": 0.00003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-fable-5-1",
+    "provider": "bedrock",
+    "input": 0.000012,
+    "output": 0.00006,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "bedrock_mantle/us-gov-west-1/openai.gpt-5.6-terra",
     "provider": "bedrock_mantle",
     "input": 0.00000264,
@@ -16344,12 +17072,84 @@
     "max_output_tokens": 16384
   },
   {
+    "model": "bedrock_mantle/us-gov-west-1/xai.grok-4.6",
+    "provider": "bedrock_mantle",
+    "input": 0.00000264,
+    "output": 0.00000792,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/google.gemma-4-e2b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-8,
+    "output": 9.6E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/google.gemma-4-26b-a4b",
+    "provider": "bedrock_mantle",
+    "input": 1.56E-7,
+    "output": 4.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 256000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/google.gemma-4-31b",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 4.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 256000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 8.4E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
     "model": "bedrock_mantle/us-gov-east-1/openai.gpt-5.4",
     "provider": "bedrock_mantle",
     "input": 0.0000033,
     "output": 0.0000198,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/xai.grok-4.6",
+    "provider": "bedrock_mantle",
+    "input": 0.00000264,
+    "output": 0.00000792,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 8.4E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
   },
   {
     "model": "azure/us-gov/gpt-5.1",
@@ -16366,5 +17166,1189 @@
     "output": 0.00000605,
     "max_input_tokens": 200000,
     "max_output_tokens": 100000
+  },
+  {
+    "model": "gemini/lyria-3.5-clip-preview",
+    "provider": "gemini",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "gemini/lyria-3.5-pro-preview",
+    "provider": "gemini",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "gemini/lyria-3.5",
+    "provider": "gemini",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/anthropic/claude-fable-5",
+    "provider": "openrouter",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/anthropic/claude-fable-5.1",
+    "provider": "openrouter",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/anthropic/claude-opus-4.8",
+    "provider": "openrouter",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/anthropic/claude-sonnet-5",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/google/gemini-2.5-flash-lite",
+    "provider": "openrouter",
+    "input": 1E-7,
+    "output": 4E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
+    "model": "openrouter/google/gemini-3.5-flash",
+    "provider": "openrouter",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
+    "model": "openrouter/google/gemini-3.5-flash-lite",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/google/gemini-3.6-flash",
+    "provider": "openrouter",
+    "input": 7.5E-7,
+    "output": 0.00000375,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/google/gemini-3.7-flash",
+    "provider": "openrouter",
+    "input": 7.5E-7,
+    "output": 0.00000375,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/google/gemini-3.8-flash",
+    "provider": "openrouter",
+    "input": 7.5E-7,
+    "output": 0.00000375,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/openai/gpt-4o-mini",
+    "provider": "openrouter",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/openai/gpt-5.1",
+    "provider": "openrouter",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-5.3-codex",
+    "provider": "openrouter",
+    "input": 0.00000175,
+    "output": 0.000014,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-5.4",
+    "provider": "openrouter",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-5.4-mini",
+    "provider": "openrouter",
+    "input": 7.5E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-5.4-nano",
+    "provider": "openrouter",
+    "input": 2E-7,
+    "output": 0.00000125,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-5.5",
+    "provider": "openrouter",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-5.6-luna",
+    "provider": "openrouter",
+    "input": 2E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-5.6-terra",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000012,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/o3",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000008,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "openrouter/openai/o4-mini",
+    "provider": "openrouter",
+    "input": 0.0000011,
+    "output": 0.0000044,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "openrouter/x-ai/grok-4.20",
+    "provider": "openrouter",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "openrouter/x-ai/grok-4.20-multi-agent",
+    "provider": "openrouter",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "openrouter/x-ai/grok-4.3",
+    "provider": "openrouter",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "openrouter/x-ai/grok-4.5",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "openrouter/x-ai/grok-4.6",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "openrouter/x-ai/grok-build-0.1",
+    "provider": "openrouter",
+    "input": 0.000001,
+    "output": 0.000002,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 256000
+  },
+  {
+    "model": "baseten/zai-org/GLM-5.3",
+    "provider": "baseten",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "openrouter/minimax/minimax-m3",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 512000
+  },
+  {
+    "model": "openrouter/qwen/qwen3.7-plus",
+    "provider": "openrouter",
+    "input": 3.2E-7,
+    "output": 0.00000128,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/openai/gpt-6-astra",
+    "provider": "openrouter",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/qwen/qwen3.8-flash",
+    "provider": "openrouter",
+    "input": 1.5E-7,
+    "output": 4.7E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/z-ai/glm-5.3-flash",
+    "provider": "openrouter",
+    "input": 7.5E-8,
+    "output": 2.5E-7,
+    "max_input_tokens": 1310720,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/deepseek/deepseek-v4-flash-vision-exp",
+    "provider": "openrouter",
+    "input": 2.2E-7,
+    "output": 6.6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "openrouter/z-ai/glm-5.3",
+    "provider": "openrouter",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1310720,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "openrouter/qwen/qwen3.8-27b",
+    "provider": "openrouter",
+    "input": 4.2E-7,
+    "output": 0.000003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/qwen/qwen3.8-2.4t-a95b",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3.5-lightning:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.8-max",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+    "provider": "openrouter",
+    "input": 6.5E-8,
+    "output": 1.8E-7,
+    "max_input_tokens": 1310720,
+    "max_output_tokens": 943718
+  },
+  {
+    "model": "openrouter/qwen/qwen3.7-flash",
+    "provider": "openrouter",
+    "input": 3E-8,
+    "output": 1.3E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/poolside/laguna-s-2.1",
+    "provider": "openrouter",
+    "input": 9E-8,
+    "output": 1.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/poolside/laguna-s-2.1:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/moonshotai/kimi-k3",
+    "provider": "openrouter",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 943718
+  },
+  {
+    "model": "openrouter/poolside/laguna-xs-2.1",
+    "provider": "openrouter",
+    "input": 6E-8,
+    "output": 1.2E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/poolside/laguna-xs-2.1:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/google/gemini-3.1-flash-image",
+    "provider": "openrouter",
+    "input": 5E-7,
+    "output": 0.000003,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/google/gemini-3-pro-image",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000012,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/z-ai/glm-5.2",
+    "provider": "openrouter",
+    "input": 9.66E-7,
+    "output": 0.000003036,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/z-ai/glm-5.2:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 230400
+  },
+  {
+    "model": "openrouter/moonshotai/kimi-k2.7-code",
+    "provider": "openrouter",
+    "input": 6.6E-7,
+    "output": 0.0000034,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3.5-content-safety",
+    "provider": "openrouter",
+    "input": 2E-7,
+    "output": 2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 117964
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3.5-content-safety:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b",
+    "provider": "openrouter",
+    "input": 6.25E-7,
+    "output": 0.000003125,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/minimax/minimax-m3:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 943718
+  },
+  {
+    "model": "openrouter/qwen/qwen3.7-max",
+    "provider": "openrouter",
+    "input": 0.000001475,
+    "output": 0.000004425,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/mistralai/mistral-medium-3-5",
+    "provider": "openrouter",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 209715
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.5-plus-20260420",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 0.0000018,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.6-flash",
+    "provider": "openrouter",
+    "input": 1.875E-7,
+    "output": 0.000001125,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.6-35b-a3b",
+    "provider": "openrouter",
+    "input": 1E-7,
+    "output": 9E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/qwen/qwen3.6-max-preview",
+    "provider": "openrouter",
+    "input": 0.000001027,
+    "output": 0.000006162,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3.6-27b",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 0.000002,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/openai/gpt-5.5-pro",
+    "provider": "openrouter",
+    "input": 0.00003,
+    "output": 0.00018,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "provider": "openrouter",
+    "input": 8.778E-8,
+    "output": 1.7556E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "openrouter/moonshotai/kimi-k2.6",
+    "provider": "openrouter",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/google/gemma-4-26b-a4b-it",
+    "provider": "openrouter",
+    "input": 7E-8,
+    "output": 3.4E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/google/gemma-4-26b-a4b-it:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/google/gemma-4-31b-it",
+    "provider": "openrouter",
+    "input": 9E-8,
+    "output": 3.4E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/google/gemma-4-31b-it:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/z-ai/glm-5v-turbo",
+    "provider": "openrouter",
+    "input": 0.0000012,
+    "output": 0.000004,
+    "max_input_tokens": 202752,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/minimax/minimax-m2.7",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 204800,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/minimax/minimax-m2.7:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 196608,
+    "max_output_tokens": 176947
+  },
+  {
+    "model": "openrouter/mistralai/mistral-small-2603",
+    "provider": "openrouter",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 209715
+  },
+  {
+    "model": "openrouter/z-ai/glm-5-turbo",
+    "provider": "openrouter",
+    "input": 0.0000012,
+    "output": 0.000004,
+    "max_input_tokens": 202752,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3-super-120b-a12b",
+    "provider": "openrouter",
+    "input": 8.5E-8,
+    "output": 4E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/qwen/qwen3.5-9b",
+    "provider": "openrouter",
+    "input": 1E-7,
+    "output": 1.5E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/openai/gpt-5.4-pro",
+    "provider": "openrouter",
+    "input": 0.00003,
+    "output": 0.00018,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/google/gemini-3.1-pro-preview-customtools",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3-max-thinking",
+    "provider": "openrouter",
+    "input": 7.8E-7,
+    "output": 0.0000039,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3-coder-next",
+    "provider": "openrouter",
+    "input": 1.2E-7,
+    "output": 8E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/openai/gpt-audio",
+    "provider": "openrouter",
+    "input": 0.0000025,
+    "output": 0.00001,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/openai/gpt-audio-mini",
+    "provider": "openrouter",
+    "input": 6E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b",
+    "provider": "openrouter",
+    "input": 5E-8,
+    "output": 2E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/z-ai/glm-4.6v",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 9E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/openai/gpt-5.1-codex",
+    "provider": "openrouter",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-5.1-codex-mini",
+    "provider": "openrouter",
+    "input": 2.5E-7,
+    "output": 0.000002,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/moonshotai/kimi-k2-thinking",
+    "provider": "openrouter",
+    "input": 6E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 100352
+  },
+  {
+    "model": "openrouter/openai/gpt-oss-safeguard-20b",
+    "provider": "openrouter",
+    "input": 7.5E-8,
+    "output": 3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3-vl-32b-instruct",
+    "provider": "openrouter",
+    "input": 1.04E-7,
+    "output": 4.16E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/qwen/qwen3-vl-8b-thinking",
+    "provider": "openrouter",
+    "input": 1.8E-7,
+    "output": 0.0000021,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/qwen/qwen3-vl-8b-instruct",
+    "provider": "openrouter",
+    "input": 1.17E-7,
+    "output": 4.55E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/qwen/qwen3-vl-30b-a3b-thinking",
+    "provider": "openrouter",
+    "input": 2E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/qwen/qwen3-vl-30b-a3b-instruct",
+    "provider": "openrouter",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/openai/gpt-5-pro",
+    "provider": "openrouter",
+    "input": 0.000015,
+    "output": 0.00012,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/qwen/qwen3-vl-235b-a22b-thinking",
+    "provider": "openrouter",
+    "input": 4E-7,
+    "output": 0.000004,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/qwen/qwen3-vl-235b-a22b-instruct",
+    "provider": "openrouter",
+    "input": 2.1E-7,
+    "output": 0.0000019,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/qwen/qwen3-max",
+    "provider": "openrouter",
+    "input": 7.8E-7,
+    "output": 0.0000039,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/deepseek/deepseek-v3.1-terminus",
+    "provider": "openrouter",
+    "input": 2.7E-7,
+    "output": 0.000001,
+    "max_input_tokens": 163840,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/qwen/qwen3-coder-flash",
+    "provider": "openrouter",
+    "input": 1.95E-7,
+    "output": 9.75E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/qwen/qwen3-next-80b-a3b-thinking",
+    "provider": "openrouter",
+    "input": 1.5E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/qwen/qwen3-next-80b-a3b-instruct",
+    "provider": "openrouter",
+    "input": 1E-7,
+    "output": 0.0000011,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/qwen/qwen-plus-2025-07-28",
+    "provider": "openrouter",
+    "input": 2.6E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/moonshotai/kimi-k2-0905",
+    "provider": "openrouter",
+    "input": 6E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 100352
+  },
+  {
+    "model": "openrouter/mistralai/mistral-medium-3.1",
+    "provider": "openrouter",
+    "input": 4E-7,
+    "output": 0.000002,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 104857
+  },
+  {
+    "model": "openrouter/mistralai/codestral-2508",
+    "provider": "openrouter",
+    "input": 3E-7,
+    "output": 9E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 204800
+  },
+  {
+    "model": "openrouter/qwen/qwen3-coder-30b-a3b-instruct",
+    "provider": "openrouter",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/qwen/qwen3-30b-a3b-instruct-2507",
+    "provider": "openrouter",
+    "input": 4.815E-8,
+    "output": 1.9305E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "openrouter/z-ai/glm-4.5",
+    "provider": "openrouter",
+    "input": 6E-7,
+    "output": 0.0000022,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 98304
+  },
+  {
+    "model": "openrouter/z-ai/glm-4.5-air",
+    "provider": "openrouter",
+    "input": 1.3E-7,
+    "output": 8.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 98304
+  },
+  {
+    "model": "openrouter/moonshotai/kimi-k2",
+    "provider": "openrouter",
+    "input": 5.7E-7,
+    "output": 0.0000023,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 100352
+  },
+  {
+    "model": "openrouter/minimax/minimax-m1",
+    "provider": "openrouter",
+    "input": 5.5E-7,
+    "output": 0.0000022,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "openrouter/openai/o3-pro",
+    "provider": "openrouter",
+    "input": 0.00002,
+    "output": 0.00008,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "openrouter/google/gemini-2.5-pro-preview",
+    "provider": "openrouter",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/mistralai/mistral-medium-3",
+    "provider": "openrouter",
+    "input": 4E-7,
+    "output": 0.000002,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 104857
+  },
+  {
+    "model": "openrouter/google/gemini-2.5-pro-preview-05-06",
+    "provider": "openrouter",
+    "input": 0.00000125,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
+    "model": "openrouter/meta-llama/llama-guard-4-12b",
+    "provider": "openrouter",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 163840,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/qwen/qwen3-30b-a3b",
+    "provider": "openrouter",
+    "input": 1.2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/qwen/qwen3-8b",
+    "provider": "openrouter",
+    "input": 1.17E-7,
+    "output": 4.55E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "openrouter/qwen/qwen3-14b",
+    "provider": "openrouter",
+    "input": 1.2E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/qwen/qwen3-32b",
+    "provider": "openrouter",
+    "input": 8E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/qwen/qwen3-235b-a22b",
+    "provider": "openrouter",
+    "input": 4.55E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "openrouter/openai/o4-mini-high",
+    "provider": "openrouter",
+    "input": 0.0000011,
+    "output": 0.0000044,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "openrouter/meta-llama/llama-4-maverick",
+    "provider": "openrouter",
+    "input": 2E-7,
+    "output": 6.96E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 115200
+  },
+  {
+    "model": "openrouter/meta-llama/llama-4-scout",
+    "provider": "openrouter",
+    "input": 1E-7,
+    "output": 3E-7,
+    "max_input_tokens": 1310720,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/openai/o1-pro",
+    "provider": "openrouter",
+    "input": 0.00015,
+    "output": 0.0006,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "openrouter/google/gemma-3-4b-it",
+    "provider": "openrouter",
+    "input": 5E-8,
+    "output": 1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/google/gemma-3-12b-it",
+    "provider": "openrouter",
+    "input": 5E-8,
+    "output": 1.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/google/gemma-3-27b-it",
+    "provider": "openrouter",
+    "input": 8E-8,
+    "output": 4.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 117964
+  },
+  {
+    "model": "openrouter/qwen/qwen2.5-vl-72b-instruct",
+    "provider": "openrouter",
+    "input": 8E-7,
+    "output": 0.000001,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 115200
+  },
+  {
+    "model": "openrouter/qwen/qwen-plus",
+    "provider": "openrouter",
+    "input": 2.6E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "openrouter/minimax/minimax-01",
+    "provider": "openrouter",
+    "input": 2E-7,
+    "output": 0.0000011,
+    "max_input_tokens": 1000192,
+    "max_output_tokens": 900172
+  },
+  {
+    "model": "openrouter/meta-llama/llama-3.3-70b-instruct",
+    "provider": "openrouter",
+    "input": 1E-7,
+    "output": 3.2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/openai/gpt-4o-2024-11-20",
+    "provider": "openrouter",
+    "input": 0.0000025,
+    "output": 0.00001,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/mistralai/mistral-large-2407",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 104857
+  },
+  {
+    "model": "openrouter/meta-llama/llama-3.2-3b-instruct",
+    "provider": "openrouter",
+    "input": 5E-8,
+    "output": 3.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 117964
+  },
+  {
+    "model": "openrouter/openai/gpt-4o-2024-08-06",
+    "provider": "openrouter",
+    "input": 0.0000025,
+    "output": 0.00001,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/meta-llama/llama-3.1-70b-instruct",
+    "provider": "openrouter",
+    "input": 4E-7,
+    "output": 4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/meta-llama/llama-3.1-8b-instruct",
+    "provider": "openrouter",
+    "input": 5E-8,
+    "output": 8E-8,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 117964
+  },
+  {
+    "model": "openrouter/mistralai/mistral-nemo",
+    "provider": "openrouter",
+    "input": 1.9E-8,
+    "output": 3E-8,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/openai/gpt-4o-mini-2024-07-18",
+    "provider": "openrouter",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "openrouter/openai/gpt-4-turbo",
+    "provider": "openrouter",
+    "input": 0.00001,
+    "output": 0.00003,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "openrouter/openai/gpt-4-turbo-preview",
+    "provider": "openrouter",
+    "input": 0.00001,
+    "output": 0.00003,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
   }
 ]
