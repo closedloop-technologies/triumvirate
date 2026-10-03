@@ -282,8 +282,8 @@
   {
     "model": "anthropic.claude-mythos-preview",
     "provider": "bedrock",
-    "input": 0,
-    "output": 0,
+    "input": 0.0000275,
+    "output": 0.0001375,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
@@ -821,7 +821,7 @@
     "input": 0.000003,
     "output": 0.000015,
     "max_input_tokens": 1000000,
-    "max_output_tokens": 64000
+    "max_output_tokens": 128000
   },
   {
     "model": "azure_ai/gpt-oss-120b",
@@ -856,11 +856,19 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure_ai/gpt-6.1-sol",
+    "provider": "azure_ai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure_ai/gpt-5.5",
     "provider": "azure_ai",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -884,7 +892,7 @@
     "provider": "azure_ai",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -892,7 +900,7 @@
     "provider": "azure_ai",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -900,7 +908,7 @@
     "provider": "azure_ai",
     "input": 0.0000025,
     "output": 0.000015,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -908,7 +916,7 @@
     "provider": "azure_ai",
     "input": 0.0000025,
     "output": 0.000015,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -916,7 +924,7 @@
     "provider": "azure_ai",
     "input": 0.00003,
     "output": 0.00018,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -924,7 +932,7 @@
     "provider": "azure_ai",
     "input": 0.00003,
     "output": 0.00018,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1009,14 +1017,6 @@
   },
   {
     "model": "azure/eu/gpt-4o-realtime-preview-2024-10-01",
-    "provider": "azure",
-    "input": 0.0000055,
-    "output": 0.000022,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure/eu/gpt-4o-realtime-preview-2024-12-17",
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000022,
@@ -1346,8 +1346,8 @@
   {
     "model": "azure/gpt-4o-mini",
     "provider": "azure",
-    "input": 1.65E-7,
-    "output": 6.6E-7,
+    "input": 1.5E-7,
+    "output": 6E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 16384
   },
@@ -1377,14 +1377,6 @@
   },
   {
     "model": "azure/gpt-4o-realtime-preview-2024-10-01",
-    "provider": "azure",
-    "input": 0.000005,
-    "output": 0.00002,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure/gpt-4o-realtime-preview-2024-12-17",
     "provider": "azure",
     "input": 0.000005,
     "output": 0.00002,
@@ -1660,7 +1652,7 @@
     "provider": "azure",
     "input": 0.0000025,
     "output": 0.000015,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1668,7 +1660,7 @@
     "provider": "azure",
     "input": 0.00000275,
     "output": 0.0000165,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1676,7 +1668,7 @@
     "provider": "azure",
     "input": 0.00000275,
     "output": 0.0000165,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1684,7 +1676,7 @@
     "provider": "azure",
     "input": 0.0000025,
     "output": 0.000015,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1692,7 +1684,7 @@
     "provider": "azure",
     "input": 0.00000275,
     "output": 0.0000165,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1700,7 +1692,7 @@
     "provider": "azure",
     "input": 0.00000275,
     "output": 0.0000165,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1708,7 +1700,7 @@
     "provider": "azure",
     "input": 0.00003,
     "output": 0.00018,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1716,14 +1708,14 @@
     "provider": "azure",
     "input": 0.00003,
     "output": 0.00018,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
     "model": "azure/gpt-5.6",
     "provider": "azure",
-    "input": 0.000005,
-    "output": 0.00003,
+    "input": 0.000004,
+    "output": 0.00002,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -1824,6 +1816,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/gpt-6.1-sol",
+    "provider": "azure",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-6.1-sol-2026-09-29",
+    "provider": "azure",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure/gpt-chat-latest",
     "provider": "azure",
     "input": 0.000005,
@@ -1842,8 +1850,8 @@
   {
     "model": "azure/us/gpt-5.6",
     "provider": "azure",
-    "input": 0.0000055,
-    "output": 0.000033,
+    "input": 0.0000044,
+    "output": 0.000022,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -1906,8 +1914,8 @@
   {
     "model": "azure/eu/gpt-5.6",
     "provider": "azure",
-    "input": 0.0000055,
-    "output": 0.000033,
+    "input": 0.0000044,
+    "output": 0.000022,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -1940,7 +1948,7 @@
     "provider": "azure",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1948,7 +1956,7 @@
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1956,7 +1964,7 @@
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1964,7 +1972,7 @@
     "provider": "azure",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1972,7 +1980,7 @@
     "provider": "azure",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1980,7 +1988,7 @@
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1988,7 +1996,7 @@
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -1996,7 +2004,7 @@
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -2004,7 +2012,7 @@
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -2217,14 +2225,6 @@
   },
   {
     "model": "azure/us/gpt-4o-realtime-preview-2024-10-01",
-    "provider": "azure",
-    "input": 0.0000055,
-    "output": 0.000022,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure/us/gpt-4o-realtime-preview-2024-12-17",
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000022,
@@ -2461,7 +2461,7 @@
     "input": 7.1E-7,
     "output": 7.1E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": 2048
+    "max_output_tokens": 8192
   },
   {
     "model": "azure_ai/Llama-4-Maverick-17B-128E-Instruct-FP8",
@@ -2469,7 +2469,7 @@
     "input": 2.5E-7,
     "output": 0.000001,
     "max_input_tokens": 1000000,
-    "max_output_tokens": 16384
+    "max_output_tokens": 1000000
   },
   {
     "model": "azure_ai/Llama-4-Scout-17B-16E-Instruct",
@@ -2580,16 +2580,16 @@
     "provider": "azure_ai",
     "input": 5.8E-7,
     "output": 0.00000168,
-    "max_input_tokens": 163840,
-    "max_output_tokens": 163840
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
   },
   {
     "model": "azure_ai/deepseek-v3.2-speciale",
     "provider": "azure_ai",
     "input": 5.8E-7,
     "output": 0.00000168,
-    "max_input_tokens": 163840,
-    "max_output_tokens": 163840
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
   },
   {
     "model": "azure_ai/deepseek-v3",
@@ -2621,7 +2621,7 @@
     "input": 4.4E-7,
     "output": 0.00000132,
     "max_input_tokens": 1000000,
-    "max_output_tokens": 128000
+    "max_output_tokens": 384000
   },
   {
     "model": "azure_ai/embed-v-4-0",
@@ -2636,8 +2636,8 @@
     "provider": "azure_ai",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
+    "max_input_tokens": 262000,
+    "max_output_tokens": 8192
   },
   {
     "model": "azure_ai/grok-4.3",
@@ -2645,12 +2645,12 @@
     "input": 0.00000125,
     "output": 0.0000025,
     "max_input_tokens": 200000,
-    "max_output_tokens": 200000
+    "max_output_tokens": 8192
   },
   {
     "model": "azure_ai/grok-4.6",
     "provider": "azure_ai",
-    "input": 0.000002,
+    "input": 0.00000125,
     "output": 0.000006,
     "max_input_tokens": 200000,
     "max_output_tokens": 128000
@@ -2676,24 +2676,24 @@
     "provider": "azure_ai",
     "input": 2E-7,
     "output": 5E-7,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
   },
   {
     "model": "azure_ai/grok-4-1-fast-reasoning",
     "provider": "azure_ai",
     "input": 2E-7,
     "output": 5E-7,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
   },
   {
     "model": "azure_ai/grok-code-fast-1",
     "provider": "azure_ai",
     "input": 2E-7,
     "output": 0.0000015,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8192
   },
   {
     "model": "azure_ai/kimi-k2.5",
@@ -2906,8 +2906,8 @@
   {
     "model": "bedrock/ap-southeast-2/minimax.minimax-m2.5",
     "provider": "bedrock",
-    "input": 3.09E-7,
-    "output": 0.000001236,
+    "input": 3.1E-7,
+    "output": 0.00000124,
     "max_input_tokens": 1000000,
     "max_output_tokens": 8192
   },
@@ -3512,6 +3512,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "claude-sonnet-4-6",
     "provider": "anthropic",
     "input": 0.000003,
@@ -3766,6 +3774,14 @@
     "output": 0.00001,
     "max_input_tokens": 256000,
     "max_output_tokens": 8000
+  },
+  {
+    "model": "c4ai-aya-expanse-32b",
+    "provider": "cohere_chat",
+    "input": 5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4000
   },
   {
     "model": "command-a-plus-05-2026",
@@ -4476,6 +4492,14 @@
     "provider": "databricks",
     "input": 0.00000500003,
     "output": 0.00002500001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-claude-opus-5-5",
+    "provider": "databricks",
+    "input": 0.00000400001,
+    "output": 0.00001999998,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
@@ -5294,6 +5318,94 @@
     "output": 0.0,
     "max_input_tokens": 229376,
     "max_output_tokens": 32768
+  },
+  {
+    "model": "sail/moonshotai/Kimi-K3",
+    "provider": "sail",
+    "input": 0.0000025,
+    "output": 0.0000125,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sail/zai-org/GLM-5.3",
+    "provider": "sail",
+    "input": 9.8E-7,
+    "output": 0.00000308,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sail/zai-org/GLM-5.3-Flash",
+    "provider": "sail",
+    "input": 1.1E-7,
+    "output": 3.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sail/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "provider": "sail",
+    "input": 9.2E-7,
+    "output": 0.00000277,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sail/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "provider": "sail",
+    "input": 9E-8,
+    "output": 1.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sail/deepseek-ai/DeepSeek-V4.1-Flash",
+    "provider": "sail",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sail/moonshotai/Kimi-K2.6",
+    "provider": "sail",
+    "input": 0.000001,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "sail/google/gemma-4-31B-it",
+    "provider": "sail",
+    "input": 4E-7,
+    "output": 6E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 256000
+  },
+  {
+    "model": "sail/nvidia/Gemma-4-31B-IT-NVFP4",
+    "provider": "sail",
+    "input": 1.4E-7,
+    "output": 4E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "sail/openai/gpt-oss-120b",
+    "provider": "sail",
+    "input": 6E-8,
+    "output": 4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "sail/Qwen/Qwen3.6-35B-A3B",
+    "provider": "sail",
+    "input": 5E-8,
+    "output": 4E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
   },
   {
     "model": "eu.amazon.nova-lite-v1:0",
@@ -6176,6 +6288,14 @@
     "max_output_tokens": 32768
   },
   {
+    "model": "gemini/deep-research-pro-preview-12-2025",
+    "provider": "gemini",
+    "input": 0.000002,
+    "output": 0.000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "gemini/gemini-2.5-flash-lite",
     "provider": "gemini",
     "input": 1E-7,
@@ -6406,6 +6526,38 @@
     "output": 0,
     "max_input_tokens": 131072,
     "max_output_tokens": 8192
+  },
+  {
+    "model": "github_copilot/claude-haiku-4.5",
+    "provider": "github_copilot",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "github_copilot/claude-sonnet-4",
+    "provider": "github_copilot",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "github_copilot/gpt-5-mini",
+    "provider": "github_copilot",
+    "input": 2.5E-7,
+    "output": 0.000002,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "github_copilot/gpt-5.3-codex",
+    "provider": "github_copilot",
+    "input": 0.00000175,
+    "output": 0.000014,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
   },
   {
     "model": "github_copilot/mai-code-1-flash",
@@ -7810,16 +7962,16 @@
   {
     "model": "meta.llama3-1-405b-instruct-v1:0",
     "provider": "bedrock",
-    "input": 0.00000532,
-    "output": 0.000016,
+    "input": 0.0000024,
+    "output": 0.0000024,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
   {
     "model": "meta.llama3-1-70b-instruct-v1:0",
     "provider": "bedrock",
-    "input": 9.9E-7,
-    "output": 9.9E-7,
+    "input": 7.2E-7,
+    "output": 7.2E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 2048
   },
@@ -7834,8 +7986,8 @@
   {
     "model": "meta.llama3-2-11b-instruct-v1:0",
     "provider": "bedrock",
-    "input": 3.5E-7,
-    "output": 3.5E-7,
+    "input": 1.6E-7,
+    "output": 1.6E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
@@ -7858,8 +8010,8 @@
   {
     "model": "meta.llama3-2-90b-instruct-v1:0",
     "provider": "bedrock",
-    "input": 0.000002,
-    "output": 0.000002,
+    "input": 7.2E-7,
+    "output": 7.2E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
@@ -8042,8 +8194,8 @@
   {
     "model": "mistral.mistral-large-2407-v1:0",
     "provider": "bedrock",
-    "input": 0.000003,
-    "output": 0.000009,
+    "input": 0.000002,
+    "output": 0.000006,
     "max_input_tokens": 128000,
     "max_output_tokens": 8191
   },
@@ -8592,6 +8744,22 @@
     "max_output_tokens": 1048576
   },
   {
+    "model": "nebius/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "provider": "nebius",
+    "input": 0.00000132,
+    "output": 0.00000396,
+    "max_input_tokens": 979000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "nebius/deepseek-ai/DeepSeek-V4.1-Flash",
+    "provider": "nebius",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048000,
+    "max_output_tokens": 384000
+  },
+  {
     "model": "nebius/MiniMaxAI/MiniMax-M2.5",
     "provider": "nebius",
     "input": 3E-7,
@@ -8744,6 +8912,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "nebius/Qwen/Qwen3.8-27B",
+    "provider": "nebius",
+    "input": 4.5E-7,
+    "output": 0.000003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
     "model": "nebius/zai-org/GLM-5.1",
     "provider": "nebius",
     "input": 0.0000014,
@@ -8764,7 +8940,7 @@
     "provider": "nebius",
     "input": 0.0000014,
     "output": 0.0000044,
-    "max_input_tokens": 1048576,
+    "max_input_tokens": 1024000,
     "max_output_tokens": null
   },
   {
@@ -9386,16 +9562,16 @@
   {
     "model": "openrouter/deepseek/deepseek-chat",
     "provider": "openrouter",
-    "input": 3.2E-7,
-    "output": 8.9E-7,
+    "input": 2.574E-7,
+    "output": 0.0000010287,
     "max_input_tokens": 163840,
     "max_output_tokens": 16384
   },
   {
     "model": "openrouter/deepseek/deepseek-chat-v3-0324",
     "provider": "openrouter",
-    "input": 2.5E-7,
-    "output": 0.000001,
+    "input": 2.9E-7,
+    "output": 0.00000114,
     "max_input_tokens": 163840,
     "max_output_tokens": 147456
   },
@@ -9410,8 +9586,8 @@
   {
     "model": "openrouter/deepseek/deepseek-v3.2",
     "provider": "openrouter",
-    "input": 2.69E-7,
-    "output": 4E-7,
+    "input": 2.8E-7,
+    "output": 4.2E-7,
     "max_input_tokens": 163840,
     "max_output_tokens": 65536
   },
@@ -9421,7 +9597,7 @@
     "input": 2.7E-7,
     "output": 4.1E-7,
     "max_input_tokens": 163840,
-    "max_output_tokens": 65536
+    "max_output_tokens": 147456
   },
   {
     "model": "openrouter/deepseek/deepseek-r1-0528",
@@ -9434,26 +9610,26 @@
   {
     "model": "openrouter/deepseek/deepseek-v4-pro",
     "provider": "openrouter",
-    "input": 4.5936E-7,
-    "output": 9.1872E-7,
+    "input": 2.088E-7,
+    "output": 4.176E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 384000
   },
   {
     "model": "openrouter/deepseek/deepseek-v4.1-flash",
     "provider": "openrouter",
-    "input": 1.4E-7,
-    "output": 4.2E-7,
+    "input": 3E-7,
+    "output": 0.0000012,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 393216
+    "max_output_tokens": 943718
   },
   {
     "model": "openrouter/deepseek/deepseek-v4-pro-0813",
     "provider": "openrouter",
-    "input": 2.64E-7,
-    "output": 7.92E-7,
+    "input": 0.00000132,
+    "output": 0.00000396,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 384000
+    "max_output_tokens": 393216
   },
   {
     "model": "openrouter/fireworks/ember-1",
@@ -9525,7 +9701,7 @@
     "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 204800,
-    "max_output_tokens": 131072
+    "max_output_tokens": 176947
   },
   {
     "model": "openrouter/mistralai/devstral-2512",
@@ -9594,10 +9770,10 @@
   {
     "model": "openrouter/nvidia/nemotron-3.5-lightning",
     "provider": "openrouter",
-    "input": 8E-8,
-    "output": 2E-7,
+    "input": 5.95E-8,
+    "output": 1.7E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": 235929
+    "max_output_tokens": 131072
   },
   {
     "model": "openrouter/openai/gpt-4.1",
@@ -9730,18 +9906,18 @@
   {
     "model": "openrouter/openai/gpt-5.6-sol-pro",
     "provider": "openrouter",
-    "input": 0.000002,
-    "output": 0.00001,
+    "input": 0.000004,
+    "output": 0.00002,
     "max_input_tokens": 1050000,
     "max_output_tokens": 128000
   },
   {
     "model": "openrouter/openai/gpt-oss-120b",
     "provider": "openrouter",
-    "input": 1.5E-7,
-    "output": 6E-7,
+    "input": 3.7E-8,
+    "output": 1.7E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": 65536
+    "max_output_tokens": 117964
   },
   {
     "model": "openrouter/openai/gpt-oss-120b:batch",
@@ -9826,10 +10002,10 @@
   {
     "model": "openrouter/qwen/qwen3.5-35b-a3b",
     "provider": "openrouter",
-    "input": 3.125E-7,
-    "output": 0.00000125,
+    "input": 1.5E-7,
+    "output": 0.000001,
     "max_input_tokens": 262144,
-    "max_output_tokens": 16384
+    "max_output_tokens": 235929
   },
   {
     "model": "openrouter/qwen/qwen3.5-27b",
@@ -9845,7 +10021,7 @@
     "input": 2.6E-7,
     "output": 0.00000208,
     "max_input_tokens": 262144,
-    "max_output_tokens": 65536
+    "max_output_tokens": 235929
   },
   {
     "model": "openrouter/qwen/qwen3.5-flash-02-23",
@@ -9954,10 +10130,10 @@
   {
     "model": "openrouter/z-ai/glm-5.1",
     "provider": "openrouter",
-    "input": 9.646E-7,
-    "output": 0.0000030316,
+    "input": 0.0000014,
+    "output": 0.0000044,
     "max_input_tokens": 204800,
-    "max_output_tokens": 128000
+    "max_output_tokens": 131072
   },
   {
     "model": "openrouter/minimax/minimax-m2.1",
@@ -10794,16 +10970,16 @@
   {
     "model": "us.meta.llama3-1-405b-instruct-v1:0",
     "provider": "bedrock",
-    "input": 0.00000532,
-    "output": 0.000016,
+    "input": 0.0000024,
+    "output": 0.0000024,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
   {
     "model": "us.meta.llama3-1-70b-instruct-v1:0",
     "provider": "bedrock",
-    "input": 9.9E-7,
-    "output": 9.9E-7,
+    "input": 7.2E-7,
+    "output": 7.2E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 2048
   },
@@ -10818,8 +10994,8 @@
   {
     "model": "us.meta.llama3-2-11b-instruct-v1:0",
     "provider": "bedrock",
-    "input": 3.5E-7,
-    "output": 3.5E-7,
+    "input": 1.6E-7,
+    "output": 1.6E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
@@ -10842,8 +11018,8 @@
   {
     "model": "us.meta.llama3-2-90b-instruct-v1:0",
     "provider": "bedrock",
-    "input": 0.000002,
-    "output": 0.000002,
+    "input": 7.2E-7,
+    "output": 7.2E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
@@ -13804,7 +13980,7 @@
     "provider": "gemini",
     "input": 5E-7,
     "output": 0.000002,
-    "max_input_tokens": 1048576,
+    "max_input_tokens": 131072,
     "max_output_tokens": 8192
   },
   {
@@ -13852,7 +14028,7 @@
     "provider": "gemini",
     "input": 5E-7,
     "output": 0.000002,
-    "max_input_tokens": 1048576,
+    "max_input_tokens": 131072,
     "max_output_tokens": 8192
   },
   {
@@ -14238,6 +14414,22 @@
     "output": 0.000005,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock_mantle/anthropic.claude-opus-5-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000044,
+    "output": 0.000022,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
   },
   {
     "model": "us.xai.grok-4.6",
@@ -14646,6 +14838,14 @@
     "output": 0.00005,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "gemini/gemini-robotics-er-2-streaming-preview",
+    "provider": "gemini",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
   },
   {
     "model": "mistral/mistral-small-2603",
@@ -16012,7 +16212,7 @@
     "provider": "groq",
     "input": 8E-7,
     "output": 0.000004,
-    "max_input_tokens": 131042,
+    "max_input_tokens": 131072,
     "max_output_tokens": 16384
   },
   {
@@ -16258,18 +16458,10 @@
   {
     "model": "azure_ai/deepseek-v4.1-flash",
     "provider": "azure_ai",
-    "input": 3.75E-7,
-    "output": 0.0000015,
+    "input": 3E-7,
+    "output": 0.0000012,
     "max_input_tokens": 1000000,
     "max_output_tokens": 384000
-  },
-  {
-    "model": "azure_ai/muse-spark-1.3",
-    "provider": "azure_ai",
-    "input": 0.00000125,
-    "output": 0.00000425,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 131072
   },
   {
     "model": "azure_ai/FW-DeepSeek-V4.1-Flash",
@@ -16584,6 +16776,22 @@
     "max_output_tokens": 32768
   },
   {
+    "model": "bedrock_mantle/us-gov-west-1/anthropic.claude-opus-5-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000048,
+    "output": 0.000024,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000024,
+    "output": 0.000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "bedrock_mantle/us-gov-east-1/openai.gpt-5.4",
     "provider": "bedrock_mantle",
     "input": 0.0000033,
@@ -16614,6 +16822,62 @@
     "output": 7.2E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 32768
+  },
+  {
+    "model": "bedrock_mantle/deepseek.v3.1",
+    "provider": "bedrock_mantle",
+    "input": 5.8E-7,
+    "output": 0.00000168,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/moonshotai.kimi-k2-thinking",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.2E-7,
+    "output": 8.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/qwen.qwen3-coder-480b-a35b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 4.5E-7,
+    "output": 0.0000018,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.4E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 5.3E-7,
+    "output": 0.00000266,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
   },
   {
     "model": "azure/us-gov/gpt-5.1",
@@ -16652,7 +16916,7 @@
     "provider": "gemini",
     "input": 0,
     "output": 0,
-    "max_input_tokens": 1048576,
+    "max_input_tokens": 131072,
     "max_output_tokens": 65536
   },
   {
@@ -16954,26 +17218,26 @@
   {
     "model": "openrouter/z-ai/glm-5.3-flash",
     "provider": "openrouter",
-    "input": 4.5E-8,
-    "output": 1.4E-7,
+    "input": 1.5E-7,
+    "output": 5E-7,
     "max_input_tokens": 1310720,
-    "max_output_tokens": 943718
+    "max_output_tokens": 131072
   },
   {
     "model": "openrouter/deepseek/deepseek-v4-flash-vision-exp",
     "provider": "openrouter",
-    "input": 2.2E-7,
-    "output": 6.6E-7,
+    "input": 2.156E-7,
+    "output": 6.468E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 943718
+    "max_output_tokens": 262144
   },
   {
     "model": "openrouter/z-ai/glm-5.3",
     "provider": "openrouter",
     "input": 0.0000014,
     "output": 0.0000044,
-    "max_input_tokens": 1310720,
-    "max_output_tokens": 943717
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
   },
   {
     "model": "openrouter/qwen/qwen3.8-27b",
@@ -17026,9 +17290,9 @@
   {
     "model": "openrouter/deepseek/deepseek-v4-flash-0731",
     "provider": "openrouter",
-    "input": 2.2E-8,
-    "output": 3.2E-7,
-    "max_input_tokens": 1310720,
+    "input": 5.1E-9,
+    "output": 0.00000128,
+    "max_input_tokens": 1048576,
     "max_output_tokens": 943718
   },
   {
@@ -17058,8 +17322,8 @@
   {
     "model": "openrouter/moonshotai/kimi-k3",
     "provider": "openrouter",
-    "input": 0.000003,
-    "output": 0.000015,
+    "input": 0.0000027,
+    "output": 0.0000135,
     "max_input_tokens": 1048576,
     "max_output_tokens": 943718
   },
@@ -17098,16 +17362,16 @@
   {
     "model": "openrouter/z-ai/glm-5.2",
     "provider": "openrouter",
-    "input": 6.496E-7,
-    "output": 0.0000020416,
+    "input": 4.1E-7,
+    "output": 0.00000399,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 131072
+    "max_output_tokens": 943718
   },
   {
     "model": "openrouter/moonshotai/kimi-k2.7-code",
     "provider": "openrouter",
-    "input": 6.562E-7,
-    "output": 0.0000033,
+    "input": 6.712E-7,
+    "output": 0.00000335,
     "max_input_tokens": 262144,
     "max_output_tokens": 235929
   },
@@ -17130,10 +17394,10 @@
   {
     "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b",
     "provider": "openrouter",
-    "input": 6E-7,
-    "output": 0.0000024,
+    "input": 5E-7,
+    "output": 0.0000022,
     "max_input_tokens": 262144,
-    "max_output_tokens": 182520
+    "max_output_tokens": 16384
   },
   {
     "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free",
@@ -17213,7 +17477,7 @@
     "input": 3.2E-7,
     "output": 0.0000032,
     "max_input_tokens": 262144,
-    "max_output_tokens": 262140
+    "max_output_tokens": 81920
   },
   {
     "model": "openrouter/openai/gpt-5.5-pro",
@@ -17234,16 +17498,16 @@
   {
     "model": "openrouter/deepseek/deepseek-v4-flash",
     "provider": "openrouter",
-    "input": 4.704E-8,
-    "output": 9.408E-8,
+    "input": 2.8E-8,
+    "output": 5.6E-8,
     "max_input_tokens": 1048576,
     "max_output_tokens": 384000
   },
   {
     "model": "openrouter/moonshotai/kimi-k2.6",
     "provider": "openrouter",
-    "input": 9.5E-7,
-    "output": 0.000004,
+    "input": 4.3415E-7,
+    "output": 0.000001828,
     "max_input_tokens": 262144,
     "max_output_tokens": 235929
   },
@@ -17290,10 +17554,10 @@
   {
     "model": "openrouter/minimax/minimax-m2.7",
     "provider": "openrouter",
-    "input": 3E-7,
-    "output": 0.0000012,
+    "input": 2.1E-7,
+    "output": 8.4E-7,
     "max_input_tokens": 204800,
-    "max_output_tokens": 131072
+    "max_output_tokens": 176947
   },
   {
     "model": "openrouter/minimax/minimax-m2.7:free",
@@ -17477,7 +17741,7 @@
     "input": 1.5E-7,
     "output": 6E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": 32768
+    "max_output_tokens": 16384
   },
   {
     "model": "openrouter/openai/gpt-5-pro",
@@ -17517,7 +17781,7 @@
     "input": 2.7E-7,
     "output": 0.000001,
     "max_input_tokens": 163840,
-    "max_output_tokens": 32768
+    "max_output_tokens": 147456
   },
   {
     "model": "openrouter/qwen/qwen3-coder-flash",
@@ -17533,7 +17797,7 @@
     "input": 1.5E-7,
     "output": 0.0000012,
     "max_input_tokens": 262144,
-    "max_output_tokens": 235929
+    "max_output_tokens": 32768
   },
   {
     "model": "openrouter/qwen/qwen3-next-80b-a3b-instruct",
@@ -17541,7 +17805,7 @@
     "input": 1E-7,
     "output": 0.0000011,
     "max_input_tokens": 262144,
-    "max_output_tokens": 16384
+    "max_output_tokens": 235929
   },
   {
     "model": "openrouter/qwen/qwen-plus-2025-07-28",
@@ -17589,7 +17853,7 @@
     "input": 1E-7,
     "output": 3E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": 32000
+    "max_output_tokens": 235929
   },
   {
     "model": "openrouter/z-ai/glm-4.5",
@@ -17618,7 +17882,7 @@
   {
     "model": "openrouter/minimax/minimax-m1",
     "provider": "openrouter",
-    "input": 4E-7,
+    "input": 5.5E-7,
     "output": 0.0000022,
     "max_input_tokens": 1000000,
     "max_output_tokens": 40000
@@ -17872,6 +18136,30 @@
     "max_output_tokens": 4096
   },
   {
+    "model": "together_ai/arcee-ai/trinity-mini",
+    "provider": "together_ai",
+    "input": 4.5E-8,
+    "output": 1.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "together_ai/meta-llama/Llama-3.2-1B-Instruct",
+    "provider": "together_ai",
+    "input": 6E-8,
+    "output": 6E-8,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "together_ai/meta-llama/Llama-3.2-3B-Instruct",
+    "provider": "together_ai",
+    "input": 6E-8,
+    "output": 6E-8,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
     "model": "together_ai/Qwen/QwQ-32B",
     "provider": "together_ai",
     "input": 0.0000012,
@@ -18072,6 +18360,14 @@
     "max_output_tokens": null
   },
   {
+    "model": "azure/eu/gpt-4o-2024-05-13",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.0000165,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
     "model": "azure/eu/gpt-6-luna",
     "provider": "azure",
     "input": 1.2E-7,
@@ -18088,6 +18384,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/eu/o3-2025-04-16",
+    "provider": "azure",
+    "input": 0.0000022,
+    "output": 0.0000088,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "azure/eu/o4-mini-2025-04-16",
+    "provider": "azure",
+    "input": 0.00000121,
+    "output": 0.00000484,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
     "model": "gemini/gemini-3.8-live",
     "provider": "gemini",
     "input": 7.5E-7,
@@ -18102,6 +18414,14 @@
     "output": 0.0000045,
     "max_input_tokens": 131072,
     "max_output_tokens": 65536
+  },
+  {
+    "model": "azure/us/gpt-4o-2024-05-13",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.0000165,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
   },
   {
     "model": "aihubmix/agnes-2.5-flash",
@@ -18826,8 +19146,8 @@
   {
     "model": "openrouter/~x-ai/grok-latest",
     "provider": "openrouter",
-    "input": 0.0000016,
-    "output": 0.0000048,
+    "input": 0.000002,
+    "output": 0.000006,
     "max_input_tokens": 500000,
     "max_output_tokens": 450000
   },
@@ -19136,6 +19456,22 @@
     "max_output_tokens": 64000
   },
   {
+    "model": "openrouter/apodex/apodex-1.1-mini:free",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "openrouter/unbiased/pareto-26.10-preview",
+    "provider": "openrouter",
+    "input": 8E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
     "model": "openrouter/dots-studio/dots-3-note-preview:free",
     "provider": "openrouter",
     "input": 0.0,
@@ -19274,10 +19610,10 @@
   {
     "model": "openrouter/inclusionai/ling-3.0-flash-fin",
     "provider": "openrouter",
-    "input": 6E-8,
-    "output": 1.8E-7,
+    "input": 4.2E-8,
+    "output": 1.232E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": 235929
+    "max_output_tokens": 32768
   },
   {
     "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
@@ -19300,7 +19636,7 @@
     "provider": "openrouter",
     "input": 2.1E-8,
     "output": 6.16E-8,
-    "max_input_tokens": 131072,
+    "max_input_tokens": 262144,
     "max_output_tokens": 32768
   },
   {
@@ -19346,10 +19682,10 @@
   {
     "model": "openrouter/meta/muse-glimmer-30b",
     "provider": "openrouter",
-    "input": 3E-7,
-    "output": 0.0000012,
+    "input": 3.5E-7,
+    "output": 0.0000015,
     "max_input_tokens": 131072,
-    "max_output_tokens": 16384
+    "max_output_tokens": 117964
   },
   {
     "model": "openrouter/meta/muse-spark-1.1",
@@ -19917,7 +20253,7 @@
     "input": 0.0,
     "output": 0.0,
     "max_input_tokens": 1000000,
-    "max_output_tokens": 128000
+    "max_output_tokens": 524288
   },
   {
     "model": "openrouter/stepfun/step-3.5-flash",
@@ -19986,17 +20322,17 @@
   {
     "model": "openrouter/thinkingmachines/inkling",
     "provider": "openrouter",
-    "input": 0.000001,
+    "input": 9.5E-7,
     "output": 0.00000405,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 471859
+    "max_input_tokens": 524288,
+    "max_output_tokens": 262144
   },
   {
     "model": "openrouter/thinkingmachines/inkling-small",
     "provider": "openrouter",
     "input": 4.5E-7,
     "output": 0.0000012,
-    "max_input_tokens": 1048576,
+    "max_input_tokens": 524288,
     "max_output_tokens": 262144
   },
   {
@@ -20106,16 +20442,16 @@
   {
     "model": "openrouter/x-ai/grok-4.7",
     "provider": "openrouter",
-    "input": 0.0000016,
-    "output": 0.0000048,
+    "input": 0.000002,
+    "output": 0.000006,
     "max_input_tokens": 500000,
     "max_output_tokens": 450000
   },
   {
     "model": "moonshotai.kimi-k3",
     "provider": "bedrock_converse",
-    "input": 0.000003,
-    "output": 0.000015,
+    "input": 0.0000033,
+    "output": 0.0000165,
     "max_input_tokens": 1000000,
     "max_output_tokens": 131072
   },
@@ -20349,7 +20685,7 @@
     "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 32768
+    "max_output_tokens": 262144
   },
   {
     "model": "baseten/moonshotai/Kimi-K2.6",
@@ -20544,6 +20880,38 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "openrouter/openai/gpt-6.1-sol",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-6.1-sol-pro",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-6.1-sol-pro:batch",
+    "provider": "openrouter",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-6.1-sol:batch",
+    "provider": "openrouter",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "openrouter/openai/gpt-oss-20b:batch",
     "provider": "openrouter",
     "input": 2.4E-8,
@@ -20710,5 +21078,237 @@
     "output": 0.000006,
     "max_input_tokens": 128000,
     "max_output_tokens": 16384
+  },
+  {
+    "model": "azure_ai/MAI-Cyber-1-Flash",
+    "provider": "azure_ai",
+    "input": 6E-7,
+    "output": 0.0000035,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "apac.anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "au.anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-sonnet-5-5",
+    "provider": "azure_ai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-sonnet-5-5",
+    "provider": "bedrock",
+    "input": 0.0000024,
+    "output": 0.000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-sonnet-5-5",
+    "provider": "bedrock",
+    "input": 0.0000024,
+    "output": 0.000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "eu.anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "jp.anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/anthropic/claude-sonnet-5.5",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000024,
+    "output": 0.000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-sonnet-5-5",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-sonnet-5-5@default",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "prism/deepseek-v4.1-flash",
+    "provider": "prism",
+    "input": 1.7E-7,
+    "output": 6.3E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "prism/deepseek-v4-flash",
+    "provider": "prism",
+    "input": 1.7E-7,
+    "output": 2.1E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "global.xai.grok-4.7",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "us.xai.grok-4.7",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.0000066,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "xai.grok-4.7",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "openrouter/anthropic/claude-sonnet-5.5:batch",
+    "provider": "openrouter",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "baseten/deepseek-ai/DeepSeek-V4.1-Flash-Fast",
+    "provider": "baseten",
+    "input": 6E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "provider": "openai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.openai.gpt-6.1-sol",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "openai.gpt-6.1-sol",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-6.1-sol",
+    "provider": "bedrock_mantle",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "us.openai.gpt-6.1-sol",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "vertex_ai/xai/grok-4.7",
+    "provider": "vertex_ai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 524288,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "openrouter/inclusionai/ling-3.1-flash",
+    "provider": "openrouter",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
   }
 ]
