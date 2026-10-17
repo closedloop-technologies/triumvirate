@@ -5,7 +5,7 @@
     "input": 0.000002,
     "output": 0.000008,
     "max_input_tokens": 256000,
-    "max_output_tokens": 256000
+    "max_output_tokens": 4096
   },
   {
     "model": "ai21.jamba-1-5-mini-v1:0",
@@ -13,7 +13,7 @@
     "input": 2E-7,
     "output": 4E-7,
     "max_input_tokens": 256000,
-    "max_output_tokens": 256000
+    "max_output_tokens": 4096
   },
   {
     "model": "us.writer.palmyra-x4-v1:0",
@@ -28,7 +28,7 @@
     "provider": "bedrock_converse",
     "input": 6E-7,
     "output": 0.000006,
-    "max_input_tokens": 1000000,
+    "max_input_tokens": 128000,
     "max_output_tokens": 8192
   },
   {
@@ -44,7 +44,7 @@
     "provider": "bedrock_converse",
     "input": 6E-7,
     "output": 0.000006,
-    "max_input_tokens": 1000000,
+    "max_input_tokens": 128000,
     "max_output_tokens": 8192
   },
   {
@@ -74,8 +74,8 @@
   {
     "model": "apac.amazon.nova-2-lite-v1:0",
     "provider": "bedrock_converse",
-    "input": 3.3E-7,
-    "output": 0.00000275,
+    "input": 3.96E-7,
+    "output": 0.000003311,
     "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
@@ -90,8 +90,8 @@
   {
     "model": "eu.amazon.nova-2-lite-v1:0",
     "provider": "bedrock_converse",
-    "input": 3.3E-7,
-    "output": 0.00000275,
+    "input": 4.29E-7,
+    "output": 0.000003597,
     "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
@@ -125,6 +125,14 @@
     "input": 3.5E-8,
     "output": 1.4E-7,
     "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "amazon.nova-premier-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.0000025,
+    "output": 0.0000125,
+    "max_input_tokens": 1000000,
     "max_output_tokens": 10000
   },
   {
@@ -164,7 +172,7 @@
     "provider": "bedrock",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 1000000,
+    "max_input_tokens": 200000,
     "max_output_tokens": 4096
   },
   {
@@ -172,7 +180,7 @@
     "provider": "bedrock",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 1000000,
+    "max_input_tokens": 200000,
     "max_output_tokens": 8192
   },
   {
@@ -1178,24 +1186,24 @@
   {
     "model": "azure/gpt-4-turbo",
     "provider": "azure",
-    "input": 0.00001,
-    "output": 0.00003,
+    "input": 0.000011,
+    "output": 0.000033,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
   {
     "model": "azure/gpt-4-turbo-2024-04-09",
     "provider": "azure",
-    "input": 0.00001,
-    "output": 0.00003,
+    "input": 0.000011,
+    "output": 0.000033,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
   {
     "model": "azure/gpt-4-turbo-vision-preview",
     "provider": "azure",
-    "input": 0.00001,
-    "output": 0.00003,
+    "input": 0.000011,
+    "output": 0.000033,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
@@ -2866,8 +2874,8 @@
   {
     "model": "bedrock/moonshotai.kimi-k2-thinking",
     "provider": "bedrock",
-    "input": 7.3E-7,
-    "output": 0.00000303,
+    "input": 6E-7,
+    "output": 0.0000025,
     "max_input_tokens": 262144,
     "max_output_tokens": 16000
   },
@@ -2875,7 +2883,7 @@
     "model": "bedrock/moonshotai.kimi-k2.5",
     "provider": "bedrock",
     "input": 6E-7,
-    "output": 0.00000303,
+    "output": 0.000003,
     "max_input_tokens": 262144,
     "max_output_tokens": 16000
   },
@@ -3854,6 +3862,54 @@
     "output": 1.5E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
+  },
+  {
+    "model": "coralbricks/glm-5.3-fast",
+    "provider": "coralbricks",
+    "input": 0.00000112,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "coralbricks/glm-5.3-fp4",
+    "provider": "coralbricks",
+    "input": 0.00000112,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "coralbricks/glm-5.3",
+    "provider": "coralbricks",
+    "input": 0.00000112,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "coralbricks/deepseek-v4.1-flash-fast",
+    "provider": "coralbricks",
+    "input": 1E-8,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "coralbricks/deepseek-v4.1-flash-fast-fp4",
+    "provider": "coralbricks",
+    "input": 1E-8,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "coralbricks/deepseek-v4.1-flash",
+    "provider": "coralbricks",
+    "input": 1E-8,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
   },
   {
     "model": "deepseek-chat",
@@ -5402,8 +5458,8 @@
   {
     "model": "sail/deepseek-ai/DeepSeek-V4.1-Flash",
     "provider": "sail",
-    "input": 1.5E-7,
-    "output": 6E-7,
+    "input": 9E-8,
+    "output": 3E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
   },
@@ -5573,14 +5629,14 @@
     "input": 0.000002,
     "output": 0.000006,
     "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 16384
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/deepseek-r1",
     "provider": "fireworks_ai",
     "input": 0.000003,
     "output": 0.000008,
-    "max_input_tokens": 128000,
+    "max_input_tokens": 163840,
     "max_output_tokens": 20480
   },
   {
@@ -5588,7 +5644,7 @@
     "provider": "fireworks_ai",
     "input": 0.000003,
     "output": 0.000008,
-    "max_input_tokens": 160000,
+    "max_input_tokens": 163840,
     "max_output_tokens": 160000
   },
   {
@@ -5596,7 +5652,7 @@
     "provider": "fireworks_ai",
     "input": 5.5E-7,
     "output": 0.00000219,
-    "max_input_tokens": 128000,
+    "max_input_tokens": 163840,
     "max_output_tokens": 20480
   },
   {
@@ -5604,7 +5660,7 @@
     "provider": "fireworks_ai",
     "input": 9E-7,
     "output": 9E-7,
-    "max_input_tokens": 128000,
+    "max_input_tokens": 131072,
     "max_output_tokens": 8192
   },
   {
@@ -5668,7 +5724,7 @@
     "provider": "fireworks_ai",
     "input": 5.5E-7,
     "output": 0.00000219,
-    "max_input_tokens": 128000,
+    "max_input_tokens": 131072,
     "max_output_tokens": 96000
   },
   {
@@ -5676,7 +5732,7 @@
     "provider": "fireworks_ai",
     "input": 2.2E-7,
     "output": 8.8E-7,
-    "max_input_tokens": 128000,
+    "max_input_tokens": 131072,
     "max_output_tokens": 96000
   },
   {
@@ -5684,7 +5740,7 @@
     "provider": "fireworks_ai",
     "input": 5.5E-7,
     "output": 0.00000219,
-    "max_input_tokens": 202800,
+    "max_input_tokens": 202752,
     "max_output_tokens": 202800
   },
   {
@@ -5692,7 +5748,7 @@
     "provider": "fireworks_ai",
     "input": 6E-7,
     "output": 0.0000022,
-    "max_input_tokens": 202800,
+    "max_input_tokens": 202752,
     "max_output_tokens": 202800
   },
   {
@@ -5700,7 +5756,7 @@
     "provider": "fireworks_ai",
     "input": 0.0000014,
     "output": 0.0000044,
-    "max_input_tokens": 202800,
+    "max_input_tokens": 202752,
     "max_output_tokens": 131072
   },
   {
@@ -5780,7 +5836,47 @@
     "provider": "fireworks_ai",
     "input": 0.000003,
     "output": 0.000003,
-    "max_input_tokens": 128000,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct",
+    "provider": "fireworks_ai",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/llama-v3p2-11b-vision-instruct",
+    "provider": "fireworks_ai",
+    "input": 2E-7,
+    "output": 2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/llama-v3p2-1b-instruct",
+    "provider": "fireworks_ai",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/llama-v3p2-3b-instruct",
+    "provider": "fireworks_ai",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/llama-v3p2-90b-vision-instruct",
+    "provider": "fireworks_ai",
+    "input": 9E-7,
+    "output": 9E-7,
+    "max_input_tokens": 131072,
     "max_output_tokens": 16384
   },
   {
@@ -5804,7 +5900,7 @@
     "provider": "fireworks_ai",
     "input": 3E-7,
     "output": 0.0000012,
-    "max_input_tokens": 204800,
+    "max_input_tokens": 196608,
     "max_output_tokens": 204800
   },
   {
@@ -5828,7 +5924,7 @@
     "provider": "fireworks_ai",
     "input": 6E-7,
     "output": 0.0000022,
-    "max_input_tokens": 202800,
+    "max_input_tokens": 202752,
     "max_output_tokens": 202800
   },
   {
@@ -5836,7 +5932,7 @@
     "provider": "fireworks_ai",
     "input": 0.0000014,
     "output": 0.0000044,
-    "max_input_tokens": 202800,
+    "max_input_tokens": 202752,
     "max_output_tokens": 131072
   },
   {
@@ -5916,7 +6012,7 @@
     "provider": "fireworks_ai",
     "input": 3E-7,
     "output": 0.0000012,
-    "max_input_tokens": 204800,
+    "max_input_tokens": 196608,
     "max_output_tokens": 204800
   },
   {
@@ -6976,6 +7072,14 @@
     "max_output_tokens": 16384
   },
   {
+    "model": "gpt-audio-mini-2025-10-06",
+    "provider": "openai",
+    "input": 6E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "gpt-audio-mini-2025-12-15",
     "provider": "openai",
     "input": 6E-7,
@@ -7024,7 +7128,23 @@
     "max_output_tokens": 16384
   },
   {
+    "model": "gpt-4o-mini-search-preview-2025-03-11",
+    "provider": "openai",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "gpt-4o-search-preview",
+    "provider": "openai",
+    "input": 0.0000025,
+    "output": 0.00001,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "gpt-4o-search-preview-2025-03-11",
     "provider": "openai",
     "input": 0.0000025,
     "output": 0.00001,
@@ -7832,6 +7952,294 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "inferenceapis/deepseek-ai/DeepSeek-V3",
+    "provider": "inferenceapis",
+    "input": 1.9E-7,
+    "output": 3.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-ai/DeepSeek-V4-Flash",
+    "provider": "inferenceapis",
+    "input": 1.9E-7,
+    "output": 3.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "provider": "inferenceapis",
+    "input": 1.9E-7,
+    "output": 3.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-ai/DeepSeek-V4-Pro",
+    "provider": "inferenceapis",
+    "input": 0.00000172,
+    "output": 0.00000515,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "provider": "inferenceapis",
+    "input": 0.00000172,
+    "output": 0.00000515,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-ai/DeepSeek-V4.1-Flash",
+    "provider": "inferenceapis",
+    "input": 4E-7,
+    "output": 0.0000016,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-chat",
+    "provider": "inferenceapis",
+    "input": 1.9E-7,
+    "output": 3.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-flash",
+    "provider": "inferenceapis",
+    "input": 4E-7,
+    "output": 0.0000016,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-reasoner",
+    "provider": "inferenceapis",
+    "input": 1.9E-7,
+    "output": 3.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-v3",
+    "provider": "inferenceapis",
+    "input": 1.9E-7,
+    "output": 3.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-v4-flash",
+    "provider": "inferenceapis",
+    "input": 1.9E-7,
+    "output": 3.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-v4-pro",
+    "provider": "inferenceapis",
+    "input": 0.00000172,
+    "output": 0.00000515,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/deepseek-v4.1-flash",
+    "provider": "inferenceapis",
+    "input": 4E-7,
+    "output": 0.0000016,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/glm-5.3",
+    "provider": "inferenceapis",
+    "input": 0.00000182,
+    "output": 0.00000572,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/glm-5.3-flash",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 6.6E-7,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/gpt-oss-120b",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 8E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/gpt-oss-20b",
+    "provider": "inferenceapis",
+    "input": 4E-8,
+    "output": 1.9E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/kimi-k2.7-code",
+    "provider": "inferenceapis",
+    "input": 8.9E-7,
+    "output": 0.00000442,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/llama-3.1-8b-instant",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/llama-3.3-70b",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/llama-3.3-70b-instruct",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/llama-3.3-70b-versatile",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/meta-llama/Llama-3.3-70B-Instruct",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/meta-llama/Llama-3.3-70B-Instruct-Turbo",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/minimax-m3",
+    "provider": "inferenceapis",
+    "input": 3.9E-7,
+    "output": 0.00000156,
+    "max_input_tokens": 524288,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/MiniMaxAI/MiniMax-M3",
+    "provider": "inferenceapis",
+    "input": 3.9E-7,
+    "output": 0.00000156,
+    "max_input_tokens": 524288,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/moonshotai/Kimi-K2.7-Code",
+    "provider": "inferenceapis",
+    "input": 8.9E-7,
+    "output": 0.00000442,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/openai/gpt-oss-120b",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 8E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/openai/gpt-oss-20b",
+    "provider": "inferenceapis",
+    "input": 4E-8,
+    "output": 1.9E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/Qwen/Qwen3-VL-235B-A22B-Instruct",
+    "provider": "inferenceapis",
+    "input": 2.6E-7,
+    "output": 0.00000115,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/Qwen/Qwen3.8-Flash",
+    "provider": "inferenceapis",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/qwen3-vl",
+    "provider": "inferenceapis",
+    "input": 2.6E-7,
+    "output": 0.00000115,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/qwen3-vl-235b",
+    "provider": "inferenceapis",
+    "input": 2.6E-7,
+    "output": 0.00000115,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/qwen3.8-flash",
+    "provider": "inferenceapis",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/zai-org/GLM-5.3",
+    "provider": "inferenceapis",
+    "input": 0.00000182,
+    "output": 0.00000572,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "inferenceapis/zai-org/GLM-5.3-Flash",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 6.6E-7,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
     "model": "lambda_ai/deepseek-llama3.3-70b",
     "provider": "lambda_ai",
     "input": 2E-7,
@@ -7997,7 +8405,7 @@
     "input": 7.2E-7,
     "output": 7.2E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": 2048
+    "max_output_tokens": 4096
   },
   {
     "model": "meta.llama3-1-8b-instruct-v1:0",
@@ -8005,7 +8413,7 @@
     "input": 2.2E-7,
     "output": 2.2E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": 2048
+    "max_output_tokens": 4096
   },
   {
     "model": "meta.llama3-2-11b-instruct-v1:0",
@@ -8052,16 +8460,16 @@
     "provider": "bedrock_converse",
     "input": 2.4E-7,
     "output": 9.7E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
   },
   {
     "model": "meta.llama4-scout-17b-instruct-v1:0",
     "provider": "bedrock_converse",
     "input": 1.7E-7,
     "output": 6.6E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_input_tokens": 10000000,
+    "max_output_tokens": 8192
   },
   {
     "model": "meta/muse-spark-1.1",
@@ -8100,6 +8508,14 @@
     "provider": "meta",
     "input": 1E-7,
     "output": 2E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "meta/muse-wonder-1.0",
+    "provider": "meta",
+    "input": 0.000004,
+    "output": 0.00002,
     "max_input_tokens": 1048576,
     "max_output_tokens": 131072
   },
@@ -9056,6 +9472,14 @@
     "max_output_tokens": 100000
   },
   {
+    "model": "o3-deep-research-2025-06-26",
+    "provider": "openai",
+    "input": 0.00001,
+    "output": 0.00004,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
     "model": "o3-2025-04-16",
     "provider": "openai",
     "input": 0.000002,
@@ -9105,6 +9529,14 @@
   },
   {
     "model": "o4-mini-deep-research",
+    "provider": "openai",
+    "input": 0.000002,
+    "output": 0.000008,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "o4-mini-deep-research-2025-06-26",
     "provider": "openai",
     "input": 0.000002,
     "output": 0.000008,
@@ -9368,6 +9800,38 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "oci/xai.grok-4.20-0309-non-reasoning",
+    "provider": "oci",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "oci/xai.grok-4.20-0309-reasoning",
+    "provider": "oci",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "oci/xai.grok-4.20-non-reasoning",
+    "provider": "oci",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "oci/xai.grok-4.20-reasoning",
+    "provider": "oci",
+    "input": 0.00000125,
+    "output": 0.0000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
     "model": "oci/xai.grok-code-fast-1",
     "provider": "oci",
     "input": 0.000005,
@@ -9397,6 +9861,22 @@
     "input": 5E-8,
     "output": 4E-7,
     "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "oci/openai.gpt-oss-120b",
+    "provider": "oci",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "oci/openai.gpt-oss-20b",
+    "provider": "oci",
+    "input": 7E-8,
+    "output": 3E-7,
+    "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
@@ -9570,7 +10050,15 @@
   {
     "model": "perplexity/pplx-decider-v1-27b",
     "provider": "perplexity",
-    "input": 4E-8,
+    "input": 2E-8,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "perplexity/pplx-decider-v1.1-27b",
+    "provider": "perplexity",
+    "input": 2E-8,
     "output": 0.0,
     "max_input_tokens": 262144,
     "max_output_tokens": null
@@ -9768,6 +10256,30 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "scx-ai/DeepSeek-V4.1-flash",
+    "provider": "scx-ai",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 375000
+  },
+  {
+    "model": "scx-ai/GLM-5.3",
+    "provider": "scx-ai",
+    "input": 9.8E-7,
+    "output": 0.00000308,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "scx-ai/Kimi-K3",
+    "provider": "scx-ai",
+    "input": 0.00000283,
+    "output": 0.00001413,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
     "model": "scx-ai/GLM-5.2",
     "provider": "scx-ai",
     "input": 6.1E-7,
@@ -9906,8 +10418,8 @@
   {
     "model": "together_ai/Qwen/Qwen3.7-Max",
     "provider": "together_ai",
-    "input": 0.0000025,
-    "output": 0.0000075,
+    "input": 0.0000015,
+    "output": 0.0000045,
     "max_input_tokens": 1000000,
     "max_output_tokens": null
   },
@@ -9960,10 +10472,18 @@
     "max_output_tokens": null
   },
   {
+    "model": "together_ai/meta-models/Muse-Spark-Open-816B-A42B",
+    "provider": "together_ai",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
     "model": "together_ai/moonshotai/Kimi-K3",
     "provider": "together_ai",
-    "input": 0.0000027,
-    "output": 0.0000135,
+    "input": 0.000003,
+    "output": 0.000015,
     "max_input_tokens": 1048576,
     "max_output_tokens": null
   },
@@ -10277,7 +10797,7 @@
     "input": 7.2E-7,
     "output": 7.2E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": 2048
+    "max_output_tokens": 4096
   },
   {
     "model": "us.meta.llama3-1-8b-instruct-v1:0",
@@ -10285,7 +10805,7 @@
     "input": 2.2E-7,
     "output": 2.2E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": 2048
+    "max_output_tokens": 4096
   },
   {
     "model": "us.meta.llama3-2-11b-instruct-v1:0",
@@ -10332,16 +10852,16 @@
     "provider": "bedrock_converse",
     "input": 2.4E-7,
     "output": 9.7E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
   },
   {
     "model": "us.meta.llama4-scout-17b-instruct-v1:0",
     "provider": "bedrock_converse",
     "input": 1.7E-7,
     "output": 6.6E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_input_tokens": 10000000,
+    "max_output_tokens": 8192
   },
   {
     "model": "us.mistral.pixtral-large-2502-v1:0",
@@ -10349,7 +10869,7 @@
     "input": 0.000002,
     "output": 0.000006,
     "max_input_tokens": 128000,
-    "max_output_tokens": 4096
+    "max_output_tokens": 16384
   },
   {
     "model": "v0/v0-1.0-md",
@@ -11909,7 +12429,7 @@
     "input": 6E-7,
     "output": 0.0000022,
     "max_input_tokens": 203000,
-    "max_output_tokens": 4000
+    "max_output_tokens": 128000
   },
   {
     "model": "zai.glm-5",
@@ -11925,7 +12445,7 @@
     "input": 7E-8,
     "output": 4E-7,
     "max_input_tokens": 203000,
-    "max_output_tokens": 4000
+    "max_output_tokens": 128000
   },
   {
     "model": "zai/glm-5",
@@ -12224,6 +12744,22 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/models/ernie-4p5-21b-a3b-pt",
+    "provider": "fireworks_ai",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/ernie-4p5-300b-a47b-pt",
+    "provider": "fireworks_ai",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 4096
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/models/fare-20b",
     "provider": "fireworks_ai",
     "input": 9E-7,
@@ -12344,6 +12880,14 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/models/minimax-m2",
+    "provider": "fireworks_ai",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 196608,
+    "max_output_tokens": 4096
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/models/ministral-3-14b-instruct-2512",
     "provider": "fireworks_ai",
     "input": 2E-7,
@@ -12392,11 +12936,19 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/models/nemotron-nano-v2-12b-vl",
+    "provider": "fireworks_ai",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 4096
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/models/nvidia-nemotron-nano-12b-v2",
     "provider": "fireworks_ai",
     "input": 2E-7,
     "output": 2E-7,
-    "max_input_tokens": 131072,
+    "max_input_tokens": 128000,
     "max_output_tokens": 131072
   },
   {
@@ -12404,7 +12956,7 @@
     "provider": "fireworks_ai",
     "input": 2E-7,
     "output": 2E-7,
-    "max_input_tokens": 131072,
+    "max_input_tokens": 128000,
     "max_output_tokens": 131072
   },
   {
@@ -12584,6 +13136,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/models/qwen3-coder-480b-instruct-bf16",
+    "provider": "fireworks_ai",
+    "input": 9E-7,
+    "output": 9E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 4096
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/models/qwen3-vl-235b-a22b-instruct",
     "provider": "fireworks_ai",
     "input": 2.2E-7,
@@ -12614,6 +13174,14 @@
     "output": 6E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/qwen3-vl-8b-instruct",
+    "provider": "fireworks_ai",
+    "input": 2E-7,
+    "output": 2E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 4096
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/qwen3p7-plus",
@@ -14002,8 +14570,8 @@
   {
     "model": "tencent/deepseek-v4-pro",
     "provider": "tencent",
-    "input": 4.35E-7,
-    "output": 8.7E-7,
+    "input": 0.00000174,
+    "output": 0.00000348,
     "max_input_tokens": 1000000,
     "max_output_tokens": 384000
   },
@@ -14014,6 +14582,86 @@
     "output": 2.8E-7,
     "max_input_tokens": 1000000,
     "max_output_tokens": 384000
+  },
+  {
+    "model": "tencent/deepseek-v4-pro-0813",
+    "provider": "tencent",
+    "input": 0.00000132,
+    "output": 0.00000396,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "tencent/deepseek-v4.1-flash",
+    "provider": "tencent",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "tencent/glm-5.3-flashx",
+    "provider": "tencent",
+    "input": 3.7E-7,
+    "output": 0.00000125,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "tencent/glm-5.3-flash",
+    "provider": "tencent",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "tencent/glm-5.3",
+    "provider": "tencent",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "tencent/glm-5.2",
+    "provider": "tencent",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "tencent/kimi-k3",
+    "provider": "tencent",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "tencent/kimi-k2.8-preview",
+    "provider": "tencent",
+    "input": 0.000001,
+    "output": 0.000004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "tencent/kimi-k2.7-code-highspeed",
+    "provider": "tencent",
+    "input": 0.0000019,
+    "output": 0.000008,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 256000
+  },
+  {
+    "model": "tencent/kimi-k2.7-code",
+    "provider": "tencent",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 256000
   },
   {
     "model": "tencent/minimax-m3",
@@ -14342,6 +14990,14 @@
     "output": 0.0000015,
     "max_input_tokens": 131072,
     "max_output_tokens": 16384
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/muse-spark-open",
+    "provider": "fireworks_ai",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
@@ -17464,6 +18120,14 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/routers/rune",
+    "provider": "fireworks_ai",
+    "input": 4.2E-8,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/models/ember-1",
     "provider": "fireworks_ai",
     "input": 0.000003,
@@ -18014,5 +18678,149 @@
     "output": 5E-7,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/Cohere-Embed-V5-Fast",
+    "provider": "azure_ai",
+    "input": 8E-8,
+    "output": 0.0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "azure_ai/Cohere-Embed-V5-Pro",
+    "provider": "azure_ai",
+    "input": 1.2E-7,
+    "output": 0.0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "vertex_ai/gemini-robotics-er-2-preview",
+    "provider": "vertex_ai",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "gemini-robotics-er-2-preview",
+    "provider": "vertex_ai-language-models",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "gemini/gemini-4-argon",
+    "provider": "gemini",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "vertex_ai/gemini-4-argon",
+    "provider": "vertex_ai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "vertex_ai/gemini-4-argon-cyber-permissive",
+    "provider": "vertex_ai",
+    "input": 0.000004,
+    "output": 0.00002,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "github_copilot/gemini-4-argon",
+    "provider": "github_copilot",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "together_ai/nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+    "provider": "together_ai",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "jp.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.96E-7,
+    "output": 0.000003311,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "vertex_ai/deepseek-ai/deepseek-v4.1-flash-maas",
+    "provider": "vertex_ai-deepseek_models",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "azure_ai/claude-opus-5-5-fast",
+    "provider": "azure_ai",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "baseten/meta-models/muse-spark-open",
+    "provider": "baseten",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "baseten/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B",
+    "provider": "baseten",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "wandb/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B",
+    "provider": "wandb",
+    "input": 1.5E-7,
+    "output": 7.5E-7,
+    "max_input_tokens": 1049000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "together_ai/reflection/Beam-1.0-501B-A23B",
+    "provider": "together_ai",
+    "input": 4E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "baseten/reflection/Beam-1.0",
+    "provider": "baseten",
+    "input": 0.0000013,
+    "output": 0.0000043,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "nebius/reflection/beam",
+    "provider": "nebius",
+    "input": 2.5E-7,
+    "output": 0.000001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
   }
 ]
