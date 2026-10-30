@@ -1,5 +1,37 @@
 [
   {
+    "model": "abliteration/abliterated-model",
+    "provider": "abliteration",
+    "input": 0.000001,
+    "output": 0.000003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262134
+  },
+  {
+    "model": "abliteration/abliterated-model-large",
+    "provider": "abliteration",
+    "input": 0.000003,
+    "output": 0.000005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 999990
+  },
+  {
+    "model": "abliteration/abliterated-model-large-v2",
+    "provider": "abliteration",
+    "input": 0.000003,
+    "output": 0.000005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 999990
+  },
+  {
+    "model": "abliteration/abliterated-model-large-flash",
+    "provider": "abliteration",
+    "input": 0.000001,
+    "output": 0.000002,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 262144
+  },
+  {
     "model": "ai21.jamba-1-5-large-v1:0",
     "provider": "bedrock",
     "input": 0.000002,
@@ -142,6 +174,14 @@
     "output": 0.0000032,
     "max_input_tokens": 300000,
     "max_output_tokens": 10000
+  },
+  {
+    "model": "amazon.nova-2-sonic-v1:0",
+    "provider": "bedrock",
+    "input": 3.3E-7,
+    "output": 0.00000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
   },
   {
     "model": "anthropic.claude-3-5-haiku-20241022-v1:0",
@@ -872,6 +912,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure_ai/gpt-6.1-terra",
+    "provider": "azure_ai",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure_ai/gpt-5.5",
     "provider": "azure_ai",
     "input": 0.000005,
@@ -884,7 +932,7 @@
     "provider": "azure_ai",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 272000,
+    "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
@@ -1856,6 +1904,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/gpt-6.1-terra",
+    "provider": "azure",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure/gpt-6.1-sol",
     "provider": "azure",
     "input": 0.000002,
@@ -1872,6 +1928,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/us/gpt-6.1-terra",
+    "provider": "azure",
+    "input": 0.0000011,
+    "output": 0.0000055,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure/us/gpt-6.1-sol",
     "provider": "azure",
     "input": 0.0000022,
@@ -1880,10 +1944,26 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "azure/eu/gpt-6.1-terra",
+    "provider": "azure",
+    "input": 0.0000012,
+    "output": 0.000006,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure/eu/gpt-6.1-sol",
     "provider": "azure",
     "input": 0.0000024,
     "output": 0.000012,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/apac/gpt-6.1-terra",
+    "provider": "azure",
+    "input": 0.0000012,
+    "output": 0.000006,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -1900,7 +1980,7 @@
     "provider": "azure",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 272000,
+    "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
@@ -1972,7 +2052,7 @@
     "provider": "azure",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 272000,
+    "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
@@ -3413,7 +3493,7 @@
     "input": 0.0000036,
     "output": 0.000018,
     "max_input_tokens": 200000,
-    "max_output_tokens": 8192
+    "max_output_tokens": 64000
   },
   {
     "model": "bedrock/us-gov-east-1/claude-sonnet-4-5-20250929-v1:0",
@@ -3421,7 +3501,7 @@
     "input": 0.0000036,
     "output": 0.000018,
     "max_input_tokens": 200000,
-    "max_output_tokens": 8192
+    "max_output_tokens": 64000
   },
   {
     "model": "bedrock/us-gov-west-1/amazon.nova-lite-v1:0",
@@ -3453,7 +3533,7 @@
     "input": 0.0000036,
     "output": 0.000018,
     "max_input_tokens": 200000,
-    "max_output_tokens": 8192
+    "max_output_tokens": 64000
   },
   {
     "model": "bedrock/us-gov-west-1/claude-sonnet-4-5-20250929-v1:0",
@@ -3461,7 +3541,7 @@
     "input": 0.0000036,
     "output": 0.000018,
     "max_input_tokens": 200000,
-    "max_output_tokens": 8192
+    "max_output_tokens": 64000
   },
   {
     "model": "bedrock/us-west-2/anthropic.claude-instant-v1",
@@ -3542,6 +3622,22 @@
     "output": 0.000004,
     "max_input_tokens": 200000,
     "max_output_tokens": 8192
+  },
+  {
+    "model": "cerebras/llama-3.1-70b",
+    "provider": "cerebras",
+    "input": 6E-7,
+    "output": 6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "cerebras/llama-3.1-8b",
+    "provider": "cerebras",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
   },
   {
     "model": "cerebras/llama-3.3-70b",
@@ -3949,7 +4045,7 @@
     "input": 0.00000112,
     "output": 0.0000044,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "coralbricks/glm-5.3-fp4",
@@ -3957,7 +4053,7 @@
     "input": 0.00000112,
     "output": 0.0000044,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "coralbricks/glm-5.3",
@@ -3965,7 +4061,7 @@
     "input": 0.00000112,
     "output": 0.0000044,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "coralbricks/deepseek-v4.1-flash-fast",
@@ -3973,7 +4069,7 @@
     "input": 1E-8,
     "output": 0.0000012,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "coralbricks/deepseek-v4.1-flash-fast-fp4",
@@ -3981,7 +4077,7 @@
     "input": 1E-8,
     "output": 0.0000012,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "coralbricks/deepseek-v4.1-flash",
@@ -3989,7 +4085,7 @@
     "input": 1E-8,
     "output": 0.0000012,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "deepseek-chat",
@@ -4594,7 +4690,7 @@
   {
     "model": "databricks/databricks-claude-fable-5",
     "provider": "databricks",
-    "input": 0.00001000006,
+    "input": 0.00000999999,
     "output": 0.00005000002,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
@@ -4602,7 +4698,7 @@
   {
     "model": "databricks/databricks-claude-fable-5-1",
     "provider": "databricks",
-    "input": 0.00001000006,
+    "input": 0.00000999999,
     "output": 0.00005000002,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
@@ -4618,16 +4714,16 @@
   {
     "model": "databricks/databricks-claude-opus-4",
     "provider": "databricks",
-    "input": 0.000015000020000000002,
-    "output": 0.00007500003000000001,
+    "input": 0.00001500002,
+    "output": 0.0000750001,
     "max_input_tokens": 200000,
     "max_output_tokens": 32000
   },
   {
     "model": "databricks/databricks-claude-opus-4-1",
     "provider": "databricks",
-    "input": 0.000015000020000000002,
-    "output": 0.00007500003000000001,
+    "input": 0.00001500002,
+    "output": 0.0000750001,
     "max_input_tokens": 200000,
     "max_output_tokens": 32000
   },
@@ -4635,7 +4731,7 @@
     "model": "databricks/databricks-claude-opus-4-5",
     "provider": "databricks",
     "input": 0.00000500003,
-    "output": 0.000025000010000000002,
+    "output": 0.00002500001,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
   },
@@ -4643,7 +4739,7 @@
     "model": "databricks/databricks-claude-opus-4-6",
     "provider": "databricks",
     "input": 0.00000500003,
-    "output": 0.000025000010000000002,
+    "output": 0.00002500001,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
@@ -4682,8 +4778,8 @@
   {
     "model": "databricks/databricks-claude-sonnet-4",
     "provider": "databricks",
-    "input": 0.0000029999900000000002,
-    "output": 0.000015000020000000002,
+    "input": 0.00000299999,
+    "output": 0.00001500002,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
   },
@@ -4698,24 +4794,24 @@
   {
     "model": "databricks/databricks-claude-sonnet-4-5",
     "provider": "databricks",
-    "input": 0.0000029999900000000002,
-    "output": 0.000015000020000000002,
+    "input": 0.00000299999,
+    "output": 0.00001500002,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
   },
   {
     "model": "databricks/databricks-claude-sonnet-4-6",
     "provider": "databricks",
-    "input": 0.0000029999900000000002,
-    "output": 0.000015000020000000002,
+    "input": 0.00000299999,
+    "output": 0.00001500002,
     "max_input_tokens": 1000000,
     "max_output_tokens": 64000
   },
   {
     "model": "databricks/databricks-claude-sonnet-5",
     "provider": "databricks",
-    "input": 0.00000299999,
-    "output": 0.00001500002,
+    "input": 0.00000199997,
+    "output": 0.00000999999,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
@@ -4760,10 +4856,18 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "databricks/databricks-gemini-3-1-flash-image",
+    "provider": "databricks",
+    "input": 6.2503E-7,
+    "output": 0.00000374997,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
     "model": "databricks/databricks-gemini-3-1-pro",
     "provider": "databricks",
     "input": 0.00000249998,
-    "output": 0.000015000020000000002,
+    "output": 0.00001500002,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65536
   },
@@ -4784,10 +4888,26 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "databricks/databricks-gemini-3-8-flash",
+    "provider": "databricks",
+    "input": 7.4998E-7,
+    "output": 0.00000374997,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "databricks/databricks-gemini-3-7-flash",
+    "provider": "databricks",
+    "input": 7.4998E-7,
+    "output": 0.00000374997,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
     "model": "databricks/databricks-gemini-3-6-flash",
     "provider": "databricks",
-    "input": 0.00000187502,
-    "output": 0.00000937503,
+    "input": 7.4998E-7,
+    "output": 0.00000374997,
     "max_input_tokens": 1048576,
     "max_output_tokens": 65536
   },
@@ -4810,7 +4930,7 @@
   {
     "model": "databricks/databricks-gemma-3-12b",
     "provider": "databricks",
-    "input": 1.5000999999999998E-7,
+    "input": 1.5001E-7,
     "output": 5.0001E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 32000
@@ -4843,7 +4963,7 @@
     "model": "databricks/databricks-gpt-5",
     "provider": "databricks",
     "input": 0.00000124999,
-    "output": 0.000009999990000000002,
+    "output": 0.00000999999,
     "max_input_tokens": 272000,
     "max_output_tokens": 128000
   },
@@ -4851,7 +4971,7 @@
     "model": "databricks/databricks-gpt-5-1",
     "provider": "databricks",
     "input": 0.00000124999,
-    "output": 0.000009999990000000002,
+    "output": 0.00000999999,
     "max_input_tokens": 272000,
     "max_output_tokens": 128000
   },
@@ -4875,7 +4995,7 @@
     "model": "databricks/databricks-gpt-5-4",
     "provider": "databricks",
     "input": 0.00000249998,
-    "output": 0.000015000020000000002,
+    "output": 0.00001500002,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -4906,16 +5026,16 @@
   {
     "model": "databricks/databricks-gpt-5-6-terra",
     "provider": "databricks",
-    "input": 0.00000249998,
-    "output": 0.00001500002,
+    "input": 0.00000199997,
+    "output": 0.00001200003,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
     "model": "databricks/databricks-gpt-5-6-luna",
     "provider": "databricks",
-    "input": 0.00000100002,
-    "output": 0.00000599998,
+    "input": 1.9999E-7,
+    "output": 0.00000120001,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -4931,15 +5051,15 @@
     "model": "databricks/databricks-gpt-5-5-pro",
     "provider": "databricks",
     "input": 0.00002999997,
-    "output": 0.00018000003,
+    "output": 0.0001800001,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
     "model": "databricks/databricks-gpt-5-mini",
     "provider": "databricks",
-    "input": 2.4997000000000006E-7,
-    "output": 0.0000019999700000000004,
+    "input": 2.4997E-7,
+    "output": 0.00000199997,
     "max_input_tokens": 272000,
     "max_output_tokens": 128000
   },
@@ -4947,14 +5067,14 @@
     "model": "databricks/databricks-gpt-5-nano",
     "provider": "databricks",
     "input": 4.998E-8,
-    "output": 3.9998000000000007E-7,
+    "output": 3.9998E-7,
     "max_input_tokens": 272000,
     "max_output_tokens": 128000
   },
   {
     "model": "databricks/databricks-gpt-oss-120b",
     "provider": "databricks",
-    "input": 1.5000999999999998E-7,
+    "input": 1.5001E-7,
     "output": 5.9997E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
@@ -4963,7 +5083,7 @@
     "model": "databricks/databricks-gpt-oss-20b",
     "provider": "databricks",
     "input": 7E-8,
-    "output": 3.0001999999999996E-7,
+    "output": 3.0002E-7,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
   },
@@ -4995,15 +5115,15 @@
     "model": "databricks/databricks-llama-4-maverick",
     "provider": "databricks",
     "input": 5.0001E-7,
-    "output": 0.0000015000300000000002,
+    "output": 0.00000150003,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
     "model": "databricks/databricks-meta-llama-3-1-8b-instruct",
     "provider": "databricks",
-    "input": 1.5000999999999998E-7,
-    "output": 4.5003000000000007E-7,
+    "input": 1.5001E-7,
+    "output": 4.5003E-7,
     "max_input_tokens": 200000,
     "max_output_tokens": 128000
   },
@@ -5011,7 +5131,7 @@
     "model": "databricks/databricks-meta-llama-3-3-70b-instruct",
     "provider": "databricks",
     "input": 5.0001E-7,
-    "output": 0.0000015000300000000002,
+    "output": 0.00000150003,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
@@ -5614,14 +5734,6 @@
     "output": 0.000004,
     "max_input_tokens": 200000,
     "max_output_tokens": 8192
-  },
-  {
-    "model": "eu.anthropic.claude-haiku-4-5-20251001-v1:0",
-    "provider": "bedrock_converse",
-    "input": 0.0000011,
-    "output": 0.0000055,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 64000
   },
   {
     "model": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
@@ -6908,7 +7020,7 @@
     "provider": "github_copilot",
     "input": 0.00001,
     "output": 0.00005,
-    "max_input_tokens": 272000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -6916,7 +7028,7 @@
     "provider": "github_copilot",
     "input": 1E-7,
     "output": 5E-7,
-    "max_input_tokens": 272000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -6924,7 +7036,7 @@
     "provider": "github_copilot",
     "input": 0.000002,
     "output": 0.00001,
-    "max_input_tokens": 272000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -6932,7 +7044,7 @@
     "provider": "github_copilot",
     "input": 0.000002,
     "output": 0.00001,
-    "max_input_tokens": 272000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -8213,7 +8325,7 @@
     "input": 1.9E-7,
     "output": 3.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-ai/DeepSeek-V4-Flash",
@@ -8221,7 +8333,7 @@
     "input": 1.9E-7,
     "output": 3.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-ai/DeepSeek-V4-Flash-0731",
@@ -8229,7 +8341,7 @@
     "input": 1.9E-7,
     "output": 3.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-ai/DeepSeek-V4-Pro",
@@ -8237,7 +8349,7 @@
     "input": 0.00000172,
     "output": 0.00000515,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-ai/DeepSeek-V4-Pro-0813",
@@ -8245,7 +8357,7 @@
     "input": 0.00000172,
     "output": 0.00000515,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-ai/DeepSeek-V4.1-Flash",
@@ -8253,7 +8365,7 @@
     "input": 4E-7,
     "output": 0.0000016,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-chat",
@@ -8261,7 +8373,7 @@
     "input": 1.9E-7,
     "output": 3.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-flash",
@@ -8269,7 +8381,7 @@
     "input": 4E-7,
     "output": 0.0000016,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-reasoner",
@@ -8277,7 +8389,7 @@
     "input": 1.9E-7,
     "output": 3.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-v3",
@@ -8285,7 +8397,7 @@
     "input": 1.9E-7,
     "output": 3.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-v4-flash",
@@ -8293,7 +8405,7 @@
     "input": 1.9E-7,
     "output": 3.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-v4-pro",
@@ -8301,7 +8413,7 @@
     "input": 0.00000172,
     "output": 0.00000515,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/deepseek-v4.1-flash",
@@ -8309,7 +8421,7 @@
     "input": 4E-7,
     "output": 0.0000016,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "inferenceapis/glm-5.3",
@@ -8317,7 +8429,7 @@
     "input": 0.00000182,
     "output": 0.00000572,
     "max_input_tokens": 1048575,
-    "max_output_tokens": null
+    "max_output_tokens": 1048575
   },
   {
     "model": "inferenceapis/glm-5.3-flash",
@@ -8325,7 +8437,7 @@
     "input": 2E-7,
     "output": 6.6E-7,
     "max_input_tokens": 1048575,
-    "max_output_tokens": null
+    "max_output_tokens": 1048575
   },
   {
     "model": "inferenceapis/gpt-oss-120b",
@@ -8333,7 +8445,7 @@
     "input": 2E-7,
     "output": 8E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/gpt-oss-20b",
@@ -8341,7 +8453,7 @@
     "input": 4E-8,
     "output": 1.9E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/kimi-k2.7-code",
@@ -8349,7 +8461,7 @@
     "input": 8.9E-7,
     "output": 0.00000442,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "inferenceapis/llama-3.1-8b-instant",
@@ -8357,7 +8469,7 @@
     "input": 2E-7,
     "output": 5E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/llama-3.3-70b",
@@ -8365,7 +8477,7 @@
     "input": 2E-7,
     "output": 5E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/llama-3.3-70b-instruct",
@@ -8373,7 +8485,7 @@
     "input": 2E-7,
     "output": 5E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/llama-3.3-70b-versatile",
@@ -8381,7 +8493,7 @@
     "input": 2E-7,
     "output": 5E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/meta-llama/Llama-3.3-70B-Instruct",
@@ -8389,7 +8501,7 @@
     "input": 2E-7,
     "output": 5E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/meta-llama/Llama-3.3-70B-Instruct-Turbo",
@@ -8397,7 +8509,7 @@
     "input": 2E-7,
     "output": 5E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/minimax-m3",
@@ -8405,7 +8517,7 @@
     "input": 3.9E-7,
     "output": 0.00000156,
     "max_input_tokens": 524288,
-    "max_output_tokens": null
+    "max_output_tokens": 524288
   },
   {
     "model": "inferenceapis/MiniMaxAI/MiniMax-M3",
@@ -8413,7 +8525,7 @@
     "input": 3.9E-7,
     "output": 0.00000156,
     "max_input_tokens": 524288,
-    "max_output_tokens": null
+    "max_output_tokens": 524288
   },
   {
     "model": "inferenceapis/moonshotai/Kimi-K2.7-Code",
@@ -8421,7 +8533,7 @@
     "input": 8.9E-7,
     "output": 0.00000442,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "inferenceapis/openai/gpt-oss-120b",
@@ -8429,7 +8541,7 @@
     "input": 2E-7,
     "output": 8E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/openai/gpt-oss-20b",
@@ -8437,7 +8549,7 @@
     "input": 4E-8,
     "output": 1.9E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "inferenceapis/Qwen/Qwen3-VL-235B-A22B-Instruct",
@@ -8445,7 +8557,7 @@
     "input": 2.6E-7,
     "output": 0.00000115,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "inferenceapis/Qwen/Qwen3.8-Flash",
@@ -8453,7 +8565,7 @@
     "input": 1.5E-7,
     "output": 5E-7,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "inferenceapis/qwen3-vl",
@@ -8461,7 +8573,7 @@
     "input": 2.6E-7,
     "output": 0.00000115,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "inferenceapis/qwen3-vl-235b",
@@ -8469,7 +8581,7 @@
     "input": 2.6E-7,
     "output": 0.00000115,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "inferenceapis/qwen3.8-flash",
@@ -8477,7 +8589,7 @@
     "input": 1.5E-7,
     "output": 5E-7,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "inferenceapis/zai-org/GLM-5.3",
@@ -8485,7 +8597,7 @@
     "input": 0.00000182,
     "output": 0.00000572,
     "max_input_tokens": 1048575,
-    "max_output_tokens": null
+    "max_output_tokens": 1048575
   },
   {
     "model": "inferenceapis/zai-org/GLM-5.3-Flash",
@@ -8493,7 +8605,7 @@
     "input": 2E-7,
     "output": 6.6E-7,
     "max_input_tokens": 1048575,
-    "max_output_tokens": null
+    "max_output_tokens": 1048575
   },
   {
     "model": "lambda_ai/deepseek-llama3.3-70b",
@@ -9000,10 +9112,26 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "mistral/deepseek-v4-1-flash-1017",
+    "provider": "mistral",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
     "model": "mistral/zai-glm-5-3",
     "provider": "mistral",
     "input": 0.0000014,
     "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "mistral/zai-glm-5-3-flash",
+    "provider": "mistral",
+    "input": 1.5E-7,
+    "output": 5E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 131072
   },
@@ -9050,18 +9178,18 @@
   {
     "model": "mistral/mistral-large-4",
     "provider": "mistral",
-    "input": 6.8E-7,
-    "output": 0.00000209,
+    "input": 0.00000136,
+    "output": 0.00000418,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "mistral/mistral-large-4-0",
     "provider": "mistral",
-    "input": 6.8E-7,
-    "output": 0.00000209,
+    "input": 0.00000136,
+    "output": 0.00000418,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "mistral/mistral-large-latest",
@@ -9224,6 +9352,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "moonshot/kimi-k3.1-pro",
+    "provider": "moonshot",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
     "model": "moonshot/kimi-k3",
     "provider": "moonshot",
     "input": 0.000003,
@@ -9254,6 +9390,70 @@
     "output": 0.000005,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
+  },
+  {
+    "model": "morph/morph-kimik3",
+    "provider": "morph",
+    "input": 0.0000025,
+    "output": 0.000014,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "morph/morph-kimik3-fast",
+    "provider": "morph",
+    "input": 0.000006,
+    "output": 0.0000225,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "morph/morph-glm53-744b",
+    "provider": "morph",
+    "input": 0.00000119,
+    "output": 0.000006,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "morph/morph-glm53flash",
+    "provider": "morph",
+    "input": 2E-7,
+    "output": 7E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "morph/morph-dsv41flash",
+    "provider": "morph",
+    "input": 1.2E-7,
+    "output": 8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "morph/morph-dsv41flash-1017",
+    "provider": "morph",
+    "input": 1.2E-7,
+    "output": 8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "morph/morph-dsv41flash-abliterated",
+    "provider": "morph",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "morph/morph-dsv4flash",
+    "provider": "morph",
+    "input": 1.41953125E-7,
+    "output": 3.99625E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
   },
   {
     "model": "nebius/deepseek-ai/DeepSeek-R1",
@@ -9637,7 +9837,7 @@
     "input": 0.0000014,
     "output": 0.0000044,
     "max_input_tokens": 1024000,
-    "max_output_tokens": null
+    "max_output_tokens": 1024000
   },
   {
     "model": "nebius/zai-org/GLM-5.3-Flash",
@@ -10357,7 +10557,7 @@
     "input": 0.000001,
     "output": 0.000001,
     "max_input_tokens": 128000,
-    "max_output_tokens": null
+    "max_output_tokens": 128000
   },
   {
     "model": "perplexity/sonar-deep-research",
@@ -10365,7 +10565,7 @@
     "input": 0.000002,
     "output": 0.000008,
     "max_input_tokens": 128000,
-    "max_output_tokens": null
+    "max_output_tokens": 128000
   },
   {
     "model": "perplexity/sonar-pro",
@@ -10381,7 +10581,7 @@
     "input": 0.000001,
     "output": 0.000005,
     "max_input_tokens": 128000,
-    "max_output_tokens": null
+    "max_output_tokens": 128000
   },
   {
     "model": "perplexity/sonar-reasoning-pro",
@@ -10389,7 +10589,7 @@
     "input": 0.000002,
     "output": 0.000008,
     "max_input_tokens": 128000,
-    "max_output_tokens": null
+    "max_output_tokens": 128000
   },
   {
     "model": "qwen.qwen3-coder-480b-a35b-v1:0",
@@ -10653,7 +10853,7 @@
     "input": 0.00000104,
     "output": 0.00000104,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/openai/gpt-oss-120b",
@@ -10661,7 +10861,7 @@
     "input": 1.5E-7,
     "output": 6E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/zai-org/GLM-4.6",
@@ -10669,7 +10869,7 @@
     "input": 6E-7,
     "output": 0.0000022,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "together_ai/MiniMaxAI/MiniMax-M3",
@@ -10677,7 +10877,7 @@
     "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 524288,
-    "max_output_tokens": null
+    "max_output_tokens": 524288
   },
   {
     "model": "together_ai/MiniMaxAI/MiniMax-M3.1-Flash",
@@ -10685,7 +10885,7 @@
     "input": 1.5E-7,
     "output": 6E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "together_ai/Prism-ML/Ternary-Bonsai-27B",
@@ -10693,7 +10893,7 @@
     "input": 0.0,
     "output": 0.0,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/Qwen/Qwen3.5-9B",
@@ -10701,7 +10901,7 @@
     "input": 1.7E-7,
     "output": 2.5E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/Qwen/Qwen3.6-Plus",
@@ -10709,7 +10909,7 @@
     "input": 5E-7,
     "output": 0.000003,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "together_ai/Qwen/Qwen3.7-Max",
@@ -10717,7 +10917,7 @@
     "input": 0.0000015,
     "output": 0.0000045,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "together_ai/Qwen/Qwen3.7-Plus",
@@ -10725,7 +10925,7 @@
     "input": 3.2E-7,
     "output": 0.00000128,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "together_ai/Qwen/Qwen3.8-2.4T-A95B",
@@ -10733,7 +10933,7 @@
     "input": 0.000002,
     "output": 0.000006,
     "max_input_tokens": 1010000,
-    "max_output_tokens": null
+    "max_output_tokens": 1010000
   },
   {
     "model": "together_ai/deepseek-ai/DeepSeek-V4-Flash-0731",
@@ -10741,7 +10941,7 @@
     "input": 1.4E-7,
     "output": 2.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "together_ai/deepseek-ai/DeepSeek-V4.1-Flash",
@@ -10749,7 +10949,7 @@
     "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "together_ai/deepseek-ai/DeepSeek-V4-Pro-0813",
@@ -10757,7 +10957,7 @@
     "input": 0.00000132,
     "output": 0.00000396,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "together_ai/meta-models/Muse-Glimmer-30B",
@@ -10765,7 +10965,7 @@
     "input": 3.5E-7,
     "output": 0.0000015,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/meta-models/Muse-Spark-Open-816B-A42B",
@@ -10773,7 +10973,7 @@
     "input": 0.00000125,
     "output": 0.00000425,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "together_ai/moonshotai/Kimi-K3",
@@ -10781,7 +10981,7 @@
     "input": 0.000003,
     "output": 0.000015,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "together_ai/thinkingmachines/Inkling",
@@ -10789,7 +10989,7 @@
     "input": 0.000001,
     "output": 0.00000405,
     "max_input_tokens": 524288,
-    "max_output_tokens": null
+    "max_output_tokens": 524288
   },
   {
     "model": "together_ai/zai-org/GLM-5.2",
@@ -12768,6 +12968,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "zai/glm-5v-turbo",
+    "provider": "zai",
+    "input": 0.0000012,
+    "output": 0.000004,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "zai/glm-5.1",
     "provider": "zai",
     "input": 0.0000014,
@@ -14308,7 +14516,7 @@
     "provider": "bedrock_mantle",
     "input": 0.0000044,
     "output": 0.000022,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14316,7 +14524,7 @@
     "provider": "bedrock_mantle",
     "input": 0.0000022,
     "output": 0.0000132,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14324,7 +14532,7 @@
     "provider": "bedrock_mantle",
     "input": 0.00001375,
     "output": 0.0000825,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14340,7 +14548,7 @@
     "provider": "bedrock_mantle",
     "input": 2.2E-7,
     "output": 0.00000132,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14348,7 +14556,7 @@
     "provider": "bedrock_converse",
     "input": 0.0000044,
     "output": 0.000022,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14356,7 +14564,7 @@
     "provider": "bedrock_converse",
     "input": 0.000004,
     "output": 0.00002,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14364,7 +14572,7 @@
     "provider": "bedrock_converse",
     "input": 0.0000022,
     "output": 0.0000132,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14372,7 +14580,7 @@
     "provider": "bedrock_converse",
     "input": 0.000002,
     "output": 0.000012,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14380,7 +14588,7 @@
     "provider": "bedrock_converse",
     "input": 2.2E-7,
     "output": 0.00000132,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14388,7 +14596,7 @@
     "provider": "bedrock_converse",
     "input": 0.00000275,
     "output": 0.0000165,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14396,7 +14604,7 @@
     "provider": "bedrock_converse",
     "input": 0.0000025,
     "output": 0.000015,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14404,7 +14612,7 @@
     "provider": "bedrock_converse",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14412,7 +14620,7 @@
     "provider": "bedrock_converse",
     "input": 0.000005,
     "output": 0.00003,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14420,7 +14628,7 @@
     "provider": "bedrock_converse",
     "input": 2E-7,
     "output": 0.0000012,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14428,7 +14636,7 @@
     "provider": "bedrock_mantle",
     "input": 0.000011,
     "output": 0.000055,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14436,7 +14644,7 @@
     "provider": "bedrock_mantle",
     "input": 0.0000022,
     "output": 0.000011,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14444,7 +14652,7 @@
     "provider": "bedrock_mantle",
     "input": 1.1E-7,
     "output": 5.5E-7,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14452,7 +14660,7 @@
     "provider": "bedrock_converse",
     "input": 0.000011,
     "output": 0.000055,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14460,7 +14668,7 @@
     "provider": "bedrock_converse",
     "input": 0.0000022,
     "output": 0.000011,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14468,7 +14676,7 @@
     "provider": "bedrock_converse",
     "input": 1.1E-7,
     "output": 5.5E-7,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14476,7 +14684,7 @@
     "provider": "bedrock_converse",
     "input": 0.00001,
     "output": 0.00005,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14484,7 +14692,7 @@
     "provider": "bedrock_converse",
     "input": 0.000002,
     "output": 0.00001,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14492,7 +14700,7 @@
     "provider": "bedrock_converse",
     "input": 0.000002,
     "output": 0.00001,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14500,7 +14708,7 @@
     "provider": "bedrock_converse",
     "input": 1E-7,
     "output": 5E-7,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14508,7 +14716,7 @@
     "provider": "bedrock_converse",
     "input": 1E-7,
     "output": 5E-7,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14516,7 +14724,7 @@
     "provider": "bedrock_mantle",
     "input": 0.0000055,
     "output": 0.000033,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14524,7 +14732,7 @@
     "provider": "bedrock_mantle",
     "input": 0.00000275,
     "output": 0.0000165,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -14822,6 +15030,174 @@
     "output": 0.0000012,
     "max_input_tokens": 1000000,
     "max_output_tokens": 393216
+  },
+  {
+    "model": "streamlake/deepseek-v4-flash-0731",
+    "provider": "streamlake",
+    "input": 4.4E-7,
+    "output": 0.00000132,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "streamlake/DeepSeek-V4-Pro-0813",
+    "provider": "streamlake",
+    "input": 0.00000132,
+    "output": 0.00000396,
+    "max_input_tokens": 1048566,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "streamlake/GLM-5.3",
+    "provider": "streamlake",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "streamlake/GLM-5.3-Flash",
+    "provider": "streamlake",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "streamlake/Kimi-K2-Instruct-0905",
+    "provider": "streamlake",
+    "input": 5.71E-7,
+    "output": 0.000002286,
+    "max_input_tokens": 224000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "streamlake/deepseek-v4-flash",
+    "provider": "streamlake",
+    "input": 1.4E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "streamlake/deepseek-v4-pro",
+    "provider": "streamlake",
+    "input": 0.00000174,
+    "output": 0.00000348,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "streamlake/deepseek-v4.1-flash-1017",
+    "provider": "streamlake",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "streamlake/deepseek-v4.1-flash-260910",
+    "provider": "streamlake",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048568,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "streamlake/glm-5",
+    "provider": "streamlake",
+    "input": 0.000001,
+    "output": 0.0000032,
+    "max_input_tokens": 202752,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "streamlake/glm-5.1",
+    "provider": "streamlake",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 202752,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "streamlake/glm-5.2",
+    "provider": "streamlake",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048566,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "streamlake/kimi-k2.6",
+    "provider": "streamlake",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 256000
+  },
+  {
+    "model": "streamlake/kimi-k2.7-code",
+    "provider": "streamlake",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "streamlake/minimax-m2.5",
+    "provider": "streamlake",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 196608,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "streamlake/minimax-m3",
+    "provider": "streamlake",
+    "input": 6E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 512000
+  },
+  {
+    "model": "streamlake/qwen3.5-397b-a17b",
+    "provider": "streamlake",
+    "input": 6E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 258048,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "streamlake/qwen3.6-27b",
+    "provider": "streamlake",
+    "input": 6E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 229376,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "streamlake/qwen3.6-35b-a3b",
+    "provider": "streamlake",
+    "input": 3.75E-7,
+    "output": 0.00000225,
+    "max_input_tokens": 229376,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "streamlake/qwen3.8-2.4t-a95b",
+    "provider": "streamlake",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "streamlake/qwen3.8-27b",
+    "provider": "streamlake",
+    "input": 5E-7,
+    "output": 0.000003,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 128000
   },
   {
     "model": "deepseek-v4-flash",
@@ -15181,7 +15557,7 @@
     "input": 2.2E-7,
     "output": 6.6E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/kimi-k3",
@@ -15221,7 +15597,7 @@
     "input": 2.2E-7,
     "output": 6.6E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/glm-5p2-fast",
@@ -15725,7 +16101,7 @@
     "input": 1.4E-7,
     "output": 2.8E-7,
     "max_input_tokens": 1049000,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "wandb/deepseek-ai/DeepSeek-V4-Flash-0731",
@@ -15733,7 +16109,7 @@
     "input": 1.3E-7,
     "output": 2.8E-7,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/deepseek-ai/DeepSeek-V4-Pro",
@@ -15741,7 +16117,7 @@
     "input": 0.00000115,
     "output": 0.00000255,
     "max_input_tokens": 1049000,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "wandb/google/gemma-4-31B-it",
@@ -15749,7 +16125,7 @@
     "input": 1E-7,
     "output": 3.4E-7,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/ibm-granite/granite-4.1-8b",
@@ -15757,7 +16133,7 @@
     "input": 5E-8,
     "output": 1E-7,
     "max_input_tokens": 131000,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "wandb/JetBrains/Mellum2-12B-A2.5B-Instruct",
@@ -15765,7 +16141,7 @@
     "input": 5E-8,
     "output": 1E-7,
     "max_input_tokens": 131000,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "wandb/meta-llama/Llama-3.1-70B-Instruct",
@@ -15773,7 +16149,7 @@
     "input": 8E-7,
     "output": 8E-7,
     "max_input_tokens": 131000,
-    "max_output_tokens": null
+    "max_output_tokens": 128000
   },
   {
     "model": "wandb/MiniMaxAI/MiniMax-M3",
@@ -15781,7 +16157,7 @@
     "input": 2.3E-7,
     "output": 9.6E-7,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/moonshotai/Kimi-K2.7-Code",
@@ -15789,7 +16165,7 @@
     "input": 7.1E-7,
     "output": 0.0000035,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/moonshotai/Kimi-K2.6",
@@ -15797,7 +16173,7 @@
     "input": 6.5E-7,
     "output": 0.00000341,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B",
@@ -15805,7 +16181,7 @@
     "input": 7E-8,
     "output": 2E-7,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
@@ -15813,7 +16189,7 @@
     "input": 5E-7,
     "output": 0.00000215,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/Qwen/Qwen3.8-27B",
@@ -15821,7 +16197,7 @@
     "input": 4E-7,
     "output": 0.000003,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/Qwen/Qwen3.6-35B-A3B",
@@ -15829,7 +16205,7 @@
     "input": 2.5E-7,
     "output": 0.00000125,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/Qwen/Qwen3.6-27B",
@@ -15837,7 +16213,7 @@
     "input": 6E-7,
     "output": 0.0000036,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/Qwen/Qwen3.5-35B-A3B",
@@ -15845,7 +16221,7 @@
     "input": 2.5E-7,
     "output": 0.00000125,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/Qwen/Qwen3-30B-A3B-Instruct-2507",
@@ -15853,7 +16229,7 @@
     "input": 1E-7,
     "output": 3E-7,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/deepseek-ai/DeepSeek-V4-Pro-0813",
@@ -15876,8 +16252,8 @@
     "provider": "wandb",
     "input": 7.6E-7,
     "output": 0.00000242,
-    "max_input_tokens": 1049000,
-    "max_output_tokens": null
+    "max_input_tokens": 262000,
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/openai/gpt-oss-120b-Turbo",
@@ -15885,7 +16261,7 @@
     "input": 1.5E-7,
     "output": 6E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "deepinfra/MiniMaxAI/MiniMax-M2.7",
@@ -15893,7 +16269,7 @@
     "input": 2.5E-7,
     "output": 0.000001,
     "max_input_tokens": 196608,
-    "max_output_tokens": null
+    "max_output_tokens": 196608
   },
   {
     "model": "deepinfra/Qwen/Qwen3.8-27B",
@@ -15901,7 +16277,7 @@
     "input": 4E-7,
     "output": 0.000003,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/google/gemma-4-31B-it-Ultra",
@@ -15909,7 +16285,7 @@
     "input": 2.7E-7,
     "output": 7.6E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "deepinfra/moonshotai/Kimi-K2.5",
@@ -15917,7 +16293,7 @@
     "input": 4.5E-7,
     "output": 0.00000225,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/zai-org/GLM-4.7-Flash",
@@ -15925,7 +16301,7 @@
     "input": 6E-8,
     "output": 4E-7,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "deepinfra/zai-org/GLM-4.6",
@@ -15933,7 +16309,7 @@
     "input": 5E-7,
     "output": 0.000002,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "deepinfra/anthropic/claude-opus-4-8",
@@ -15941,7 +16317,7 @@
     "input": 0.000005,
     "output": 0.000025,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/anthropic/claude-sonnet-4-6",
@@ -15949,7 +16325,7 @@
     "input": 0.000003,
     "output": 0.000015,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/google/gemini-3.5-flash",
@@ -15957,7 +16333,7 @@
     "input": 0.0000015,
     "output": 0.000009,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/XiaomiMiMo/MiMo-V2.5",
@@ -15965,7 +16341,7 @@
     "input": 4E-7,
     "output": 0.000002,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/Qwen/Qwen3-Max",
@@ -15973,7 +16349,7 @@
     "input": 0.0000012,
     "output": 0.000006,
     "max_input_tokens": 256000,
-    "max_output_tokens": null
+    "max_output_tokens": 256000
   },
   {
     "model": "deepinfra/google/gemma-4-31B-it-turbo",
@@ -15981,7 +16357,7 @@
     "input": 9E-8,
     "output": 3.4E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/thinkingmachines/Inkling-Small",
@@ -15989,7 +16365,7 @@
     "input": 4.5E-7,
     "output": 0.0000012,
     "max_input_tokens": 524288,
-    "max_output_tokens": null
+    "max_output_tokens": 524288
   },
   {
     "model": "deepinfra/meta-models/Muse-Glimmer-30B",
@@ -15997,7 +16373,7 @@
     "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "deepinfra/Qwen/Qwen3-Max-Thinking",
@@ -16005,7 +16381,7 @@
     "input": 0.0000012,
     "output": 0.000006,
     "max_input_tokens": 256000,
-    "max_output_tokens": null
+    "max_output_tokens": 256000
   },
   {
     "model": "deepinfra/Qwen/Qwen3-VL-235B-A22B-Instruct",
@@ -16013,7 +16389,7 @@
     "input": 2E-7,
     "output": 8.8E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/Qwen/Qwen3-VL-30B-A3B-Instruct",
@@ -16021,7 +16397,7 @@
     "input": 1.5E-7,
     "output": 6E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/Qwen/Qwen3.5-27B",
@@ -16029,7 +16405,7 @@
     "input": 2.6E-7,
     "output": 0.0000026,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/Qwen/Qwen3.6-35B-A3B",
@@ -16037,7 +16413,7 @@
     "input": 1E-7,
     "output": 9.5E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/nvidia/Nemotron-Content-Safety-3.5",
@@ -16045,7 +16421,7 @@
     "input": 2E-7,
     "output": 2E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "deepinfra/anthropic/claude-opus-5",
@@ -16053,7 +16429,7 @@
     "input": 0.000005,
     "output": 0.000025,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/thinkingmachines/Inkling",
@@ -16061,7 +16437,7 @@
     "input": 9.5E-7,
     "output": 0.00000405,
     "max_input_tokens": 524288,
-    "max_output_tokens": null
+    "max_output_tokens": 524288
   },
   {
     "model": "deepinfra/moonshotai/Kimi-K2.6",
@@ -16069,7 +16445,7 @@
     "input": 7.5E-7,
     "output": 0.0000035,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/deepseek-ai/DeepSeek-V4-Pro-0813",
@@ -16077,7 +16453,7 @@
     "input": 0.0000013,
     "output": 0.0000026,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "deepinfra/Qwen/Qwen3.7-Max",
@@ -16085,7 +16461,7 @@
     "input": 0.0000025,
     "output": 0.0000075,
     "max_input_tokens": 256000,
-    "max_output_tokens": null
+    "max_output_tokens": 256000
   },
   {
     "model": "deepinfra/ByteDance/Seed-2.0-mini",
@@ -16093,7 +16469,7 @@
     "input": 1E-7,
     "output": 4E-7,
     "max_input_tokens": 256000,
-    "max_output_tokens": null
+    "max_output_tokens": 256000
   },
   {
     "model": "deepinfra/Qwen/Qwen3.8-2.4T-A95B",
@@ -16101,7 +16477,7 @@
     "input": 0.000002,
     "output": 0.000006,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/MiniMaxAI/MiniMax-M3",
@@ -16109,7 +16485,7 @@
     "input": 2.8E-7,
     "output": 0.0000011,
     "max_input_tokens": 524288,
-    "max_output_tokens": null
+    "max_output_tokens": 524288
   },
   {
     "model": "deepinfra/google/gemini-3.1-flash-lite",
@@ -16117,7 +16493,7 @@
     "input": 2.5E-7,
     "output": 0.0000015,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/google/gemini-3.7-flash",
@@ -16125,7 +16501,7 @@
     "input": 7.5E-7,
     "output": 0.00000375,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/inclusionAI/Ling-3.0-flash",
@@ -16133,7 +16509,7 @@
     "input": 6E-8,
     "output": 1.8E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "deepinfra/stepfun-ai/Step-3.7-Flash",
@@ -16141,7 +16517,7 @@
     "input": 2E-7,
     "output": 0.00000115,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/Qwen/Qwen3.5-35B-A3B",
@@ -16149,7 +16525,7 @@
     "input": 1.4E-7,
     "output": 0.000001,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/ByteDance/Seed-1.8",
@@ -16157,7 +16533,7 @@
     "input": 2.5E-7,
     "output": 0.000002,
     "max_input_tokens": 256000,
-    "max_output_tokens": null
+    "max_output_tokens": 256000
   },
   {
     "model": "deepinfra/tencent/Hy3",
@@ -16165,7 +16541,7 @@
     "input": 1.4E-7,
     "output": 5.8E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/ByteDance/Seed-2.0-code",
@@ -16173,7 +16549,7 @@
     "input": 5E-7,
     "output": 0.000003,
     "max_input_tokens": 256000,
-    "max_output_tokens": null
+    "max_output_tokens": 256000
   },
   {
     "model": "deepinfra/ByteDance/Seed-2.0-pro",
@@ -16181,7 +16557,7 @@
     "input": 5E-7,
     "output": 0.000003,
     "max_input_tokens": 256000,
-    "max_output_tokens": null
+    "max_output_tokens": 256000
   },
   {
     "model": "deepinfra/zai-org/GLM-5",
@@ -16189,7 +16565,7 @@
     "input": 6E-7,
     "output": 0.00000208,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "deepinfra/nvidia/Nemotron-3-Nano-30B-A3B",
@@ -16197,7 +16573,7 @@
     "input": 5E-8,
     "output": 2E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/moonshotai/Kimi-K2.7-Code",
@@ -16205,7 +16581,7 @@
     "input": 6.8E-7,
     "output": 0.0000034,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/anthropic/claude-sonnet-5",
@@ -16213,7 +16589,7 @@
     "input": 0.000002,
     "output": 0.00001,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/Qwen/Qwen3.5-397B-A17B",
@@ -16221,7 +16597,7 @@
     "input": 4.5E-7,
     "output": 0.000003,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/deepseek-ai/DeepSeek-V4-Flash-0731",
@@ -16229,7 +16605,7 @@
     "input": 8E-8,
     "output": 1.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "deepinfra/google/gemma-4-E4B-it",
@@ -16237,7 +16613,7 @@
     "input": 2E-8,
     "output": 1E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "deepinfra/deepseek-ai/DeepSeek-V3.2",
@@ -16245,7 +16621,7 @@
     "input": 2.6E-7,
     "output": 3.8E-7,
     "max_input_tokens": 163840,
-    "max_output_tokens": null
+    "max_output_tokens": 163840
   },
   {
     "model": "deepinfra/Qwen/Qwen3.8-Max",
@@ -16253,7 +16629,7 @@
     "input": 0.00000165,
     "output": 0.000004951,
     "max_input_tokens": 256000,
-    "max_output_tokens": null
+    "max_output_tokens": 256000
   },
   {
     "model": "deepinfra/anthropic/claude-fable-5",
@@ -16261,7 +16637,7 @@
     "input": 0.00001,
     "output": 0.00005,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
@@ -16269,7 +16645,7 @@
     "input": 5E-7,
     "output": 0.0000022,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/Qwen/Qwen3.5-122B-A10B",
@@ -16277,7 +16653,7 @@
     "input": 2.9E-7,
     "output": 0.0000024,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/zai-org/GLM-5.1",
@@ -16285,7 +16661,7 @@
     "input": 0.00000105,
     "output": 0.0000035,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "deepinfra/deepseek-ai/DeepSeek-V4-Pro",
@@ -16293,7 +16669,7 @@
     "input": 0.0000013,
     "output": 0.0000026,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "deepinfra/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
@@ -16301,7 +16677,7 @@
     "input": 8.5E-8,
     "output": 4E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/zai-org/GLM-5.2",
@@ -16309,7 +16685,7 @@
     "input": 7.5E-7,
     "output": 0.0000024,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "deepinfra/moonshotai/Kimi-K3",
@@ -16317,7 +16693,7 @@
     "input": 0.00000285,
     "output": 0.00001425,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "deepinfra/anthropic/claude-opus-4-7",
@@ -16325,7 +16701,7 @@
     "input": 0.000005,
     "output": 0.000025,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/Qwen/Qwen3.6-27B",
@@ -16333,7 +16709,7 @@
     "input": 3.2E-7,
     "output": 0.0000032,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/google/gemma-4-26B-A4B-it",
@@ -16341,7 +16717,7 @@
     "input": 7E-8,
     "output": 3.4E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/google/gemini-3.1-pro",
@@ -16349,7 +16725,7 @@
     "input": 0.000002,
     "output": 0.000012,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "deepinfra/XiaomiMiMo/MiMo-V2.5-Pro",
@@ -16357,7 +16733,7 @@
     "input": 0.000001,
     "output": 0.000003,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "deepinfra/anthropic/claude-haiku-4-5",
@@ -16365,7 +16741,7 @@
     "input": 0.000001,
     "output": 0.000005,
     "max_input_tokens": 200000,
-    "max_output_tokens": null
+    "max_output_tokens": 200000
   },
   {
     "model": "deepinfra/deepseek-ai/DeepSeek-V4-Flash",
@@ -16373,7 +16749,7 @@
     "input": 9E-8,
     "output": 1.8E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "deepinfra/deepseek-ai/DeepSeek-V4.1-Flash",
@@ -16397,7 +16773,7 @@
     "input": 2E-7,
     "output": 9.5E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "deepinfra/Qwen/Qwen3.5-9B",
@@ -16405,7 +16781,7 @@
     "input": 1E-7,
     "output": 1.5E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "deepinfra/MiniMaxAI/MiniMax-M2.7-Turbo",
@@ -16413,7 +16789,7 @@
     "input": 3.8E-7,
     "output": 0.0000017,
     "max_input_tokens": 196608,
-    "max_output_tokens": null
+    "max_output_tokens": 196608
   },
   {
     "model": "deepinfra/zai-org/GLM-4.7",
@@ -16421,7 +16797,7 @@
     "input": 4E-7,
     "output": 0.00000175,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "deepinfra/google/gemma-4-31B-it",
@@ -16429,7 +16805,7 @@
     "input": 1.3E-7,
     "output": 3.8E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "gemini/gemini-omni-1.1-flash",
@@ -16605,7 +16981,7 @@
     "input": 0.0000021,
     "output": 0.0000066,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/glm-5p3-fast",
@@ -16613,7 +16989,7 @@
     "input": 0.0000021,
     "output": 0.0000066,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/glm-5p3-flash",
@@ -16621,7 +16997,7 @@
     "input": 1.5E-7,
     "output": 5E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/accounts/fireworks/routers/glm-5p3-flash-us",
@@ -16629,7 +17005,7 @@
     "input": 2.25E-7,
     "output": 7.5E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/glm-5p3-flash",
@@ -16637,7 +17013,7 @@
     "input": 1.5E-7,
     "output": 5E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/glm-5p3-flash-us",
@@ -16645,7 +17021,7 @@
     "input": 2.25E-7,
     "output": 7.5E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/inkling",
@@ -16653,7 +17029,7 @@
     "input": 0.000001,
     "output": 0.00000405,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "zai/glm-5.2",
@@ -16664,12 +17040,92 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "zerogpu/deepseek-v4.1-flash",
+    "provider": "zerogpu",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "zerogpu/glm-5.3-flash",
+    "provider": "zerogpu",
+    "input": 1E-7,
+    "output": 3.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "zerogpu/gpt-4.1-mini",
+    "provider": "zerogpu",
+    "input": 4E-7,
+    "output": 0.0000016,
+    "max_input_tokens": 1047576,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "zerogpu/gpt-5.4-nano",
+    "provider": "zerogpu",
+    "input": 2E-7,
+    "output": 0.00000125,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "zerogpu/gpt-5.6-luna",
+    "provider": "zerogpu",
+    "input": 2E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "zerogpu/gpt-6-luna",
+    "provider": "zerogpu",
+    "input": 1E-7,
+    "output": 5E-7,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "zerogpu/gpt-oss-120b",
+    "provider": "zerogpu",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "zerogpu/llama-3.1-8b-instruct-fast",
+    "provider": "zerogpu",
+    "input": 1.5E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "zerogpu/llama-3.2-3b-instruct-fast",
+    "provider": "zerogpu",
+    "input": 5E-8,
+    "output": 3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "zerogpu/qwen3.6-35b-a3b",
+    "provider": "zerogpu",
+    "input": 2E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
     "model": "together_ai/Qwen/Qwen3.8-Flash",
     "provider": "together_ai",
     "input": 1.5E-7,
     "output": 4.7E-7,
     "max_input_tokens": 1000000,
-    "max_output_tokens": null
+    "max_output_tokens": 1000000
   },
   {
     "model": "together_ai/moonshotai/Kimi-K2.5-fp4",
@@ -16988,7 +17444,7 @@
     "provider": "bedrock_mantle",
     "input": 0.0000027,
     "output": 0.0000162,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -16996,7 +17452,7 @@
     "provider": "bedrock_mantle",
     "input": 2.7E-7,
     "output": 0.00000162,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -17004,7 +17460,7 @@
     "provider": "bedrock_mantle",
     "input": 0.000003375,
     "output": 0.00002025,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -17084,7 +17540,7 @@
     "provider": "bedrock_mantle",
     "input": 0.0000033,
     "output": 0.0000198,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -17237,7 +17693,7 @@
     "input": 4.5E-8,
     "output": 1.5E-7,
     "max_input_tokens": 128000,
-    "max_output_tokens": null
+    "max_output_tokens": 128000
   },
   {
     "model": "together_ai/meta-llama/Llama-3.2-1B-Instruct",
@@ -17245,7 +17701,7 @@
     "input": 6E-8,
     "output": 6E-8,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/meta-llama/Llama-3.2-3B-Instruct",
@@ -17253,7 +17709,7 @@
     "input": 6E-8,
     "output": 6E-8,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/Qwen/QwQ-32B",
@@ -17261,7 +17717,7 @@
     "input": 0.0000012,
     "output": 0.0000012,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/Qwen/Qwen2.5-72B-Instruct-Turbo",
@@ -17269,7 +17725,7 @@
     "input": 0.0000012,
     "output": 0.0000012,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8",
@@ -17277,7 +17733,7 @@
     "input": 0.000002,
     "output": 0.000002,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/Qwen/Qwen3-Coder-Next-FP8",
@@ -17285,7 +17741,7 @@
     "input": 5E-7,
     "output": 0.0000012,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/Qwen/Qwen3-Next-80B-A3B-Instruct",
@@ -17293,7 +17749,7 @@
     "input": 1.5E-7,
     "output": 0.0000015,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/Qwen/Qwen3-Next-80B-A3B-Thinking",
@@ -17301,7 +17757,7 @@
     "input": 1.5E-7,
     "output": 0.0000015,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/Qwen/Qwen3-VL-32B-Instruct",
@@ -17309,7 +17765,7 @@
     "input": 5E-7,
     "output": 0.0000015,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/Qwen/Qwen3-VL-8B-Instruct",
@@ -17317,7 +17773,7 @@
     "input": 1.8E-7,
     "output": 6.8E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/Qwen/Qwen3.5-397B-A17B",
@@ -17325,7 +17781,7 @@
     "input": 6E-7,
     "output": 0.0000036,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
@@ -17333,7 +17789,7 @@
     "input": 0.000002,
     "output": 0.000002,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
@@ -17341,7 +17797,7 @@
     "input": 1.8E-7,
     "output": 1.8E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
@@ -17349,7 +17805,7 @@
     "input": 0.0000016,
     "output": 0.0000016,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/deepseek-ai/DeepSeek-V3.1",
@@ -17357,7 +17813,7 @@
     "input": 6E-7,
     "output": 0.0000017,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/google/gemma-4-31B-it",
@@ -17365,7 +17821,7 @@
     "input": 3.9E-7,
     "output": 9.7E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/meta-llama/Llama-4-Scout-17B-16E-Instruct",
@@ -17373,7 +17829,7 @@
     "input": 1.8E-7,
     "output": 5.9E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
@@ -17381,7 +17837,7 @@
     "input": 8.8E-7,
     "output": 8.8E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
@@ -17389,7 +17845,7 @@
     "input": 1.8E-7,
     "output": 1.8E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/moonshotai/Kimi-K2.6",
@@ -17397,7 +17853,7 @@
     "input": 0.0000012,
     "output": 0.0000045,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/moonshotai/Kimi-K2.7-Code",
@@ -17405,7 +17861,7 @@
     "input": 9.5E-7,
     "output": 0.000004,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "together_ai/nvidia/nemotron-3-ultra-550b-a55b",
@@ -17413,7 +17869,7 @@
     "input": 6E-7,
     "output": 0.0000036,
     "max_input_tokens": 512288,
-    "max_output_tokens": null
+    "max_output_tokens": 512288
   },
   {
     "model": "together_ai/openai/gpt-oss-20b",
@@ -17421,7 +17877,7 @@
     "input": 5E-8,
     "output": 2E-7,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/zai-org/GLM-4.5-Air-FP8",
@@ -17429,7 +17885,7 @@
     "input": 2E-7,
     "output": 0.0000011,
     "max_input_tokens": 131072,
-    "max_output_tokens": null
+    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/zai-org/GLM-4.7",
@@ -17437,7 +17893,7 @@
     "input": 4.5E-7,
     "output": 0.000002,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "together_ai/zai-org/GLM-5",
@@ -17445,7 +17901,7 @@
     "input": 0.000001,
     "output": 0.0000032,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "together_ai/zai-org/GLM-5.1",
@@ -17453,7 +17909,7 @@
     "input": 0.0000014,
     "output": 0.0000044,
     "max_input_tokens": 202752,
-    "max_output_tokens": null
+    "max_output_tokens": 202752
   },
   {
     "model": "azure/eu/gpt-4o-2024-05-13",
@@ -18112,6 +18568,126 @@
     "max_output_tokens": null
   },
   {
+    "model": "aiand/deepseek-ai/deepseek-v4-flash",
+    "provider": "aiand",
+    "input": 1.5E-7,
+    "output": 2.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "aiand/deepseek-ai/deepseek-v4-pro",
+    "provider": "aiand",
+    "input": 0.000001,
+    "output": 0.0000025,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "aiand/deepseek-ai/deepseek-v4.1-flash",
+    "provider": "aiand",
+    "input": 3E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "aiand/deepseek-ai/deepseek-v4.1-flash-1017",
+    "provider": "aiand",
+    "input": 3E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "aiand/google/gemma-4-31b-it",
+    "provider": "aiand",
+    "input": 2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "aiand/meta/muse-spark-open",
+    "provider": "aiand",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 943718
+  },
+  {
+    "model": "aiand/moonshotai/kimi-k2.7-code",
+    "provider": "aiand",
+    "input": 7.5E-7,
+    "output": 0.0000035,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "aiand/moonshotai/kimi-k3",
+    "provider": "aiand",
+    "input": 0.000003,
+    "output": 0.0000125,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "aiand/motif-technologies/motif-3",
+    "provider": "aiand",
+    "input": 5E-7,
+    "output": 0.000002,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "aiand/openai/gpt-oss-120b",
+    "provider": "aiand",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "aiand/qwen/qwen3.6-27b",
+    "provider": "aiand",
+    "input": 3.2E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "aiand/qwen/qwen3.8-27b",
+    "provider": "aiand",
+    "input": 4E-7,
+    "output": 0.000003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "aiand/zai-org/glm-5.2",
+    "provider": "aiand",
+    "input": 0.000001,
+    "output": 0.000004,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "aiand/zai-org/glm-5.3",
+    "provider": "aiand",
+    "input": 0.000001,
+    "output": 0.000004,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "aiand/zai-org/glm-5.3-flash",
+    "provider": "aiand",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1048550,
+    "max_output_tokens": 131072
+  },
+  {
     "model": "nace/drex-v1.5",
     "provider": "nace",
     "input": 5E-8,
@@ -18141,7 +18717,7 @@
     "input": 2E-7,
     "output": 6.5E-7,
     "max_input_tokens": 1049000,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "wandb/google/gemma-4-26B-A4B-it",
@@ -18149,7 +18725,7 @@
     "input": 1E-7,
     "output": 3E-7,
     "max_input_tokens": 262000,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "wandb/zai-org/GLM-5.3-Flash",
@@ -18872,6 +19448,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "amazon.nova-2-5-sonic",
+    "provider": "bedrock",
+    "input": 3.3E-7,
+    "output": 0.00000275,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 64000
+  },
+  {
     "model": "azure/model-router",
     "provider": "azure",
     "input": 1.4E-7,
@@ -19133,7 +19717,7 @@
     "input": 1.5E-7,
     "output": 5E-7,
     "max_input_tokens": 262144,
-    "max_output_tokens": null
+    "max_output_tokens": 262144
   },
   {
     "model": "jp.amazon.nova-2-lite-v1:0",
@@ -19178,10 +19762,10 @@
   {
     "model": "wandb/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B",
     "provider": "wandb",
-    "input": 1.5E-7,
-    "output": 7.5E-7,
+    "input": 2.5E-7,
+    "output": 0.0000015,
     "max_input_tokens": 1049000,
-    "max_output_tokens": null
+    "max_output_tokens": 943718
   },
   {
     "model": "together_ai/reflection/Beam-1.0-501B-A23B",
@@ -19189,7 +19773,7 @@
     "input": 4E-7,
     "output": 0.0000012,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "baseten/reflection/Beam-1.0",
@@ -19205,7 +19789,7 @@
     "input": 2.5E-7,
     "output": 0.000001,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "baseten/deepseek-ai/DeepSeek-V4.1-Flash-1017",
@@ -19277,7 +19861,7 @@
     "input": 3E-7,
     "output": 0.0000012,
     "max_input_tokens": 1048576,
-    "max_output_tokens": null
+    "max_output_tokens": 1048576
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/minimax-m3p1-flash",
@@ -19318,5 +19902,1365 @@
     "output": 0.0000012,
     "max_input_tokens": 256000,
     "max_output_tokens": 64000
+  },
+  {
+    "model": "opencode_go/grok-4.7",
+    "provider": "opencode_go",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "opencode_go/gpt-6-luna",
+    "provider": "opencode_go",
+    "input": 1.0000000000000001E-7,
+    "output": 5E-7,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "opencode_go/gpt-5.6-luna",
+    "provider": "opencode_go",
+    "input": 2.0000000000000002E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "opencode_go/claude-haiku-5-5",
+    "provider": "opencode_go",
+    "input": 1.0000000000000001E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "opencode_go/gemini-4-argon",
+    "provider": "opencode_go",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "opencode_go/glm-5.3-flash",
+    "provider": "opencode_go",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/glm-5.3",
+    "provider": "opencode_go",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/glm-5.2",
+    "provider": "opencode_go",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/kimi-k3.1-pro",
+    "provider": "opencode_go",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/kimi-k3",
+    "provider": "opencode_go",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/kimi-k2.7-code",
+    "provider": "opencode_go",
+    "input": 9.499999999999999E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "opencode_go/longcat-2.0",
+    "provider": "opencode_go",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/deepseek-v4.1-flash",
+    "provider": "opencode_go",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "opencode_go/deepseek-v4-pro",
+    "provider": "opencode_go",
+    "input": 0.00000132,
+    "output": 0.00000396,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "opencode_go/mimo-v2.6-flash",
+    "provider": "opencode_go",
+    "input": 1.4E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/mimo-v2.6-pro",
+    "provider": "opencode_go",
+    "input": 4.35E-7,
+    "output": 8.7E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/mimo-v2.5",
+    "provider": "opencode_go",
+    "input": 1.4E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "opencode_go/mimo-v2.5-pro",
+    "provider": "opencode_go",
+    "input": 4.35E-7,
+    "output": 8.7E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "opencode_go/minimax-m3.1-flash",
+    "provider": "opencode_go",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 512000
+  },
+  {
+    "model": "opencode_go/minimax-m3",
+    "provider": "opencode_go",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/muse-spark-1.3-contributor",
+    "provider": "opencode_go",
+    "input": 1.0000000000000001E-7,
+    "output": 2.0000000000000002E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/muse-spark-1.2-contributor",
+    "provider": "opencode_go",
+    "input": 1.0000000000000001E-7,
+    "output": 2.0000000000000002E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/qwen3.8-max",
+    "provider": "opencode_go",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/qwen3.8-flash",
+    "provider": "opencode_go",
+    "input": 1.5E-7,
+    "output": 4.6999999999999995E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/qwen3.7-plus",
+    "provider": "opencode_go",
+    "input": 4.0000000000000003E-7,
+    "output": 0.0000016000000000000001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "opencode_go/hy4-preview",
+    "provider": "opencode_go",
+    "input": 8.34E-7,
+    "output": 0.000002501,
+    "max_input_tokens": 1024000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "opencode_go/hy3",
+    "provider": "opencode_go",
+    "input": 1.4E-7,
+    "output": 5.8E-7,
+    "max_input_tokens": 192000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "opencode_go/longcat-2.5-preview-free",
+    "provider": "opencode_go",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "opencode_go/step-5-preview",
+    "provider": "opencode_go",
+    "input": 0.000001,
+    "output": 0.0000027,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "opencode_go/beam-free",
+    "provider": "opencode_go",
+    "input": 0,
+    "output": 0,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "bedrock/claude_platform/claude-fable-5",
+    "provider": "bedrock",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-fable-5-1",
+    "provider": "bedrock",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-haiku-4-5",
+    "provider": "bedrock",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-haiku-5-5",
+    "provider": "bedrock",
+    "input": 1E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-opus-4-5",
+    "provider": "bedrock",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-opus-4-6",
+    "provider": "bedrock",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-opus-4-7",
+    "provider": "bedrock",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-opus-4-8",
+    "provider": "bedrock",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-opus-5",
+    "provider": "bedrock",
+    "input": 0.000005,
+    "output": 0.000025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-opus-5-5",
+    "provider": "bedrock",
+    "input": 0.000004,
+    "output": 0.00002,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-sonnet-4-5",
+    "provider": "bedrock",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-sonnet-4-6",
+    "provider": "bedrock",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-sonnet-5",
+    "provider": "bedrock",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-sonnet-5-5",
+    "provider": "bedrock",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-6.1-terra",
+    "provider": "openai",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.openai.gpt-6.1-terra",
+    "provider": "bedrock_converse",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.openai.gpt-6.1-terra",
+    "provider": "bedrock_converse",
+    "input": 0.0000011,
+    "output": 0.0000055,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "github_copilot/gpt-6.1-terra",
+    "provider": "github_copilot",
+    "input": 0.000001,
+    "output": 0.000005,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "refuseless/glm-5.3-abliterated",
+    "provider": "refuseless",
+    "input": 0.000001,
+    "output": 0.000002,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "refuseless/glm-5.3-flash-abliterated",
+    "provider": "refuseless",
+    "input": 1.2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "refuseless/deepseek-v4.1-flash-abliterated",
+    "provider": "refuseless",
+    "input": 1.4E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 130000
+  },
+  {
+    "model": "refuseless/deepseek-v4.1-flash-fast",
+    "provider": "refuseless",
+    "input": 5E-8,
+    "output": 1.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "refuseless/minimax-m3.1-flash",
+    "provider": "refuseless",
+    "input": 5E-8,
+    "output": 2.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 512000
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/rune",
+    "provider": "fireworks_ai",
+    "input": 4.2E-8,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-6.1-terra",
+    "provider": "bedrock_mantle",
+    "input": 0.0000011,
+    "output": 0.0000055,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "clf_ai_gateway/glm-5.3",
+    "provider": "clf_ai_gateway",
+    "input": 5.6E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/glm-5.3-flash",
+    "provider": "clf_ai_gateway",
+    "input": 6E-8,
+    "output": 2E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/glm-5.2",
+    "provider": "clf_ai_gateway",
+    "input": 5.6E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/glm-4.7-flash",
+    "provider": "clf_ai_gateway",
+    "input": 2.4E-8,
+    "output": 1.6E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/deepseek-v4-pro",
+    "provider": "clf_ai_gateway",
+    "input": 5.28E-7,
+    "output": 0.000001584,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/deepseek-v4-flash",
+    "provider": "clf_ai_gateway",
+    "input": 1.76E-7,
+    "output": 5.28E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/deepseek-v4.1-flash",
+    "provider": "clf_ai_gateway",
+    "input": 1.2E-7,
+    "output": 4.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/kimi-k2.6",
+    "provider": "clf_ai_gateway",
+    "input": 3.8E-7,
+    "output": 0.0000016,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/kimi-k2.7-code",
+    "provider": "clf_ai_gateway",
+    "input": 3.8E-7,
+    "output": 0.0000016,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "clf_ai_gateway/qwen3.8-27b",
+    "provider": "clf_ai_gateway",
+    "input": 1.8E-7,
+    "output": 0.00000128,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/claude-fable-5",
+    "provider": "kyma",
+    "input": 0.0000135,
+    "output": 0.0000675,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/claude-fable-5.1",
+    "provider": "kyma",
+    "input": 0.0000135,
+    "output": 0.0000675,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/claude-haiku-4-5",
+    "provider": "kyma",
+    "input": 0.00000135,
+    "output": 0.00000675,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "kyma/claude-haiku-5.5",
+    "provider": "kyma",
+    "input": 1.35E-7,
+    "output": 6.75E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/claude-opus-4-7",
+    "provider": "kyma",
+    "input": 0.00000675,
+    "output": 0.00003375,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/claude-opus-5",
+    "provider": "kyma",
+    "input": 0.00000675,
+    "output": 0.00003375,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/claude-opus-5.5",
+    "provider": "kyma",
+    "input": 0.0000054,
+    "output": 0.000027,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/claude-sonnet-4-6",
+    "provider": "kyma",
+    "input": 0.00000405,
+    "output": 0.00002025,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/claude-sonnet-5",
+    "provider": "kyma",
+    "input": 0.0000027,
+    "output": 0.0000135,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/claude-sonnet-5.5",
+    "provider": "kyma",
+    "input": 0.0000027,
+    "output": 0.0000135,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/deepseek-v3",
+    "provider": "kyma",
+    "input": 5.18E-7,
+    "output": 7.571E-7,
+    "max_input_tokens": 160000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/deepseek-v4-flash",
+    "provider": "kyma",
+    "input": 1.23E-7,
+    "output": 2.458E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/deepseek-v4-flash-vision-exp",
+    "provider": "kyma",
+    "input": 3.892E-7,
+    "output": 0.000001168,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "kyma/deepseek-v4.1-flash",
+    "provider": "kyma",
+    "input": 2.7E-7,
+    "output": 8.1E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/gemini-3-flash",
+    "provider": "kyma",
+    "input": 6.75E-7,
+    "output": 0.00000405,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/gemini-3.1-pro",
+    "provider": "kyma",
+    "input": 0.0000027,
+    "output": 0.0000162,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/gemini-3.5-flash",
+    "provider": "kyma",
+    "input": 0.000002025,
+    "output": 0.00001215,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/gemini-3.5-flash-lite",
+    "provider": "kyma",
+    "input": 4.05E-7,
+    "output": 0.000003375,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/gemini-3.6-flash",
+    "provider": "kyma",
+    "input": 0.000001013,
+    "output": 0.000005063,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/gemini-3.7-flash",
+    "provider": "kyma",
+    "input": 0.000002026,
+    "output": 0.000010126,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/gemini-3.8-flash",
+    "provider": "kyma",
+    "input": 0.000002026,
+    "output": 0.000010126,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/gemini-4-argon",
+    "provider": "kyma",
+    "input": 0.0000054,
+    "output": 0.000027,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/gemma-4-31b",
+    "provider": "kyma",
+    "input": 1.642E-7,
+    "output": 4.689E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/glm-4.5-air",
+    "provider": "kyma",
+    "input": 1.797E-7,
+    "output": 0.000001175,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/glm-4.7-flash",
+    "provider": "kyma",
+    "input": 8.1E-8,
+    "output": 5.4E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/glm-5.1",
+    "provider": "kyma",
+    "input": 0.00000189,
+    "output": 0.00000594,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/glm-5.2",
+    "provider": "kyma",
+    "input": 9.029E-7,
+    "output": 0.000003083,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/glm-5.3",
+    "provider": "kyma",
+    "input": 0.000001178,
+    "output": 0.000003702,
+    "max_input_tokens": 1310720,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/glm-5.3-flash",
+    "provider": "kyma",
+    "input": 1.72E-7,
+    "output": 5.733E-7,
+    "max_input_tokens": 1310720,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/gpt-5.6-luna",
+    "provider": "kyma",
+    "input": 2.944E-7,
+    "output": 0.000001767,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/gpt-5.6-luna-pro",
+    "provider": "kyma",
+    "input": 2.703E-7,
+    "output": 0.000001621,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/gpt-5.6-sol",
+    "provider": "kyma",
+    "input": 0.0000054,
+    "output": 0.000027,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/gpt-5.6-sol-pro",
+    "provider": "kyma",
+    "input": 0.0000054,
+    "output": 0.000027,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/gpt-5.6-terra",
+    "provider": "kyma",
+    "input": 0.0000027,
+    "output": 0.0000162,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/gpt-5.6-terra-pro",
+    "provider": "kyma",
+    "input": 0.0000027,
+    "output": 0.0000162,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/gpt-6-astra",
+    "provider": "kyma",
+    "input": 0.0000135,
+    "output": 0.0000675,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/gpt-6-luna",
+    "provider": "kyma",
+    "input": 1.639E-7,
+    "output": 8.195E-7,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/gpt-6.1-sol",
+    "provider": "kyma",
+    "input": 0.0000027,
+    "output": 0.0000135,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "kyma/gpt-oss-120b",
+    "provider": "kyma",
+    "input": 4.73E-8,
+    "output": 2.303E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/grok-4.20",
+    "provider": "kyma",
+    "input": 0.000001763,
+    "output": 0.000003528,
+    "max_input_tokens": 2000000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/grok-4.20-multi-agent",
+    "provider": "kyma",
+    "input": 0.000001767,
+    "output": 0.000003534,
+    "max_input_tokens": 2000000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/grok-4.3",
+    "provider": "kyma",
+    "input": 0.00000192,
+    "output": 0.000003838,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/grok-4.5",
+    "provider": "kyma",
+    "input": 0.00000273,
+    "output": 0.000008189,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/grok-4.6",
+    "provider": "kyma",
+    "input": 0.000002758,
+    "output": 0.000008274,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/grok-4.7",
+    "provider": "kyma",
+    "input": 0.00000216,
+    "output": 0.00000648,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 450000
+  },
+  {
+    "model": "kyma/grok-build",
+    "provider": "kyma",
+    "input": 0.000001389,
+    "output": 0.000002777,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/hy3",
+    "provider": "kyma",
+    "input": 1.594E-7,
+    "output": 6.576E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/hy4-preview",
+    "provider": "kyma",
+    "input": 0.0000011259,
+    "output": 0.0000033764,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "kyma/kimi-k2.6",
+    "provider": "kyma",
+    "input": 5.909E-7,
+    "output": 0.000002758,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/kimi-k2.7-code",
+    "provider": "kyma",
+    "input": 0.000001009,
+    "output": 0.000004774,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "kyma/kimi-k3",
+    "provider": "kyma",
+    "input": 0.000003052,
+    "output": 0.000015258,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/kimi-k3.1-pro",
+    "provider": "kyma",
+    "input": 0.0000027,
+    "output": 0.0000135,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 943718
+  },
+  {
+    "model": "kyma/llama-3.3-70b",
+    "provider": "kyma",
+    "input": 1.35E-7,
+    "output": 4.32E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/llama-4-maverick",
+    "provider": "kyma",
+    "input": 3.344E-7,
+    "output": 0.000001337,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "kyma/mimo-v2.5",
+    "provider": "kyma",
+    "input": 1.859E-7,
+    "output": 3.718E-7,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "kyma/mimo-v2.6-flash",
+    "provider": "kyma",
+    "input": 1.89E-7,
+    "output": 3.78E-7,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/mimo-v2.6-pro",
+    "provider": "kyma",
+    "input": 5.805E-7,
+    "output": 0.0000011745,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/minimax-m2.5",
+    "provider": "kyma",
+    "input": 4.188E-7,
+    "output": 0.000001675,
+    "max_input_tokens": 196608,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/minimax-m2.7",
+    "provider": "kyma",
+    "input": 4.05E-7,
+    "output": 0.00000162,
+    "max_input_tokens": 204800,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/minimax-m3",
+    "provider": "kyma",
+    "input": 3.956E-7,
+    "output": 0.000001582,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/minimax-m3.1-flash",
+    "provider": "kyma",
+    "input": 2.025E-7,
+    "output": 8.1E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "kyma/muse-glimmer-30b",
+    "provider": "kyma",
+    "input": 4.554E-7,
+    "output": 0.000001821,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/muse-spark-1.1",
+    "provider": "kyma",
+    "input": 0.000001542,
+    "output": 0.000005243,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/muse-spark-1.2",
+    "provider": "kyma",
+    "input": 0.000001773,
+    "output": 0.000006025,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/muse-spark-1.3",
+    "provider": "kyma",
+    "input": 0.000001688,
+    "output": 0.000005738,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/muse-spark-open",
+    "provider": "kyma",
+    "input": 0.000001688,
+    "output": 0.000005738,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 943718
+  },
+  {
+    "model": "kyma/muse-wonder",
+    "provider": "kyma",
+    "input": 0.0000054,
+    "output": 0.000027,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 943718
+  },
+  {
+    "model": "kyma/nemotron-3-ultra-550b",
+    "provider": "kyma",
+    "input": 6.75E-7,
+    "output": 0.000003375,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/nemotron-3.5-super-vl",
+    "provider": "kyma",
+    "input": 8.1E-8,
+    "output": 4.725E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 235929
+  },
+  {
+    "model": "kyma/qwen-3-coder",
+    "provider": "kyma",
+    "input": 3.546E-7,
+    "output": 0.000001612,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/qwen-3.6-plus",
+    "provider": "kyma",
+    "input": 4.388E-7,
+    "output": 0.000002633,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "kyma/qwen-3.7-max",
+    "provider": "kyma",
+    "input": 0.000002071,
+    "output": 0.000006207,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/qwen-3.7-plus",
+    "provider": "kyma",
+    "input": 4.325E-7,
+    "output": 0.000001731,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "kyma/qwen-3.8-max",
+    "provider": "kyma",
+    "input": 0.000002228,
+    "output": 0.000006684,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/qwen3.7-flash",
+    "provider": "kyma",
+    "input": 4.35E-8,
+    "output": 1.886E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/qwen3.8-27b",
+    "provider": "kyma",
+    "input": 3.826E-7,
+    "output": 0.000002732,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/qwen3.8-flash",
+    "provider": "kyma",
+    "input": 2.045E-7,
+    "output": 6.41E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "kyma/sonar",
+    "provider": "kyma",
+    "input": 0.00000135,
+    "output": 0.00000135,
+    "max_input_tokens": 127072,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "kyma/sonar-pro",
+    "provider": "kyma",
+    "input": 0.00000405,
+    "output": 0.00002025,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "kyma/step-3.7-flash",
+    "provider": "kyma",
+    "input": 2.229E-7,
+    "output": 0.000001282,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "kyma/step-5-preview",
+    "provider": "kyma",
+    "input": 0.00000135,
+    "output": 0.000003645,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "databricks/databricks-claude-haiku-5-5",
+    "provider": "databricks",
+    "input": 1.0003E-7,
+    "output": 5.0001E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-claude-sonnet-5-5",
+    "provider": "databricks",
+    "input": 0.00000199997,
+    "output": 0.00000999999,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-deepseek-v4-1-flash",
+    "provider": "databricks",
+    "input": 3.0002E-7,
+    "output": 0.00000120001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "databricks/databricks-deepseek-v4-1-flash-1017",
+    "provider": "databricks",
+    "input": 3.0002E-7,
+    "output": 0.00000120001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "databricks/databricks-gemini-2-5-flash-lite",
+    "provider": "databricks",
+    "input": 1.2502E-7,
+    "output": 5.0001E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "databricks/databricks-gemini-4-argon",
+    "provider": "databricks",
+    "input": 0.00000249998,
+    "output": 0.00001249997,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "databricks/databricks-gpt-5-4-pro",
+    "provider": "databricks",
+    "input": 0.00002999997,
+    "output": 0.0001800001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-6-1-sol",
+    "provider": "databricks",
+    "input": 0.00000199997,
+    "output": 0.00000999999,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-6-1-terra",
+    "provider": "databricks",
+    "input": 0.00000100002,
+    "output": 0.00000500003,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-6-astra",
+    "provider": "databricks",
+    "input": 0.00000999999,
+    "output": 0.00005000002,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-6-luna",
+    "provider": "databricks",
+    "input": 1.0003E-7,
+    "output": 5.0001E-7,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gpt-6-sol",
+    "provider": "databricks",
+    "input": 0.00000199997,
+    "output": 0.00000999999,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-grok-4-7",
+    "provider": "databricks",
+    "input": 0.00000249998,
+    "output": 0.00000750001,
+    "max_input_tokens": 500000,
+    "max_output_tokens": 500000
+  },
+  {
+    "model": "databricks/databricks-kimi-k2-7",
+    "provider": "databricks",
+    "input": 9.4997E-7,
+    "output": 0.00000400001,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/spot-deepseek-v4-flash",
+    "provider": "fireworks_ai",
+    "input": 1.05E-7,
+    "output": 2.1E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 384000
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/kimi-k3-spot",
+    "provider": "fireworks_ai",
+    "input": 0.0000021,
+    "output": 0.0000105,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/glm-5p3-spot",
+    "provider": "fireworks_ai",
+    "input": 9.8E-7,
+    "output": 0.00000308,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/deepseek-v4p1-flash-spot",
+    "provider": "fireworks_ai",
+    "input": 2.1E-7,
+    "output": 8.4E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/deepseek-v4p1-flash-1017-spot",
+    "provider": "fireworks_ai",
+    "input": 2.1E-7,
+    "output": 8.4E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "bigmodel/glm-5.3",
+    "provider": "bigmodel",
+    "input": 0.0000011428571428571428,
+    "output": 0.000004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bigmodel/glm-5.3-flash",
+    "provider": "bigmodel",
+    "input": 1.142857142857143E-7,
+    "output": 4E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bigmodel/glm-5.3-flashx",
+    "provider": "bigmodel",
+    "input": 2.857142857142857E-7,
+    "output": 0.000001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/ultramarine-1-flash-us",
+    "provider": "fireworks_ai",
+    "input": 2.25E-7,
+    "output": 7.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "gpt-6-rosalind",
+    "provider": "openai",
+    "input": 0.000015,
+    "output": 0.000075,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
   }
 ]
