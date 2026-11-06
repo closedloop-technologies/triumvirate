@@ -768,14 +768,6 @@
     "max_output_tokens": 100000
   },
   {
-    "model": "azure/command-r-plus",
-    "provider": "azure",
-    "input": 0.000003,
-    "output": 0.000015,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
     "model": "azure_ai/claude-haiku-4-5",
     "provider": "azure_ai",
     "input": 0.000001,
@@ -817,6 +809,14 @@
   },
   {
     "model": "azure_ai/claude-fable-5-1",
+    "provider": "azure_ai",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-mythos-5-1",
     "provider": "azure_ai",
     "input": 0.00001,
     "output": 0.00005,
@@ -1088,14 +1088,6 @@
     "max_output_tokens": 4096
   },
   {
-    "model": "azure/eu/gpt-4o-realtime-preview-2024-10-01",
-    "provider": "azure",
-    "input": 0.0000055,
-    "output": 0.000022,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
     "model": "azure/eu/gpt-5-2025-08-07",
     "provider": "azure",
     "input": 0.000001375,
@@ -1336,14 +1328,6 @@
     "max_output_tokens": 32768
   },
   {
-    "model": "azure/gpt-4.5-preview",
-    "provider": "azure",
-    "input": 0.000075,
-    "output": 0.00015,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 16384
-  },
-  {
     "model": "azure/gpt-4o",
     "provider": "azure",
     "input": 0.0000025,
@@ -1460,14 +1444,6 @@
     "provider": "azure",
     "input": 6E-7,
     "output": 0.0000024,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure/gpt-4o-realtime-preview-2024-10-01",
-    "provider": "azure",
-    "input": 0.000005,
-    "output": 0.00002,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
   },
@@ -1646,22 +1622,6 @@
     "output": 0.0000154,
     "max_input_tokens": 111616,
     "max_output_tokens": 16384
-  },
-  {
-    "model": "azure/us/o1-preview",
-    "provider": "azure",
-    "input": 0.0000165,
-    "output": 0.000066,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 32768
-  },
-  {
-    "model": "azure/eu/o1-preview",
-    "provider": "azure",
-    "input": 0.0000165,
-    "output": 0.000066,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 32768
   },
   {
     "model": "azure/gpt-5.1-codex",
@@ -2384,14 +2344,6 @@
     "max_output_tokens": 4096
   },
   {
-    "model": "azure/us/gpt-4o-realtime-preview-2024-10-01",
-    "provider": "azure",
-    "input": 0.0000055,
-    "output": 0.000022,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
     "model": "azure/us/gpt-5-2025-08-07",
     "provider": "azure",
     "input": 0.000001375,
@@ -2672,62 +2624,6 @@
     "max_output_tokens": 16384
   },
   {
-    "model": "azure_ai/Meta-Llama-3.1-70B-Instruct",
-    "provider": "azure_ai",
-    "input": 0.00000268,
-    "output": 0.00000354,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 2048
-  },
-  {
-    "model": "azure_ai/Phi-3-medium-128k-instruct",
-    "provider": "azure_ai",
-    "input": 1.7E-7,
-    "output": 6.8E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure_ai/Phi-3-mini-128k-instruct",
-    "provider": "azure_ai",
-    "input": 1.3E-7,
-    "output": 5.2E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure_ai/Phi-3-small-128k-instruct",
-    "provider": "azure_ai",
-    "input": 1.5E-7,
-    "output": 6E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure_ai/Phi-3.5-MoE-instruct",
-    "provider": "azure_ai",
-    "input": 1.6E-7,
-    "output": 6.4E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure_ai/Phi-3.5-mini-instruct",
-    "provider": "azure_ai",
-    "input": 1.3E-7,
-    "output": 5.2E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "azure_ai/Phi-3.5-vision-instruct",
-    "provider": "azure_ai",
-    "input": 1.3E-7,
-    "output": 5.2E-7,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
     "model": "azure_ai/Phi-4-mini-instruct",
     "provider": "azure_ai",
     "input": 7.5E-8,
@@ -2782,14 +2678,6 @@
     "output": 0.00000168,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
-  },
-  {
-    "model": "azure_ai/deepseek-v3",
-    "provider": "azure_ai",
-    "input": 0.00000114,
-    "output": 0.00000456,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 8192
   },
   {
     "model": "azure_ai/deepseek-v4-pro",
@@ -2912,14 +2800,6 @@
     "max_output_tokens": 4096
   },
   {
-    "model": "azure_ai/mistral-large-2407",
-    "provider": "azure_ai",
-    "input": 0.000002,
-    "output": 0.000006,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 4096
-  },
-  {
     "model": "azure_ai/mistral-large-latest",
     "provider": "azure_ai",
     "input": 0.000002,
@@ -2988,7 +2868,7 @@
     "provider": "bedrock",
     "input": 7.4E-7,
     "output": 0.00000222,
-    "max_input_tokens": 163840,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -3052,7 +2932,7 @@
     "provider": "bedrock",
     "input": 7.4E-7,
     "output": 0.00000222,
-    "max_input_tokens": 163840,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -3108,7 +2988,7 @@
     "provider": "bedrock",
     "input": 7.4E-7,
     "output": 0.00000222,
-    "max_input_tokens": 163840,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -3148,7 +3028,7 @@
     "provider": "bedrock",
     "input": 7.4E-7,
     "output": 0.00000222,
-    "max_input_tokens": 163840,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -3316,7 +3196,7 @@
     "provider": "bedrock",
     "input": 7.4E-7,
     "output": 0.00000222,
-    "max_input_tokens": 163840,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -3388,7 +3268,7 @@
     "provider": "bedrock",
     "input": 6.2E-7,
     "output": 0.00000185,
-    "max_input_tokens": 163840,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -3436,7 +3316,7 @@
     "provider": "bedrock",
     "input": 6.2E-7,
     "output": 0.00000185,
-    "max_input_tokens": 163840,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -3572,7 +3452,7 @@
     "provider": "bedrock",
     "input": 6.2E-7,
     "output": 0.00000185,
-    "max_input_tokens": 163840,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -3644,14 +3524,6 @@
     "provider": "cerebras",
     "input": 8.5E-7,
     "output": 0.0000012,
-    "max_input_tokens": 128000,
-    "max_output_tokens": 128000
-  },
-  {
-    "model": "cerebras/llama3.1-70b",
-    "provider": "cerebras",
-    "input": 6E-7,
-    "output": 6E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
@@ -5596,7 +5468,7 @@
     "provider": "bedrock_converse",
     "input": 6.2E-7,
     "output": 0.00000185,
-    "max_input_tokens": 164000,
+    "max_input_tokens": 156000,
     "max_output_tokens": 8000
   },
   {
@@ -5734,6 +5606,14 @@
     "output": 0.000004,
     "max_input_tokens": 200000,
     "max_output_tokens": 8192
+  },
+  {
+    "model": "eu.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.0000011,
+    "output": 0.0000055,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
   },
   {
     "model": "eu.anthropic.claude-3-5-sonnet-20240620-v1:0",
@@ -6756,8 +6636,8 @@
     "provider": "vertex_ai-language-models",
     "input": 0.0000015,
     "output": 0.000009,
-    "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_input_tokens": 131072,
+    "max_output_tokens": 57920
   },
   {
     "model": "gemini-3.5-flash",
@@ -7692,7 +7572,7 @@
     "provider": "openai",
     "input": 0.0000125,
     "output": 0.000075,
-    "max_input_tokens": 400000,
+    "max_input_tokens": 272000,
     "max_output_tokens": 128000
   },
   {
@@ -7700,7 +7580,7 @@
     "provider": "openai",
     "input": 0.0000125,
     "output": 0.000075,
-    "max_input_tokens": 400000,
+    "max_input_tokens": 272000,
     "max_output_tokens": 128000
   },
   {
@@ -7708,7 +7588,7 @@
     "provider": "openai",
     "input": 0.0000125,
     "output": 0.000075,
-    "max_input_tokens": 400000,
+    "max_input_tokens": 272000,
     "max_output_tokens": 128000
   },
   {
@@ -8104,6 +7984,22 @@
     "max_output_tokens": 65536
   },
   {
+    "model": "hostinger_router/gpt-5.2",
+    "provider": "hostinger_router",
+    "input": 0.0000021,
+    "output": 0.0000168,
+    "max_input_tokens": 272000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "hostinger_router/claude-sonnet-5",
+    "provider": "hostinger_router",
+    "input": 0.00000264,
+    "output": 0.0000132,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "hyperbolic/Qwen/QwQ-32B",
     "provider": "hyperbolic",
     "input": 2E-7,
@@ -8230,6 +8126,14 @@
     "output": 4E-7,
     "max_input_tokens": 256000,
     "max_output_tokens": 256000
+  },
+  {
+    "model": "jina-reranker-v3.5",
+    "provider": "jina_ai",
+    "input": 5E-8,
+    "output": 0.0,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
   },
   {
     "model": "jp.anthropic.claude-sonnet-4-5-20250929-v1:0",
@@ -9178,16 +9082,16 @@
   {
     "model": "mistral/mistral-large-4",
     "provider": "mistral",
-    "input": 0.00000136,
-    "output": 0.00000418,
+    "input": 7E-7,
+    "output": 0.0000021,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
   },
   {
     "model": "mistral/mistral-large-4-0",
     "provider": "mistral",
-    "input": 0.00000136,
-    "output": 0.00000418,
+    "input": 7E-7,
+    "output": 0.0000021,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
   },
@@ -9628,7 +9532,7 @@
     "provider": "nebius",
     "input": 1.4E-7,
     "output": 2.8E-7,
-    "max_input_tokens": 1024000,
+    "max_input_tokens": 1048576,
     "max_output_tokens": 1024000
   },
   {
@@ -9644,7 +9548,7 @@
     "provider": "nebius",
     "input": 0.00000132,
     "output": 0.00000396,
-    "max_input_tokens": 979000,
+    "max_input_tokens": 1048576,
     "max_output_tokens": null
   },
   {
@@ -9652,7 +9556,7 @@
     "provider": "nebius",
     "input": 3E-7,
     "output": 0.0000012,
-    "max_input_tokens": 1048000,
+    "max_input_tokens": 1048576,
     "max_output_tokens": 384000
   },
   {
@@ -9692,7 +9596,7 @@
     "provider": "nebius",
     "input": 0.000003,
     "output": 0.000015,
-    "max_input_tokens": 1024000,
+    "max_input_tokens": 1048576,
     "max_output_tokens": 1024000
   },
   {
@@ -9836,7 +9740,7 @@
     "provider": "nebius",
     "input": 0.0000014,
     "output": 0.0000044,
-    "max_input_tokens": 1024000,
+    "max_input_tokens": 1048576,
     "max_output_tokens": 1024000
   },
   {
@@ -9844,7 +9748,7 @@
     "provider": "nebius",
     "input": 1.5E-7,
     "output": 5E-7,
-    "max_input_tokens": 1024000,
+    "max_input_tokens": 1048576,
     "max_output_tokens": 1024000
   },
   {
@@ -12032,22 +11936,6 @@
     "max_output_tokens": 4096
   },
   {
-    "model": "vertex_ai/claude-3-opus",
-    "provider": "vertex_ai-anthropic_models",
-    "input": 0.000015,
-    "output": 0.000075,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 4096
-  },
-  {
-    "model": "vertex_ai/claude-3-opus@20240229",
-    "provider": "vertex_ai-anthropic_models",
-    "input": 0.000015,
-    "output": 0.000075,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 4096
-  },
-  {
     "model": "vertex_ai/claude-3-sonnet",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.000003,
@@ -12700,7 +12588,7 @@
     "provider": "wandb",
     "input": 2.2E-7,
     "output": 2.2E-7,
-    "max_input_tokens": 131000,
+    "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
@@ -12708,7 +12596,7 @@
     "provider": "wandb",
     "input": 5.5E-7,
     "output": 0.00000165,
-    "max_input_tokens": 161000,
+    "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
@@ -15352,6 +15240,22 @@
     "max_output_tokens": 256000
   },
   {
+    "model": "tencent/hy4",
+    "provider": "tencent",
+    "input": 8.34E-7,
+    "output": 0.000002501,
+    "max_input_tokens": 960000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "tencent/hy4-preview",
+    "provider": "tencent",
+    "input": 8.34E-7,
+    "output": 0.000002501,
+    "max_input_tokens": 960000,
+    "max_output_tokens": 64000
+  },
+  {
     "model": "tencent/minimax-m3",
     "provider": "tencent",
     "input": 3E-7,
@@ -15810,8 +15714,8 @@
   {
     "model": "novita/mindai/macaron-v1-venti",
     "provider": "novita",
-    "input": 0.0000015,
-    "output": 0.0000045,
+    "input": 8.25E-7,
+    "output": 0.000002475,
     "max_input_tokens": 1048576,
     "max_output_tokens": 131072
   },
@@ -15866,8 +15770,8 @@
   {
     "model": "novita/mindai/macaron-v1-tall",
     "provider": "novita",
-    "input": 4.5000000000000003E-7,
-    "output": 0.0000026,
+    "input": 2.475E-7,
+    "output": 0.00000143,
     "max_input_tokens": 262144,
     "max_output_tokens": 32768
   },
@@ -16602,7 +16506,7 @@
   {
     "model": "deepinfra/deepseek-ai/DeepSeek-V4-Flash-0731",
     "provider": "deepinfra",
-    "input": 8E-8,
+    "input": 6E-8,
     "output": 1.8E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
@@ -16802,8 +16706,8 @@
   {
     "model": "deepinfra/google/gemma-4-31B-it",
     "provider": "deepinfra",
-    "input": 1.3E-7,
-    "output": 3.8E-7,
+    "input": 2E-7,
+    "output": 4E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
   },
@@ -16812,7 +16716,7 @@
     "provider": "gemini",
     "input": 0.0000015,
     "output": 0.000009,
-    "max_input_tokens": 1048576,
+    "max_input_tokens": 131072,
     "max_output_tokens": 65536
   },
   {
@@ -17442,24 +17346,24 @@
   {
     "model": "bedrock_mantle/us-gov-west-1/openai.gpt-5.6-terra",
     "provider": "bedrock_mantle",
-    "input": 0.0000027,
-    "output": 0.0000162,
+    "input": 0.00000264,
+    "output": 0.00001584,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
     "model": "bedrock_mantle/us-gov-west-1/openai.gpt-5.6-luna",
     "provider": "bedrock_mantle",
-    "input": 2.7E-7,
-    "output": 0.00000162,
+    "input": 2.64E-7,
+    "output": 0.000001584,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
     "model": "bedrock_mantle/us-gov-west-1/openai.gpt-5.4",
     "provider": "bedrock_mantle",
-    "input": 0.000003375,
-    "output": 0.00002025,
+    "input": 0.0000033,
+    "output": 0.0000198,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -17696,6 +17600,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "vertex_ai/gemini-omni-1.1-flash-preview",
+    "provider": "vertex_ai",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 57920
+  },
+  {
     "model": "together_ai/meta-llama/Llama-3.2-1B-Instruct",
     "provider": "together_ai",
     "input": 6E-8,
@@ -17708,14 +17620,6 @@
     "provider": "together_ai",
     "input": 6E-8,
     "output": 6E-8,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
-  },
-  {
-    "model": "together_ai/Qwen/QwQ-32B",
-    "provider": "together_ai",
-    "input": 0.0000012,
-    "output": 0.0000012,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
   },
@@ -17782,30 +17686,6 @@
     "output": 0.0000036,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
-  },
-  {
-    "model": "together_ai/deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
-    "provider": "together_ai",
-    "input": 0.000002,
-    "output": 0.000002,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
-  },
-  {
-    "model": "together_ai/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
-    "provider": "together_ai",
-    "input": 1.8E-7,
-    "output": 1.8E-7,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
-  },
-  {
-    "model": "together_ai/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
-    "provider": "together_ai",
-    "input": 0.0000016,
-    "output": 0.0000016,
-    "max_input_tokens": 131072,
-    "max_output_tokens": 131072
   },
   {
     "model": "together_ai/deepseek-ai/DeepSeek-V3.1",
@@ -19372,6 +19252,14 @@
     "provider": "bedrock_converse",
     "input": 0.0000022,
     "output": 0.0000066,
+    "max_input_tokens": 524288,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "us-gov.xai.grok-4.7",
+    "provider": "bedrock_converse",
+    "input": 0.00000264,
+    "output": 0.00000792,
     "max_input_tokens": 524288,
     "max_output_tokens": 524288
   },
@@ -21216,6 +21104,14 @@
     "max_output_tokens": 393216
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
+    "provider": "fireworks_ai",
+    "input": 0.0000024,
+    "output": 0.0000096,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 393216
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/routers/deepseek-v4p1-flash-1017-spot",
     "provider": "fireworks_ai",
     "input": 2.1E-7,
@@ -21250,8 +21146,8 @@
   {
     "model": "fireworks_ai/accounts/fireworks/models/ultramarine-1-flash-us",
     "provider": "fireworks_ai",
-    "input": 2.25E-7,
-    "output": 7.5E-7,
+    "input": 1.5E-7,
+    "output": 5E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
   },
@@ -21262,5 +21158,1837 @@
     "output": 0.000075,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-6-cyber",
+    "provider": "openai",
+    "input": 0.00002,
+    "output": 0.0001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-6-astra-law",
+    "provider": "openai",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "nebius/deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "provider": "nebius",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "nebius/meta-models/muse-spark-open",
+    "provider": "nebius",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "nebius/MiniMaxAI/MiniMax-M3.1-Flash",
+    "provider": "nebius",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "nebius/nvidia/Nemotron-3.5-Super-VL",
+    "provider": "nebius",
+    "input": 3E-7,
+    "output": 9E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "empiriolabs/aplomb-1",
+    "provider": "empiriolabs",
+    "input": 2E-8,
+    "output": 0.0,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "empiriolabs/deepseek-v4-1-flash-1017",
+    "provider": "empiriolabs",
+    "input": 2E-7,
+    "output": 8E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "empiriolabs/deepseek-v4-flash-0731",
+    "provider": "empiriolabs",
+    "input": 4.24E-7,
+    "output": 0.000001272,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "empiriolabs/deepseek-v4-flash-0731:variant1",
+    "provider": "empiriolabs",
+    "input": 4.4E-7,
+    "output": 0.00000132,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "empiriolabs/deepseek-v4-pro",
+    "provider": "empiriolabs",
+    "input": 0.00000165,
+    "output": 0.0000033,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "empiriolabs/deepseek-v4-pro-0813",
+    "provider": "empiriolabs",
+    "input": 0.00000132,
+    "output": 0.00000396,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "empiriolabs/deepseek-v4-pro:variant1",
+    "provider": "empiriolabs",
+    "input": 0.0000024,
+    "output": 0.0000048,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "empiriolabs/deepseek-v4-pro:variant2",
+    "provider": "empiriolabs",
+    "input": 0.00000165,
+    "output": 0.000003301,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "empiriolabs/deepseek-v4-pro:variant3",
+    "provider": "empiriolabs",
+    "input": 0.0000024,
+    "output": 0.0000048,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "empiriolabs/fugu-max",
+    "provider": "empiriolabs",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/fugu-ultra-v1-0",
+    "provider": "empiriolabs",
+    "input": 0.0000075,
+    "output": 0.000045,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/fugu-ultra-v1-1",
+    "provider": "empiriolabs",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/fugu-ultra-v2-0",
+    "provider": "empiriolabs",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/gemma-4-26b-a4b",
+    "provider": "empiriolabs",
+    "input": 5E-8,
+    "output": 2.9E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/glm-4-6v-flashx",
+    "provider": "empiriolabs",
+    "input": 4E-8,
+    "output": 4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/glm-4-7-flashx",
+    "provider": "empiriolabs",
+    "input": 7E-8,
+    "output": 4E-7,
+    "max_input_tokens": 202752,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/glm-5-1",
+    "provider": "empiriolabs",
+    "input": 8.25E-7,
+    "output": 0.000003301,
+    "max_input_tokens": 202745,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "empiriolabs/glm-5-2",
+    "provider": "empiriolabs",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/glm-5-2:variant1",
+    "provider": "empiriolabs",
+    "input": 0.0000011,
+    "output": 0.000003851,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/glm-5-2:variant2",
+    "provider": "empiriolabs",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/glm-5-3",
+    "provider": "empiriolabs",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/glm-5-3-flash",
+    "provider": "empiriolabs",
+    "input": 7.5E-8,
+    "output": 2.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/kimi-k2-6",
+    "provider": "empiriolabs",
+    "input": 8.939E-7,
+    "output": 0.0000037131,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "empiriolabs/kimi-k2-7-code",
+    "provider": "empiriolabs",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/kimi-k2-7-code-highspeed",
+    "provider": "empiriolabs",
+    "input": 0.0000019,
+    "output": 0.000008,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/kimi-k2-7-code:variant1",
+    "provider": "empiriolabs",
+    "input": 8.939E-7,
+    "output": 0.0000037131,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "empiriolabs/kimi-k3",
+    "provider": "empiriolabs",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/kimi-k3-1-pro",
+    "provider": "empiriolabs",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/mimo-v2-6-flash",
+    "provider": "empiriolabs",
+    "input": 1.4E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/mimo-v2-6-pro",
+    "provider": "empiriolabs",
+    "input": 4.35E-7,
+    "output": 8.7E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/mimo-v2-6-pro-ultraspeed",
+    "provider": "empiriolabs",
+    "input": 0.00000435,
+    "output": 0.0000087,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/minimax-m2-7",
+    "provider": "empiriolabs",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 204800,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/minimax-m2-7-highspeed",
+    "provider": "empiriolabs",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 204800,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/minimax-m3",
+    "provider": "empiriolabs",
+    "input": 2.25E-7,
+    "output": 9E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "empiriolabs/minimax-m3-1-flash",
+    "provider": "empiriolabs",
+    "input": 1.125E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "empiriolabs/minimax-m3:priority",
+    "provider": "empiriolabs",
+    "input": 3.375E-7,
+    "output": 0.00000135,
+    "max_input_tokens": 1048458,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "empiriolabs/mistral-small-4",
+    "provider": "empiriolabs",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/muse-glimmer-30b",
+    "provider": "empiriolabs",
+    "input": 2E-7,
+    "output": 8E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/muse-spark-1-1",
+    "provider": "empiriolabs",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/muse-spark-1-2",
+    "provider": "empiriolabs",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/muse-spark-1-3",
+    "provider": "empiriolabs",
+    "input": 0.00000125,
+    "output": 0.00000425,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/nova-lite-1-0",
+    "provider": "empiriolabs",
+    "input": 6.9E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 317379,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "empiriolabs/nova-lite-2",
+    "provider": "empiriolabs",
+    "input": 3.8E-7,
+    "output": 0.00000316,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/nova-micro-1-0",
+    "provider": "empiriolabs",
+    "input": 4E-8,
+    "output": 1.6E-7,
+    "max_input_tokens": 133003,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "empiriolabs/nova-pro-1-0",
+    "provider": "empiriolabs",
+    "input": 0.0000024,
+    "output": 0.0000096,
+    "max_input_tokens": 317319,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "empiriolabs/perplexity-deep-research",
+    "provider": "empiriolabs",
+    "input": 0.0000048,
+    "output": 0.000019,
+    "max_input_tokens": 919327,
+    "max_output_tokens": null
+  },
+  {
+    "model": "empiriolabs/perplexity-sonar",
+    "provider": "empiriolabs",
+    "input": 0.0000024,
+    "output": 0.0000024,
+    "max_input_tokens": 919327,
+    "max_output_tokens": null
+  },
+  {
+    "model": "empiriolabs/perplexity-sonar-pro",
+    "provider": "empiriolabs",
+    "input": 0.0000072,
+    "output": 0.000036,
+    "max_input_tokens": 919328,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/perplexity-sonar-reasoning-pro",
+    "provider": "empiriolabs",
+    "input": 0.0000048,
+    "output": 0.000019,
+    "max_input_tokens": 919330,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/qwen3-5-122b-a10b",
+    "provider": "empiriolabs",
+    "input": 1.15E-7,
+    "output": 9.17E-7,
+    "max_input_tokens": 258048,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "empiriolabs/qwen3-5-27b",
+    "provider": "empiriolabs",
+    "input": 8.6E-8,
+    "output": 6.88E-7,
+    "max_input_tokens": 258048,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "empiriolabs/qwen3-5-35b-a3b",
+    "provider": "empiriolabs",
+    "input": 5.7E-8,
+    "output": 4.59E-7,
+    "max_input_tokens": 258048,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "empiriolabs/qwen3-5-397b-a17b",
+    "provider": "empiriolabs",
+    "input": 1.72E-7,
+    "output": 0.000001032,
+    "max_input_tokens": 258048,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "empiriolabs/qwen3-5-4b",
+    "provider": "empiriolabs",
+    "input": 4E-8,
+    "output": 7E-8,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/qwen3-5-9b",
+    "provider": "empiriolabs",
+    "input": 9E-8,
+    "output": 1.3E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/qwen3-5-flash",
+    "provider": "empiriolabs",
+    "input": 9E-8,
+    "output": 3.68E-7,
+    "max_input_tokens": 995904,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/qwen3-5-flash:variant1",
+    "provider": "empiriolabs",
+    "input": 2.9E-8,
+    "output": 2.87E-7,
+    "max_input_tokens": 995904,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-5-omni-flash",
+    "provider": "empiriolabs",
+    "input": 8E-7,
+    "output": 0.0000044,
+    "max_input_tokens": 196608,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/qwen3-5-omni-plus",
+    "provider": "empiriolabs",
+    "input": 0.0000028,
+    "output": 0.0000166,
+    "max_input_tokens": 196608,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/qwen3-5-plus",
+    "provider": "empiriolabs",
+    "input": 3.6E-7,
+    "output": 0.00000221,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-5-plus:variant1",
+    "provider": "empiriolabs",
+    "input": 1.15E-7,
+    "output": 6.88E-7,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-6-27b",
+    "provider": "empiriolabs",
+    "input": 4.12564E-7,
+    "output": 0.000002475384,
+    "max_input_tokens": 229376,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "empiriolabs/qwen3-6-35b-a3b",
+    "provider": "empiriolabs",
+    "input": 7E-8,
+    "output": 4.2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "empiriolabs/qwen3-6-flash",
+    "provider": "empiriolabs",
+    "input": 2.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-6-flash:variant1",
+    "provider": "empiriolabs",
+    "input": 1.65E-7,
+    "output": 9.9E-7,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-6-plus",
+    "provider": "empiriolabs",
+    "input": 5E-7,
+    "output": 0.000003,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-6-plus:variant1",
+    "provider": "empiriolabs",
+    "input": 2.76E-7,
+    "output": 0.000001651,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-7-flash",
+    "provider": "empiriolabs",
+    "input": 3E-8,
+    "output": 1.3E-7,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-7-flash:variant1",
+    "provider": "empiriolabs",
+    "input": 2.8E-8,
+    "output": 1.1E-7,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-7-max",
+    "provider": "empiriolabs",
+    "input": 0.0000025,
+    "output": 0.0000075,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-7-max:variant1",
+    "provider": "empiriolabs",
+    "input": 0.00000165,
+    "output": 0.000004951,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-7-plus",
+    "provider": "empiriolabs",
+    "input": 4E-7,
+    "output": 0.0000016,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-7-plus:variant1",
+    "provider": "empiriolabs",
+    "input": 2.76E-7,
+    "output": 0.000001101,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/qwen3-8-27b",
+    "provider": "empiriolabs",
+    "input": 1.7E-7,
+    "output": 5E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "empiriolabs/qwen3-8-flash",
+    "provider": "empiriolabs",
+    "input": 1.6E-7,
+    "output": 4.7E-7,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/qwen3-8-max",
+    "provider": "empiriolabs",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/qwen3-8-max-0902",
+    "provider": "empiriolabs",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/qwen3-8-max:variant1",
+    "provider": "empiriolabs",
+    "input": 0.00000165,
+    "output": 0.000004951,
+    "max_input_tokens": 983616,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/qwen3-8-omni-flash",
+    "provider": "empiriolabs",
+    "input": 3E-7,
+    "output": 9.4E-7,
+    "max_input_tokens": 1006592,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/seed-2-0-code",
+    "provider": "empiriolabs",
+    "input": 4E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 229096,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "empiriolabs/seed-2-0-lite",
+    "provider": "empiriolabs",
+    "input": 3.1E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 229096,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "empiriolabs/seed-2-0-mini",
+    "provider": "empiriolabs",
+    "input": 1.2E-7,
+    "output": 5E-7,
+    "max_input_tokens": 229156,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "empiriolabs/seed-2-0-pro",
+    "provider": "empiriolabs",
+    "input": 6.3E-7,
+    "output": 0.00000379,
+    "max_input_tokens": 229096,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "empiriolabs/seed-2-1-turbo",
+    "provider": "empiriolabs",
+    "input": 6.3E-7,
+    "output": 0.00000313,
+    "max_input_tokens": 229093,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "empiriolabs/step-3-5-flash",
+    "provider": "empiriolabs",
+    "input": 1E-7,
+    "output": 3E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/step-3-5-flash-2603",
+    "provider": "empiriolabs",
+    "input": 1E-7,
+    "output": 3E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/step-3-7-flash",
+    "provider": "empiriolabs",
+    "input": 2E-7,
+    "output": 0.00000115,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/step-5-preview",
+    "provider": "empiriolabs",
+    "input": 0.000001,
+    "output": 0.0000027,
+    "max_input_tokens": 1024000,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/stepaudio-2-5-chat",
+    "provider": "empiriolabs",
+    "input": 0.0000015,
+    "output": 0.0000035,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "empiriolabs/stepaudio-3-chat",
+    "provider": "empiriolabs",
+    "input": 0.0000015,
+    "output": 0.0000035,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "wally/glm-5.3-flash",
+    "provider": "wally",
+    "input": 2.72E-7,
+    "output": 6.5E-7,
+    "max_input_tokens": 1048567,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "wally/deepseek-v4.1-flash",
+    "provider": "wally",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048569,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "wally/kimi-k3",
+    "provider": "wally",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "wally/deepseek-v4.1-flash-fast",
+    "provider": "wally",
+    "input": 6E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "wally/glm-5.3-fast",
+    "provider": "wally",
+    "input": 0.0000021,
+    "output": 0.0000066,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "wally/deepseek-v4-pro-fast",
+    "provider": "wally",
+    "input": 0.00000191,
+    "output": 0.00000383,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "wally/deepseek-v4-flash-0731",
+    "provider": "wally",
+    "input": 4.4E-7,
+    "output": 0.00000132,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "wally/minimax-m3",
+    "provider": "wally",
+    "input": 3.3E-7,
+    "output": 0.00000132,
+    "max_input_tokens": 524287,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "wally/deepseek-v4.1-flash-1017",
+    "provider": "wally",
+    "input": 3.75E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "wally/deepseek-v4.1-flash-f2",
+    "provider": "wally",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "together_ai/moonshotai/Kimi-K3.1-Pro",
+    "provider": "together_ai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-3-5-sonnet-20240620-v1:0",
+    "provider": "bedrock",
+    "input": 0.0000036,
+    "output": 0.000018,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-3-7-sonnet-20250219-v1:0",
+    "provider": "bedrock",
+    "input": 0.0000036,
+    "output": 0.000018,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-3-5-sonnet-20240620-v1:0",
+    "provider": "bedrock",
+    "input": 0.0000036,
+    "output": 0.000018,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-3-7-sonnet-20250219-v1:0",
+    "provider": "bedrock",
+    "input": 0.0000036,
+    "output": 0.000018,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "gmi/MiniMaxAI/MiniMax-M2",
+    "provider": "gmi",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 196608,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/MiniMaxAI/MiniMax-M2.5",
+    "provider": "gmi",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 196608,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/MiniMaxAI/MiniMax-M2.7",
+    "provider": "gmi",
+    "input": 2.1E-7,
+    "output": 8.4E-7,
+    "max_input_tokens": 196608,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/MiniMaxAI/MiniMax-M3",
+    "provider": "gmi",
+    "input": 2.4E-7,
+    "output": 9.6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/MiniMaxAI/MiniMax-M3.1-Flash",
+    "provider": "gmi",
+    "input": 1.125E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3-235B-A22B-Instruct-2507-FP8",
+    "provider": "gmi",
+    "input": 8.75E-8,
+    "output": 3.5E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3-235B-A22B-Thinking-2507-FP8",
+    "provider": "gmi",
+    "input": 3.5E-7,
+    "output": 0.0000042,
+    "max_input_tokens": 262141,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8",
+    "provider": "gmi",
+    "input": 9E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 262128,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3-Next-80B-A3B-Instruct",
+    "provider": "gmi",
+    "input": 1.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3-Next-80B-A3B-Thinking",
+    "provider": "gmi",
+    "input": 1.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.5-122B-A10B",
+    "provider": "gmi",
+    "input": 4E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.5-27B",
+    "provider": "gmi",
+    "input": 3E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.5-35B-A3B",
+    "provider": "gmi",
+    "input": 2.5E-7,
+    "output": 0.000002,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.5-397B-A17B",
+    "provider": "gmi",
+    "input": 6E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.6-35B-A3B",
+    "provider": "gmi",
+    "input": 2.48E-7,
+    "output": 0.000001485,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.6-Plus",
+    "provider": "gmi",
+    "input": 5E-7,
+    "output": 0.000003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.6-Plus-2026-04-02",
+    "provider": "gmi",
+    "input": 5E-7,
+    "output": 0.000003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.7-Max",
+    "provider": "gmi",
+    "input": 0.0000025,
+    "output": 0.0000075,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.8-27B",
+    "provider": "gmi",
+    "input": 4.5E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.8-Flash",
+    "provider": "gmi",
+    "input": 1.6E-7,
+    "output": 4.7E-7,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.8-Max",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/Qwen/Qwen3.8-Max-0902",
+    "provider": "gmi",
+    "input": 0.00000165,
+    "output": 0.000004951,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/XiaomiMiMo/MiMo-V2.5",
+    "provider": "gmi",
+    "input": 1.19E-7,
+    "output": 2.38E-7,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/XiaomiMiMo/MiMo-V2.5-Pro",
+    "provider": "gmi",
+    "input": 3.045E-7,
+    "output": 6.09E-7,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/XiaomiMiMo/MiMo-V2.6-Flash",
+    "provider": "gmi",
+    "input": 1.12E-7,
+    "output": 2.24E-7,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/XiaomiMiMo/MiMo-V2.6-Pro",
+    "provider": "gmi",
+    "input": 3.48E-7,
+    "output": 6.96E-7,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-Prover-V2-671B",
+    "provider": "gmi",
+    "input": 5E-7,
+    "output": 0.00000218,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-R1",
+    "provider": "gmi",
+    "input": 5E-7,
+    "output": 0.00000218,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-R1-0528",
+    "provider": "gmi",
+    "input": 5.7E-7,
+    "output": 0.00000229,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+    "provider": "gmi",
+    "input": 2.5E-7,
+    "output": 7.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+    "provider": "gmi",
+    "input": 1.4E-7,
+    "output": 3.9E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+    "provider": "gmi",
+    "input": 2E-7,
+    "output": 2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+    "provider": "gmi",
+    "input": 5E-7,
+    "output": 9E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+    "provider": "gmi",
+    "input": 1E-7,
+    "output": 2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-V3.1",
+    "provider": "gmi",
+    "input": 2.7E-7,
+    "output": 0.000001,
+    "max_input_tokens": 163840,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-V3.1-Terminus",
+    "provider": "gmi",
+    "input": 2.7E-7,
+    "output": 0.000001,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-V3.2-Exp",
+    "provider": "gmi",
+    "input": 2.7E-7,
+    "output": 4.1E-7,
+    "max_input_tokens": 163840,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-V3.2-Speciale",
+    "provider": "gmi",
+    "input": 2.8E-7,
+    "output": 4E-7,
+    "max_input_tokens": 163840,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-V4-Flash",
+    "provider": "gmi",
+    "input": 9.1E-8,
+    "output": 1.82E-7,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-V4-Flash-0731",
+    "provider": "gmi",
+    "input": 2.86E-7,
+    "output": 8.58E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "provider": "gmi",
+    "input": 0.000001056,
+    "output": 0.000003168,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/DeepSeek-V4.1-Flash",
+    "provider": "gmi",
+    "input": 1.8E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/deepseek-v4-flash-vision-exp",
+    "provider": "gmi",
+    "input": 4.4E-7,
+    "output": 0.00000132,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/deepseek-ai/deepseek-v4.1-flash-1017",
+    "provider": "gmi",
+    "input": 1.8E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 1048575,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/gmicloud/Ripple-65B-Preview",
+    "provider": "gmi",
+    "input": 2E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemini-3.1-flash-lite-preview",
+    "provider": "gmi",
+    "input": 2.5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemini-3.1-pro-preview",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemini-3.5-flash",
+    "provider": "gmi",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemini-3.5-flash-lite",
+    "provider": "gmi",
+    "input": 3E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemini-3.6-flash",
+    "provider": "gmi",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemini-3.7-flash",
+    "provider": "gmi",
+    "input": 7.5E-7,
+    "output": 0.00000375,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemini-3.8-flash",
+    "provider": "gmi",
+    "input": 7.5E-7,
+    "output": 0.00000375,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemini-4-argon",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemma-4-26b-a4b-it",
+    "provider": "gmi",
+    "input": 1.3E-7,
+    "output": 4E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/google/gemma-4-31b-it",
+    "provider": "gmi",
+    "input": 1.4E-7,
+    "output": 4E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/meta-llama/Llama-3.3-70B-Instruct",
+    "provider": "gmi",
+    "input": 2.5E-7,
+    "output": 7.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "provider": "gmi",
+    "input": 2.5E-7,
+    "output": 8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    "provider": "gmi",
+    "input": 8E-8,
+    "output": 5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/moonshotai/Kimi-K2-Instruct-0905",
+    "provider": "gmi",
+    "input": 5.7E-7,
+    "output": 0.00000229,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/moonshotai/Kimi-K2.5",
+    "provider": "gmi",
+    "input": 6E-7,
+    "output": 0.000003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/moonshotai/Kimi-K2.6",
+    "provider": "gmi",
+    "input": 8.55E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/moonshotai/kimi-k2.7-code",
+    "provider": "gmi",
+    "input": 9.5E-7,
+    "output": 0.000004,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/moonshotai/kimi-k2.7-code-highspeed",
+    "provider": "gmi",
+    "input": 0.0000019,
+    "output": 0.000008,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/moonshotai/kimi-k3",
+    "provider": "gmi",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/moonshotai/kimi-k3.1-pro",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/nvidia/nemotron-3-ultra-550b-a55b",
+    "provider": "gmi",
+    "input": 8E-7,
+    "output": 0.0000026,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-5.4",
+    "provider": "gmi",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 409600,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-5.4-mini",
+    "provider": "gmi",
+    "input": 7.5E-7,
+    "output": 0.0000045,
+    "max_input_tokens": 409600,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-5.4-nano",
+    "provider": "gmi",
+    "input": 2E-7,
+    "output": 0.00000125,
+    "max_input_tokens": 409600,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-5.4-pro",
+    "provider": "gmi",
+    "input": 0.00003,
+    "output": 0.00018,
+    "max_input_tokens": 409600,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-5.5",
+    "provider": "gmi",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-5.6-luna",
+    "provider": "gmi",
+    "input": 0.000001,
+    "output": 0.000006,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-5.6-sol",
+    "provider": "gmi",
+    "input": 0.000005,
+    "output": 0.00003,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-5.6-terra",
+    "provider": "gmi",
+    "input": 0.0000025,
+    "output": 0.000015,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-6-astra",
+    "provider": "gmi",
+    "input": 0.00001,
+    "output": 0.00005,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-6-luna",
+    "provider": "gmi",
+    "input": 1E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-6-sol",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-6.1-sol",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-oss-120b",
+    "provider": "gmi",
+    "input": 5E-8,
+    "output": 2.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/openai/gpt-oss-20b",
+    "provider": "gmi",
+    "input": 4E-8,
+    "output": 1.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/stepfun-ai/Step-3.7-Flash",
+    "provider": "gmi",
+    "input": 2E-7,
+    "output": 0.00000115,
+    "max_input_tokens": 256000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/stepfun-ai/Step-5-Preview",
+    "provider": "gmi",
+    "input": 0.000001,
+    "output": 0.0000027,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/tencent/Hy3",
+    "provider": "gmi",
+    "input": 1.4E-7,
+    "output": 5.8E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/tencent/hy3-preview",
+    "provider": "gmi",
+    "input": 1.8E-7,
+    "output": 6E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/tencent/hy4",
+    "provider": "gmi",
+    "input": 4.17E-7,
+    "output": 0.0000012505,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/tencent/hy4-preview",
+    "provider": "gmi",
+    "input": 8.34E-7,
+    "output": 0.000002501,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/x-ai/grok-4.5",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 2000000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/xai/grok4.6",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 2000000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-4.5-Air-FP8",
+    "provider": "gmi",
+    "input": 2E-7,
+    "output": 0.0000011,
+    "max_input_tokens": 131076,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-4.5-FP8",
+    "provider": "gmi",
+    "input": 6E-7,
+    "output": 0.0000022,
+    "max_input_tokens": 131072,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-4.6",
+    "provider": "gmi",
+    "input": 6E-7,
+    "output": 0.000002,
+    "max_input_tokens": 204800,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-4.7-Flash",
+    "provider": "gmi",
+    "input": 7E-8,
+    "output": 4E-7,
+    "max_input_tokens": 202752,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-5-FP8",
+    "provider": "gmi",
+    "input": 6E-7,
+    "output": 0.00000192,
+    "max_input_tokens": 202752,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-5.1-FP8",
+    "provider": "gmi",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 202752,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-5.2-FP8",
+    "provider": "gmi",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-5.3",
+    "provider": "gmi",
+    "input": 7E-7,
+    "output": 0.0000022,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gmi/zai-org/GLM-5.3-Flash",
+    "provider": "gmi",
+    "input": 7.5E-8,
+    "output": 2.5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/models/kimi-k3p1-pro",
+    "provider": "fireworks_ai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "baseten/moonshotai/Kimi-K3.1-Pro",
+    "provider": "baseten",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "bedrock/us-gov-east-1/moonshotai.kimi-k3",
+    "provider": "bedrock_converse",
+    "input": 0.00000396,
+    "output": 0.0000198,
+    "max_input_tokens": 868928,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "bedrock/us-gov-west-1/moonshotai.kimi-k3",
+    "provider": "bedrock_converse",
+    "input": 0.00000396,
+    "output": 0.0000198,
+    "max_input_tokens": 868928,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-3-haiku-20240307-v1:0",
+    "provider": "bedrock",
+    "input": 3E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 195904,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/xai.grok-4.7",
+    "provider": "bedrock_mantle",
+    "input": 0.00000264,
+    "output": 0.00000792,
+    "max_input_tokens": 524288,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-3-haiku-20240307-v1:0",
+    "provider": "bedrock",
+    "input": 3E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 195904,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/xai.grok-4.7",
+    "provider": "bedrock_mantle",
+    "input": 0.00000264,
+    "output": 0.00000792,
+    "max_input_tokens": 524288,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "bedrock_mantle/xai.grok-4.7",
+    "provider": "bedrock_mantle",
+    "input": 0.0000022,
+    "output": 0.0000066,
+    "max_input_tokens": 524288,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "together_ai/ricursive-ai/Ripple-65B-Preview",
+    "provider": "together_ai",
+    "input": 2E-7,
+    "output": 6E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "vertex_ai/gemini-omni-1.2-flash",
+    "provider": "vertex_ai",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 260640
+  },
+  {
+    "model": "gemini/gemini-omni-1.2-flash",
+    "provider": "gemini",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "databricks/databricks-kimi-k3-1-pro",
+    "provider": "databricks",
+    "input": 0.00000199997,
+    "output": 0.00000999999,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
   }
 ]
