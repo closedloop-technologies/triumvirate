@@ -4996,7 +4996,7 @@
     "provider": "databricks",
     "input": 1.5001E-7,
     "output": 4.5003E-7,
-    "max_input_tokens": 200000,
+    "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
   {
@@ -5338,7 +5338,7 @@
   {
     "model": "deepinfra/mistralai/Mistral-Nemo-Instruct-2407",
     "provider": "deepinfra",
-    "input": 1.9E-8,
+    "input": 2.9E-8,
     "output": 3E-8,
     "max_input_tokens": 131072,
     "max_output_tokens": 131072
@@ -5386,8 +5386,8 @@
   {
     "model": "deepinfra/nvidia/NVIDIA-Nemotron-3.5-Lightning",
     "provider": "deepinfra",
-    "input": 8E-8,
-    "output": 2E-7,
+    "input": 6E-8,
+    "output": 1.6E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": null
   },
@@ -5984,6 +5984,14 @@
     "max_output_tokens": 512000
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/routers/minimax-latest",
+    "provider": "fireworks_ai",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 512000,
+    "max_output_tokens": 512000
+  },
+  {
     "model": "fireworks_ai/deepseek-v4-flash",
     "provider": "fireworks_ai",
     "input": 1.4E-7,
@@ -6136,22 +6144,6 @@
     "max_output_tokens": 1048576
   },
   {
-    "model": "friendliai/deepseek-ai/DeepSeek-V3.2",
-    "provider": "friendliai",
-    "input": 5E-7,
-    "output": 0.0000015,
-    "max_input_tokens": 163840,
-    "max_output_tokens": 163840
-  },
-  {
-    "model": "friendliai/MiniMaxAI/MiniMax-M2.5",
-    "provider": "friendliai",
-    "input": 3E-7,
-    "output": 0.0000012,
-    "max_input_tokens": 196608,
-    "max_output_tokens": 196608
-  },
-  {
     "model": "friendliai/zai-org/GLM-5.1",
     "provider": "friendliai",
     "input": 0.0000014,
@@ -6221,7 +6213,15 @@
     "input": 3E-7,
     "output": 0.0000025,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "gemini-3.1-flash-image",
+    "provider": "vertex_ai-language-models",
+    "input": 5E-7,
+    "output": 0.000003,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 32768
   },
   {
     "model": "gemini-3.1-flash-lite-preview",
@@ -6253,7 +6253,7 @@
     "input": 1E-7,
     "output": 4E-7,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini-2.5-flash-lite-preview-09-2025",
@@ -6301,7 +6301,7 @@
     "input": 0.00000125,
     "output": 0.00001,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini-3.1-pro-preview",
@@ -6333,7 +6333,7 @@
     "input": 5E-7,
     "output": 0.000003,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_output_tokens": 65536
   },
   {
     "model": "vertex_ai/gemini-3.5-flash",
@@ -6341,7 +6341,7 @@
     "input": 0.0000015,
     "output": 0.000009,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_output_tokens": 65536
   },
   {
     "model": "vertex_ai/gemini-3.6-flash",
@@ -6629,7 +6629,7 @@
     "input": 5E-7,
     "output": 0.000003,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini-omni-flash-preview",
@@ -6645,7 +6645,7 @@
     "input": 0.0000015,
     "output": 0.000009,
     "max_input_tokens": 1048576,
-    "max_output_tokens": 65535
+    "max_output_tokens": 65536
   },
   {
     "model": "gemini-3.6-flash",
@@ -8744,6 +8744,14 @@
     "max_output_tokens": 8192
   },
   {
+    "model": "meta/muse-ember-1.0",
+    "provider": "meta",
+    "input": 1E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 524288
+  },
+  {
     "model": "meta/muse-spark-1.1",
     "provider": "meta",
     "input": 0.00000125,
@@ -8862,6 +8870,14 @@
     "output": 0.0000012,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "minimax/MiniMax-M3.1-Flash",
+    "provider": "minimax",
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": null
   },
   {
     "model": "mistral.devstral-2-123b",
@@ -9260,6 +9276,14 @@
     "provider": "moonshot",
     "input": 0.000002,
     "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "moonshot/kimi-k3.1-pro-highspeed",
+    "provider": "moonshot",
+    "input": 0.000004,
+    "output": 0.00002,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
   },
@@ -10818,8 +10842,8 @@
   {
     "model": "together_ai/Qwen/Qwen3.7-Max",
     "provider": "together_ai",
-    "input": 0.0000015,
-    "output": 0.0000045,
+    "input": 0.0000025,
+    "output": 0.0000075,
     "max_input_tokens": 1000000,
     "max_output_tokens": 1000000
   },
@@ -11173,7 +11197,7 @@
     "input": 6.2E-7,
     "output": 0.00000185,
     "max_input_tokens": 163840,
-    "max_output_tokens": 163840
+    "max_output_tokens": 8000
   },
   {
     "model": "eu.deepseek.v3.2",
@@ -11181,7 +11205,7 @@
     "input": 7.4E-7,
     "output": 0.00000222,
     "max_input_tokens": 163840,
-    "max_output_tokens": 163840
+    "max_output_tokens": 8000
   },
   {
     "model": "us.meta.llama3-1-405b-instruct-v1:0",
@@ -12016,6 +12040,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "vertex_ai/claude-fable-5-2",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-mythos-5-2",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "vertex_ai/claude-fable-5@default",
     "provider": "vertex_ai-anthropic_models",
     "input": 0.00001,
@@ -12028,6 +12068,22 @@
     "provider": "vertex_ai-anthropic_models",
     "input": 0.00001,
     "output": 0.00005,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-fable-5-2@default",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "vertex_ai/claude-mythos-5-2@default",
+    "provider": "vertex_ai-anthropic_models",
+    "input": 0.000008,
+    "output": 0.00004,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
@@ -12181,6 +12237,14 @@
     "input": 5.6E-7,
     "output": 0.00000168,
     "max_input_tokens": 163840,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "vertex_ai/gemini-3.1-flash-image",
+    "provider": "vertex_ai-language-models",
+    "input": 5E-7,
+    "output": 0.000003,
+    "max_input_tokens": 131072,
     "max_output_tokens": 32768
   },
   {
@@ -12594,8 +12658,8 @@
   {
     "model": "wandb/deepseek-ai/DeepSeek-V3.1",
     "provider": "wandb",
-    "input": 5.5E-7,
-    "output": 0.00000165,
+    "input": 5E-7,
+    "output": 0.0000015,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
   },
@@ -14428,7 +14492,7 @@
     "provider": "bedrock_mantle",
     "input": 0.0000044,
     "output": 0.000022,
-    "max_input_tokens": 1050000,
+    "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
   {
@@ -15242,16 +15306,16 @@
   {
     "model": "tencent/hy4",
     "provider": "tencent",
-    "input": 8.34E-7,
-    "output": 0.000002501,
+    "input": 4.17E-7,
+    "output": 0.0000012505,
     "max_input_tokens": 960000,
     "max_output_tokens": 64000
   },
   {
     "model": "tencent/hy4-preview",
     "provider": "tencent",
-    "input": 8.34E-7,
-    "output": 0.000002501,
+    "input": 4.17E-7,
+    "output": 0.0000012505,
     "max_input_tokens": 960000,
     "max_output_tokens": 64000
   },
@@ -15368,6 +15432,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "claude-mythos-5-2",
+    "provider": "anthropic",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "claude-mythos-preview",
     "provider": "anthropic",
     "input": 0.00001,
@@ -15465,6 +15537,14 @@
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/kimi-k3",
+    "provider": "fireworks_ai",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/kimi-latest",
     "provider": "fireworks_ai",
     "input": 0.000003,
     "output": 0.000015,
@@ -15616,6 +15696,14 @@
     "max_output_tokens": null
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/routers/qwen-max-latest",
+    "provider": "fireworks_ai",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/routers/glm-5p2-fast",
     "provider": "fireworks_ai",
     "input": 0.0000021,
@@ -15633,6 +15721,14 @@
   },
   {
     "model": "fireworks_ai/accounts/fireworks/routers/kimi-k3-fast",
+    "provider": "fireworks_ai",
+    "input": 0.0000045,
+    "output": 0.0000225,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/kimi-fast-latest",
     "provider": "fireworks_ai",
     "input": 0.0000045,
     "output": 0.0000225,
@@ -16011,7 +16107,7 @@
     "model": "wandb/deepseek-ai/DeepSeek-V4-Flash-0731",
     "provider": "wandb",
     "input": 1.3E-7,
-    "output": 2.8E-7,
+    "output": 2.7E-7,
     "max_input_tokens": 262000,
     "max_output_tokens": 262144
   },
@@ -16066,8 +16162,8 @@
   {
     "model": "wandb/moonshotai/Kimi-K2.7-Code",
     "provider": "wandb",
-    "input": 7.1E-7,
-    "output": 0.0000035,
+    "input": 6E-7,
+    "output": 0.000003,
     "max_input_tokens": 262000,
     "max_output_tokens": 262144
   },
@@ -16106,8 +16202,8 @@
   {
     "model": "wandb/Qwen/Qwen3.6-35B-A3B",
     "provider": "wandb",
-    "input": 2.5E-7,
-    "output": 0.00000125,
+    "input": 1E-7,
+    "output": 8.9E-7,
     "max_input_tokens": 262000,
     "max_output_tokens": 262144
   },
@@ -16146,7 +16242,7 @@
   {
     "model": "wandb/ibm-granite/granite-4.2-8b",
     "provider": "wandb",
-    "input": 1E-7,
+    "input": 6E-8,
     "output": 1.5E-7,
     "max_input_tokens": 131000,
     "max_output_tokens": null
@@ -16154,7 +16250,7 @@
   {
     "model": "wandb/zai-org/GLM-5.2",
     "provider": "wandb",
-    "input": 7.6E-7,
+    "input": 6.2E-7,
     "output": 0.00000242,
     "max_input_tokens": 262000,
     "max_output_tokens": 262144
@@ -16490,8 +16586,8 @@
   {
     "model": "deepinfra/anthropic/claude-sonnet-5",
     "provider": "deepinfra",
-    "input": 0.000002,
-    "output": 0.00001,
+    "input": 0.000003,
+    "output": 0.000015,
     "max_input_tokens": 1000000,
     "max_output_tokens": 1000000
   },
@@ -16578,7 +16674,7 @@
   {
     "model": "deepinfra/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
     "provider": "deepinfra",
-    "input": 8.5E-8,
+    "input": 7.5E-8,
     "output": 4E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
@@ -16710,6 +16806,38 @@
     "output": 4E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
+  },
+  {
+    "model": "deepinfra/zai-org/GLM-5.3-Flash",
+    "provider": "deepinfra",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "deepinfra/XiaomiMiMo/MiMo-V2.6-Flash",
+    "provider": "deepinfra",
+    "input": 1.4E-7,
+    "output": 2.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "deepinfra/nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+    "provider": "deepinfra",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "deepinfra/tencent/Hy4-preview",
+    "provider": "deepinfra",
+    "input": 8.34E-7,
+    "output": 0.000002501,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 131072
   },
   {
     "model": "gemini/gemini-omni-1.1-flash",
@@ -16856,6 +16984,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/routers/glm-latest",
+    "provider": "fireworks_ai",
+    "input": 0.0000014,
+    "output": 0.0000044,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "fireworks_ai/accounts/fireworks/routers/glm-5p3-us",
     "provider": "fireworks_ai",
     "input": 0.0000021,
@@ -16888,6 +17024,14 @@
     "max_output_tokens": 1048576
   },
   {
+    "model": "fireworks_ai/accounts/fireworks/routers/glm-fast-latest",
+    "provider": "fireworks_ai",
+    "input": 0.0000021,
+    "output": 0.0000066,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
     "model": "fireworks_ai/glm-5p3-fast",
     "provider": "fireworks_ai",
     "input": 0.0000021,
@@ -16897,6 +17041,14 @@
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/glm-5p3-flash",
+    "provider": "fireworks_ai",
+    "input": 1.5E-7,
+    "output": 5E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/glm-flash-latest",
     "provider": "fireworks_ai",
     "input": 1.5E-7,
     "output": 5E-7,
@@ -17104,6 +17256,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "azure_ai/deepseek-v4.1-flash-1017",
+    "provider": "azure_ai",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "azure_ai/deepseek-v4.1-flash",
     "provider": "azure_ai",
     "input": 3E-7,
@@ -17256,6 +17416,14 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-fable-5-2",
+    "provider": "bedrock",
+    "input": 0.0000096,
+    "output": 0.000048,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "bedrock/us-gov-east-1/nvidia.nemotron-nano-3-30b",
     "provider": "bedrock",
     "input": 7.2E-8,
@@ -17340,6 +17508,14 @@
     "provider": "bedrock",
     "input": 0.000012,
     "output": 0.00006,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-fable-5-2",
+    "provider": "bedrock",
+    "input": 0.0000096,
+    "output": 0.000048,
     "max_input_tokens": 1000000,
     "max_output_tokens": 128000
   },
@@ -18568,33 +18744,57 @@
     "max_output_tokens": 131072
   },
   {
+    "model": "nace/drex-v1.0",
+    "provider": "nace",
+    "input": 3E-8,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
     "model": "nace/drex-v1.5",
     "provider": "nace",
-    "input": 5E-8,
+    "input": 3E-8,
     "output": 0.0,
-    "max_input_tokens": 131072,
+    "max_input_tokens": 262144,
     "max_output_tokens": null
   },
   {
     "model": "nace/drex-v2.0",
     "provider": "nace",
-    "input": 6E-8,
+    "input": 3E-8,
     "output": 0.0,
-    "max_input_tokens": 131072,
+    "max_input_tokens": 262144,
     "max_output_tokens": null
   },
   {
     "model": "nace/drex-latest",
     "provider": "nace",
-    "input": 6E-8,
+    "input": 3E-8,
     "output": 0.0,
-    "max_input_tokens": 131072,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "nace/drex-max",
+    "provider": "nace",
+    "input": 3E-8,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "nace/drex-max-v1.1",
+    "provider": "nace",
+    "input": 3E-8,
+    "output": 0.0,
+    "max_input_tokens": 262144,
     "max_output_tokens": null
   },
   {
     "model": "wandb/deepseek-ai/DeepSeek-V4.1-Flash",
     "provider": "wandb",
-    "input": 2E-7,
+    "input": 1.3E-7,
     "output": 6.5E-7,
     "max_input_tokens": 1049000,
     "max_output_tokens": 1048576
@@ -18610,8 +18810,8 @@
   {
     "model": "wandb/zai-org/GLM-5.3-Flash",
     "provider": "wandb",
-    "input": 1.5E-7,
-    "output": 5E-7,
+    "input": 1.2E-7,
+    "output": 3.8E-7,
     "max_input_tokens": 1049000,
     "max_output_tokens": null
   },
@@ -19650,8 +19850,8 @@
   {
     "model": "wandb/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B",
     "provider": "wandb",
-    "input": 2.5E-7,
-    "output": 0.0000015,
+    "input": 1.5E-7,
+    "output": 5E-7,
     "max_input_tokens": 1049000,
     "max_output_tokens": 943718
   },
@@ -19697,6 +19897,14 @@
   },
   {
     "model": "fireworks_ai/accounts/fireworks/models/deepseek-v4p1-flash-1017",
+    "provider": "fireworks_ai",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/deepseek-flash-latest",
     "provider": "fireworks_ai",
     "input": 3E-7,
     "output": 0.0000012,
@@ -19770,16 +19978,16 @@
   {
     "model": "wandb/reflection/Beam-1.0-501B-A23B",
     "provider": "wandb",
-    "input": 0.000001,
-    "output": 0.000003,
+    "input": 3E-7,
+    "output": 0.000001,
     "max_input_tokens": 1049000,
     "max_output_tokens": null
   },
   {
     "model": "wandb/zai-org/GLM-5.3",
     "provider": "wandb",
-    "input": 0.0000012,
-    "output": 0.000004,
+    "input": 7.5E-7,
+    "output": 0.000003,
     "max_input_tokens": 1049000,
     "max_output_tokens": null
   },
@@ -22536,6 +22744,14 @@
     "max_output_tokens": null
   },
   {
+    "model": "gmi/google/gemini-4-carbon",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
     "model": "gmi/google/gemma-4-26b-a4b-it",
     "provider": "gmi",
     "input": 1.3E-7,
@@ -22816,6 +23032,14 @@
     "max_output_tokens": null
   },
   {
+    "model": "gmi/xai/grok4.7",
+    "provider": "gmi",
+    "input": 0.000002,
+    "output": 0.000006,
+    "max_input_tokens": 500000,
+    "max_output_tokens": null
+  },
+  {
     "model": "gmi/zai-org/GLM-4.5-Air-FP8",
     "provider": "gmi",
     "input": 2E-7,
@@ -22901,7 +23125,7 @@
     "input": 0.000002,
     "output": 0.00001,
     "max_input_tokens": 1000000,
-    "max_output_tokens": 262144
+    "max_output_tokens": 1048576
   },
   {
     "model": "bedrock/us-gov-east-1/moonshotai.kimi-k3",
@@ -22990,5 +23214,333 @@
     "output": 0.00000999999,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
+  },
+  {
+    "model": "moonshotai.kimi-k3.1",
+    "provider": "bedrock_converse",
+    "input": 0.0000044,
+    "output": 0.000022,
+    "max_input_tokens": 868928,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "us.moonshotai.kimi-k3.1",
+    "provider": "bedrock_converse",
+    "input": 0.0000044,
+    "output": 0.000022,
+    "max_input_tokens": 868928,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "global.moonshotai.kimi-k3.1",
+    "provider": "bedrock_converse",
+    "input": 0.000004,
+    "output": 0.00002,
+    "max_input_tokens": 868928,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "in.moonshotai.kimi-k3.1",
+    "provider": "bedrock_converse",
+    "input": 0.0000044,
+    "output": 0.000022,
+    "max_input_tokens": 868928,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "wandb/deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "provider": "wandb",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1049000,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "anthropic.claude-fable-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "anthropic.claude-mythos-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "eu.anthropic.claude-fable-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.0000088,
+    "output": 0.000044,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "eu.anthropic.claude-mythos-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.0000088,
+    "output": 0.000044,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.anthropic.claude-fable-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.anthropic.claude-mythos-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.anthropic.claude-fable-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.0000096,
+    "output": 0.000048,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.anthropic.claude-mythos-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.0000096,
+    "output": 0.000048,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.anthropic.claude-fable-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.0000088,
+    "output": 0.000044,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.anthropic.claude-mythos-5-2",
+    "provider": "bedrock_converse",
+    "input": 0.0000088,
+    "output": 0.000044,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "claude-fable-5-2",
+    "provider": "anthropic",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/claude_platform/claude-fable-5-2",
+    "provider": "bedrock",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-mythos-5-2",
+    "provider": "azure_ai",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-mythos-5-2-fast",
+    "provider": "azure_ai",
+    "input": 0.000016,
+    "output": 0.00008,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-fable-5-2",
+    "provider": "azure_ai",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/claude-fable-5-2-fast",
+    "provider": "azure_ai",
+    "input": 0.000016,
+    "output": 0.00008,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/us-gov-east-1/anthropic.claude-mythos-5-2",
+    "provider": "bedrock",
+    "input": 0.0000096,
+    "output": 0.000048,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/us-gov-west-1/anthropic.claude-mythos-5-2",
+    "provider": "bedrock",
+    "input": 0.0000096,
+    "output": 0.000048,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "github_copilot/claude-fable-5.2",
+    "provider": "github_copilot",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "together_ai/elorian-labs/glimpse-1.0",
+    "provider": "together_ai",
+    "input": 6E-7,
+    "output": 0.000003,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "gemini/gemini-4-carbon",
+    "provider": "gemini",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "vertex_ai/gemini-4-carbon",
+    "provider": "vertex_ai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "vertex_ai/gemini-4-carbon-cyber-permissive",
+    "provider": "vertex_ai",
+    "input": 0.000004,
+    "output": 0.00002,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "github_copilot/gemini-4-carbon",
+    "provider": "github_copilot",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "databricks/databricks-claude-fable-5-2",
+    "provider": "databricks",
+    "input": 0.00000800002,
+    "output": 0.00004000003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/system.ai.claude-fable-5-2",
+    "provider": "databricks",
+    "input": 0.00000800002,
+    "output": 0.00004000003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "replicate/google/gemini-4-carbon",
+    "provider": "replicate",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65535
+  },
+  {
+    "model": "azure_ai/mistral-large-4-latest",
+    "provider": "azure_ai",
+    "input": 7E-7,
+    "output": 0.0000021,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/openai.gpt-5.6-cyber",
+    "provider": "bedrock_mantle",
+    "input": 0.000016875,
+    "output": 0.00010125,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/databricks-gemini-4-carbon",
+    "provider": "databricks",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "databricks/system.ai.gemini-4-carbon",
+    "provider": "databricks",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "gemini/gemini-decision-1",
+    "provider": "gemini",
+    "input": 1E-7,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "gemini/gemini-4-hydrogen",
+    "provider": "gemini",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "vertex_ai/gemini-4-hydrogen",
+    "provider": "vertex_ai",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "together_ai/thinkingmachines/Inkling-2-Small",
+    "provider": "together_ai",
+    "input": 3E-7,
+    "output": 0.000001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "github_copilot/gemini-4-hydrogen",
+    "provider": "github_copilot",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 65536
   }
 ]
