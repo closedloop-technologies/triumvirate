@@ -112,6 +112,15 @@ function validateCliOptions(options: CliOptions): { valid: boolean; errors: stri
         );
     }
 
+    if (
+        options.markupPercent !== undefined &&
+        (!Number.isFinite(Number(options.markupPercent)) || Number(options.markupPercent) < 0)
+    ) {
+        errors.push(
+            `Invalid --markup-percent value: '${options.markupPercent}'. Must be a non-negative number.`
+        );
+    }
+
     return { valid: errors.length === 0, errors };
 }
 
@@ -177,6 +186,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
         topFilesLen = 20,
         tokenCountEncoding = 'o200k_base',
         input,
+        markupPercent = 40,
     } = options;
 
     // Read input content if --input is provided
@@ -204,11 +214,11 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
 
     // Auto-calculate token limit based on minimum context window of selected models
     // Only if user didn't explicitly set a token limit
-    const effectiveTokenLimit = tokenLimit
-        ? Number(tokenLimit)
-        : getMinContextWindow(modelList);
-    
-    enhancedLogger.log(`Token limit: ${effectiveTokenLimit} (based on min context window of selected models)`);
+    const effectiveTokenLimit = tokenLimit ? Number(tokenLimit) : getMinContextWindow(modelList);
+
+    enhancedLogger.log(
+        `Token limit: ${effectiveTokenLimit} (based on min context window of selected models)`
+    );
 
     // Create a spinner for progress reporting
     try {
@@ -247,6 +257,7 @@ export const runCliAction = async (directories: string[], options: CliOptions) =
             enhancedReport,
             agentModel, // Pass agent model
             inputContent, // Pre-existing context (skips repomix if provided)
+            markupPercent: Number(markupPercent),
             // Pass other options if needed by runTriumvirateReview
             options: options, // Pass original options for context
         };

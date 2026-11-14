@@ -17,6 +17,19 @@ inputs:
     description: 'GitHub token for posting comments (defaults to GITHUB_TOKEN)'
     required: false
     default: '${{ github.token }}'
+  markup_percent:
+    description: 'Customer markup over provider cost for the PR review'
+    required: false
+    default: '40'
 runs:
-  using: 'node20'
-  main: '../../scripts/github-action.js'
+  using: 'composite'
+  steps:
+    - name: Build Triumvirate Action
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        npm ci --ignore-scripts
+        npm run build
+    - name: Review pull request
+      shell: bash
+      run: node "${{ github.action_path }}/scripts/github-action.js"

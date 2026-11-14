@@ -86,6 +86,11 @@ describe('GitHub PR Comments', () => {
                 ],
                 agreementAnalysis: [],
                 agreementStatistics: [],
+                pricing: {
+                    markupPercent: 40,
+                    providerCost: 0.05,
+                    customerPrice: 0.07,
+                },
             };
 
             const summary = generatePRSummary(mockReport);
@@ -100,6 +105,8 @@ describe('GitHub PR Comments', () => {
             expect(summary).toContain('Good error handling');
             expect(summary).toContain('API Usage');
             expect(summary).toContain('$0.05');
+            expect(summary).toContain('Review Price');
+            expect(summary).toContain('$0.0700');
         });
 
         it('should handle empty report gracefully', () => {

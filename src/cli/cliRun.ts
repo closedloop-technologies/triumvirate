@@ -170,6 +170,11 @@ export const run = async () => {
             .option('--enhanced-report', 'generate enhanced report with model agreement analysis')
             .option('--summary-only', 'only include summary in results')
             .option(
+                '--markup-percent <number>',
+                'customer markup over provider cost (default: 40)',
+                '40'
+            )
+            .option(
                 '--badge [path]',
                 'embed a review status badge in README.md (optionally specify path)'
             )

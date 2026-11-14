@@ -69,7 +69,7 @@ export function estimateCost(model: string, inputTokens: number, outputTokens: n
 
     // Try exact match first (e.g., "anthropic/claude-3-7-sonnet-20250219")
     let info = costs[model];
-    
+
     if (!info) {
         // If model has provider prefix, try without it
         const parts = model.split('/');
@@ -98,7 +98,7 @@ export function estimateCost(model: string, inputTokens: number, outputTokens: n
     }
 
     // Default fallback rates (Claude Sonnet pricing as reasonable default)
-    const defaultInputRate = 0.000003;  // $3 per 1M tokens
+    const defaultInputRate = 0.000003; // $3 per 1M tokens
     const defaultOutputRate = 0.000015; // $15 per 1M tokens
     console.warn(`Cost rates not found for model: ${model}, using default rates`);
     return inputTokens * defaultInputRate + outputTokens * defaultOutputRate;
@@ -112,9 +112,11 @@ export class ClaudeProvider implements LLMProvider {
     name = 'Claude';
     model: string;
 
-    constructor(model = 'claude-3-7-sonnet-20250219') {
+    constructor(model = 'claude-opus-5') {
         this.model = model;
-        console.warn('ClaudeProvider is deprecated. Use BAML functions from baml-providers.ts instead.');
+        console.warn(
+            'ClaudeProvider is deprecated. Use BAML functions from baml-providers.ts instead.'
+        );
     }
 
     isAvailable(): boolean {
@@ -465,9 +467,11 @@ export class OpenAIProvider implements LLMProvider {
     name = 'OpenAI';
     model: string;
 
-    constructor(model = 'gpt-4.1') {
+    constructor(model = 'gpt-5.6-sol') {
         this.model = model;
-        console.warn('OpenAIProvider is deprecated. Use BAML functions from baml-providers.ts instead.');
+        console.warn(
+            'OpenAIProvider is deprecated. Use BAML functions from baml-providers.ts instead.'
+        );
     }
 
     isAvailable(): boolean {
@@ -759,7 +763,9 @@ export class GeminiProvider implements LLMProvider {
     model: string;
 
     constructor(model?: string) {
-        console.warn('GeminiProvider is deprecated. Use BAML functions from baml-providers.ts instead.');
+        console.warn(
+            'GeminiProvider is deprecated. Use BAML functions from baml-providers.ts instead.'
+        );
         if (!model) {
             const geminiModel = DEFAULT_MODELS.find(model => model.includes('gemini'));
             if (!geminiModel) {

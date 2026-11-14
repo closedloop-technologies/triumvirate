@@ -42,9 +42,9 @@ flowchart TB
     end
 
     subgraph Review["🤖 Multi-Model Review"]
-        OpenAI["OpenAI<br/>GPT-4 / O3"]
-        Claude["Anthropic<br/>Claude"]
-        Gemini["Google<br/>Gemini"]
+        OpenAI["OpenAI<br/>GPT-5.6 Sol"]
+        Claude["Anthropic<br/>Claude Opus 5"]
+        Gemini["Google<br/>Gemini 3.5 Flash"]
     end
 
     subgraph Analyze["🔍 Analysis"]
@@ -138,7 +138,7 @@ tri review
 # Get list of models from running
 tri models
 # Run a review with specific models
-tri review --models openai/o3,anthropic/claude-opus-4-20250514,gemini/gemini-2.5-pro-preview-06-05
+tri review --models openai/gpt-5.6-sol,anthropic/claude-opus-5,gemini/gemini-3.5-flash
 
 # For local development/testing
 npm run dev review
@@ -365,9 +365,10 @@ jobs:
           node-version: '20'
       - run: npm install -g @justbuild/triumvirate
       - run: |
-          tri review --models openai,claude,gemini \
+          tri review --models openai/gpt-5.6-sol,anthropic/claude-opus-5,gemini/gemini-3.5-flash \
             --diff \
             --output-dir .triumvirate \
+            --markup-percent 40 \
             --fail-on-error \
             --pass-threshold lenient
         env:
@@ -387,6 +388,7 @@ For automatic PR comments, use the built-in action:
     post_summary: 'true'            # Post summary comment on PR
     post_inline_comments: 'true'    # Post inline comments on specific lines
     github_token: ${{ secrets.GITHUB_TOKEN }}
+    markup_percent: '40'            # Customer price = provider cost x 1.40
   env:
     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -410,6 +412,11 @@ For automatic PR comments, use the built-in action:
 | `post_summary` | Post a summary comment on the PR | `true` |
 | `post_inline_comments` | Post inline comments on specific lines | `true` |
 | `github_token` | GitHub token for posting comments | `${{ github.token }}` |
+| `markup_percent` | Customer markup over provider cost | `40` |
+
+Every enhanced review report and PR summary includes the provider cost and the
+customer review price. Triumvirate applies a 40% markup by default; set
+`--markup-percent` in the CLI or `markup_percent` in the Action to override it.
 
 ## Roadmap
 

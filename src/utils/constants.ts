@@ -8,13 +8,13 @@ import * as path from 'path';
 export const API_TIMEOUT_MS = 30000; // 30 seconds timeout
 
 export const DEFAULT_MODELS = [
-    'openai/gpt-4.1',
-    'anthropic/claude-opus-4-6',
-    'gemini/gemini-3-pro-preview',
+    'openai/gpt-5.6-sol',
+    'anthropic/claude-opus-5',
+    'gemini/gemini-3.5-flash',
 ];
 
 // Lower-cost agent model for repo structuring and prompt generation
-export const DEFAULT_AGENT_MODEL = 'anthropic/claude-sonnet-4-5';
+export const DEFAULT_AGENT_MODEL = 'anthropic/claude-opus-5';
 
 // =============================================================================
 // Model Tier Selection System
@@ -48,37 +48,37 @@ export const MODEL_MATRIX: Record<string, ProviderModels> = {
         '100k': {
             cheap: { model: 'gpt-4.1-nano' },
             standard: { model: 'gpt-4.1-mini' },
-            premium: { model: 'gpt-5.2' },
+            premium: { model: 'gpt-5.6-sol' },
         },
         '1m': {
             cheap: { model: 'gpt-4.1-nano' },
             standard: { model: 'gpt-4.1-mini' },
-            premium: { model: 'gpt-4.1' },
+            premium: { model: 'gpt-5.6-sol' },
         },
     },
     anthropic: {
         '100k': {
             cheap: { model: 'claude-haiku-4-5' },
             standard: { model: 'claude-sonnet-4-5' },
-            premium: { model: 'claude-opus-4-6' },
+            premium: { model: 'claude-opus-5' },
         },
         '1m': {
             // Haiku and Sonnet don't support 1M, fallback to Opus
-            cheap: { model: 'claude-opus-4-6', fallbackFrom: 'cheap' },
-            standard: { model: 'claude-opus-4-6', fallbackFrom: 'standard' },
-            premium: { model: 'claude-opus-4-6' },
+            cheap: { model: 'claude-opus-5', fallbackFrom: 'cheap' },
+            standard: { model: 'claude-opus-5', fallbackFrom: 'standard' },
+            premium: { model: 'claude-opus-5' },
         },
     },
     gemini: {
         '100k': {
-            cheap: { model: 'gemini-2.0-flash' },
-            standard: { model: 'gemini-2.5-pro' },
-            premium: { model: 'gemini-3-pro-preview' },
+            cheap: { model: 'gemini-3.5-flash-lite' },
+            standard: { model: 'gemini-3.6-flash' },
+            premium: { model: 'gemini-3.5-flash' },
         },
         '1m': {
-            cheap: { model: 'gemini-2.0-flash' },
-            standard: { model: 'gemini-2.5-pro' },
-            premium: { model: 'gemini-3-pro-preview' },
+            cheap: { model: 'gemini-3.5-flash-lite' },
+            standard: { model: 'gemini-3.6-flash' },
+            premium: { model: 'gemini-3.5-flash' },
         },
     },
 };
@@ -211,9 +211,9 @@ export const PROMPT_HEADROOM_TOKENS = 10000;
  */
 export function getMinContextWindow(modelIds: string[]): number {
     const DEFAULT_CONTEXT_WINDOW = 128000; // Fallback if model not found
-    
+
     let minContext = Infinity;
-    
+
     for (const modelId of modelIds) {
         const modelCosts = COST_RATES[modelId];
         if (modelCosts?.max_input_tokens) {
@@ -224,12 +224,12 @@ export function getMinContextWindow(modelIds: string[]): number {
             minContext = Math.min(minContext, DEFAULT_CONTEXT_WINDOW);
         }
     }
-    
+
     // If no models found, use default
     if (minContext === Infinity) {
         minContext = DEFAULT_CONTEXT_WINDOW;
     }
-    
+
     // Subtract headroom for prompts and responses
     return Math.max(minContext - PROMPT_HEADROOM_TOKENS, 50000); // Minimum 50k tokens
 }

@@ -22,6 +22,7 @@ jobs:
           post_summary: 'true'
           post_inline_comments: 'true'
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          markup_percent: '40'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -30,5 +31,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: triumvirate-results
-          path: triumvirate.json
-
+          path: triumvirate-enhanced.json

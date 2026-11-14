@@ -10,6 +10,7 @@ import type { RepomixResult } from './repomix'; // Import RepomixResult type
 import type { CliOptions, CodeReviewReport, ModelReviewResult } from './types/report';
 import { normalizeUsage } from './types/usage';
 import { DEFAULT_REVIEW_OPTIONS } from './utils/constants';
+import { enhancedLogger } from './utils/enhanced-logger';
 import { TriumvirateError, ErrorCategory } from './utils/error-handling'; // Use consolidated error handling
 import type { LLMProvider } from './utils/llm-providers'; // Import provider type
 import { estimateCost } from './utils/llm-providers'; // Import cost estimator
@@ -32,6 +33,23 @@ export interface TriumvirateReviewOptions {
     enhancedReport?: boolean;
     options?: CliOptions; // Keep original options for spinner control etc.
     inputContent?: string; // Pre-existing context content (skips repomix)
+    markupPercent?: number;
+}
+
+export const DEFAULT_REVIEW_MARKUP_PERCENT = 40;
+
+export function reviewPricing(providerCost: number, markupPercent = DEFAULT_REVIEW_MARKUP_PERCENT) {
+    if (!Number.isFinite(providerCost) || providerCost < 0) {
+        throw new Error('provider cost must be a non-negative number');
+    }
+    if (!Number.isFinite(markupPercent) || markupPercent < 0) {
+        throw new Error('markup percent must be a non-negative number');
+    }
+    return {
+        markupPercent,
+        providerCost,
+        customerPrice: providerCost * (1 + markupPercent / 100),
+    };
 }
 
 // --- Helper Function: Prepare Codebase ---
@@ -307,7 +325,8 @@ async function generateReport(
     results: ModelReviewResult[],
     agentModelName: string, // DoD: Pass agent model name
     isEnhanced: boolean,
-    spinner: Spinner
+    spinner: Spinner,
+    markupPercent: number
 ): Promise<{ jsonReport: CodeReviewReport | ModelReviewResult[]; mdReport: string }> {
     if (isEnhanced) {
         spinner.update('Generating enhanced report...');
@@ -327,6 +346,9 @@ async function generateReport(
                 break;
         }
         const report = await generateCodeReviewReport(results, agentProvider, spinner); // Pass provider and spinner
+        const rawReviewCost = report.modelMetrics.reduce((total, metric) => total + metric.cost, 0);
+        const loggedReviewCost = enhancedLogger.getApiStats().totalCost;
+        report.pricing = reviewPricing(Math.max(rawReviewCost, loggedReviewCost), markupPercent);
         const markdown = formatReportAsMarkdown(report);
         spinner.succeed(`Enhanced report generated using ${agentModelName}.`);
         return { jsonReport: report, mdReport: markdown };
@@ -427,6 +449,7 @@ export async function runTriumvirateReview(
         // passThreshold is used in the runCliAction function, not here
         failOnError = DEFAULT_REVIEW_OPTIONS.FAIL_ON_ERROR,
         agentModel = 'claude', // DoD: Get agent model
+        markupPercent = DEFAULT_REVIEW_MARKUP_PERCENT,
         reviewType = DEFAULT_REVIEW_OPTIONS.REVIEW_TYPE,
         enhancedReport = true, // Keep default as true
         options: cliOpts = {}, // Use passed CLI options for spinner control
@@ -496,7 +519,8 @@ export async function runTriumvirateReview(
             modelResults,
             agentModel, // DoD: Pass agent model
             enhancedReport,
-            spinner
+            spinner,
+            markupPercent
         );
 
         // 5. Write Output

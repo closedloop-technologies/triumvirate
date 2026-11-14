@@ -30,6 +30,7 @@ export interface CliOptions {
     version?: boolean;
     input?: string; // Path to pre-existing context file (or '-' for STDIN)
     badge?: boolean | string; // Embed badge in README.md (optionally specify path)
+    markupPercent?: number;
     // DoD: Add placeholder for --docs if needed down the line
 }
 
@@ -52,6 +53,12 @@ export interface ModelMetrics {
     totalTokens: number;
     costPer1kTokens: number;
     error?: string;
+}
+
+export interface ReviewPricing {
+    markupPercent: number;
+    providerCost: number;
+    customerPrice: number;
 }
 
 export interface CodeExample {
@@ -110,6 +117,7 @@ export interface CodeReviewReport {
     modelInsights: ModelInsight[];
     agreementAnalysis: CategoryAgreementAnalysis[];
     agreementStatistics: AgreementStatistics[];
+    pricing?: ReviewPricing;
 }
 
 export interface ModelReviewResult {

@@ -10,18 +10,18 @@ client<llm> Claude {
   provider anthropic
   retry_policy Exponential
   options {
-    model "claude-3-7-sonnet-20250219"
+    model "claude-opus-5"
     api_key env.ANTHROPIC_API_KEY
     max_tokens 4096
   }
 }
 
-// OpenAI GPT-4.1
+// OpenAI GPT-5.6
 client<llm> GPT4 {
   provider openai
   retry_policy Exponential
   options {
-    model "gpt-4.1"
+    model "gpt-5.6-sol"
     api_key env.OPENAI_API_KEY
   }
 }
@@ -31,7 +31,7 @@ client<llm> Gemini {
   provider google-ai
   retry_policy Exponential
   options {
-    model "gemini-2.5-pro-preview-06-05"
+    model "gemini-3.5-flash"
     api_key env.GEMINI_API_KEY
   }
 }

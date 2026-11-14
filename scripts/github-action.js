@@ -1,5 +1,9 @@
 import { execSync } from 'child_process';
 import { readFileSync, existsSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+const cliPath = fileURLToPath(new URL('../dist/bin/triumvirate.js', import.meta.url));
+const prCommentsPath = new URL('../dist/utils/github-pr-comments.js', import.meta.url).href;
 
 /**
  * Run the Triumvirate review action
@@ -8,6 +12,7 @@ import { readFileSync, existsSync } from 'fs';
  * @param {boolean} options.postSummary - Whether to post a summary comment on the PR
  * @param {boolean} options.postInlineComments - Whether to post inline comments
  * @param {string} options.githubToken - GitHub token for posting comments
+ * @param {number} options.markupPercent - Customer markup over provider cost
  * @param {Function} execFn - Function to execute commands (for testing)
  */
 export async function runAction(options = {}, execFn = execSync) {
@@ -16,12 +21,13 @@ export async function runAction(options = {}, execFn = execSync) {
         postSummary = true,
         postInlineComments = true,
         githubToken = process.env['GITHUB_TOKEN'],
+        markupPercent = Number(process.env['INPUT_MARKUP_PERCENT'] || '40'),
     } = options;
 
     const failFlag = mode === 'strict' ? '--fail-on-error' : '';
-    const outputFile = 'triumvirate.json';
+    const outputFile = 'triumvirate-enhanced.json';
     const command =
-        `npx triumvirate review --models openai,claude,gemini --diff --output ${outputFile} ${failFlag}`.trim();
+        `node ${JSON.stringify(cliPath)} review --models openai/gpt-5.6-sol,anthropic/claude-opus-5,gemini/gemini-3.5-flash --diff --output-dir triumvirate --markup-percent ${markupPercent} ${failFlag}`.trim();
 
     // Run the review
     execFn(command, { stdio: 'inherit' });
@@ -51,8 +57,7 @@ async function postPRComments({
 }) {
     try {
         // Dynamically import the PR comments module (it's TypeScript, will be compiled)
-        const { postPRComments: postComments, parseGitHubContext } =
-            await import('../dist/utils/github-pr-comments.js');
+        const { postPRComments: postComments, parseGitHubContext } = await import(prCommentsPath);
 
         // Parse GitHub context
         const context = await parseGitHubContext();
@@ -100,8 +105,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const postSummary = process.env['INPUT_POST_SUMMARY'] !== 'false';
     const postInlineComments = process.env['INPUT_POST_INLINE_COMMENTS'] !== 'false';
     const githubToken = process.env['INPUT_GITHUB_TOKEN'] || process.env['GITHUB_TOKEN'];
+    const markupPercent = Number(process.env['INPUT_MARKUP_PERCENT'] || '40');
 
-    runAction({ mode, postSummary, postInlineComments, githubToken }).catch(err => {
+    runAction({ mode, postSummary, postInlineComments, githubToken, markupPercent }).catch(err => {
         console.error('Action failed:', err);
         process.exit(1);
     });

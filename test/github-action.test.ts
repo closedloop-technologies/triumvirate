@@ -21,8 +21,13 @@ describe('github action runner', () => {
         const exec = vi.fn();
         await runAction({}, exec);
         expect(exec).toHaveBeenCalled();
-        expect(exec.mock.calls[0][0]).toContain('npx triumvirate review');
+        expect(exec.mock.calls[0][0]).toContain('dist/bin/triumvirate.js');
+        expect(exec.mock.calls[0][0]).toContain('review');
         expect(exec.mock.calls[0][0]).toContain('--diff');
-        expect(exec.mock.calls[0][0]).toContain('--models openai,claude,gemini');
+        expect(exec.mock.calls[0][0]).toContain(
+            '--models openai/gpt-5.6-sol,anthropic/claude-opus-5,gemini/gemini-3.5-flash'
+        );
+        expect(exec.mock.calls[0][0]).toContain('--output-dir triumvirate');
+        expect(exec.mock.calls[0][0]).toContain('--markup-percent 40');
     });
 });

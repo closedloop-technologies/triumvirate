@@ -1968,6 +1968,12 @@ export function formatReportAsMarkdown(report: CodeReviewReport): string {
         // Add total row
         markdown += `| **TOTAL** | - | **${totalLatency.toLocaleString()}ms** | **$${totalCost.toFixed(8)}** | **${totalTokens.toLocaleString()}** |\n`;
 
+        if (report.pricing) {
+            markdown +=
+                `\n**Customer price:** $${report.pricing.customerPrice.toFixed(4)} ` +
+                `(${report.pricing.markupPercent}% markup on $${report.pricing.providerCost.toFixed(4)} provider cost)\n`;
+        }
+
         // Enhanced Executive Summary
         markdown += '\n## Executive Summary\n\n';
 

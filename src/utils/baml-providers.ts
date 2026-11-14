@@ -33,7 +33,7 @@ function estimateTokens(text: string): number {
 function getCostRate(model: string): { input: number; output: number } {
     // Try exact match first
     let rates = COST_RATES[model];
-    
+
     if (!rates) {
         // Search for the model in all entries (handles provider/model format)
         for (const key of Object.keys(COST_RATES)) {
@@ -43,7 +43,7 @@ function getCostRate(model: string): { input: number; output: number } {
             }
         }
     }
-    
+
     if (rates && rates.input !== undefined && rates.output !== undefined) {
         return { input: rates.input, output: rates.output };
     }
@@ -262,12 +262,12 @@ export function useBAML(): boolean {
  * Review code using Claude via BAML
  */
 export async function reviewCodeWithClaude(code: string): Promise<LLMResponse<string>> {
-    const model = 'claude-3-7-sonnet-20250219';
+    const model = 'claude-opus-5';
     try {
         const result = await b.ReviewCodeWithClaude(code);
         const usage = createMockUsage(code, result);
         const rates = getCostRate(model);
-        const cost = (usage.input_tokens * rates.input + usage.output_tokens * rates.output);
+        const cost = usage.input_tokens * rates.input + usage.output_tokens * rates.output;
 
         logApiCall(model, 'completion', usage, true, cost);
 
@@ -283,12 +283,12 @@ export async function reviewCodeWithClaude(code: string): Promise<LLMResponse<st
  * Review code using GPT via BAML
  */
 export async function reviewCodeWithGPT(code: string): Promise<LLMResponse<string>> {
-    const model = 'gpt-4.1';
+    const model = 'gpt-5.6-sol';
     try {
         const result = await b.ReviewCodeWithGPT(code);
         const usage = createMockUsage(code, result);
         const rates = getCostRate(model);
-        const cost = (usage.input_tokens * rates.input + usage.output_tokens * rates.output);
+        const cost = usage.input_tokens * rates.input + usage.output_tokens * rates.output;
 
         logApiCall(model, 'completion', usage, true, cost);
 
@@ -304,12 +304,12 @@ export async function reviewCodeWithGPT(code: string): Promise<LLMResponse<strin
  * Review code using Gemini via BAML
  */
 export async function reviewCodeWithGemini(code: string): Promise<LLMResponse<string>> {
-    const model = 'gemini-2.5-pro-preview-06-05';
+    const model = 'gemini/gemini-3.5-flash';
     try {
         const result = await b.ReviewCodeWithGemini(code);
         const usage = createMockUsage(code, result);
         const rates = getCostRate(model);
-        const cost = (usage.input_tokens * rates.input + usage.output_tokens * rates.output);
+        const cost = usage.input_tokens * rates.input + usage.output_tokens * rates.output;
 
         logApiCall(model, 'completion', usage, true, cost);
 
@@ -347,8 +347,8 @@ export async function recommendCompressionWithBAML(
         );
         const outputStr = JSON.stringify(result);
         const usage = createMockUsage(inputText, outputStr);
-        const rates = getCostRate('claude-3-7-sonnet-20250219');
-        const cost = (usage.input_tokens * rates.input + usage.output_tokens * rates.output);
+        const rates = getCostRate('claude-opus-5');
+        const cost = usage.input_tokens * rates.input + usage.output_tokens * rates.output;
 
         logApiCall(model, 'compression', usage, true, cost);
 
