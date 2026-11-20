@@ -3376,14 +3376,6 @@
     "max_output_tokens": 64000
   },
   {
-    "model": "bedrock/us-gov-east-1/claude-sonnet-4-5-20250929-v1:0",
-    "provider": "bedrock",
-    "input": 0.0000036,
-    "output": 0.000018,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 64000
-  },
-  {
     "model": "bedrock/us-gov-west-1/amazon.nova-lite-v1:0",
     "provider": "bedrock",
     "input": 7.2E-8,
@@ -3409,14 +3401,6 @@
   },
   {
     "model": "bedrock/us-gov-west-1/anthropic.claude-sonnet-4-5-20250929-v1:0",
-    "provider": "bedrock",
-    "input": 0.0000036,
-    "output": 0.000018,
-    "max_input_tokens": 200000,
-    "max_output_tokens": 64000
-  },
-  {
-    "model": "bedrock/us-gov-west-1/claude-sonnet-4-5-20250929-v1:0",
     "provider": "bedrock",
     "input": 0.0000036,
     "output": 0.000018,
@@ -3824,6 +3808,14 @@
     "max_output_tokens": null
   },
   {
+    "model": "eu.cohere.embed-v4:0",
+    "provider": "bedrock",
+    "input": 1.2E-7,
+    "output": 0.0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": null
+  },
+  {
     "model": "us.cohere.embed-v4:0",
     "provider": "bedrock",
     "input": 1.2E-7,
@@ -3910,6 +3902,30 @@
     "output": 1.5E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 4096
+  },
+  {
+    "model": "command-a-reasoning-08-2025",
+    "provider": "cohere_chat",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "command-a-vision-07-2025",
+    "provider": "cohere_chat",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "north-mini-code-1.0",
+    "provider": "cohere_chat",
+    "input": 0.0,
+    "output": 0.0,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 64000
   },
   {
     "model": "coralbricks/glm-5.3-fast",
@@ -4156,6 +4172,14 @@
     "provider": "dashscope",
     "input": 0.000002,
     "output": 0.000006,
+    "max_input_tokens": 991808,
+    "max_output_tokens": 131072
+  },
+  {
+    "model": "dashscope/qwen4-max",
+    "provider": "dashscope",
+    "input": 0.0000015,
+    "output": 0.0000045,
     "max_input_tokens": 991808,
     "max_output_tokens": 131072
   },
@@ -8432,10 +8456,42 @@
     "max_output_tokens": 524288
   },
   {
+    "model": "inferenceapis/MiniMaxAI/MiniMax-M3.1-Flash",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "inferenceapis/moonshotai/Kimi-K2.6",
+    "provider": "inferenceapis",
+    "input": 9.8E-7,
+    "output": 0.00000455,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
     "model": "inferenceapis/moonshotai/Kimi-K2.7-Code",
     "provider": "inferenceapis",
     "input": 8.9E-7,
     "output": 0.00000442,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "inferenceapis/moonshotai/Kimi-K3.1-Pro",
+    "provider": "inferenceapis",
+    "input": 0.0000026,
+    "output": 0.000013,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "inferenceapis/nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+    "provider": "inferenceapis",
+    "input": 2E-7,
+    "output": 6.5E-7,
     "max_input_tokens": 262144,
     "max_output_tokens": 262144
   },
@@ -9004,7 +9060,7 @@
     "provider": "mistral",
     "input": 1E-7,
     "output": 1E-7,
-    "max_input_tokens": 131072,
+    "max_input_tokens": 262144,
     "max_output_tokens": 131072
   },
   {
@@ -9012,7 +9068,7 @@
     "provider": "mistral",
     "input": 1E-7,
     "output": 1E-7,
-    "max_input_tokens": 131072,
+    "max_input_tokens": 262144,
     "max_output_tokens": 131072
   },
   {
@@ -9114,10 +9170,10 @@
   {
     "model": "mistral/mistral-large-latest",
     "provider": "mistral",
-    "input": 5E-7,
-    "output": 0.0000015,
-    "max_input_tokens": 262144,
-    "max_output_tokens": 262144
+    "input": 7E-7,
+    "output": 0.0000021,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
   },
   {
     "model": "mistral/mistral-large-3",
@@ -9616,6 +9672,14 @@
     "max_output_tokens": 262144
   },
   {
+    "model": "nebius/moonshotai/Kimi-K3.1-Pro",
+    "provider": "nebius",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
     "model": "nebius/moonshotai/Kimi-K3",
     "provider": "nebius",
     "input": 0.000003,
@@ -9740,7 +9804,7 @@
     "provider": "nebius",
     "input": 4.5E-7,
     "output": 0.000003,
-    "max_input_tokens": 262144,
+    "max_input_tokens": 1000000,
     "max_output_tokens": null
   },
   {
@@ -10746,10 +10810,26 @@
   {
     "model": "snowflake/llama3.1-8b",
     "provider": "snowflake",
-    "input": 2.4E-7,
-    "output": 2.4E-7,
+    "input": 2.2E-7,
+    "output": 2.2E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 16384
+  },
+  {
+    "model": "snowflake/llama3.2-1b",
+    "provider": "snowflake",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "snowflake/llama3.2-3b",
+    "provider": "snowflake",
+    "input": 1.5E-7,
+    "output": 1.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8192
   },
   {
     "model": "snowflake/llama3.3-70b",
@@ -10913,6 +10993,14 @@
   },
   {
     "model": "together_ai/thinkingmachines/Inkling",
+    "provider": "together_ai",
+    "input": 0.000001,
+    "output": 0.00000405,
+    "max_input_tokens": 524288,
+    "max_output_tokens": 524288
+  },
+  {
+    "model": "together_ai/thinkingmachines/inkling",
     "provider": "together_ai",
     "input": 0.000001,
     "output": 0.00000405,
@@ -11318,6 +11406,30 @@
     "output": 0.000015,
     "max_input_tokens": 128000,
     "max_output_tokens": 128000
+  },
+  {
+    "model": "vispark/vision-small",
+    "provider": "vispark",
+    "input": 0.00000105,
+    "output": 0.00000316,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "vispark/vision-medium",
+    "provider": "vispark",
+    "input": 0.00000421,
+    "output": 0.00001263,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "vispark/vision-large",
+    "provider": "vispark",
+    "input": 0.00000737,
+    "output": 0.00002211,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 65536
   },
   {
     "model": "vercel_ai_gateway/alibaba/qwen3-coder",
@@ -11742,6 +11854,14 @@
     "output": 6E-7,
     "max_input_tokens": 128000,
     "max_output_tokens": 16384
+  },
+  {
+    "model": "vercel_ai_gateway/openai/gpt-6-luna-decisions",
+    "provider": "vercel_ai_gateway",
+    "input": 1E-7,
+    "output": 0.0,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
   },
   {
     "model": "vercel_ai_gateway/openai/o1",
@@ -14272,6 +14392,54 @@
     "max_output_tokens": 200000
   },
   {
+    "model": "sarvam/sarvam-105b",
+    "provider": "sarvam",
+    "input": 1.063829787E-7,
+    "output": 2.659574468E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "sarvam/glm5.3",
+    "provider": "sarvam",
+    "input": 0.000001340425532,
+    "output": 0.000004148936170,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sarvam/glm5.3-flash",
+    "provider": "sarvam",
+    "input": 1.436170213E-7,
+    "output": 4.787234043E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sarvam/gemma4",
+    "provider": "sarvam",
+    "input": 3.723404255E-7,
+    "output": 9.574468085E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 262144
+  },
+  {
+    "model": "sarvam/deepseekv4.1-flash-1017",
+    "provider": "sarvam",
+    "input": 1.489361702E-7,
+    "output": 5.851063830E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "sarvam/deepseekv4.1-flash-1017-interactive",
+    "provider": "sarvam",
+    "input": 2.659574468E-7,
+    "output": 0.000001117021277,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
     "model": "gpt-5-search-api",
     "provider": "openai",
     "input": 0.00000125,
@@ -14356,7 +14524,7 @@
     "provider": "gemini",
     "input": 5E-7,
     "output": 0.000002,
-    "max_input_tokens": 1048576,
+    "max_input_tokens": 131072,
     "max_output_tokens": 8192
   },
   {
@@ -14520,10 +14688,50 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "us.openai.gpt-daybreak-blue-5.6-sol",
+    "provider": "bedrock_converse",
+    "input": 0.0000044,
+    "output": 0.000022,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.openai.gpt-daybreak-blue-5.6-sol",
+    "provider": "bedrock_converse",
+    "input": 0.000004,
+    "output": 0.00002,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.openai.gpt-5.6-cyber",
+    "provider": "bedrock_converse",
+    "input": 0.00001375,
+    "output": 0.0000825,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.openai.gpt-5.6-cyber",
+    "provider": "bedrock_converse",
+    "input": 0.0000125,
+    "output": 0.000075,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "us.openai.gpt-5.6-terra",
     "provider": "bedrock_converse",
     "input": 0.0000022,
     "output": 0.0000132,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.openai.gpt-5.6-terra",
+    "provider": "bedrock_converse",
+    "input": 0.00000264,
+    "output": 0.00001584,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -14544,10 +14752,26 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "us-gov.openai.gpt-5.6-luna",
+    "provider": "bedrock_converse",
+    "input": 2.64E-7,
+    "output": 0.000001584,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "us.openai.gpt-5.4",
     "provider": "bedrock_converse",
     "input": 0.00000275,
     "output": 0.0000165,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us-gov.openai.gpt-5.4",
+    "provider": "bedrock_converse",
+    "input": 0.0000033,
+    "output": 0.0000198,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -14730,8 +14954,8 @@
   {
     "model": "bedrock_mantle/anthropic.claude-haiku-4-5",
     "provider": "bedrock_mantle",
-    "input": 0.000001,
-    "output": 0.000005,
+    "input": 0.0000011,
+    "output": 0.0000055,
     "max_input_tokens": 200000,
     "max_output_tokens": 64000
   },
@@ -14898,16 +15122,16 @@
   {
     "model": "snowflake/openai-gpt-5-mini",
     "provider": "snowflake",
-    "input": 3E-7,
-    "output": 0.0000012,
+    "input": 2.5E-7,
+    "output": 0.000002,
     "max_input_tokens": 1000000,
     "max_output_tokens": 16384
   },
   {
     "model": "snowflake/openai-gpt-5-nano",
     "provider": "snowflake",
-    "input": 1.5E-7,
-    "output": 6E-7,
+    "input": 6E-8,
+    "output": 4.4E-7,
     "max_input_tokens": 5000000,
     "max_output_tokens": 16384
   },
@@ -15546,8 +15770,8 @@
   {
     "model": "fireworks_ai/accounts/fireworks/routers/kimi-latest",
     "provider": "fireworks_ai",
-    "input": 0.000003,
-    "output": 0.000015,
+    "input": 0.000002,
+    "output": 0.00001,
     "max_input_tokens": 1048576,
     "max_output_tokens": 131072
   },
@@ -17624,6 +17848,22 @@
     "max_output_tokens": 128000
   },
   {
+    "model": "bedrock_mantle/us-gov-east-1/openai.gpt-5.6-terra",
+    "provider": "bedrock_mantle",
+    "input": 0.00000264,
+    "output": 0.00001584,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-east-1/openai.gpt-5.6-luna",
+    "provider": "bedrock_mantle",
+    "input": 2.64E-7,
+    "output": 0.000001584,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "bedrock_mantle/us-gov-east-1/xai.grok-4.6",
     "provider": "bedrock_mantle",
     "input": 0.00000264,
@@ -17672,6 +17912,182 @@
     "max_output_tokens": 8000
   },
   {
+    "model": "bedrock_mantle/deepseek.v3.2",
+    "provider": "bedrock_mantle",
+    "input": 6.2E-7,
+    "output": 0.00000185,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 9E-8,
+    "output": 2.9E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 3.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 4E-8,
+    "output": 8E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4E-7,
+    "output": 0.000002,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2E-7,
+    "output": 2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1E-7,
+    "output": 1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.5E-7,
+    "output": 1.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/mistral.mistral-large-3-675b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 5E-7,
+    "output": 0.0000015,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/moonshotai.kimi-k2.5",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.000003,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2E-7,
+    "output": 6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 6E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 6E-8,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.5E-7,
+    "output": 6.5E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 5E-7,
+    "output": 0.0000012,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/zai.glm-4.7",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.0000022,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 4E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/zai.glm-5",
+    "provider": "bedrock_mantle",
+    "input": 0.000001,
+    "output": 0.0000032,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
     "model": "bedrock_mantle/qwen.qwen3-coder-30b-a3b-instruct",
     "provider": "bedrock_mantle",
     "input": 1.5E-7,
@@ -17702,6 +18118,62 @@
     "output": 0.00000266,
     "max_input_tokens": 256000,
     "max_output_tokens": 8000
+  },
+  {
+    "model": "azure/us-gov/gpt-4.1",
+    "provider": "azure",
+    "input": 0.00000275,
+    "output": 0.000011,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "azure/us-gov/gpt-4.1-mini",
+    "provider": "azure",
+    "input": 5.5E-7,
+    "output": 0.0000022,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 32768
+  },
+  {
+    "model": "azure/us-gov/gpt-4o",
+    "provider": "azure",
+    "input": 0.000003438,
+    "output": 0.00001375,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "azure/us-gov/gpt-4o-mini",
+    "provider": "azure",
+    "input": 2.07E-7,
+    "output": 8.25E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "azure/us-gov/gpt-5.6-luna",
+    "provider": "azure",
+    "input": 2.75E-7,
+    "output": 0.00000165,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us-gov/gpt-5.6-sol",
+    "provider": "azure",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us-gov/gpt-5.6-terra",
+    "provider": "azure",
+    "input": 0.00000275,
+    "output": 0.0000165,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
   },
   {
     "model": "azure/us-gov/gpt-5.1",
@@ -19851,7 +20323,7 @@
     "model": "wandb/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B",
     "provider": "wandb",
     "input": 1.5E-7,
-    "output": 5E-7,
+    "output": 4.7E-7,
     "max_input_tokens": 1049000,
     "max_output_tokens": 943718
   },
@@ -20436,6 +20908,22 @@
     "provider": "bedrock_mantle",
     "input": 0.0000011,
     "output": 0.0000055,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-6.2-sol",
+    "provider": "bedrock_mantle",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/openai.gpt-6.2-astra",
+    "provider": "bedrock_mantle",
+    "input": 0.0000088,
+    "output": 0.000044,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -21282,8 +21770,8 @@
   {
     "model": "fireworks_ai/accounts/fireworks/routers/spot-deepseek-v4-flash",
     "provider": "fireworks_ai",
-    "input": 1.05E-7,
-    "output": 2.1E-7,
+    "input": 7E-8,
+    "output": 1.4E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 384000
   },
@@ -21298,32 +21786,40 @@
   {
     "model": "fireworks_ai/accounts/fireworks/routers/glm-5p3-spot",
     "provider": "fireworks_ai",
-    "input": 9.8E-7,
-    "output": 0.00000308,
+    "input": 7E-7,
+    "output": 0.0000022,
     "max_input_tokens": 1048576,
     "max_output_tokens": 128000
   },
   {
     "model": "fireworks_ai/accounts/fireworks/routers/deepseek-v4p1-flash-spot",
     "provider": "fireworks_ai",
-    "input": 2.1E-7,
-    "output": 8.4E-7,
+    "input": 1.5E-7,
+    "output": 6E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 393216
   },
   {
     "model": "fireworks_ai/accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
     "provider": "fireworks_ai",
-    "input": 0.0000024,
-    "output": 0.0000096,
+    "input": 0.0000012,
+    "output": 0.0000048,
     "max_input_tokens": 1048576,
     "max_output_tokens": 393216
   },
   {
     "model": "fireworks_ai/accounts/fireworks/routers/deepseek-v4p1-flash-1017-spot",
     "provider": "fireworks_ai",
-    "input": 2.1E-7,
-    "output": 8.4E-7,
+    "input": 1.5E-7,
+    "output": 6E-7,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 393216
+  },
+  {
+    "model": "fireworks_ai/accounts/fireworks/routers/deepseek-v4p1-flash-1017-flex",
+    "provider": "fireworks_ai",
+    "input": 1.5E-7,
+    "output": 6E-7,
     "max_input_tokens": 1048576,
     "max_output_tokens": 393216
   },
@@ -21362,8 +21858,8 @@
   {
     "model": "gpt-6-rosalind",
     "provider": "openai",
-    "input": 0.000015,
-    "output": 0.000075,
+    "input": 0.00001,
+    "output": 0.00005,
     "max_input_tokens": 922000,
     "max_output_tokens": 128000
   },
@@ -22752,6 +23248,14 @@
     "max_output_tokens": null
   },
   {
+    "model": "gmi/google/gemini-4-hydrogen",
+    "provider": "gmi",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
     "model": "gmi/google/gemma-4-26b-a4b-it",
     "provider": "gmi",
     "input": 1.3E-7,
@@ -23124,7 +23628,7 @@
     "provider": "baseten",
     "input": 0.000002,
     "output": 0.00001,
-    "max_input_tokens": 1000000,
+    "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
   },
   {
@@ -23490,16 +23994,16 @@
   {
     "model": "databricks/databricks-gemini-4-carbon",
     "provider": "databricks",
-    "input": 0.000002,
-    "output": 0.00001,
+    "input": 0.00000249998,
+    "output": 0.00001249997,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
   },
   {
     "model": "databricks/system.ai.gemini-4-carbon",
     "provider": "databricks",
-    "input": 0.000002,
-    "output": 0.00001,
+    "input": 0.00000249998,
+    "output": 0.00001249997,
     "max_input_tokens": 1048576,
     "max_output_tokens": 1048576
   },
@@ -23542,5 +24046,5573 @@
     "output": 0.0000075,
     "max_input_tokens": 200000,
     "max_output_tokens": 65536
+  },
+  {
+    "model": "cloudflare/@cf/thinkingmachines/inkling-2-small",
+    "provider": "cloudflare",
+    "input": 3E-7,
+    "output": 0.000001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "nebius/thinkingmachines/Inkling-2-Small",
+    "provider": "nebius",
+    "input": 3E-7,
+    "output": 0.000001,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": null
+  },
+  {
+    "model": "bedrock_mantle/anthropic.claude-fable-5",
+    "provider": "bedrock_mantle",
+    "input": 0.000011,
+    "output": 0.000055,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/anthropic.claude-mythos-5",
+    "provider": "bedrock_mantle",
+    "input": 0.000011,
+    "output": 0.000055,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/anthropic.claude-opus-4-7",
+    "provider": "bedrock_mantle",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/anthropic.claude-opus-4-8",
+    "provider": "bedrock_mantle",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/anthropic.claude-opus-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/anthropic.claude-sonnet-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/mantle/anthropic.claude-fable-5",
+    "provider": "bedrock",
+    "input": 0.000011,
+    "output": 0.000055,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/mantle/anthropic.claude-mythos-5",
+    "provider": "bedrock",
+    "input": 0.000011,
+    "output": 0.000055,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/mantle/anthropic.claude-opus-4-7",
+    "provider": "bedrock",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/mantle/anthropic.claude-opus-4-8",
+    "provider": "bedrock",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/mantle/anthropic.claude-opus-5",
+    "provider": "bedrock",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/mantle/anthropic.claude-sonnet-5",
+    "provider": "bedrock",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/mantle/anthropic.claude-haiku-4-5",
+    "provider": "bedrock",
+    "input": 0.0000011,
+    "output": 0.0000055,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/mantle/anthropic.claude-opus-5-5",
+    "provider": "bedrock",
+    "input": 0.0000044,
+    "output": 0.000022,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/system.ai.gemini-4-hydrogen",
+    "provider": "databricks",
+    "input": 0.00000187502,
+    "output": 0.00000937503,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "gpt-6.2-astra",
+    "provider": "openai",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-6.2-sol",
+    "provider": "openai",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gpt-6.2-astra-law",
+    "provider": "openai",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-6.2-astra",
+    "provider": "azure",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-6.2-astra",
+    "provider": "azure",
+    "input": 0.0000088,
+    "output": 0.000044,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-6.2-astra",
+    "provider": "azure",
+    "input": 0.0000096,
+    "output": 0.000048,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/apac/gpt-6.2-astra",
+    "provider": "azure",
+    "input": 0.0000096,
+    "output": 0.000048,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/gpt-6.2-sol",
+    "provider": "azure",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/us/gpt-6.2-sol",
+    "provider": "azure",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/eu/gpt-6.2-sol",
+    "provider": "azure",
+    "input": 0.0000024,
+    "output": 0.000012,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure/apac/gpt-6.2-sol",
+    "provider": "azure",
+    "input": 0.0000024,
+    "output": 0.000012,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "azure_ai/kimi-k3.1-pro",
+    "provider": "azure_ai",
+    "input": 0.0000023,
+    "output": 0.0000115,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "global.openai.gpt-6.2-astra",
+    "provider": "bedrock_converse",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "global.openai.gpt-6.2-sol",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.openai.gpt-6.2-astra",
+    "provider": "bedrock_converse",
+    "input": 0.0000088,
+    "output": 0.000044,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "us.openai.gpt-6.2-sol",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openai.gpt-6.2-astra",
+    "provider": "bedrock_converse",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openai.gpt-6.2-sol",
+    "provider": "bedrock_converse",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "github_copilot/mai-code-2",
+    "provider": "github_copilot",
+    "input": 5E-7,
+    "output": 0.0000025,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "github_copilot/mai-code-2-flash",
+    "provider": "github_copilot",
+    "input": 5E-8,
+    "output": 2.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-6-luna-decisions",
+    "provider": "openrouter",
+    "input": 1E-7,
+    "output": 0.0,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": null
+  },
+  {
+    "model": "openrouter/perplexity/pplx-decider-v1.1-27b",
+    "provider": "openrouter",
+    "input": 2E-8,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "openrouter/upstage/solar-decide",
+    "provider": "openrouter",
+    "input": 5E-8,
+    "output": 0.0,
+    "max_input_tokens": 524288,
+    "max_output_tokens": null
+  },
+  {
+    "model": "openrouter/upstage/solar-decide-flash",
+    "provider": "openrouter",
+    "input": 5E-8,
+    "output": 0.0,
+    "max_input_tokens": 524288,
+    "max_output_tokens": null
+  },
+  {
+    "model": "openrouter/~typesafe/jev-latest",
+    "provider": "openrouter",
+    "input": 4.2E-8,
+    "output": 0.0,
+    "max_input_tokens": 262144,
+    "max_output_tokens": null
+  },
+  {
+    "model": "github_copilot/gpt-6.2-astra",
+    "provider": "github_copilot",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "github_copilot/gpt-6.2-sol",
+    "provider": "github_copilot",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "together_ai/Qwen/Qwen4-Max",
+    "provider": "together_ai",
+    "input": 0.00000105,
+    "output": 0.00000315,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 1000000
+  },
+  {
+    "model": "azure/us-gov/gpt-4-turbo",
+    "provider": "azure",
+    "input": 0.0000125,
+    "output": 0.0000375,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "azure/us-gov/gpt-4o-2024-05-13",
+    "provider": "azure",
+    "input": 0.00000625,
+    "output": 0.00001875,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "azure/us-gov/gpt-4o-2024-11-20",
+    "provider": "azure",
+    "input": 0.000003438,
+    "output": 0.00001375,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "azure/us-gov/o3-mini-2025-01-31",
+    "provider": "azure",
+    "input": 0.000001513,
+    "output": 0.00000605,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 100000
+  },
+  {
+    "model": "bedrock/ap-east-2/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.6E-7,
+    "output": 0.00000301,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/amazon.nova-2-5-sonic",
+    "provider": "bedrock",
+    "input": 3.96E-7,
+    "output": 0.000003311,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.96E-7,
+    "output": 0.000003311,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/amazon.nova-2-sonic-v1:0",
+    "provider": "bedrock",
+    "input": 3.96E-7,
+    "output": 0.000003311,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.2E-8,
+    "output": 1.68E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.6E-7,
+    "output": 0.00000384,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/apac.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/apac.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.6E-7,
+    "output": 0.00000384,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/deepseek.v3-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.01666E-7,
+    "output": 0.000002032411,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.6E-7,
+    "output": 0.00000301,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/google.gemma-3-12b-it",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 3.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/google.gemma-3-27b-it",
+    "provider": "bedrock_converse",
+    "input": 2.8E-7,
+    "output": 4.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/google.gemma-3-4b-it",
+    "provider": "bedrock_converse",
+    "input": 5E-8,
+    "output": 1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/minimax.minimax-m2",
+    "provider": "bedrock_converse",
+    "input": 3.6E-7,
+    "output": 0.00000145,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/mistral.magistral-small-2509",
+    "provider": "bedrock_converse",
+    "input": 6.1E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_converse",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/mistral.mistral-large-3-675b-instruct",
+    "provider": "bedrock_converse",
+    "input": 6.1E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/moonshot.kimi-k2-thinking",
+    "provider": "bedrock_converse",
+    "input": 7.3E-7,
+    "output": 0.00000303,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_converse",
+    "input": 2.4E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.9E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-northeast-1/openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-northeast-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/qwen.qwen3-235b-a22b-2507-v1:0",
+    "provider": "bedrock_converse",
+    "input": 2.7E-7,
+    "output": 0.00000106,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/ap-northeast-1/qwen.qwen3-coder-480b-a35b-v1:0",
+    "provider": "bedrock_converse",
+    "input": 5.4E-7,
+    "output": 0.00000218,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-northeast-1/qwen.qwen3-vl-235b-a22b",
+    "provider": "bedrock_converse",
+    "input": 6.4E-7,
+    "output": 0.00000322,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-northeast-1/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-northeast-2/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.1E-8,
+    "output": 2.84E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-2/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.1E-8,
+    "output": 1.64E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-2/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.5E-7,
+    "output": 0.0000038,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-2/apac.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.1E-8,
+    "output": 2.84E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-2/apac.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.5E-7,
+    "output": 0.0000038,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-northeast-2/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.6E-7,
+    "output": 0.00000296,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-south-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.1E-8,
+    "output": 2.84E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-south-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.1E-8,
+    "output": 1.64E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-south-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.4E-7,
+    "output": 0.00000376,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-south-1/apac.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.1E-8,
+    "output": 2.84E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-south-1/apac.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.4E-7,
+    "output": 0.00000376,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-south-1/deepseek.v3-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.82424E-7,
+    "output": 0.000001976678,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.5E-7,
+    "output": 0.00000295,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-south-1/google.gemma-3-12b-it",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 3.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/google.gemma-3-27b-it",
+    "provider": "bedrock_converse",
+    "input": 2.7E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/google.gemma-3-4b-it",
+    "provider": "bedrock_converse",
+    "input": 5E-8,
+    "output": 9E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/minimax.minimax-m2",
+    "provider": "bedrock_converse",
+    "input": 3.5E-7,
+    "output": 0.00000141,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-south-1/mistral.magistral-small-2509",
+    "provider": "bedrock_converse",
+    "input": 5.9E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock/ap-south-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_converse",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/mistral.mistral-large-3-675b-instruct",
+    "provider": "bedrock_converse",
+    "input": 5.9E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-south-1/moonshot.kimi-k2-thinking",
+    "provider": "bedrock_converse",
+    "input": 7.1E-7,
+    "output": 0.00000294,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/ap-south-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_converse",
+    "input": 2.4E-7,
+    "output": 7.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-south-1/openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-south-1/openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 3.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-south-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/ap-south-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/ap-south-1/qwen.qwen3-235b-a22b-2507-v1:0",
+    "provider": "bedrock_converse",
+    "input": 2.6E-7,
+    "output": 0.00000104,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/ap-south-1/qwen.qwen3-coder-480b-a35b-v1:0",
+    "provider": "bedrock_converse",
+    "input": 5.3E-7,
+    "output": 0.00000212,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-south-1/qwen.qwen3-vl-235b-a22b",
+    "provider": "bedrock_converse",
+    "input": 6.2E-7,
+    "output": 0.00000313,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-south-1/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-south-1/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-south-1/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-southeast-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.1E-8,
+    "output": 3.24E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.7E-8,
+    "output": 1.88E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000108,
+    "output": 0.00000432,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-1/apac.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.1E-8,
+    "output": 3.24E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-1/apac.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000108,
+    "output": 0.00000432,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.1E-7,
+    "output": 0.00000339,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.3E-8,
+    "output": 2.52E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.7E-8,
+    "output": 1.48E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.4E-7,
+    "output": 0.00000336,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/deepseek.v3.2",
+    "provider": "bedrock_converse",
+    "input": 6.4E-7,
+    "output": 0.00000191,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.2E-7,
+    "output": 0.00000263,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/minimax.minimax-m2.1",
+    "provider": "bedrock_converse",
+    "input": 3.1E-7,
+    "output": 0.00000124,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.1E-7,
+    "output": 0.00000206,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/moonshotai.kimi-k2.5",
+    "provider": "bedrock",
+    "input": 6.2E-7,
+    "output": 0.00000309,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.5E-7,
+    "output": 6.7E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/qwen.qwen3-coder-next",
+    "provider": "bedrock_converse",
+    "input": 5.2E-7,
+    "output": 0.00000124,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 6.2E-7,
+    "output": 0.00000227,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 4.1E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-southeast-2/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.00000103,
+    "output": 0.0000033,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-southeast-3/deepseek.v3-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6E-7,
+    "output": 0.00000174,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/ap-southeast-3/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-southeast-3/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-southeast-3/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/ap-southeast-3/openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 1.6E-7,
+    "output": 6.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-southeast-3/openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 3.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-southeast-3/qwen.qwen3-235b-a22b-2507-v1:0",
+    "provider": "bedrock_converse",
+    "input": 2.3E-7,
+    "output": 9.1E-7,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/ap-southeast-3/qwen.qwen3-coder-480b-a35b-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.7E-7,
+    "output": 0.00000187,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/ap-southeast-3/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-southeast-3/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-southeast-3/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/ap-southeast-4/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.5E-8,
+    "output": 2.6E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-4/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.7E-7,
+    "output": 0.00000348,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-4/apac.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.7E-7,
+    "output": 0.00000348,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-4/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.3E-7,
+    "output": 0.00000271,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-southeast-5/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-5/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.1E-7,
+    "output": 0.00000339,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-southeast-6/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.2E-7,
+    "output": 0.00000263,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ap-southeast-7/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ap-southeast-7/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.1E-7,
+    "output": 0.00000339,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ca-central-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.52E-7,
+    "output": 0.00000297,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ca-central-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.4E-8,
+    "output": 2.56E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/ca-central-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.2E-7,
+    "output": 0.00000267,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ca-west-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.74E-7,
+    "output": 0.000003091,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/ca-west-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.4E-7,
+    "output": 0.00000281,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-central-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.29E-7,
+    "output": 0.000003597,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-central-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.8E-8,
+    "output": 3.12E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-central-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.6E-8,
+    "output": 1.84E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-central-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000105,
+    "output": 0.0000042,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-central-1/deepseek.v3.2",
+    "provider": "bedrock_converse",
+    "input": 7.4E-7,
+    "output": 0.00000222,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-central-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.9E-7,
+    "output": 0.00000327,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-central-1/meta.llama3-2-1b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 1.3E-7,
+    "output": 1.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/eu-central-1/meta.llama3-2-3b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 1.9E-7,
+    "output": 1.9E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/eu-central-1/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-central-1/moonshotai.kimi-k2.5",
+    "provider": "bedrock",
+    "input": 7.2E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-central-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-central-1/openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 2E-7,
+    "output": 7.9E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-central-1/openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 9E-8,
+    "output": 4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-central-1/qwen.qwen3-235b-a22b-2507-v1:0",
+    "provider": "bedrock_converse",
+    "input": 2.9E-7,
+    "output": 0.00000116,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/eu-central-1/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-central-1/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-central-1/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-north-1/amazon.nova-2-5-sonic",
+    "provider": "bedrock",
+    "input": 3.63E-7,
+    "output": 0.000002992,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-north-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.63E-7,
+    "output": 0.000002992,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-north-1/amazon.nova-2-sonic-v1:0",
+    "provider": "bedrock",
+    "input": 3.63E-7,
+    "output": 0.000002992,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-north-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.5E-8,
+    "output": 2.6E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-north-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.8E-8,
+    "output": 1.52E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-north-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.7E-7,
+    "output": 0.00000348,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-north-1/eu.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.63E-7,
+    "output": 0.000002992,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-north-1/eu.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.5E-8,
+    "output": 2.6E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-north-1/eu.amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.8E-8,
+    "output": 1.52E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-north-1/eu.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.7E-7,
+    "output": 0.00000348,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-north-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.3E-7,
+    "output": 0.00000272,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-north-1/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-north-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-north-1/qwen.qwen3-coder-next",
+    "provider": "bedrock_converse",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-north-1/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-north-1/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-north-1/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-south-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 5.28E-7,
+    "output": 0.000004411,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-south-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.6E-8,
+    "output": 3.84E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 5.6E-8,
+    "output": 2.24E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000128,
+    "output": 0.00000521,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-1/deepseek.v3.2",
+    "provider": "bedrock_converse",
+    "input": 7.4E-7,
+    "output": 0.00000222,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/eu.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 5.28E-7,
+    "output": 0.000004411,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-south-1/eu.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.6E-8,
+    "output": 3.84E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-1/eu.amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 5.6E-8,
+    "output": 2.24E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-1/eu.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000128,
+    "output": 0.00000521,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.81E-7,
+    "output": 0.0000041,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-south-1/google.gemma-3-12b-it",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 3.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/google.gemma-3-27b-it",
+    "provider": "bedrock_converse",
+    "input": 2.7E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/google.gemma-3-4b-it",
+    "provider": "bedrock_converse",
+    "input": 5E-8,
+    "output": 9E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/minimax.minimax-m2",
+    "provider": "bedrock_converse",
+    "input": 3.5E-7,
+    "output": 0.00000141,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-south-1/mistral.magistral-small-2509",
+    "provider": "bedrock_converse",
+    "input": 5.9E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock/eu-south-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_converse",
+    "input": 2.3E-7,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/moonshotai.kimi-k2.5",
+    "provider": "bedrock",
+    "input": 7.2E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-south-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_converse",
+    "input": 2.3E-7,
+    "output": 7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-south-1/openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 2E-7,
+    "output": 7.9E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-south-1/openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 9E-8,
+    "output": 4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-south-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-south-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-south-1/qwen.qwen3-235b-a22b-2507-v1:0",
+    "provider": "bedrock_converse",
+    "input": 2.9E-7,
+    "output": 0.00000116,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/eu-south-1/qwen.qwen3-vl-235b-a22b",
+    "provider": "bedrock_converse",
+    "input": 6.2E-7,
+    "output": 0.00000312,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-south-1/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-south-1/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-south-1/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-south-2/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.63E-7,
+    "output": 0.000003205,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-south-2/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.6E-8,
+    "output": 2.64E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-2/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.9E-8,
+    "output": 1.56E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-2/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.8E-7,
+    "output": 0.00000352,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-2/eu.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.63E-7,
+    "output": 0.000003205,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-south-2/eu.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.6E-8,
+    "output": 2.64E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-2/eu.amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.9E-8,
+    "output": 1.56E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-2/eu.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.8E-7,
+    "output": 0.00000352,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-south-2/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.3E-7,
+    "output": 0.00000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-west-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.74E-7,
+    "output": 0.000003157,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-west-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.9E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4E-8,
+    "output": 1.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.2E-7,
+    "output": 0.00000368,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-1/deepseek.v3.2",
+    "provider": "bedrock_converse",
+    "input": 7.4E-7,
+    "output": 0.00000222,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/eu.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.74E-7,
+    "output": 0.000003157,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-west-1/eu.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.9E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-1/eu.amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4E-8,
+    "output": 1.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-1/eu.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 9.2E-7,
+    "output": 0.00000368,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-1/eu.meta.llama3-2-1b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 1.1E-7,
+    "output": 1.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/eu-west-1/eu.meta.llama3-2-3b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 1.7E-7,
+    "output": 1.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/eu-west-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.4E-7,
+    "output": 0.00000287,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-west-1/google.gemma-3-12b-it",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 3.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/google.gemma-3-27b-it",
+    "provider": "bedrock_converse",
+    "input": 2.7E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/google.gemma-3-4b-it",
+    "provider": "bedrock_converse",
+    "input": 5E-8,
+    "output": 9E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/meta.llama3-2-1b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 1.1E-7,
+    "output": 1.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/eu-west-1/meta.llama3-2-3b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 1.7E-7,
+    "output": 1.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/eu-west-1/minimax.minimax-m2",
+    "provider": "bedrock_converse",
+    "input": 3.5E-7,
+    "output": 0.00000141,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-west-1/mistral.magistral-small-2509",
+    "provider": "bedrock_converse",
+    "input": 5.9E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock/eu-west-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_converse",
+    "input": 2.3E-7,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/moonshotai.kimi-k2.5",
+    "provider": "bedrock",
+    "input": 7.2E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-west-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_converse",
+    "input": 2.3E-7,
+    "output": 7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-west-1/openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-west-1/openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 3.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-west-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-west-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-west-1/qwen.qwen3-vl-235b-a22b",
+    "provider": "bedrock_converse",
+    "input": 6.2E-7,
+    "output": 0.00000312,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-1/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-west-1/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-west-1/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-west-2/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.4E-8,
+    "output": 3.36E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-2/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.9E-8,
+    "output": 1.96E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-2/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000113,
+    "output": 0.00000452,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-2/deepseek.v3-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.99985E-7,
+    "output": 0.000002606853,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/deepseek.v3.2",
+    "provider": "bedrock_converse",
+    "input": 9.61E-7,
+    "output": 0.0000028675,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.2E-7,
+    "output": 0.00000352,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-west-2/google.gemma-3-12b-it",
+    "provider": "bedrock_converse",
+    "input": 1.4E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/google.gemma-3-27b-it",
+    "provider": "bedrock_converse",
+    "input": 3.6E-7,
+    "output": 5.9E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/google.gemma-3-4b-it",
+    "provider": "bedrock_converse",
+    "input": 6E-8,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/minimax.minimax-m2",
+    "provider": "bedrock_converse",
+    "input": 4.7E-7,
+    "output": 0.00000186,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 6.2E-7,
+    "output": 0.0000031,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/eu-west-2/mistral.magistral-small-2509",
+    "provider": "bedrock_converse",
+    "input": 7.8E-7,
+    "output": 0.00000233,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock/eu-west-2/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_converse",
+    "input": 3.1E-7,
+    "output": 3.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.6E-7,
+    "output": 1.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_converse",
+    "input": 2.3E-7,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/moonshotai.kimi-k2.5",
+    "provider": "bedrock",
+    "input": 9.3E-7,
+    "output": 0.00000465,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-west-2/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_converse",
+    "input": 3.1E-7,
+    "output": 9.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_converse",
+    "input": 9E-8,
+    "output": 3.7E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_converse",
+    "input": 9E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 2.3E-7,
+    "output": 9.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-west-2/openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 4.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-west-2/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_converse",
+    "input": 2.3E-7,
+    "output": 9.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-west-2/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 3.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/eu-west-2/qwen.qwen3-235b-a22b-2507-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.4E-7,
+    "output": 0.00000137,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 8192
+  },
+  {
+    "model": "bedrock/eu-west-2/qwen.qwen3-coder-480b-a35b-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7E-7,
+    "output": 0.00000279,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/eu-west-2/qwen.qwen3-vl-235b-a22b",
+    "provider": "bedrock_converse",
+    "input": 8.2E-7,
+    "output": 0.00000412,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/eu-west-2/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 9.3E-7,
+    "output": 0.00000341,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-west-2/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 6.2E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-west-2/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.00000155,
+    "output": 0.00000496,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/eu-west-3/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.84E-7,
+    "output": 0.000004059,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-west-3/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.8E-8,
+    "output": 3.52E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-3/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 5.2E-8,
+    "output": 2.08E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-3/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000118,
+    "output": 0.00000472,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-3/eu.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.84E-7,
+    "output": 0.000004059,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-west-3/eu.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8.8E-8,
+    "output": 3.52E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-3/eu.amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 5.2E-8,
+    "output": 2.08E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-3/eu.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000118,
+    "output": 0.00000472,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/eu-west-3/eu.meta.llama3-2-3b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 2E-7,
+    "output": 2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/eu-west-3/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.4E-7,
+    "output": 0.00000369,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/eu-west-3/meta.llama3-2-1b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 1.3E-7,
+    "output": 1.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/eu-west-3/meta.llama3-2-3b-instruct-v1:0",
+    "provider": "bedrock",
+    "input": 2E-7,
+    "output": 2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 4096
+  },
+  {
+    "model": "bedrock/il-central-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.5E-8,
+    "output": 3E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/il-central-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.4E-8,
+    "output": 1.76E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/il-central-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.000001,
+    "output": 0.000004,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/il-central-1/apac.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.5E-8,
+    "output": 3E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/il-central-1/apac.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.000001,
+    "output": 0.000004,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/il-central-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.8E-7,
+    "output": 0.00000313,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/me-central-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/me-central-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.5E-8,
+    "output": 1.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/me-central-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/me-central-1/apac.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/sa-east-1/google.gemma-3-12b-it",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 3.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/google.gemma-3-27b-it",
+    "provider": "bedrock_converse",
+    "input": 2.8E-7,
+    "output": 4.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/google.gemma-3-4b-it",
+    "provider": "bedrock_converse",
+    "input": 5E-8,
+    "output": 1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/minimax.minimax-m2",
+    "provider": "bedrock_converse",
+    "input": 3.6E-7,
+    "output": 0.00000145,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/mistral.devstral-2-123b",
+    "provider": "bedrock_converse",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/sa-east-1/mistral.magistral-small-2509",
+    "provider": "bedrock_converse",
+    "input": 6.1E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock/sa-east-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_converse",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/mistral.mistral-large-3-675b-instruct",
+    "provider": "bedrock_converse",
+    "input": 6.1E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/sa-east-1/moonshot.kimi-k2-thinking",
+    "provider": "bedrock_converse",
+    "input": 7.3E-7,
+    "output": 0.00000303,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/sa-east-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_converse",
+    "input": 2.4E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.9E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_converse",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock/sa-east-1/openai.gpt-oss-120b-1:0",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/sa-east-1/openai.gpt-oss-20b-1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock/sa-east-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_converse",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/sa-east-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock/sa-east-1/qwen.qwen3-vl-235b-a22b",
+    "provider": "bedrock_converse",
+    "input": 6.4E-7,
+    "output": 0.00000322,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock/sa-east-1/zai.glm-4.7",
+    "provider": "bedrock_converse",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/sa-east-1/zai.glm-4.7-flash",
+    "provider": "bedrock_converse",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/sa-east-1/zai.glm-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock/us-east-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.3E-7,
+    "output": 0.00000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-east-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-east-1/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.5E-8,
+    "output": 1.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-east-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-east-2/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.3E-7,
+    "output": 0.00000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-east-2/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-east-2/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.5E-8,
+    "output": 1.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-east-2/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-west-1/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.29E-7,
+    "output": 0.000003351,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-west-1/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.7E-8,
+    "output": 3.08E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-west-1/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000103,
+    "output": 0.00000412,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-west-1/global.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.9E-7,
+    "output": 0.00000321,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-west-1/us.amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 4.29E-7,
+    "output": 0.000003351,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-west-1/us.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 7.7E-8,
+    "output": 3.08E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-west-1/us.amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 0.00000103,
+    "output": 0.00000412,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-west-2/amazon.nova-2-5-sonic",
+    "provider": "bedrock",
+    "input": 3.19E-7,
+    "output": 0.000002651,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-west-2/amazon.nova-2-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.3E-7,
+    "output": 0.00000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-west-2/amazon.nova-2-sonic-v1:0",
+    "provider": "bedrock",
+    "input": 3.19E-7,
+    "output": 0.000002651,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 64000
+  },
+  {
+    "model": "bedrock/us-west-2/amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-west-2/amazon.nova-micro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 3.5E-8,
+    "output": 1.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "bedrock/us-west-2/amazon.nova-pro-v1:0",
+    "provider": "bedrock_converse",
+    "input": 8E-7,
+    "output": 0.0000032,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "ca.amazon.nova-lite-v1:0",
+    "provider": "bedrock_converse",
+    "input": 6.4E-8,
+    "output": 2.56E-7,
+    "max_input_tokens": 300000,
+    "max_output_tokens": 10000
+  },
+  {
+    "model": "ca.anthropic.claude-haiku-5-5",
+    "provider": "bedrock_converse",
+    "input": 1.1E-7,
+    "output": 5.5E-7,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "ca.anthropic.claude-sonnet-5-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "in.anthropic.claude-opus-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000055,
+    "output": 0.0000275,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "in.anthropic.claude-sonnet-5",
+    "provider": "bedrock_converse",
+    "input": 0.0000022,
+    "output": 0.000011,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "in.openai.gpt-5.6-luna",
+    "provider": "bedrock",
+    "input": 2.2E-7,
+    "output": 0.00000132,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "in.openai.gpt-5.6-terra",
+    "provider": "bedrock",
+    "input": 0.0000022,
+    "output": 0.0000132,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/deepseek.v3.1",
+    "provider": "bedrock_mantle",
+    "input": 7.01666E-7,
+    "output": 0.000002032411,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/deepseek.v3.2",
+    "provider": "bedrock_mantle",
+    "input": 7.4E-7,
+    "output": 0.00000222,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.1E-7,
+    "output": 3.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.8E-7,
+    "output": 4.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 5E-8,
+    "output": 1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000145,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 6.1E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/mistral.mistral-large-3-675b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.1E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/moonshotai.kimi-k2-thinking",
+    "provider": "bedrock_mantle",
+    "input": 7.3E-7,
+    "output": 0.00000303,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/moonshotai.kimi-k2.5",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.9E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.7E-7,
+    "output": 0.00000106,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/qwen.qwen3-coder-480b-a35b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 5.4E-7,
+    "output": 0.00000218,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.4E-7,
+    "output": 0.00000322,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/zai.glm-4.7",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-northeast-1/zai.glm-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/deepseek.v3.1",
+    "provider": "bedrock_mantle",
+    "input": 6.82424E-7,
+    "output": 0.000001976678,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/deepseek.v3.2",
+    "provider": "bedrock_mantle",
+    "input": 7.4E-7,
+    "output": 0.00000222,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.1E-7,
+    "output": 3.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.7E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 5E-8,
+    "output": 9E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.5E-7,
+    "output": 0.00000141,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 5.9E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/mistral.mistral-large-3-675b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 5.9E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/moonshotai.kimi-k2-thinking",
+    "provider": "bedrock_mantle",
+    "input": 7.1E-7,
+    "output": 0.00000294,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/moonshotai.kimi-k2.5",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 7.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 3.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.6E-7,
+    "output": 0.00000104,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.1E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/qwen.qwen3-coder-480b-a35b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 5.3E-7,
+    "output": 0.00000212,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.2E-7,
+    "output": 0.00000313,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/zai.glm-4.7",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-south-1/zai.glm-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/deepseek.v3.1",
+    "provider": "bedrock_mantle",
+    "input": 5.974E-7,
+    "output": 0.0000017304,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/deepseek.v3.2",
+    "provider": "bedrock_mantle",
+    "input": 6.4E-7,
+    "output": 0.00000191,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 9.27E-8,
+    "output": 2.987E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.369E-7,
+    "output": 3.914E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 4.12E-8,
+    "output": 8.24E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.09E-7,
+    "output": 0.000001236,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.1E-7,
+    "output": 0.00000124,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.1E-7,
+    "output": 0.00000124,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.1E-7,
+    "output": 0.00000206,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 5.15E-7,
+    "output": 0.000001545,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.06E-7,
+    "output": 2.06E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.03E-7,
+    "output": 1.03E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.545E-7,
+    "output": 1.545E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/mistral.mistral-large-3-675b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 5.15E-7,
+    "output": 0.000001545,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/moonshotai.kimi-k2-thinking",
+    "provider": "bedrock_mantle",
+    "input": 6.18E-7,
+    "output": 0.000002575,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/moonshotai.kimi-k2.5",
+    "provider": "bedrock_mantle",
+    "input": 6.2E-7,
+    "output": 0.00000309,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.06E-7,
+    "output": 6.18E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 6.18E-8,
+    "output": 2.472E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 6.18E-8,
+    "output": 2.369E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.5E-7,
+    "output": 6.7E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.545E-7,
+    "output": 6.18E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 7.21E-8,
+    "output": 3.09E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.545E-7,
+    "output": 6.18E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 7.21E-8,
+    "output": 2.06E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.266E-7,
+    "output": 9.064E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.545E-7,
+    "output": 6.18E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/qwen.qwen3-coder-480b-a35b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 4.635E-7,
+    "output": 0.000001854,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 5.2E-7,
+    "output": 0.00000124,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.442E-7,
+    "output": 0.000001236,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 5.459E-7,
+    "output": 0.0000027398,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/zai.glm-4.7",
+    "provider": "bedrock_mantle",
+    "input": 6.2E-7,
+    "output": 0.00000227,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 4.1E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-2/zai.glm-5",
+    "provider": "bedrock_mantle",
+    "input": 0.00000103,
+    "output": 0.0000033,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/deepseek.v3.1",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000174,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/deepseek.v3.2",
+    "provider": "bedrock_mantle",
+    "input": 7.4E-7,
+    "output": 0.00000222,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.08E-7,
+    "output": 3.48E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.76E-7,
+    "output": 4.56E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-8,
+    "output": 9.6E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.0000018,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/moonshotai.kimi-k2-thinking",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.000003,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/moonshotai.kimi-k2.5",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.6E-7,
+    "output": 6.2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 3.1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 8.4E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 9.1E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.6E-7,
+    "output": 6.2E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/qwen.qwen3-coder-480b-a35b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 4.7E-7,
+    "output": 0.00000187,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.36E-7,
+    "output": 0.000003192,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/zai.glm-4.7",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/ap-southeast-3/zai.glm-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.08E-7,
+    "output": 3.48E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.76E-7,
+    "output": 4.56E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-8,
+    "output": 9.6E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/google.gemma-4-26b-a4b",
+    "provider": "bedrock_mantle",
+    "input": 1.56E-7,
+    "output": 4.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 256000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/google.gemma-4-31b",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 4.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 256000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/google.gemma-4-e2b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-8,
+    "output": 9.6E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.0000018,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 2E-7,
+    "output": 7.9E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 9E-8,
+    "output": 4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 8.4E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.9E-7,
+    "output": 0.00000116,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2E-7,
+    "output": 7.9E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.36E-7,
+    "output": 0.000003192,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-central-1/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/deepseek.v3.2",
+    "provider": "bedrock_mantle",
+    "input": 7.4E-7,
+    "output": 0.00000222,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.08E-7,
+    "output": 3.48E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.76E-7,
+    "output": 4.56E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-8,
+    "output": 9.6E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.0000018,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/moonshotai.kimi-k2-thinking",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.000003,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/moonshotai.kimi-k2.5",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.88E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-8,
+    "output": 2.76E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.2E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 8.4E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.36E-7,
+    "output": 0.000003192,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/zai.glm-4.7",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-north-1/zai.glm-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.1E-7,
+    "output": 3.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.7E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 5E-8,
+    "output": 9E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.5E-7,
+    "output": 0.00000141,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 5.9E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 2E-7,
+    "output": 7.9E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 9E-8,
+    "output": 4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 2.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.9E-7,
+    "output": 0.00000116,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2E-7,
+    "output": 7.9E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.2E-7,
+    "output": 0.00000312,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-south-1/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.1E-7,
+    "output": 3.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.7E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 5E-8,
+    "output": 9E-8,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.5E-7,
+    "output": 0.00000141,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 5.9E-7,
+    "output": 0.00000176,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.7E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 3.5E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 2.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.64E-7,
+    "output": 0.000001056,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.2E-7,
+    "output": 0.00000312,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-1/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/deepseek.v3.1",
+    "provider": "bedrock_mantle",
+    "input": 8.99985E-7,
+    "output": 0.000002606853,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/deepseek.v3.2",
+    "provider": "bedrock_mantle",
+    "input": 9.61E-7,
+    "output": 0.0000028675,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.4E-7,
+    "output": 4.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 5.9E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 6E-8,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 4.7E-7,
+    "output": 0.00000186,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 4.7E-7,
+    "output": 0.00000186,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 4.7E-7,
+    "output": 0.00000186,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 6.2E-7,
+    "output": 0.0000031,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 7.8E-7,
+    "output": 0.00000233,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 3.1E-7,
+    "output": 3.1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.6E-7,
+    "output": 1.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 2.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/moonshotai.kimi-k2-thinking",
+    "provider": "bedrock_mantle",
+    "input": 9.3E-7,
+    "output": 0.000003875,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/moonshotai.kimi-k2.5",
+    "provider": "bedrock_mantle",
+    "input": 9.3E-7,
+    "output": 0.00000465,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 3.1E-7,
+    "output": 9.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 9E-8,
+    "output": 3.7E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 9E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 0.00000101,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 9.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 1.1E-7,
+    "output": 4.7E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 9.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 1.1E-7,
+    "output": 3.1E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 3.4E-7,
+    "output": 0.00000137,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.3E-7,
+    "output": 9.3E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/qwen.qwen3-coder-480b-a35b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 7E-7,
+    "output": 0.00000279,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 7.8E-7,
+    "output": 0.00000186,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.17E-7,
+    "output": 0.00000186,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 8.2E-7,
+    "output": 0.00000412,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/zai.glm-4.7",
+    "provider": "bedrock_mantle",
+    "input": 9.3E-7,
+    "output": 0.00000341,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 1.1E-7,
+    "output": 6.2E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/eu-west-2/zai.glm-5",
+    "provider": "bedrock_mantle",
+    "input": 0.00000155,
+    "output": 0.00000496,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/deepseek.v3.1",
+    "provider": "bedrock_mantle",
+    "input": 6.96E-7,
+    "output": 0.000002016,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/deepseek.v3.2",
+    "provider": "bedrock_mantle",
+    "input": 7.4E-7,
+    "output": 0.00000222,
+    "max_input_tokens": 156000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/google.gemma-3-12b-it",
+    "provider": "bedrock_mantle",
+    "input": 1.1E-7,
+    "output": 3.5E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/google.gemma-3-27b-it",
+    "provider": "bedrock_mantle",
+    "input": 2.8E-7,
+    "output": 4.6E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/google.gemma-3-4b-it",
+    "provider": "bedrock_mantle",
+    "input": 5E-8,
+    "output": 1E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/minimax.minimax-m2",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000145,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/minimax.minimax-m2.1",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/minimax.minimax-m2.5",
+    "provider": "bedrock_mantle",
+    "input": 3.6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 196000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/mistral.devstral-2-123b",
+    "provider": "bedrock_mantle",
+    "input": 4.8E-7,
+    "output": 0.0000024,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/mistral.magistral-small-2509",
+    "provider": "bedrock_mantle",
+    "input": 6.1E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 40000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/mistral.ministral-3-14b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 2.4E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/mistral.ministral-3-3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.2E-7,
+    "output": 1.2E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/mistral.ministral-3-8b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 1.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/mistral.mistral-large-3-675b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.1E-7,
+    "output": 0.00000182,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/moonshotai.kimi-k2-thinking",
+    "provider": "bedrock_mantle",
+    "input": 7.3E-7,
+    "output": 0.00000303,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/moonshotai.kimi-k2.5",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.0000036,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/nvidia.nemotron-nano-12b-v2",
+    "provider": "bedrock_mantle",
+    "input": 2.4E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/nvidia.nemotron-nano-3-30b",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.9E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/nvidia.nemotron-nano-9b-v2",
+    "provider": "bedrock_mantle",
+    "input": 7E-8,
+    "output": 2.8E-7,
+    "max_input_tokens": 128000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/nvidia.nemotron-super-3-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.8E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 32000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/openai.gpt-oss-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/openai.gpt-oss-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 3.6E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16384
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/openai.gpt-oss-safeguard-120b",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/openai.gpt-oss-safeguard-20b",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 2.4E-7,
+    "max_input_tokens": 131072,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/qwen.qwen3-235b-a22b-2507",
+    "provider": "bedrock_mantle",
+    "input": 2.64E-7,
+    "output": 0.000001056,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/qwen.qwen3-coder-30b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.8E-7,
+    "output": 7.3E-7,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/qwen.qwen3-coder-480b-a35b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 5.4E-7,
+    "output": 0.00000216,
+    "max_input_tokens": 262144,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/qwen.qwen3-coder-next",
+    "provider": "bedrock_mantle",
+    "input": 6E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 16000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/qwen.qwen3-next-80b-a3b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 1.68E-7,
+    "output": 0.00000144,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/qwen.qwen3-vl-235b-a22b-instruct",
+    "provider": "bedrock_mantle",
+    "input": 6.4E-7,
+    "output": 0.00000322,
+    "max_input_tokens": 256000,
+    "max_output_tokens": 8000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/zai.glm-4.7",
+    "provider": "bedrock_mantle",
+    "input": 7.2E-7,
+    "output": 0.00000264,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/zai.glm-4.7-flash",
+    "provider": "bedrock_mantle",
+    "input": 8E-8,
+    "output": 4.8E-7,
+    "max_input_tokens": 203000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/sa-east-1/zai.glm-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000012,
+    "output": 0.00000384,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/anthropic.claude-fable-5-1",
+    "provider": "bedrock_mantle",
+    "input": 0.000012,
+    "output": 0.00006,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/anthropic.claude-opus-4-8",
+    "provider": "bedrock_mantle",
+    "input": 0.000006,
+    "output": 0.00003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/anthropic.claude-opus-5",
+    "provider": "bedrock_mantle",
+    "input": 0.000006,
+    "output": 0.00003,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "bedrock_mantle/us-gov-west-1/anthropic.claude-sonnet-5",
+    "provider": "bedrock_mantle",
+    "input": 0.0000024,
+    "output": 0.000012,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/system.ai.gpt-6-2-astra",
+    "provider": "databricks",
+    "input": 0.00000800002,
+    "output": 0.00004000003,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "databricks/system.ai.gpt-6-2-sol",
+    "provider": "databricks",
+    "input": 0.00000199997,
+    "output": 0.00000999999,
+    "max_input_tokens": 922000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "gemini/gemini-4-neon",
+    "provider": "gemini",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "vertex_ai/gemini-4-neon",
+    "provider": "vertex_ai",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
+  },
+  {
+    "model": "github_copilot/gemini-4-neon",
+    "provider": "github_copilot",
+    "input": 0.000003,
+    "output": 0.000015,
+    "max_input_tokens": 200000,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "openrouter/openai/gpt-6.2-astra",
+    "provider": "openrouter",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/openai/gpt-6.2-sol",
+    "provider": "openrouter",
+    "input": 0.000002,
+    "output": 0.00001,
+    "max_input_tokens": 1050000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/anthropic/claude-fable-5.2",
+    "provider": "openrouter",
+    "input": 0.000008,
+    "output": 0.00004,
+    "max_input_tokens": 1000000,
+    "max_output_tokens": 128000
+  },
+  {
+    "model": "openrouter/google/gemini-4-hydrogen",
+    "provider": "openrouter",
+    "input": 0.0000015,
+    "output": 0.0000075,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 943718
+  },
+  {
+    "model": "gemini/genie-4",
+    "provider": "gemini",
+    "input": 0.0000015,
+    "output": 0.000009,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 65536
+  },
+  {
+    "model": "together_ai/tencent/Hy4",
+    "provider": "together_ai",
+    "input": 8.34E-7,
+    "output": 0.000002501,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 1048576
   }
 ]
